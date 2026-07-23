@@ -914,3 +914,28 @@ section p:last-child { margin-bottom: 0; }
 .fw-acc-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); margin: 0; line-height: 1.5; }
 .fw-acc-count { font-weight: 400; font-size: 13px; color: var(--ink-soft); }
 .fw-acc .gl-grid { padding: 0 16px 16px; }
+
+/* ===== 財務指標の解説（本体側ページ） ===== */
+.ind-back { margin: 0 0 16px; font-size: 13px; }
+.ind-back a { color: var(--primary); font-weight: 700; }
+.ind-count { font-size: 13px; color: var(--ink-soft); margin: 0 0 14px; }
+.ind-count strong { color: var(--primary-dark); font-size: 15px; }
+.ind-defs { display: grid; gap: 10px; }
+.ind-item { background: #fff; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.ind-item[open] { border-color: var(--line-strong); }
+.ind-item > summary { list-style: none; cursor: pointer; padding: 12px 16px; font-size: 15px; font-weight: 700; color: var(--primary-dark); display: flex; align-items: center; gap: 10px; }
+.ind-item > summary::-webkit-details-marker { display: none; }
+.ind-item > summary::after { content: "▾"; margin-left: auto; color: var(--primary); transition: transform .2s; }
+.ind-item[open] > summary::after { transform: rotate(180deg); }
+.ind-item > summary:hover { background: var(--primary-tint); }
+.ind-item > summary:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.ind-body { padding: 0 16px 14px; font-size: 14px; line-height: 1.85; color: var(--ink); }
+.ind-body p { margin: 6px 0; }
+.ind-body b { color: var(--primary-dark); }
+.ind-formula { background: var(--bg-soft, #f6f8f7); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; font-size: 13px; overflow-x: auto; margin: 4px 0 8px; white-space: pre-wrap; }
+.ind-loading { font-size: 13.5px; color: var(--ink-soft); }
+.ind-src { margin: 28px 0 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-soft); line-height: 1.8; }
+.ind-src p { margin: 0 0 8px; }
+
+.mg-related { font-size: 13.5px; color: var(--ink-soft); margin: 20px 0 8px; }
+.mg-related a { color: var(--primary); font-weight: 700; }

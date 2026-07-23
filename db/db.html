@@ -102,7 +102,6 @@
   <nav class="tabnav">
     <a class="active" aria-current="page">条件から検索</a>
     <a href="ranking.html">ランキングから検索</a>
-    <a href="indicators.html">財務指標の解説</a>
   </nav>
 
   <!-- 検索パネル（検索窓・並び替え） -->
@@ -158,6 +157,7 @@
 </div>
 
 <footer class="src">
+  <p class="ind-link"><a href="../indicators.html">財務指標の定義・計算式の解説はこちら ↗</a></p>
   <p class="unit">金額の単位：円（社会福祉法人会計基準に基づく計算書類の金額をそのまま表示しています）。</p>
   <p id="src-text">出典：独立行政法人福祉医療機構「財務諸表等電子開示システム」および厚生労働省への行政文書開示請求により取得したデータを基に、フクダネが独自に再構成。政府標準利用規約（PDL1.0）に基づく利用。</p>
   <p>本データベースは法人の基本情報と計算書類上の数値のみを掲載しています。役員等の個人名・連絡先・番地は掲載していません。数値は各法人が提出した計算書類に基づくもので、内容の正確性を保証するものではありません。市区町村が空欄の法人は所在地情報が取得できなかったものです。</p>
@@ -535,7 +535,7 @@ function indHtml(c){
     ${indTbl}
     <h4>収益と経常増減差額率の推移</h4>
     ${chart}
-    <p class="note">各指標の定義・計算式・見方は <a href="indicators.html" target="_blank" rel="noopener">指標の解説 ↗</a> をご覧ください（良否の判定は表示していません）。</p>`;
+    <p class="note">各指標の定義・計算式・見方は <a href="../indicators.html" target="_blank" rel="noopener">指標の解説 ↗</a> をご覧ください（良否の判定は表示していません）。</p>`;
 }
 
 // 詳細描画後の処理（固定グラフのため特別なバインドは不要）
