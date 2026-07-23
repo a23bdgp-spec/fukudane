@@ -98,6 +98,12 @@ let INDEX = [];          // 軽量索引
 let filtered = [];       // 絞り込み結果
 let page = 0;
 const prefCache = {};    // 都道府県別詳細のキャッシュ
+let MEDIANS = {};        // セグメント中央値 {ikey:{year:{nat,pref,biz,size}}}
+let DEFS = [];           // 指標定義（順序保持）
+let DEFBYKEY = {};       // 指標定義 key引き
+let compare = [];        // 比較リスト [{no,pcode,name}]（最大5）
+const CMP_MAX = 5;
+const IND_SOURCE_NOTE = "財務指標は福祉医療機構「経営分析参考ツール」の指標体系を参考にフクダネが独自に算出した参考値です。";
 
 const YEARS = [2020,2021,2022,2023,2024];
 const FIN = [            // 表示順とラベル（評価語を含めない）
@@ -117,8 +123,13 @@ function num(v,unit){ return (v===null||v===undefined) ? null : v.toLocaleString
 function normName(s){ return String(s).replace(/[\s　]/g,''); }
 
 async function init(){
-  const res = await fetch('data/index.json');
-  INDEX = await res.json();
+  const [idx, med, defs] = await Promise.all([
+    fetch('data/index.json').then(r=>r.json()),
+    fetch('data/medians.json').then(r=>r.json()).catch(()=>({})),
+    fetch('data/indicator_defs.json').then(r=>r.json()).catch(()=>[]),
+  ]);
+  INDEX = idx; MEDIANS = med; DEFS = defs;
+  DEFS.forEach(d => { DEFBYKEY[d.key] = d; });
   INDEX.forEach(r => { r._n = normName(r.name); });  // 正規化名を事前計算
   // 都道府県セレクトを構築（索引に出現する順で一意化）
   const prefs = {};
@@ -161,12 +172,16 @@ function render(){
   slice.forEach(r=>{
     const row = document.createElement('div');
     row.className='row';
+    const inCmp = compare.some(x=>x.no===r.no);
     row.innerHTML = `<div>
         <div class="name">${esc(r.name)}</div>
         <div class="meta">${esc(r.pref)}　法人番号 ${esc(r.no)}${r.latest?`　最新データ：${r.latest}年度`:''}</div>
       </div>
       <span class="tag">${esc(r.biz)}</span>
+      <button class="cmpbtn${inCmp?' on':''}" type="button">${inCmp?'比較中✓':'＋比較'}</button>
       <span class="arrow">詳細 ＋</span>`;
+    const btn = row.querySelector('.cmpbtn');
+    btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleCompare(r); });
     row.addEventListener('click', ()=>toggle(row, r));
     list.appendChild(row);
   });
@@ -201,6 +216,7 @@ async function toggle(row, r){
   const corp = await loadCorp(r.pcode, r.no);
   if(!corp){ det.innerHTML='<div class="loading">データを取得できませんでした。</div>'; return; }
   det.innerHTML = detailHtml(corp);
+  bindDetail(det, corp);
 }
 
 async function loadCorp(pcode, no){
@@ -230,11 +246,180 @@ function detailHtml(c){
     }).join('');
     return `<tr><th>${label}</th>${tds}</tr>`;
   }).join('');
-  return `<div class="attrs">${attrs}</div>
-    <div class="tblwrap"><table class="fin"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+  const finTbl = `<div class="tblwrap"><table class="fin"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+  return `<div class="attrs">${attrs}</div>${finTbl}${indHtml(c)}`;
+}
+
+// 指標の単位付き整形（null は該当なし）
+function fmtInd(v,unit){
+  if(v===null||v===undefined) return null;
+  return v.toLocaleString('ja-JP',{maximumFractionDigits:2})+(unit||'');
+}
+// 指標のセグメント中央値を引く（最新年度）
+function medOf(key,dim,seg,year){
+  const n = MEDIANS[key] && MEDIANS[key][String(year)];
+  if(!n) return null;
+  if(dim==='nat') return (n.nat===undefined?null:n.nat);
+  return (n[dim] && n[dim][seg]!==undefined) ? n[dim][seg] : null;
+}
+
+// 財務指標セクション（実額・比率＋業界中央値）＋推移グラフ＋定義
+function indHtml(c){
+  if(!DEFS.length) return '';
+  const ly = c.latest ? String(c.latest) : String(YEARS[YEARS.length-1]);
+  // 表：行＝指標、列＝5年度＋中央値4系列（最新年度）
+  let head = '<th>指標</th>' + YEARS.map(y=>`<th>${y}</th>`).join('')
+    + `<th>全国中央値</th><th>${esc(c.pref)}中央値</th><th>${esc(c.biz)}中央値</th><th>${esc(c.size||'規模')}中央値</th>`;
+  let body = DEFS.map(d=>{
+    const tds = YEARS.map(y=>{
+      const yr = (c.ind||{})[String(y)];
+      const v = yr ? yr[d.key] : null;
+      const disp = fmtInd(v!==undefined?v:null, d.unit);
+      return disp===null ? '<td class="na">—</td>' : `<td>${disp}</td>`;
+    }).join('');
+    const mn = fmtInd(medOf(d.key,'nat','',ly), d.unit);
+    const mp = fmtInd(medOf(d.key,'pref',c.pref,ly), d.unit);
+    const mb = fmtInd(medOf(d.key,'biz',c.biz,ly), d.unit);
+    const ms = c.size ? fmtInd(medOf(d.key,'size',c.size,ly), d.unit) : null;
+    const mcell = x => x===null ? '<td class="med na">—</td>' : `<td class="med">${x}</td>`;
+    return `<tr><th><span class="indname" title="${esc(d.definition)}">${esc(d.name)}</span></th>${tds}${mcell(mn)}${mcell(mp)}${mcell(mb)}${mcell(ms)}</tr>`;
+  }).join('');
+  const indTbl = `<div class="tblwrap"><table class="ind"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+
+  // 推移グラフ（指標セレクト＋SVG）
+  const opts = DEFS.map((d,i)=>`<option value="${d.key}">${esc(d.name)}</option>`).join('');
+  const chart = `<div class="chartbox">
+      <select class="ind-sel">${opts}</select>
+      <div class="chart-svg"></div>
+      <div class="chart-legend"><span><i style="background:#176B5B"></i>当該法人</span><span><i style="background:#c98a1a"></i>全国中央値</span></div>
+    </div>`;
+
+  // 定義・計算式・中立解説
+  const defs = `<div class="defs">${DEFS.map(d=>`
+      <details><summary>${esc(d.name)}</summary>
+        <div class="defbody">
+          ${d.definition?`<b>定義</b>：${esc(d.definition)}<br>`:''}
+          ${d.formula?`<b>計算式</b><pre>${esc(d.formula)}</pre>`:''}
+          ${d.desc?`<b>指標の見方</b>：${esc(d.desc)}`:''}
+        </div>
+      </details>`).join('')}</div>`;
+
+  return `<h4>財務指標（5年度推移と業界中央値）</h4>
+    <p class="note">単位：比率は%、資金余裕は月数、償還年数は年、職員一人当たり収益は千円。中央値は最新データ年度（${esc(ly)}年度）の当該セグメントの中央値です。${esc(IND_SOURCE_NOTE)}</p>
+    ${indTbl}
+    <h4>指標の推移グラフ</h4>
+    ${chart}
+    <h4>指標の定義・計算式・見方</h4>
+    <div class="note">経営分析参考ツールの定義に基づく事実の説明です（良否の判定は表示していません）。</div>
+    ${defs}`;
+}
+
+// 詳細描画後にグラフをバインド
+function bindDetail(det, c){
+  const sel = det.querySelector('.ind-sel');
+  const box = det.querySelector('.chart-svg');
+  if(!sel || !box) return;
+  const draw = ()=>{ box.innerHTML = svgTrend(c, sel.value); };
+  sel.addEventListener('change', draw);
+  // 初期表示は当該法人に値がある最初の指標
+  const first = DEFS.find(d => YEARS.some(y => (c.ind||{})[String(y)] && (c.ind||{})[String(y)][d.key]!==undefined));
+  if(first) sel.value = first.key;
+  draw();
+}
+
+// 指標の5年度推移SVG（当該法人＋全国中央値）。外部ライブラリ不使用。
+function svgTrend(c, key){
+  const d = DEFBYKEY[key]; if(!d) return '';
+  const corpPts = YEARS.map(y=>{ const yr=(c.ind||{})[String(y)]; return yr&&yr[key]!==undefined?yr[key]:null; });
+  const medPts  = YEARS.map(y=> medOf(key,'nat','',y));
+  const all = corpPts.concat(medPts).filter(v=>v!==null&&v!==undefined);
+  if(!all.length) return '<p class="note">この指標に表示できるデータがありません。</p>';
+  let mn=Math.min(...all), mx=Math.max(...all);
+  if(mn===mx){ mn-=1; mx+=1; }
+  const pad=(mx-mn)*0.12; mn-=pad; mx+=pad;
+  const W=600,H=220,L=56,R=16,T=16,B=32;
+  const x=i=> L + (W-L-R)*(i/(YEARS.length-1));
+  const y=v=> T + (H-T-B)*(1-(v-mn)/(mx-mn));
+  const grid=[0,.25,.5,.75,1].map(t=>{const yy=T+(H-T-B)*t;const val=mx-(mx-mn)*t;
+    return `<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#eee"/><text x="${L-6}" y="${yy+4}" text-anchor="end" font-size="10" fill="#889">${val.toLocaleString('ja-JP',{maximumFractionDigits:1})}</text>`;}).join('');
+  const xlab=YEARS.map((yr,i)=>`<text x="${x(i)}" y="${H-10}" text-anchor="middle" font-size="10" fill="#889">${yr}</text>`).join('');
+  const line=(pts,color)=>{
+    const seg=pts.map((v,i)=>v===null||v===undefined?null:`${x(i)},${y(v)}`).filter(Boolean);
+    const poly = seg.length ? `<polyline points="${seg.join(' ')}" fill="none" stroke="${color}" stroke-width="2.2"/>` : '';
+    const dots = pts.map((v,i)=>v===null||v===undefined?'':`<circle cx="${x(i)}" cy="${y(v)}" r="3.2" fill="${color}"/>`).join('');
+    return poly+dots;
+  };
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(d.name)}の推移">
+    ${grid}${xlab}${line(medPts,'#c98a1a')}${line(corpPts,'#176B5B')}
+    <text x="${L}" y="12" font-size="11" fill="#5a6b67">${esc(d.name)}（${esc(d.unit)}）</text>
+  </svg>`;
 }
 
 function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+// ───── 比較機能 ─────
+function toggleCompare(r){
+  const i = compare.findIndex(x=>x.no===r.no);
+  if(i>=0){ compare.splice(i,1); }
+  else{
+    if(compare.length>=CMP_MAX){ alert(`比較は${CMP_MAX}法人までです。`); return; }
+    compare.push({no:r.no, pcode:r.pcode, name:r.name});
+  }
+  render();          // ボタン状態を更新
+  renderCmpBar();
+}
+
+function renderCmpBar(){
+  let bar = document.getElementById('cmpbar');
+  if(!compare.length){ if(bar) bar.remove(); return; }
+  if(!bar){
+    bar = document.createElement('div');
+    bar.id='cmpbar'; bar.className='cmpbar';
+    document.querySelector('.wrap').appendChild(bar);
+  }
+  const chips = compare.map(x=>`<span class="chip">${esc(x.name)}<b data-no="${x.no}">×</b></span>`).join('');
+  bar.innerHTML = `<span>比較リスト（${compare.length}/${CMP_MAX}）</span>
+    <div class="chips">${chips}</div>
+    <button class="go" ${compare.length<2?'disabled':''}>並べて比較</button>
+    <button class="clr">クリア</button>`;
+  bar.querySelectorAll('.chip b').forEach(b=>b.addEventListener('click',()=>{
+    compare = compare.filter(x=>x.no!==b.dataset.no); render(); renderCmpBar();
+  }));
+  bar.querySelector('.go').addEventListener('click', openCompare);
+  bar.querySelector('.clr').addEventListener('click', ()=>{ compare=[]; render(); renderCmpBar(); });
+}
+
+async function openCompare(){
+  if(compare.length<2) return;
+  const corps = [];
+  for(const x of compare){ const c = await loadCorp(x.pcode, x.no); if(c) corps.push(c); }
+  if(corps.length<2) return;
+  const ly = String(Math.max(...corps.map(c=>c.latest||YEARS[YEARS.length-1])));
+  // 財務（最新年度）＋指標（最新年度）を並列。優劣判定・色分けはしない。
+  const fmtY = (c,key)=>{ const yr=(c.years||{})[ly]; const v=yr?yr[key]:null;
+    return (v===null||v===undefined)?'—':(key==='staff'?v.toLocaleString('ja-JP')+'人':v.toLocaleString('ja-JP')+'円'); };
+  const head = `<th>項目</th>` + corps.map(c=>`<th>${esc(c.name)}<br><small>${esc(c.pref)}${c.city?' '+esc(c.city):''}</small></th>`).join('') + `<th>全国中央値</th>`;
+  let rows = `<tr class="sec"><td colspan="${corps.length+2}">財務（${ly}年度・単位 円）</td></tr>`;
+  rows += FIN.map(([k,lab])=>`<tr><th>${lab}</th>${corps.map(c=>`<td>${fmtY(c,k)}</td>`).join('')}<td class="med">—</td></tr>`).join('');
+  rows += `<tr class="sec"><td colspan="${corps.length+2}">財務指標（${ly}年度）</td></tr>`;
+  rows += DEFS.map(d=>{
+    const cells = corps.map(c=>{ const yr=(c.ind||{})[ly]; const v=yr?yr[d.key]:null;
+      const s=fmtInd(v!==undefined?v:null,d.unit); return `<td>${s===null?'—':s}</td>`; }).join('');
+    const mn = fmtInd(medOf(d.key,'nat','',ly), d.unit);
+    return `<tr><th>${esc(d.name)}</th>${cells}<td class="med">${mn===null?'—':mn}</td></tr>`;
+  }).join('');
+  const modal = document.createElement('div');
+  modal.className='cmpmodal';
+  modal.innerHTML = `<div class="inner">
+      <button class="close">閉じる ×</button>
+      <h3>法人の比較（${corps.length}法人）</h3>
+      <p class="note">数値と全国中央値をそのまま並べています。順位付け・優劣の判定はしていません。単位は各行に記載。${esc(IND_SOURCE_NOTE)}</p>
+      <div style="overflow-x:auto"><table class="cmptbl"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+    </div>`;
+  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+  modal.querySelector('.close').addEventListener('click', ()=>modal.remove());
+  document.body.appendChild(modal);
+}
 
 init();
 </script>

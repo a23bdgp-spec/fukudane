@@ -104,3 +104,56 @@ footer.src{
 }
 footer.src .unit{color:var(--primary-d);font-weight:600}
 .loading{padding:40px;text-align:center;color:var(--sub)}
+
+/* ───── 財務指標（実額・比率＋中央値） ───── */
+.detail h4{margin:14px 0 6px;font-size:14px;color:var(--primary-d)}
+.detail .note{font-size:12px;color:var(--sub);margin:4px 0 8px}
+table.ind{border-collapse:collapse;width:100%;min-width:640px;font-size:13px;background:#fff}
+table.ind th,table.ind td{border:1px solid var(--line);padding:5px 8px;text-align:right;white-space:nowrap}
+table.ind thead th{background:var(--primary);color:#fff;font-weight:600;text-align:center}
+table.ind tbody th{background:var(--bg2);text-align:left;font-weight:600;color:var(--ink);position:sticky;left:0}
+table.ind td.na{color:#aab4b1;text-align:center}
+table.ind td.med{color:var(--sub);background:#fafcfb}
+.indname{cursor:help;border-bottom:1px dotted var(--sub)}
+
+/* 指標推移グラフ（SVG自作） */
+.chartbox{margin:8px 0 4px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px}
+.chartbox select{padding:5px 8px;border:1px solid var(--line);border-radius:5px;font-size:13px;margin-bottom:6px}
+.chartbox svg{display:block;width:100%;height:auto}
+.chart-legend{font-size:12px;color:var(--sub);display:flex;gap:16px;margin-top:4px;flex-wrap:wrap}
+.chart-legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px}
+
+/* 指標の定義・解説 */
+.defs{margin-top:10px}
+.defs details{border:1px solid var(--line);border-radius:5px;margin-bottom:5px;background:#fff}
+.defs summary{cursor:pointer;padding:7px 10px;font-size:13px;font-weight:600;color:var(--primary-d)}
+.defs .defbody{padding:4px 12px 10px;font-size:12px;color:var(--ink);line-height:1.7}
+.defs .defbody b{color:var(--primary-d)}
+.defs .defbody pre{white-space:pre-wrap;background:var(--bg2);padding:6px 8px;border-radius:4px;font-size:11px;margin:4px 0}
+
+/* ───── 比較機能 ───── */
+.cmpbtn{flex:0 0 auto;font-size:11px;border:1px solid var(--primary);color:var(--primary-d);
+  background:#fff;border-radius:5px;padding:3px 8px;cursor:pointer;white-space:nowrap}
+.cmpbtn.on{background:var(--primary);color:#fff}
+.cmpbar{position:sticky;bottom:0;z-index:20;background:var(--primary-d);color:#fff;
+  padding:10px 16px;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  box-shadow:0 -2px 8px rgba(0,0,0,.15);margin-top:14px}
+.cmpbar .chips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.cmpbar .chip{background:#fff;color:var(--primary-d);border-radius:12px;padding:2px 8px;font-size:12px}
+.cmpbar .chip b{cursor:pointer;margin-left:4px;color:#c62828}
+.cmpbar button{border:none;border-radius:5px;padding:7px 14px;font-size:13px;cursor:pointer}
+.cmpbar .go{background:#fff;color:var(--primary-d);font-weight:600}
+.cmpbar .go:disabled{opacity:.5;cursor:default}
+.cmpbar .clr{background:transparent;color:#cfe4de;text-decoration:underline}
+.cmpmodal{position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.45);display:flex;
+  align-items:flex-start;justify-content:center;overflow:auto;padding:24px 12px}
+.cmpmodal .inner{background:#fff;border-radius:8px;max-width:920px;width:100%;padding:18px 20px}
+.cmpmodal h3{margin:0 0 4px;color:var(--primary-d);font-size:17px}
+.cmpmodal .close{float:right;border:1px solid var(--line);background:#fff;border-radius:5px;
+  padding:4px 12px;cursor:pointer;font-size:13px}
+.cmptbl{border-collapse:collapse;width:100%;font-size:13px;margin-top:10px}
+.cmptbl th,.cmptbl td{border:1px solid var(--line);padding:6px 9px;text-align:right;white-space:nowrap}
+.cmptbl thead th{background:var(--primary);color:#fff;text-align:center}
+.cmptbl tbody th{background:var(--bg2);text-align:left;position:sticky;left:0}
+.cmptbl td.med{color:var(--sub);background:#fafcfb}
+.cmptbl .sec td{background:var(--primary-l);color:var(--primary-d);font-weight:600;text-align:left}
