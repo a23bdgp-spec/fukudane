@@ -1233,3 +1233,21 @@ section p:last-child { margin-bottom: 0; }
 .cat-fold > summary.cat-h::-webkit-details-marker { display: none; }
 .cat-fold > summary.cat-h::after { content: "▾"; font-size: 12px; color: var(--primary); margin-left: 8px; }
 .cat-fold[open] > summary.cat-h::after { content: "▴"; }
+
+/* stats：都道府県ランキング（黒字割合が高い/低い10県。事実の列挙） */
+.pref-rank-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0 0; }
+@media (max-width: 600px) { .pref-rank-wrap { grid-template-columns: 1fr; } }
+.pref-rank-title { font-size: 14px; font-weight: 700; color: var(--primary-dark); margin: 0 0 8px; }
+.pref-rank-list { list-style: decimal; margin: 0; padding-left: 1.8em; }
+.pref-rank-list li { display: grid; grid-template-columns: 1fr auto auto; align-items: baseline; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+.pr-name { font-weight: 700; color: var(--ink); }
+.pr-val { color: var(--primary-dark); font-weight: 700; }
+.pr-n { color: var(--ink-soft); font-size: 12px; }
+
+/* stats：表示指標の切替トグル（黒字割合⇄経常増減差額率の中央値） */
+.metric-toggle { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 4px 0 20px; }
+.metric-toggle-label { font-size: 13.5px; font-weight: 700; color: var(--ink-soft); }
+.metric-btn { font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--primary-dark); background: #fff; border: 1px solid var(--line-strong); border-radius: 999px; padding: 7px 16px; cursor: pointer; }
+.metric-btn:hover { border-color: var(--primary); }
+.metric-btn[aria-pressed="true"] { background: var(--primary); color: #fff; border-color: var(--primary-dark); }
+.metric-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }

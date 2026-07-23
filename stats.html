@@ -187,7 +187,7 @@
 /* __STATS_INJECT_START__ ここから下を build_map.py が content/stats.json で置き換える（未注入時は空） */
 const STATS = {
   "meta": {
-    "generated": "2026-07-24 07:32 JST",
+    "generated": "2026-07-24 07:37 JST",
     "source_text": "出典：独立行政法人福祉医療機構「財務諸表等電子開示システム」および厚生労働省への行政文書開示請求により取得したデータを基に、フクダネが独自に再構成。政府標準利用規約（PDL1.0）に基づく利用。",
     "years": [
       2020,
@@ -202,6 +202,7 @@ const STATS = {
     "sample_note": "サンプル数＝法人数、データ数＝法人年度数。本ページの単年度集計は法人数、5年推移は各年度の法人数を年度ごとに集計。",
     "neutrality_note": "数値は事実の集計であり経営の良し悪しを示すものではありません。",
     "surplus_deficit_def": "黒字＝経常増減差額≧0（0円は黒字側に含む）、赤字＝経常増減差額<0の排他分類。両割合の合計は100%。判定不能＝経常増減差額の欠損。",
+    "rate_median_def": "各ヒートマップ集計に併載する rate_median は、経常増減差額率（経常増減差額÷サービス活動収益計、DB財務指標i02と同一定義）の中央値（%小数1桁）。母数 rate_median_n＝該当セル（県）で率が算出可能（経常増減差額が存在し、かつサービス活動収益計が0超）な法人数。黒字割合の母数（経常存在法人）と異なる場合は、サービス活動収益計が0以下または欠損の法人が差分。値のないセル（母数0）はnull。",
     "biz_class_def": "事業分類は勘定科目基準の8分類（介護保険/老人福祉/児童福祉/保育/障害福祉/就労支援/医療/その他）。各法人を、サービス活動収益の構成のうち最も大きい収益科目で判定（build_db.pyのderiveロジックと同一の科目・最大セグメント方式。その他＝生活保護事業収益＋経常経費補助金収益、全科目0以下はその他）。"
   },
   "size_distribution": {
@@ -638,7 +639,7 @@ const STATS = {
     "reading": "都道府県により黒字（経常増減差額が0以上）の割合に差があることが読み取れる。法人数の少ない県は割合が変動しやすい。",
     "base": "2024年度・当年度全数（都道府県区分別、経常増減差額が存在する法人が分母）",
     "unit": "黒字割合＝%、base_n＝法人",
-    "note": "黒字＝経常増減差額≧0の事実。base_n（分母法人数）が小さい県は割合が不安定なため併記。",
+    "note": "黒字＝経常増減差額≧0の事実。base_n（分母法人数）が小さい県は割合が不安定なため併記。／各セル（県）に経常増減差額率の中央値 rate_median（母数 rate_median_n）を併載。",
     "labels": [
       "北海道",
       "青森県",
@@ -834,6 +835,104 @@ const STATS = {
       381,
       596,
       489
+    ],
+    "rate_median": [
+      0.6,
+      1.2,
+      -0.2,
+      1.8,
+      -0.2,
+      0.9,
+      0.7,
+      2.1,
+      1.9,
+      2.7,
+      3.5,
+      2.3,
+      2.5,
+      3.0,
+      2.6,
+      1.4,
+      3.3,
+      2.6,
+      2.3,
+      1.1,
+      2.7,
+      2.2,
+      1.7,
+      2.2,
+      3.5,
+      3.4,
+      3.6,
+      2.8,
+      2.4,
+      0.3,
+      0.3,
+      1.7,
+      2.6,
+      2.8,
+      1.8,
+      3.5,
+      1.7,
+      1.5,
+      0.7,
+      2.0,
+      2.1,
+      1.5,
+      1.5,
+      1.6,
+      1.5,
+      0.8,
+      3.2
+    ],
+    "rate_median_n": [
+      899,
+      516,
+      328,
+      267,
+      223,
+      249,
+      299,
+      510,
+      348,
+      495,
+      887,
+      690,
+      1077,
+      785,
+      435,
+      204,
+      306,
+      226,
+      248,
+      350,
+      293,
+      472,
+      670,
+      322,
+      267,
+      474,
+      1189,
+      797,
+      232,
+      220,
+      109,
+      264,
+      368,
+      447,
+      302,
+      175,
+      194,
+      217,
+      191,
+      1147,
+      252,
+      536,
+      665,
+      339,
+      381,
+      591,
+      488
     ]
   },
   "size_biz_surplus_matrix": {
@@ -841,7 +940,7 @@ const STATS = {
     "reading": "規模と事業分類の組み合わせにより黒字割合に差があることが読み取れる。分母nの小さいセルは割合が不安定。",
     "base": "2024年度・当年度全数（行＝収益規模5階級、列＝勘定科目基準の事業分類8分類）",
     "unit": "黒字割合＝%、n＝法人",
-    "note": "黒字＝経常増減差額≧0の事実。各セルのn（分母＝経常増減差額が存在する法人数）を併記。n<30のセルは特に変動しやすい。",
+    "note": "黒字＝経常増減差額≧0の事実。各セルのn（分母＝経常増減差額が存在する法人数）を併記。n<30のセルは特に変動しやすい。／各セル（県）に経常増減差額率の中央値 rate_median（母数 rate_median_n）を併載。",
     "excluded": 71,
     "row_labels": [
       "1億円未満",
@@ -963,6 +1062,110 @@ const STATS = {
         67,
         9
       ]
+    ],
+    "rate_median": [
+      [
+        -5.5,
+        -3.5,
+        3.3,
+        0.1,
+        0.1,
+        -2.3,
+        null,
+        -1.3
+      ],
+      [
+        -2.2,
+        -3.4,
+        7.8,
+        4.3,
+        2.2,
+        3.8,
+        -19.7,
+        -1.1
+      ],
+      [
+        -0.7,
+        -2.0,
+        8.0,
+        5.5,
+        3.5,
+        0.1,
+        -0.4,
+        -0.7
+      ],
+      [
+        1.6,
+        -0.2,
+        5.6,
+        6.4,
+        3.8,
+        -0.1,
+        0.9,
+        -0.6
+      ],
+      [
+        1.9,
+        null,
+        4.1,
+        3.9,
+        2.7,
+        2.5,
+        -0.7,
+        -1.0
+      ]
+    ],
+    "rate_median_n": [
+      [
+        213,
+        75,
+        14,
+        1015,
+        615,
+        13,
+        0,
+        455
+      ],
+      [
+        1220,
+        162,
+        147,
+        4980,
+        1099,
+        9,
+        1,
+        391
+      ],
+      [
+        3649,
+        21,
+        237,
+        2158,
+        1347,
+        13,
+        8,
+        240
+      ],
+      [
+        1461,
+        2,
+        49,
+        299,
+        483,
+        8,
+        39,
+        50
+      ],
+      [
+        267,
+        0,
+        7,
+        38,
+        80,
+        3,
+        67,
+        9
+      ]
     ]
   },
   "size_era_surplus_matrix": {
@@ -1041,6 +1244,90 @@ const STATS = {
         319,
         728,
         180
+      ],
+      [
+        3,
+        1068,
+        3300,
+        849,
+        2334,
+        452
+      ],
+      [
+        10,
+        1004,
+        2683,
+        1589,
+        2216,
+        171
+      ],
+      [
+        14,
+        469,
+        913,
+        561,
+        423,
+        11
+      ],
+      [
+        4,
+        172,
+        153,
+        93,
+        49,
+        0
+      ]
+    ],
+    "rate_median": [
+      [
+        -11.3,
+        -1.5,
+        -1.1,
+        -2.3,
+        -0.4,
+        5.0
+      ],
+      [
+        3.4,
+        3.0,
+        2.6,
+        0.1,
+        3.1,
+        6.5
+      ],
+      [
+        2.1,
+        2.8,
+        2.0,
+        0.1,
+        2.7,
+        4.4
+      ],
+      [
+        2.6,
+        2.6,
+        2.2,
+        2.3,
+        3.5,
+        6.7
+      ],
+      [
+        -0.1,
+        1.1,
+        2.5,
+        3.0,
+        2.3,
+        null
+      ]
+    ],
+    "rate_median_n": [
+      [
+        2,
+        328,
+        868,
+        312,
+        712,
+        171
       ],
       [
         3,
@@ -1228,6 +1515,130 @@ const STATS = {
         2,
         27
       ]
+    ],
+    "rate_median": [
+      [
+        2.1,
+        -24.9,
+        3.8,
+        3.8,
+        4.7,
+        null,
+        0.3,
+        -5.0
+      ],
+      [
+        -0.2,
+        -3.3,
+        7.8,
+        3.4,
+        2.8,
+        2.5,
+        -1.1,
+        -1.1
+      ],
+      [
+        -1.0,
+        -2.6,
+        6.8,
+        3.9,
+        2.7,
+        -1.4,
+        0.2,
+        -1.0
+      ],
+      [
+        -0.5,
+        -4.9,
+        5.4,
+        4.5,
+        2.1,
+        1.7,
+        0.4,
+        -0.5
+      ],
+      [
+        0.7,
+        -1.7,
+        7.2,
+        5.5,
+        3.0,
+        1.8,
+        3.7,
+        -1.5
+      ],
+      [
+        0.3,
+        null,
+        6.5,
+        7.7,
+        5.3,
+        -42.7,
+        -17.4,
+        -3.7
+      ]
+    ],
+    "rate_median_n": [
+      [
+        7,
+        2,
+        6,
+        6,
+        5,
+        0,
+        5,
+        2
+      ],
+      [
+        493,
+        37,
+        309,
+        1416,
+        379,
+        9,
+        66,
+        332
+      ],
+      [
+        2063,
+        54,
+        70,
+        4263,
+        983,
+        10,
+        28,
+        446
+      ],
+      [
+        1932,
+        102,
+        15,
+        449,
+        738,
+        10,
+        5,
+        153
+      ],
+      [
+        2110,
+        65,
+        44,
+        1952,
+        1350,
+        14,
+        9,
+        190
+      ],
+      [
+        205,
+        0,
+        10,
+        401,
+        167,
+        3,
+        2,
+        17
+      ]
     ]
   },
   "size_hq_surplus_matrix": {
@@ -1278,6 +1689,50 @@ const STATS = {
       [
         731,
         1740
+      ],
+      [
+        2871,
+        5138
+      ],
+      [
+        3474,
+        4199
+      ],
+      [
+        1661,
+        730
+      ],
+      [
+        421,
+        50
+      ]
+    ],
+    "rate_median": [
+      [
+        -0.6,
+        -1.0
+      ],
+      [
+        3.3,
+        2.4
+      ],
+      [
+        3.4,
+        0.7
+      ],
+      [
+        2.7,
+        2.2
+      ],
+      [
+        2.1,
+        0.9
+      ]
+    ],
+    "rate_median_n": [
+      [
+        711,
+        1689
       ],
       [
         2871,
@@ -1370,6 +1825,58 @@ const STATS = {
       [
         309,
         506
+      ]
+    ],
+    "rate_median": [
+      [
+        2.2,
+        1.9
+      ],
+      [
+        3.2,
+        1.4
+      ],
+      [
+        2.7,
+        1.3
+      ],
+      [
+        1.6,
+        -0.3
+      ],
+      [
+        3.5,
+        2.0
+      ],
+      [
+        6.8,
+        4.6
+      ]
+    ],
+    "rate_median_n": [
+      [
+        27,
+        6
+      ],
+      [
+        1597,
+        1444
+      ],
+      [
+        3760,
+        4157
+      ],
+      [
+        1371,
+        2033
+      ],
+      [
+        2074,
+        3660
+      ],
+      [
+        306,
+        499
       ]
     ]
   }
@@ -1476,10 +1983,40 @@ const STATS = {
     return h + heatLegend(mm.min, mm.max);
   }
 
+  // 都道府県ランキング（指標が高い/低い10県）。表示時にprefecture_surplusから算出。
+  // values＝指標配列（既定＝黒字割合surplus_rate）、metricLabel＝見出し語（既定「黒字割合」）、suffix＝値の単位。
+  // 指標切替（経常増減差額率中央値）実装時は values/metricLabel/suffix を差し替えて再利用する。
+  function prefRanking(p, values, metricLabel, suffix) {
+    var mi = mInfo();
+    values = values || mVals(p);
+    metricLabel = metricLabel || mi.short;
+    suffix = (suffix == null) ? mi.suffix : suffix;
+    var ns = mN(p);
+    var rows = [];
+    p.labels.forEach(function (lb, i) {
+      if (values[i] != null) rows.push({ name: lb, v: values[i], n: ns[i] });
+    });
+    var high = rows.slice().sort(function (a, b) { return b.v - a.v; }).slice(0, 10);
+    var low = rows.slice().sort(function (a, b) { return a.v - b.v; }).slice(0, 10);
+    function col(title, list) {
+      var h = '<div class="pref-rank-col"><h3 class="pref-rank-title">' + esc(title) + "</h3><ol class=\"pref-rank-list\">";
+      list.forEach(function (r) {
+        h += '<li><span class="pr-name">' + esc(r.name) + "</span>" +
+          '<span class="pr-val">' + pct(r.v) + esc(suffix) + "</span>" +
+          '<span class="pr-n">n=' + num(r.n) + "</span></li>";
+      });
+      return h + "</ol></div>";
+    }
+    return '<div class="pref-rank-wrap">' +
+      col(metricLabel + "が高い10県", high) +
+      col(metricLabel + "が低い10県", low) +
+      "</div>";
+  }
+
   // クロス集計ヒートマップ（色付き表。n<30は明記、n0/nullは「—」）。cornerで左上見出し（行＼列）を指定
   function matrixHeat(m, corner) {
-    var flat = [];
-    m.surplus_rate.forEach(function (row) { row.forEach(function (v) { if (v != null) flat.push(v); }); });
+    var mi = mInfo(), vals = mVals(m), ns = mN(m), flat = [];
+    vals.forEach(function (row) { row.forEach(function (v) { if (v != null) flat.push(v); }); });
     var mm = minMax(flat);
     var h = '<div class="heat-matrixwrap"><table class="heat-matrix"><thead><tr><th scope="col">' + esc(corner || "規模＼事業") + "</th>";
     m.col_labels.forEach(function (c) { h += '<th scope="col">' + esc(c) + "</th>"; });
@@ -1487,13 +2024,13 @@ const STATS = {
     m.row_labels.forEach(function (rl, i) {
       h += '<tr><th scope="row">' + esc(rl) + "</th>";
       m.col_labels.forEach(function (cl, j) {
-        var v = m.surplus_rate[i][j], nn = m.n[i][j];
-        if (v == null || nn === 0) {
+        var v = vals[i][j], nn = ns[i][j];
+        if (v == null || nn === 0 || nn == null) {
           h += '<td class="heat-na">—</td>';
         } else {
           var c = heatColor(v, mm.min, mm.max);
           h += '<td class="heat-cell' + (nn < 30 ? " heat-small" : "") + '" style="background:' + c.bg + ";color:" + c.fg + '">' +
-            '<span class="heat-val">' + pct(v) + '%</span><span class="heat-n">n=' + num(nn) + "</span></td>";
+            '<span class="heat-val">' + pct(v) + mi.suffix + '</span><span class="heat-n">n=' + num(nn) + "</span></td>";
         }
       });
       h += "</tr>";
@@ -1558,17 +2095,28 @@ const STATS = {
 <text class="jpmap-inset-label" x="9.0" y="1175.7">沖縄</text>
 </g>
 </svg>`;
+  // ---- 表示指標の切替（黒字割合⇄経常増減差額率の中央値。地図・全マトリクス・一覧・凡例が連動）----
+  // METRIC="surplus"（黒字割合）/"rate"（経常増減差額率の中央値）。負値も同じ深緑の連続階調（評価的な赤等は使わない）。
+  var METRIC = "surplus";
+  function mInfo() {
+    return METRIC === "rate"
+      ? { short: "経常増減差額率", label: "経常増減差額率（中央値）", suffix: "%" }
+      : { short: "黒字割合", label: "黒字割合", suffix: "%" };
+  }
+  function mVals(o) { return METRIC === "rate" ? o.rate_median : o.surplus_rate; }        // 値配列/行列
+  function mN(o) { return METRIC === "rate" ? o.rate_median_n : (o.n !== undefined ? o.n : o.base_n); }  // 母数
+
   function japanMap(p) {
-    var mm = minMax(p.surplus_rate);
+    var mi = mInfo(), mm = minMax(mVals(p));
     return '<div class="japan-map-wrap">' + JP_MAP_SVG +
-      '<p class="japan-tip" id="japan-tip" aria-live="polite">地図の県をタップ／ポイントすると、県名・黒字割合・法人数を表示します。</p></div>' +
+      '<p class="japan-tip" id="japan-tip" aria-live="polite">地図の県をタップ／ポイントすると、県名・' + esc(mi.short) + '・法人数を表示します。</p></div>' +
       heatLegend(mm.min, mm.max);
   }
-  // 地図の各県パスを黒字割合で着色し、ツールチップ／キーボード操作を付与（root挿入後に呼ぶ）
+  // 地図の各県パスを現在の指標で着色し、ツールチップ／キーボード操作を付与（root挿入後に呼ぶ）
   function colorizeJapanMap(p) {
-    var mm = minMax(p.surplus_rate);
+    var mi = mInfo(), vals = mVals(p), ns = mN(p), mm = minMax(vals);
     var byName = {};
-    p.labels.forEach(function (lb, i) { byName[lb] = { v: p.surplus_rate[i], n: p.base_n[i] }; });
+    p.labels.forEach(function (lb, i) { byName[lb] = { v: vals[i], n: ns[i] }; });
     var tip = document.getElementById("japan-tip");
     var defaultTip = tip ? tip.textContent : "";
     document.querySelectorAll(".jpmap .jp-pref").forEach(function (el) {
@@ -1577,7 +2125,7 @@ const STATS = {
       if (d && d.v != null) {
         var c = heatColor(d.v, mm.min, mm.max);
         el.style.fill = c.bg;
-        var info = name + "：黒字割合 " + pct(d.v) + "%（n=" + num(d.n) + "）";
+        var info = name + "：" + mi.short + " " + pct(d.v) + mi.suffix + "（n=" + num(d.n) + "）";
         el.setAttribute("tabindex", "0");
         el.setAttribute("role", "listitem");
         el.setAttribute("aria-label", info);
@@ -1595,41 +2143,53 @@ const STATS = {
     });
   }
 
-  var html = "";
-  // NaoK指示によりヒートマップ2種のみに簡素化（他の棒グラフ・折れ線・表は表示削除。stats.jsonのデータは保持）。
-  // ① 実形状の日本地図ヒートマップ（県別黒字割合。タップ／ホバーで県名・割合・法人数）＋数値セル一覧（濃淡だけに依存しない）
-  var ps = S.prefecture_surplus;
-  if (ps) {
-    // 地図＋凡例＋タッチ表示のみ（NaoK指示で47県の数値セル一覧は削除。県名・割合・nは地図タップ/ホバーで表示）
-    html += section("stats-pref-surplus", "都道府県別の黒字割合（日本地図ヒートマップ）", ps, japanMap(ps));
+  // ヒートマップ2種＋クロス集計4種を現在の指標（METRIC）で組み立てる。切替時に再実行して連動させる。
+  var MATRIX_DEFS = [
+    ["stats-matrix", "収益規模×事業分類", "size_biz_surplus_matrix", "規模＼事業"],
+    ["stats-matrix-size-era", "収益規模×設立年代", "size_era_surplus_matrix", "規模＼設立年代"],
+    ["stats-matrix-era-biz", "設立年代×事業分類", "era_biz_surplus_matrix", "設立年代＼事業"],
+    ["stats-matrix-size-hq", "収益規模×本部の有無", "size_hq_surplus_matrix", "規模＼本部"],
+    ["stats-matrix-era-hq", "設立年代×本部の有無", "era_hq_surplus_matrix", "設立年代＼本部"]
+  ];
+  function metricToggleHtml() {
+    return '<div class="metric-toggle" role="group" aria-label="表示指標の切替">' +
+      '<span class="metric-toggle-label">表示指標：</span>' +
+      '<button type="button" class="metric-btn" data-metric="surplus" aria-pressed="' + (METRIC === "surplus") + '">黒字割合</button>' +
+      '<button type="button" class="metric-btn" data-metric="rate" aria-pressed="' + (METRIC === "rate") + '">経常増減差額率（中央値）</button>' +
+      "</div>";
   }
-  // ② 収益規模5階級×事業分類8区分の黒字割合ヒートマップ（40セル・セル内に数値表示・n表示規則は従来どおり）
-  var mtx = S.size_biz_surplus_matrix;
-  if (mtx) {
-    html += section("stats-matrix", "収益規模×事業分類の黒字割合（ヒートマップ）", mtx, matrixHeat(mtx, "規模＼事業"));
+  function buildHeatSections() {
+    var mi = mInfo(), h = "";
+    var ps = S.prefecture_surplus;
+    if (ps) {
+      // 地図＋凡例＋タッチ表示＋高い/低い10県の一覧（事実の列挙・指標に連動）
+      h += section("stats-pref-surplus", "都道府県別の" + mi.short + "（日本地図ヒートマップ）", ps, japanMap(ps) + prefRanking(ps));
+    }
+    MATRIX_DEFS.forEach(function (d) {
+      var m = S[d[2]];
+      if (m) h += section(d[0], d[1] + "の" + mi.short + "（ヒートマップ）", m, matrixHeat(m, d[3]));
+    });
+    return h;
   }
-  // ③〜⑥ クロス集計ヒートマップ4種（既存マトリクスの下に縦並び。同じ流儀・n<30/n0規則同一・横スクロール対応）
-  var mtxSizeEra = S.size_era_surplus_matrix;
-  if (mtxSizeEra) {
-    html += section("stats-matrix-size-era", "収益規模×設立年代の黒字割合（ヒートマップ）", mtxSizeEra, matrixHeat(mtxSizeEra, "規模＼設立年代"));
+  function renderHeat() {
+    root.innerHTML = metricToggleHtml() + buildHeatSections();
+    // 日本地図の着色・ツールチップ付与（現在の指標で）
+    if (S.prefecture_surplus) { try { colorizeJapanMap(S.prefecture_surplus); } catch (e) {} }
+    // 指標トグルのバインド
+    root.querySelectorAll(".metric-btn").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var m = b.getAttribute("data-metric");
+        if (m === METRIC) return;
+        METRIC = m;
+        renderHeat();
+      });
+    });
   }
-  var mtxEraBiz = S.era_biz_surplus_matrix;
-  if (mtxEraBiz) {
-    html += section("stats-matrix-era-biz", "設立年代×事業分類の黒字割合（ヒートマップ）", mtxEraBiz, matrixHeat(mtxEraBiz, "設立年代＼事業"));
+  if (S.prefecture_surplus || S.size_biz_surplus_matrix) {
+    renderHeat();
+  } else {
+    root.innerHTML = '<p class="ind-loading">統計データを読み込めませんでした。</p>';
   }
-  var mtxSizeHq = S.size_hq_surplus_matrix;
-  if (mtxSizeHq) {
-    html += section("stats-matrix-size-hq", "収益規模×本部の有無の黒字割合（ヒートマップ）", mtxSizeHq, matrixHeat(mtxSizeHq, "規模＼本部"));
-  }
-  var mtxEraHq = S.era_hq_surplus_matrix;
-  if (mtxEraHq) {
-    html += section("stats-matrix-era-hq", "設立年代×本部の有無の黒字割合（ヒートマップ）", mtxEraHq, matrixHeat(mtxEraHq, "設立年代＼本部"));
-  }
-
-  root.innerHTML = html || '<p class="ind-loading">統計データを読み込めませんでした。</p>';
-
-  // 日本地図の着色・ツールチップ付与（データがあるときのみ）
-  if (S.prefecture_surplus) { try { colorizeJapanMap(S.prefecture_surplus); } catch (e) {} }
 
   // ---- グラフ（canvas）。失敗しても表は上で表示済み。各描画をtry/catchで独立させる。----
   // 論理高さ（CSSピクセル）。固定値。実ピクセル（cv.width/height）とは別に管理し、
