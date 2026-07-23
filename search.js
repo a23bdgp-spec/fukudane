@@ -14,8 +14,7 @@
     { key: "fee", label: "報酬" },
     { key: "kitei", label: "モデル規程" },
     { key: "foreign", label: "外国人材" },
-    { key: "grant", label: "助成団体" },
-    { key: "term", label: "用語" }
+    { key: "grant", label: "助成団体" }
   ];
   var TYPE_LABEL = {};
   TYPES.forEach(function (t) { TYPE_LABEL[t.key] = t.label; });
@@ -27,7 +26,7 @@
 
   var INDEX = [];
   var activeType = "all";
-  var PAGE_SIZE = 30;      // 初期表示件数・「さらに表示」1回あたりの追加件数
+  var PAGE_SIZE = 20;      // 初期表示件数・「さらに表示」1回あたりの追加件数
   var shown = PAGE_SIZE;   // 現在表示している件数（種別タブ切替・新しい入力でリセット）
   var loaded = false;      // 索引の読み込み完了フラグ
   var ver = (typeof BUILD_VERSION !== "undefined") ? BUILD_VERSION : "";
@@ -185,7 +184,7 @@
     renderTabs(m.counts);
     if (m.empty) {
       countEl.textContent = "";
-      resultsEl.innerHTML = '<p class="sr-hint">キーワードを入力すると、サービス・制度・仕事・団体・ガイドライン・経営資料・用語をまとめて検索します。</p>';
+      resultsEl.innerHTML = '<p class="sr-hint">キーワードを入力すると、サービス・制度・仕事・団体・ガイドライン・経営資料などをまとめて検索します。通称や支援内容からも探せます。</p>';
       return;
     }
     var list = m.list;
