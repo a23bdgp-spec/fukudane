@@ -305,6 +305,7 @@ section p:last-child { margin-bottom: 0; }
 .meta-details > summary::after { content: "▾"; font-size: 11px; color: var(--ink-soft); }
 .meta-details[open] > summary { border-bottom: 1px solid var(--line); }
 .meta-details[open] > summary::after { content: "▴"; }
+.meta-details-bottom { margin: 28px 0 0; }
 .map-meta { padding: 14px 16px; font-size: 14px; }
 .map-meta p { margin: 0 0 8px; }
 .map-meta p:last-child { margin-bottom: 0; }

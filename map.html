@@ -55,12 +55,6 @@
     <!-- 各法律上の対応表（横断表）。correspondence.json 到着時のみJSで表示。未到着は非表示 -->
     <section id="map-correspondence" class="correspondence" hidden></section>
 
-    <!-- データについて（確定日・出典・注記）。折りたたみ。中身はJSで描画 -->
-    <details id="map-meta-details" class="meta-details" hidden>
-      <summary>このデータについて（確定日・出典・注記）</summary>
-      <div id="map-info"></div>
-    </details>
-
     <!-- 検索窓（対象＝正式名称・通称・根拠法・対象者・概要・対応。全て埋め込みJSON。外部通信なし） -->
     <div class="search-bar">
       <label for="q" class="visually-hidden">サービスを検索</label>
@@ -83,6 +77,12 @@
 
     <div id="map-results" class="card-grid"></div>
     <div id="map-empty" class="notice" hidden></div>
+
+    <!-- このデータについて（確定日・出典・注記）。出典はページ最下部に配置。折りたたみ。中身はJSで描画 -->
+    <details id="map-meta-details" class="meta-details meta-details-bottom" hidden>
+      <summary>このデータについて（確定日・出典・注記）</summary>
+      <div id="map-info"></div>
+    </details>
   </div>
 </section>
 
@@ -135,7 +135,8 @@ const SERVICES_MAP = {
     "類似サービスとの対応",
     "出典URL",
     "通称",
-    "形態"
+    "形態",
+    "WAMNET_URL"
   ],
   "domains": [
     {
@@ -154,7 +155,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "障害者は居宅介護（ホームヘルプ／障害者総合支援法）に相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
               "通称": "ホームヘルプ",
-              "形態": "訪問"
+              "形態": "訪問",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-01.html"
             },
             {
               "正式名称": "訪問入浴介護",
@@ -172,7 +174,8 @@ const SERVICES_MAP = {
               "概要": "看護師などが自宅を訪問し、療養上の世話または必要な診療の補助を行う。",
               "類似サービスとの対応": "障害児者にも同名の訪問看護があり、医療保険の訪問看護とも共通する分野横断的サービス。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "形態": "訪問"
+              "形態": "訪問",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-03.html"
             },
             {
               "正式名称": "訪問リハビリテーション",
@@ -200,7 +203,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "障害者は生活介護（障害者総合支援法）、障害児は放課後等デイサービス・児童発達支援（児童福祉法）に相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
               "通称": "デイサービス",
-              "形態": "通所"
+              "形態": "通所",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-09.html"
             },
             {
               "正式名称": "通所リハビリテーション（デイケア）",
@@ -220,7 +224,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "障害者・障害児は短期入所（ショートステイ／障害者総合支援法）に相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
               "通称": "ショートステイ",
-              "形態": "入所"
+              "形態": "入所",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-12.html"
             },
             {
               "正式名称": "短期入所療養介護（医療型ショートステイ）",
@@ -229,7 +234,8 @@ const SERVICES_MAP = {
               "概要": "介護老人保健施設・介護医療院などに短期間入所させ、看護・医学的管理下の介護・機能訓練その他必要な医療と日常生活上の世話を行う。",
               "類似サービスとの対応": "障害児の医療型短期入所に一部近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "形態": "入所"
+              "形態": "入所",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-13.html"
             },
             {
               "正式名称": "特定施設入居者生活介護",
@@ -299,7 +305,8 @@ const SERVICES_MAP = {
               "概要": "老人デイサービスセンターなどに通わせ、入浴・排せつ・食事などの介護と機能訓練を行う。",
               "類似サービスとの対応": "該当なし（認知症に特化した高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "形態": "通所"
+              "形態": "通所",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-10.html"
             },
             {
               "正式名称": "小規模多機能型居宅介護",
@@ -371,7 +378,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "障害者は障害者支援施設（施設入所支援）に機能的に相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
               "通称": "特別養護老人ホーム（特養）",
-              "形態": "入所"
+              "形態": "入所",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-17.html"
             },
             {
               "正式名称": "介護老人保健施設（老健）",
@@ -381,7 +389,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "該当なし（医療・介護の中間施設で高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
               "通称": "老健",
-              "形態": "入所"
+              "形態": "入所",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-19.html"
             },
             {
               "正式名称": "介護医療院",
@@ -482,7 +491,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "高齢者は訪問介護（介護保険法）に相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "通称": "ホームヘルプ",
-              "形態": "訪問"
+              "形態": "訪問",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-01.html"
             },
             {
               "正式名称": "重度訪問介護",
@@ -527,7 +537,8 @@ const SERVICES_MAP = {
               "概要": "主に昼間、施設で入浴・排せつ・食事の介護、創作的活動または生産活動の機会の提供その他の便宜を提供する。",
               "類似サービスとの対応": "高齢者は通所介護（デイサービス／介護保険法）、障害児は放課後等デイサービスに相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "通所"
+              "形態": "通所",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-06.html"
             },
             {
               "正式名称": "短期入所（ショートステイ）",
@@ -537,7 +548,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "高齢者は短期入所生活介護（ショートステイ／介護保険法）に相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "通称": "ショートステイ",
-              "形態": "入所"
+              "形態": "入所",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-13.html"
             },
             {
               "正式名称": "重度障害者等包括支援",
@@ -555,7 +567,8 @@ const SERVICES_MAP = {
               "概要": "主に夜間、施設で入浴・排せつ・食事の介護その他の便宜を提供する（昼間の生活介護等と組み合わせて利用）。",
               "類似サービスとの対応": "夜間の介護を受ける点で介護老人福祉施設（特別養護老人ホーム）に機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "入所"
+              "形態": "入所",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-16.html"
             }
           ]
         },
@@ -589,7 +602,8 @@ const SERVICES_MAP = {
               "概要": "一定期間、生産活動その他の活動の機会の提供を通じて、就労に必要な知識・能力の向上のための訓練その他の便宜を提供する。",
               "類似サービスとの対応": "高齢分野に対応はない（就労支援固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "就労"
+              "形態": "就労",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-20.html"
             },
             {
               "正式名称": "就労継続支援A型（雇用型）",
@@ -598,7 +612,8 @@ const SERVICES_MAP = {
               "概要": "雇用契約を結んだうえで就労の機会を提供し、あわせて生産活動を通じて知識・能力の向上のための訓練を行う。",
               "類似サービスとの対応": "高齢分野に対応はない（障害者就労固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "就労"
+              "形態": "就労",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-21.html"
             },
             {
               "正式名称": "就労継続支援B型（非雇用型）",
@@ -607,7 +622,8 @@ const SERVICES_MAP = {
               "概要": "雇用契約を結ばずに就労や生産活動の機会を提供し、知識・能力の向上のための訓練を行う（賃金でなく工賃を支払う）。",
               "類似サービスとの対応": "高齢分野に対応はない（障害者就労固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "就労"
+              "形態": "就労",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-22.html"
             },
             {
               "正式名称": "就労定着支援",
@@ -635,7 +651,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "高齢者は認知症対応型共同生活介護（グループホーム／介護保険法）に機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "通称": "グループホーム",
-              "形態": "居住"
+              "形態": "居住",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-23.html"
             }
           ]
         },
@@ -1127,7 +1144,7 @@ const MAP_INTRO = {
   "intro": [
     "この福祉サービス一覧は、社会福祉法を前提としています。社会福祉法は、社会福祉を目的とする事業の全分野に共通する基本的な事項を定める法律で、福祉サービス全体に共通する土台となっています。",
     "福祉行政では、伝統的に生活保護法・児童福祉法・母子及び父子並びに寡婦福祉法・老人福祉法・身体障害者福祉法・知的障害者福祉法の6つが「福祉六法」と呼ばれ、その柱とされてきました。都道府県や市の福祉事務所（社会福祉法第14条の「福祉に関する事務所」）が、これらの法律に定める援護・育成・更生の措置に関する事務を担ってきました。現在ではこれに介護保険法・障害者総合支援法・子ども・子育て支援法などが加わり、福祉サービスの体系はさらに広がっています。",
-    "一方で、実際の一つひとつのサービスは、分野ごとの個別の法律が定めています。高齢分野なら介護保険法や老人福祉法、障害分野なら障害者総合支援法、児童・子育て分野なら児童福祉法などです。そのため、似たような支援でも、根拠となる法律によって名称や枠組みが異なります。たとえば日中通う形の支援は、高齢者では介護保険法の通所介護、障害者では障害者総合支援法の生活介護、障害児では児童福祉法の放課後等デイサービスと呼び名が変わります。",
+    "一方で、実際の一つひとつのサービスは、分野ごとの個別の法律が定めています。高齢分野なら介護保険法や老人福祉法、障害分野なら障害者総合支援法、児童・子育て分野なら児童福祉法などです。そのため、似たような支援でも、根拠となる法律によって名称や枠組みが異なります。",
     "この一覧は、そうした福祉サービスを根拠法ごとに整理し、法律によって呼び方や仕組みが違うことを見渡せるようにまとめたものです。"
   ],
   "sources": [
