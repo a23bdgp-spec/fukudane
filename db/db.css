@@ -76,6 +76,9 @@ header.site p{margin:4px 0 0;font-size:14px;color:var(--sub)}
 .tabnav a{font-size:14px;font-weight:600;color:var(--sub);text-decoration:none;padding:8px 16px;
   border:1px solid var(--line);border-bottom:none;border-radius:7px 7px 0 0;background:var(--bg2);margin-bottom:-2px}
 .tabnav a.active{color:var(--primary-d);background:var(--bg);border-color:var(--line);border-bottom:2px solid var(--bg)}
+/* 財務指標の解説への明示リンク（タブ直下・スマホでも目立つ） */
+.indlink{margin:12px 0 4px;font-size:14px}
+.indlink a{color:var(--primary-d);font-weight:700;display:inline-block;padding:4px 0}
 .tabnav a:not(.active):hover{background:var(--primary-l);color:var(--primary-d)}
 
 /* 絞り込み（チェックボックス群＋都道府県プルダウン） */
