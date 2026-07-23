@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-07-23 14:28 JST",
+    "generated": "2026-07-23 14:39 JST",
     "years": [
       2020,
       2021,
@@ -36,7 +36,8 @@
       "音別憩いの郷",
       "釧路丹頂協会",
       "釧路愛育協会"
-    ]
+    ],
+    "version": "e4dd3ff8e0"
   },
   "gate": {
     "gate1_no_forbidden_columns": true,

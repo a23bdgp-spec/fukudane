@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>収益規模ランキング｜社会福祉法人データベース｜フクダネ</title>
+<title>ランキングから検索｜社会福祉法人データベース｜フクダネ</title>
 <link rel="stylesheet" href="db.css">
 </head>
 <body>
@@ -24,27 +24,50 @@
 </nav>
 
 <header class="site">
-  <h1>収益規模ランキング</h1>
-  <p>サービス活動収益（事業の規模）の大きい順です。収益の大小は客観的な事実であり、経営の良し悪しを示すものではありません。</p>
+  <h1>ランキングから検索</h1>
+  <p>条件で絞り込んだ法人を、サービス活動収益（事業の規模）の大きい順に並べます。金額の単位は円です。</p>
 </header>
 
 <div class="wrap">
-  <p style="margin:0 0 12px"><a href="db.html">← 社会福祉法人データベースに戻る</a></p>
+  <nav class="tabnav">
+    <a href="db.html">条件から検索</a>
+    <a class="active" aria-current="page">ランキングから検索</a>
+    <a href="indicators.html">財務指標の解説</a>
+  </nav>
 
-  <div class="rankbody" style="background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px">
-    <label>都道府県で絞り込み
-      <select id="rank-pref"><option value="">全国</option></select>
-    </label>
-    <div id="rank-list"><div class="loading">読み込み中…</div></div>
+  <!-- 検索窓 -->
+  <div class="search">
+    <div class="full">
+      <label for="q-name">法人名で検索（部分一致）</label>
+      <input type="text" id="q-name" placeholder="例：福祉会">
+    </div>
+    <div class="full">
+      <label for="q-no">法人番号で検索（前方一致・13桁）</label>
+      <input type="text" id="q-no" inputmode="numeric" placeholder="例：1010001">
+    </div>
+    <div class="sortrow">
+      <button type="button" class="clearbtn" id="q-clear">条件をクリア</button>
+    </div>
   </div>
+
+  <!-- 絞り込み（db.htmlと同じ） -->
+  <div class="filters" id="filters"></div>
+  <p class="filternote">サービス活動収益（事業の規模）の大きい順です。収益の大小や経常増減差額のプラス・マイナスは客観的な事実であり、経営の良し悪しを示すものではありません。</p>
+
+  <div class="countbar">
+    <span>該当：<strong id="cnt">—</strong> 法人</span>
+    <span id="range"></span>
+  </div>
+
+  <div id="rank-list"><div class="loading">読み込み中…</div></div>
+  <div class="pager" id="pager"></div>
 </div>
 
 <footer class="src">
   <p id="src-text">出典：独立行政法人福祉医療機構「財務諸表等電子開示システム」および厚生労働省への行政文書開示請求により取得したデータを基に、フクダネが独自に再構成。政府標準利用規約（PDL1.0）に基づく利用。</p>
-  <p>本ランキングはサービス活動収益（事業の規模）の大きい順に並べた事実の集計です。収益の大小は経営の良し悪しを示すものではありません。金額の単位は円です。</p>
+  <p>順位は絞り込んだ集合の中での並び順です。各行に全国順位（全法人中のサービス活動収益の順位）も事実として併記しています。金額の単位は円です。</p>
 </footer>
 
-<!-- 共通フッターナビ（サイト他ページと統一） -->
 <footer class="sitefoot">
   <div class="sitefoot-in">
     <nav class="sitefoot-links" aria-label="フッターナビゲーション">
@@ -60,44 +83,79 @@
   </div>
 </footer>
 
+<script src="filters.js?v=e4dd3ff8e0"></script>
 <script>
-let RANKING = null;
-let showAll = false;
+const BUILD_VERSION="e4dd3ff8e0";   // ビルド時に置換（キャッシュバスティング）
+const PAGE_SIZE = 50;
+let INDEX = [], filtered = [], page = 0;
 function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+function oku(v){ return (v/1e8).toLocaleString('ja-JP',{maximumFractionDigits:2}); }
 
 async function init(){
   try{
-    RANKING = await fetch('data/ranking.json').then(r=>r.json());
+    INDEX = await fetch('data/index.json?v='+BUILD_VERSION).then(r=>r.json());
   }catch(e){
-    document.getElementById('rank-list').innerHTML='<div class="loading">ランキングを読み込めませんでした。</div>';
-    return;
+    document.getElementById('rank-list').innerHTML='<div class="loading">データを読み込めませんでした。</div>'; return;
   }
-  const sel = document.getElementById('rank-pref');
-  Object.keys(RANKING.pref).sort((a,b)=>a.localeCompare(b,'ja')).forEach(p=>{
-    const o=document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o);
+  INDEX.forEach(r=>{ r._n = normName(r.name); });
+  buildFilters('filters', INDEX, apply);
+  ['q-name','q-no'].forEach(id=>document.getElementById(id).addEventListener('input', apply));
+  document.getElementById('q-clear').addEventListener('click', ()=>{
+    document.getElementById('q-name').value=''; document.getElementById('q-no').value='';
+    clearFilters('filters'); apply();
   });
-  sel.addEventListener('change', ()=>{ showAll=false; render(); });
+  apply();
+}
+
+function apply(){
+  const qn = normName(document.getElementById('q-name').value.trim());
+  const qno = document.getElementById('q-no').value.trim().replace(/\D/g,'');
+  const pred = makePredicate('filters');
+  filtered = INDEX.filter(r=>{
+    if(qn && !r._n.includes(qn)) return false;
+    if(qno && !r.no.startsWith(qno)) return false;
+    if(r.sv===null||r.sv===undefined) return false;   // 収益額のない法人はランキング対象外
+    return pred(r);
+  });
+  filtered.sort((a,b)=> b.sv - a.sv);   // サービス活動収益の大きい順（集合内順位）
+  page = 0;
   render();
 }
 
 function render(){
-  const pref = document.getElementById('rank-pref').value;
   const list = document.getElementById('rank-list');
-  const rows = pref ? RANKING.pref[pref] : RANKING.nat;
-  const shown = showAll ? rows : rows.slice(0,10);
-  const body = shown.map(r=>`<tr>
-      <td>${r.rank}位</td>
+  document.getElementById('cnt').textContent = filtered.length.toLocaleString('ja-JP');
+  const total = filtered.length;
+  const start = page*PAGE_SIZE;
+  const slice = filtered.slice(start, start+PAGE_SIZE);
+  document.getElementById('range').textContent =
+    total ? `${(start+1).toLocaleString('ja-JP')}〜${(start+slice.length).toLocaleString('ja-JP')} 位を表示` : '';
+  if(!total){ list.innerHTML='<div class="loading">該当する法人はありません。</div>'; document.getElementById('pager').innerHTML=''; return; }
+  const body = slice.map((r,i)=>`<tr>
+      <td>${(start+i+1).toLocaleString('ja-JP')}位</td>
       <td class="nm"><a href="db.html?no=${encodeURIComponent(r.no)}">${esc(r.name)}</a></td>
-      ${pref?'':`<td>${esc(r.pref)}</td>`}
-      <td>${r.rev.toLocaleString('ja-JP')}円</td>
+      <td>${esc(r.pref)}</td>
+      <td>${esc(r.biz||'')}</td>
+      <td>${oku(r.sv)}億円</td>
+      <td>${r.rn?r.rn.toLocaleString('ja-JP')+'位':'—'}</td>
     </tr>`).join('');
-  list.innerHTML = `<p class="note">${RANKING.year}年度・${pref?esc(pref)+'内トップ'+rows.length:'全国トップ'+rows.length}（法人名をクリックすると詳細ページが開きます）</p>
-    <table class="ranktbl"><thead><tr>
-      <th>順位</th><th class="nm">法人名</th>${pref?'':'<th>都道府県</th>'}<th>サービス活動収益</th>
-    </tr></thead><tbody>${body}</tbody></table>`
-    + (rows.length>10 ? `<button class="rankmore" id="moreBtn">${showAll?'上位10法人だけ表示':'上位'+rows.length+'法人をすべて表示'}</button>` : '');
-  const more = document.getElementById('moreBtn');
-  if(more) more.addEventListener('click', ()=>{ showAll=!showAll; render(); });
+  list.innerHTML = `<div class="tblwrap"><table class="ranktbl"><thead><tr>
+      <th>順位</th><th class="nm">法人名</th><th>都道府県</th><th>主な事業</th><th>サービス活動収益</th><th>全国順位</th>
+    </tr></thead><tbody>${body}</tbody></table></div>`;
+  renderPager(total);
+}
+
+function renderPager(total){
+  const pages = Math.ceil(total/PAGE_SIZE);
+  const p = document.getElementById('pager');
+  if(pages<=1){ p.innerHTML=''; return; }
+  p.innerHTML='';
+  const prev=document.createElement('button'); prev.textContent='← 前へ'; prev.disabled=(page===0);
+  prev.onclick=()=>{ page--; render(); window.scrollTo(0,0); };
+  const next=document.createElement('button'); next.textContent='次へ →'; next.disabled=(page>=pages-1);
+  next.onclick=()=>{ page++; render(); window.scrollTo(0,0); };
+  const info=document.createElement('span'); info.textContent=`${page+1} / ${pages} ページ`;
+  p.append(prev, info, next);
 }
 
 init();

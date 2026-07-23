@@ -58,9 +58,20 @@ header.site p{margin:4px 0 0;font-size:13px;color:#cfe4de}
 .search .clearbtn{border:1px solid var(--line);background:var(--bg2);color:var(--primary-d);
   border-radius:5px;padding:8px 12px;cursor:pointer;font-size:13px;white-space:nowrap}
 
-/* 絞り込み（チェックボックス群） */
+/* 2入口の切替タブ */
+.tabnav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;border-bottom:2px solid var(--line)}
+.tabnav a{font-size:14px;font-weight:600;color:var(--sub);text-decoration:none;padding:8px 16px;
+  border:1px solid var(--line);border-bottom:none;border-radius:7px 7px 0 0;background:var(--bg2);margin-bottom:-2px}
+.tabnav a.active{color:var(--primary-d);background:var(--bg);border-color:var(--line);border-bottom:2px solid var(--bg)}
+.tabnav a:not(.active):hover{background:var(--primary-l);color:var(--primary-d)}
+
+/* 絞り込み（チェックボックス群＋都道府県プルダウン） */
+.filternote{font-size:12px;color:var(--sub);margin:-8px 2px 16px}
+.fpref{display:flex;flex-direction:column;gap:4px}
+.fpref .flabel{font-size:12px;color:var(--sub);font-weight:600}
+.fpref .pref-select{padding:7px 9px;border:1px solid var(--line);border-radius:5px;font-size:14px;background:#fff;min-width:130px}
 .filters{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:16px;
-  display:flex;flex-wrap:wrap;gap:10px 16px}
+  display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-start}
 .fgroup{border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:0;min-width:150px}
 .fgroup legend,.fgroup > summary{font-size:12px;color:var(--sub);font-weight:600;padding:0 4px}
 .fgroup > summary{cursor:pointer;list-style:none}

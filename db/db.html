@@ -29,6 +29,13 @@
 </header>
 
 <div class="wrap">
+  <!-- 2つの検索入口の切替 -->
+  <nav class="tabnav">
+    <a class="active" aria-current="page">条件から検索</a>
+    <a href="ranking.html">ランキングから検索</a>
+    <a href="indicators.html">財務指標の解説</a>
+  </nav>
+
   <!-- 検索パネル（検索窓・並び替え） -->
   <div class="search">
     <div class="full">
@@ -62,14 +69,9 @@
     </div>
   </div>
 
-  <!-- 絞り込み（チェックボックス・複数選択可＝同じ枠内はOR、枠どうしはAND） -->
+  <!-- 絞り込み（都道府県はプルダウン、他はチェックボックス。同じ枠内はOR、枠どうしはAND） -->
   <div class="filters" id="filters"></div>
-
-  <!-- 関連ページへのリンク -->
-  <div class="pagelinks">
-    <a href="ranking.html">収益規模ランキング ↗</a>
-    <a href="indicators.html">財務指標の解説 ↗</a>
-  </div>
+  <p class="filternote">経常増減差額のプラス・マイナスは単年度の収支の事実であり、経営の良し悪しを示すものではありません。</p>
 
   <!-- 件数バー -->
   <div class="countbar">
@@ -108,7 +110,9 @@
   </div>
 </footer>
 
+<script src="filters.js?v=e4dd3ff8e0"></script>
 <script>
+const BUILD_VERSION="e4dd3ff8e0";   // ビルド時に置換（キャッシュバスティング）
 const PAGE_SIZE = 50;
 let INDEX = [];          // 軽量索引
 let filtered = [];       // 絞り込み結果
@@ -137,25 +141,22 @@ const FIN = [            // 表示順とラベル（評価語を含めない）
 function yen(v){ return (v===null||v===undefined) ? null : v.toLocaleString('ja-JP')+'円'; }
 function num(v,unit){ return (v===null||v===undefined) ? null : v.toLocaleString('ja-JP')+unit; }
 
-// 照合用の正規化：「社会福祉法人」と全角/半角スペースを除去。
-// 表示名は接頭辞を除いてあるため、「福祉楽団」でも「社会福祉法人福祉楽団」と入力してもヒットする。
-function normName(s){ return String(s).replace(/社会福祉法人/g,'').replace(/[\s　]/g,''); }
-
 async function init(){
+  const v = '?v=' + BUILD_VERSION;
   const [idx, med, defs] = await Promise.all([
-    fetch('data/index.json').then(r=>r.json()),
-    fetch('data/medians.json').then(r=>r.json()).catch(()=>({})),
-    fetch('data/indicator_defs.json').then(r=>r.json()).catch(()=>[]),
+    fetch('data/index.json'+v).then(r=>r.json()),
+    fetch('data/medians.json'+v).then(r=>r.json()).catch(()=>({})),
+    fetch('data/indicator_defs.json'+v).then(r=>r.json()).catch(()=>[]),
   ]);
   INDEX = idx; MEDIANS = med; DEFS = defs;
   DEFS.forEach(d => { DEFBYKEY[d.key] = d; });
   INDEX.forEach(r => { r._n = normName(r.name); });  // 正規化名を事前計算
-  renderFilters();
+  buildFilters('filters', INDEX, apply);
   ['q-name','q-no'].forEach(id=>document.getElementById(id).addEventListener('input', apply));
   ['q-sort','q-dir'].forEach(id=>document.getElementById(id).addEventListener('change', apply));
   document.getElementById('q-clear').addEventListener('click', ()=>{
     ['q-name','q-no'].forEach(id=>document.getElementById(id).value='');
-    document.querySelectorAll('#filters input[type=checkbox]:checked').forEach(cb=>{ cb.checked=false; });
+    clearFilters('filters');
     document.getElementById('q-sort').value='name'; document.getElementById('q-dir').value='asc';
     apply();
   });
@@ -169,74 +170,14 @@ function openFromUrl(){
   if(no) jumpToCorp(no);
 }
 
-// 設立年 → 年代区分
-function eraOf(y){
-  if(!y) return null;
-  if(y<=1950) return '〜1950';
-  if(y<=1975) return '1951-1975';
-  if(y<=2000) return '1976-2000';
-  return '2001〜';
-}
-
-// 絞り込み軸の定義（value, ラベル）。同じ枠内はOR、枠どうしはAND。
-const FILTER_AXES = [
-  {axis:'biz', label:'主な事業', opts:[['高齢','高齢'],['障害','障害'],['児童','児童'],['その他','その他']]},
-  {axis:'kubun', label:'法人区分', opts:[['一般法人','一般法人'],['社会福祉協議会','社会福祉協議会'],['共同募金会','共同募金会'],['社会福祉事業団','社会福祉事業団'],['その他','その他']]},
-  {axis:'size', label:'収益規模帯', opts:[['1億未満','1億円未満'],['1-3億','1〜3億円'],['3-5億','3〜5億円'],['5-10億','5〜10億円'],['10-30億','10〜30億円'],['30億以上','30億円以上']]},
-  {axis:'era', label:'設立年代', opts:[['〜1950','〜1950年'],['1951-1975','1951〜1975年'],['1976-2000','1976〜2000年'],['2001〜','2001年〜']]},
-  {axis:'hq', label:'法人本部', opts:[['1','本部あり'],['0','本部なし']]},
-];
-
-// レコードから軸の値を取り出す
-function axisVal(r, axis){
-  switch(axis){
-    case 'biz':   return r.biz;
-    case 'kubun': return r.kb;
-    case 'size':  return r.sz;
-    case 'era':   return eraOf(r.sy);
-    case 'year':  return r.latest===2024 ? '2024' : 'past';
-    case 'hq':    return (r.hq===null||r.hq===undefined) ? null : String(r.hq);
-    case 'pref':  return r.pref;
-    default:      return null;
-  }
-}
-
-// 絞り込みチェックボックス群を生成
-function renderFilters(){
-  const box = document.getElementById('filters');
-  let html = FILTER_AXES.map(g=>`
-    <fieldset class="fgroup">
-      <legend>${g.label}</legend>
-      <div class="checks">${g.opts.map(([v,l])=>
-        `<label><input type="checkbox" data-axis="${g.axis}" value="${esc(v)}">${esc(l)}</label>`).join('')}</div>
-    </fieldset>`).join('');
-  // 都道府県は数が多いので開閉式（コード順）
-  const prefs = {};
-  INDEX.forEach(r=>{ if(r.pref) prefs[r.pref]=r.pcode; });
-  const prefOpts = Object.keys(prefs).sort((a,b)=>prefs[a].localeCompare(prefs[b]))
-    .map(p=>`<label><input type="checkbox" data-axis="pref" value="${esc(p)}">${esc(p)}</label>`).join('');
-  html += `<details class="fgroup pref-group"><summary>都道府県で絞り込む ▾</summary>
-    <div class="checks">${prefOpts}</div></details>`;
-  box.innerHTML = html;
-  box.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change', apply));
-}
-
 function apply(){
   const qn = normName(document.getElementById('q-name').value.trim());
   const qno = document.getElementById('q-no').value.trim().replace(/\D/g,'');
-  // チェック中の条件を軸ごとに集約（同一軸内はOR、軸どうしはAND）
-  const sel = {};
-  document.querySelectorAll('#filters input[type=checkbox]:checked').forEach(cb=>{
-    (sel[cb.dataset.axis] = sel[cb.dataset.axis] || new Set()).add(cb.value);
-  });
-  const axes = Object.keys(sel);
+  const pred = makePredicate('filters');   // 共有フィルタ（filters.js）
   filtered = INDEX.filter(r=>{
     if(qn && !r._n.includes(qn)) return false;
     if(qno && !r.no.startsWith(qno)) return false;
-    for(const ax of axes){
-      if(!sel[ax].has(axisVal(r, ax))) return false;  // OR内・AND間
-    }
-    return true;
+    return pred(r);
   });
   sortFiltered();
   page = 0;
@@ -323,7 +264,7 @@ async function toggle(row, r){
 
 async function loadCorp(pcode, no){
   if(!prefCache[pcode]){
-    const res = await fetch(`data/pref_${pcode}.json`);
+    const res = await fetch(`data/pref_${pcode}.json?v=${BUILD_VERSION}`);
     prefCache[pcode] = await res.json();
   }
   return prefCache[pcode].corps.find(c=>c.no===no);
@@ -337,6 +278,8 @@ function detailHtml(c){
     ['設立年', c.setsuritsu ? c.setsuritsu+'年' : '—'],
     ['主たる事業', c.biz],
     ['事業所数', c.offices!=null ? c.offices+'か所' : '—'],
+    ['法人本部拠点', c.hq===1 ? 'あり' : (c.hq===0 ? 'なし' : '—')],
+    ['本部の職員数（常勤換算）', c.hq_staff!=null ? c.hq_staff.toLocaleString('ja-JP')+'人' : '—'],
   ].map(([k,v])=>`<span><b>${esc(k)}：</b>${esc(String(v))}</span>`).join('');
   // 収益規模順位（事実。優劣ではない旨を明記。上位%も併記）
   let rankHtml = '';
@@ -522,7 +465,7 @@ function jumpToCorp(no){
   // 検索条件をクリアして法人番号で1件に絞り、先頭の詳細を開く
   document.getElementById('q-name').value='';
   document.getElementById('q-no').value=no;
-  document.querySelectorAll('#filters input[type=checkbox]:checked').forEach(cb=>{ cb.checked=false; });
+  clearFilters('filters');
   apply();
   const first = document.querySelector('#list .row');
   if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); toggle(first, r); }

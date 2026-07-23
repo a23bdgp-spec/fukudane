@@ -29,7 +29,11 @@
 </header>
 
 <div class="wrap">
-  <p style="margin:0 0 12px"><a href="db.html">← 社会福祉法人データベースに戻る</a></p>
+  <nav class="tabnav">
+    <a href="db.html">条件から検索</a>
+    <a href="ranking.html">ランキングから検索</a>
+    <a class="active" aria-current="page">財務指標の解説</a>
+  </nav>
 
   <div class="search" style="grid-template-columns:1fr">
     <div class="full">
@@ -65,12 +69,13 @@
 </footer>
 
 <script>
+const BUILD_VERSION="e4dd3ff8e0";   // ビルド時に置換（キャッシュバスティング）
 let DEFS = [];
 function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
 
 async function init(){
   try{
-    DEFS = await fetch('data/indicator_defs.json').then(r=>r.json());
+    DEFS = await fetch('data/indicator_defs.json?v='+BUILD_VERSION).then(r=>r.json());
   }catch(e){
     document.getElementById('list').innerHTML='<div class="loading">指標データを読み込めませんでした。</div>';
     return;
