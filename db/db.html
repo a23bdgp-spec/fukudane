@@ -113,9 +113,13 @@ const FIN = [            // 表示順とラベル（評価語を含めない）
 function yen(v){ return (v===null||v===undefined) ? null : v.toLocaleString('ja-JP')+'円'; }
 function num(v,unit){ return (v===null||v===undefined) ? null : v.toLocaleString('ja-JP')+unit; }
 
+// 照合用に全角/半角スペースを除去して正規化（「福祉楽団」で「社会福祉法人　福祉楽団」に一致させる）
+function normName(s){ return String(s).replace(/[\s　]/g,''); }
+
 async function init(){
   const res = await fetch('data/index.json');
   INDEX = await res.json();
+  INDEX.forEach(r => { r._n = normName(r.name); });  // 正規化名を事前計算
   // 都道府県セレクトを構築（索引に出現する順で一意化）
   const prefs = {};
   INDEX.forEach(r => { prefs[r.pref] = r.pcode; });
@@ -129,12 +133,12 @@ async function init(){
 }
 
 function apply(){
-  const qn = document.getElementById('q-name').value.trim();
+  const qn = normName(document.getElementById('q-name').value.trim());
   const qno = document.getElementById('q-no').value.trim().replace(/\D/g,'');
   const qp = document.getElementById('q-pref').value;
   const qb = document.getElementById('q-biz').value;
   filtered = INDEX.filter(r=>{
-    if(qn && !r.name.includes(qn)) return false;
+    if(qn && !r._n.includes(qn)) return false;
     if(qno && !r.no.startsWith(qno)) return false;
     if(qp && r.pref!==qp) return false;
     if(qb && r.biz!==qb) return false;
