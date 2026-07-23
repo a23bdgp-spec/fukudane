@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-07-23 14:58 JST",
+    "generated": "2026-07-23 15:27 JST",
     "years": [
       2020,
       2021,
@@ -37,7 +37,7 @@
       "釧路丹頂協会",
       "釧路愛育協会"
     ],
-    "version": "ce8830ea09"
+    "version": "8850325844"
   },
   "gate": {
     "gate1_no_forbidden_columns": true,
