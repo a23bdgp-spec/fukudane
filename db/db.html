@@ -55,6 +55,18 @@
     </div>
   </div>
 
+  <!-- 収益規模ランキング（事実の集計） -->
+  <details class="rankbox" id="rankbox">
+    <summary>収益規模ランキング（サービス活動収益・最新年度）</summary>
+    <div class="rankbody">
+      <label>都道府県で絞り込み
+        <select id="rank-pref"><option value="">全国</option></select>
+      </label>
+      <div id="rank-list"></div>
+      <p class="note">サービス活動収益（事業の規模）の大きい順です。収益の大小は客観的な事実であり、経営の良し悪しを示すものではありません。</p>
+    </div>
+  </details>
+
   <!-- 件数バー -->
   <div class="countbar">
     <span>検索結果：<strong id="cnt">—</strong> 法人</span>
@@ -101,6 +113,8 @@ const prefCache = {};    // 都道府県別詳細のキャッシュ
 let MEDIANS = {};        // セグメント中央値 {ikey:{year:{nat,pref,biz,size}}}
 let DEFS = [];           // 指標定義（順序保持）
 let DEFBYKEY = {};       // 指標定義 key引き
+let RANKING = null;      // 収益規模ランキング
+let rankShowAll = false; // ランキングを全件表示中か
 let compare = [];        // 比較リスト [{no,pcode,name}]（最大5）
 const CMP_MAX = 5;
 const IND_SOURCE_NOTE = "財務指標は福祉医療機構「経営分析参考ツール」の指標体系を参考にフクダネが独自に算出した参考値です。";
@@ -123,14 +137,16 @@ function num(v,unit){ return (v===null||v===undefined) ? null : v.toLocaleString
 function normName(s){ return String(s).replace(/[\s　]/g,''); }
 
 async function init(){
-  const [idx, med, defs] = await Promise.all([
+  const [idx, med, defs, rank] = await Promise.all([
     fetch('data/index.json').then(r=>r.json()),
     fetch('data/medians.json').then(r=>r.json()).catch(()=>({})),
     fetch('data/indicator_defs.json').then(r=>r.json()).catch(()=>[]),
+    fetch('data/ranking.json').then(r=>r.json()).catch(()=>null),
   ]);
-  INDEX = idx; MEDIANS = med; DEFS = defs;
+  INDEX = idx; MEDIANS = med; DEFS = defs; RANKING = rank;
   DEFS.forEach(d => { DEFBYKEY[d.key] = d; });
   INDEX.forEach(r => { r._n = normName(r.name); });  // 正規化名を事前計算
+  initRanking();
   // 都道府県セレクトを構築（索引に出現する順で一意化）
   const prefs = {};
   INDEX.forEach(r => { prefs[r.pref] = r.pcode; });
@@ -235,6 +251,14 @@ function detailHtml(c){
     ['主たる事業', c.biz],
     ['事業所数', c.offices!=null ? c.offices+'か所' : '—'],
   ].map(([k,v])=>`<span><b>${esc(k)}：</b>${esc(String(v))}</span>`).join('');
+  // 収益規模順位（事実。優劣ではない旨を明記）
+  let rankHtml = '';
+  if(c.rank){
+    const parts = [];
+    if(c.rank.nat) parts.push(`全国 <b>${c.rank.nat.toLocaleString('ja-JP')}位</b> / ${c.rank.nat_n.toLocaleString('ja-JP')}法人中`);
+    if(c.rank.pref) parts.push(`${esc(c.pref)}内 <b>${c.rank.pref.toLocaleString('ja-JP')}位</b> / ${c.rank.pref_n.toLocaleString('ja-JP')}法人中`);
+    if(parts.length) rankHtml = `<div class="rankrow"><span>サービス活動収益の規模順位（${c.rank.year}年度）：</span>${parts.map(p=>`<span>${p}</span>`).join('')}</div>`;
+  }
   // 5か年テーブル（行＝項目、列＝年度）
   let head = '<th>項目</th>' + YEARS.map(y=>`<th>${y}年度</th>`).join('');
   let body = FIN.map(([key,label])=>{
@@ -247,7 +271,7 @@ function detailHtml(c){
     return `<tr><th>${label}</th>${tds}</tr>`;
   }).join('');
   const finTbl = `<div class="tblwrap"><table class="fin"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
-  return `<div class="attrs">${attrs}</div>${finTbl}${indHtml(c)}`;
+  return `<div class="attrs">${attrs}</div>${rankHtml}${finTbl}${indHtml(c)}`;
 }
 
 // 指標の単位付き整形（null は該当なし）
@@ -356,6 +380,57 @@ function svgTrend(c, key){
 }
 
 function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+// ───── 収益規模ランキング ─────
+function initRanking(){
+  const box = document.getElementById('rankbox');
+  if(!RANKING){ if(box) box.style.display='none'; return; }
+  const sum = box.querySelector('summary');
+  sum.textContent = `収益規模ランキング（サービス活動収益・${RANKING.year}年度）`;
+  const sel = document.getElementById('rank-pref');
+  Object.keys(RANKING.pref).sort((a,b)=>a.localeCompare(b,'ja')).forEach(p=>{
+    const o=document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o);
+  });
+  sel.addEventListener('change', ()=>{ rankShowAll=false; renderRanking(); });
+  renderRanking();
+}
+
+function renderRanking(){
+  const sel = document.getElementById('rank-pref');
+  const list = document.getElementById('rank-list');
+  if(!RANKING||!list) return;
+  const pref = sel.value;
+  const rows = pref ? RANKING.pref[pref] : RANKING.nat;
+  const shown = rankShowAll ? rows : rows.slice(0,10);
+  let body = shown.map(r=>`<tr>
+      <td>${r.rank}位</td>
+      <td class="nm"><button data-no="${r.no}">${esc(r.name)}</button></td>
+      ${pref?'':`<td>${esc(r.pref)}</td>`}
+      <td>${r.rev.toLocaleString('ja-JP')}円</td>
+    </tr>`).join('');
+  list.innerHTML = `<table class="ranktbl"><thead><tr>
+      <th>順位</th><th class="nm">法人名</th>${pref?'':'<th>都道府県</th>'}<th>サービス活動収益</th>
+    </tr></thead><tbody>${body}</tbody></table>`
+    + (rows.length>10 ? `<button class="rankmore">${rankShowAll?'上位10法人だけ表示':`上位${rows.length}法人をすべて表示`}</button>` : '');
+  list.querySelectorAll('.ranktbl button[data-no]').forEach(b=>
+    b.addEventListener('click', ()=>jumpToCorp(b.dataset.no)));
+  const more = list.querySelector('.rankmore');
+  if(more) more.addEventListener('click', ()=>{ rankShowAll=!rankShowAll; renderRanking(); });
+}
+
+// ランキング等から法人番号で該当法人の詳細を開く
+function jumpToCorp(no){
+  const r = INDEX.find(x=>x.no===no);
+  if(!r) return;
+  // 検索条件をクリアして法人番号で1件に絞り、先頭の詳細を開く
+  document.getElementById('q-name').value='';
+  document.getElementById('q-no').value=no;
+  document.getElementById('q-pref').value='';
+  document.getElementById('q-biz').value='';
+  apply();
+  const first = document.querySelector('#list .row');
+  if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); toggle(first, r); }
+}
 
 // ───── 比較機能 ─────
 function toggleCompare(r){
