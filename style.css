@@ -378,13 +378,29 @@ section p:last-child { margin-bottom: 0; }
   display: flex;
   flex-direction: column;
 }
+/* カード上部のラベル行（分野ラベル＋第一種／第二種バッジ） */
+.card-labels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  margin: 0 0 6px;
+}
 .domain-label {
-  align-self: flex-start;
   font-size: 11.5px;
   font-weight: 700;
   color: var(--dc, var(--primary));
-  margin: 0 0 6px;
 }
+/* 第一種＝濃緑枠・第二種＝薄緑枠で控えめに区別 */
+.shakai-badge {
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 0 7px;
+  line-height: 1.6;
+}
+.shakai-1 { color: var(--primary-dark); border: 1px solid var(--primary-dark); }
+.shakai-2 { color: var(--primary); border: 1px solid var(--line-strong); background: var(--primary-tint); }
 .s-title { font-size: 16px; font-weight: 700; color: var(--primary-dark); margin: 0 0 2px; line-height: 1.45; }
 .s-alias { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 6px; }
 .s-summary { font-size: 14px; margin: 0 0 10px; }
