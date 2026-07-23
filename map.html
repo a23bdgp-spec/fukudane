@@ -35,6 +35,7 @@
     <nav class="site-nav">
       <a href="index.html">ホーム</a>
       <a href="map.html" aria-current="page">福祉サービス一覧</a>
+      <a href="history.html">制度の歴史</a>
       <a href="principles.html">情報の原則</a>
       <a href="about.html">フクダネとは？</a>
     </nav>
@@ -100,6 +101,7 @@
       <nav class="footer-nav" aria-label="フッターナビゲーション">
         <a href="index.html">ホーム</a>
         <a href="map.html">福祉サービス一覧</a>
+        <a href="history.html">制度の歴史</a>
         <a href="principles.html">情報の原則</a>
         <a href="about.html">フクダネとは？</a>
         <a href="terms.html">利用規約</a>
@@ -516,7 +518,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "居宅介護と移動支援を包括した重度者向けの類型で、介護保険に直接の対応はない。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "形態": "訪問",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-08.html"
             },
             {
               "正式名称": "同行援護",
@@ -526,7 +529,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "地域生活支援事業の移動支援と機能が近い（視覚障害に特化した個別給付）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "形態": "訪問",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-03.html"
             },
             {
               "正式名称": "行動援護",
@@ -536,7 +540,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "介護保険に直接の対応はない（行動障害への支援に特化）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "形態": "訪問",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-04.html"
             },
             {
               "正式名称": "療養介護",
@@ -579,7 +584,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "複数サービスを一体提供する点で明確な高齢分野の対応はない。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "形態": "その他",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-14.html"
             },
             {
               "正式名称": "施設入所支援",
@@ -1389,7 +1395,9 @@ const MAP_INTRO = {
 
   // 4列テーブル（サービス名／対象者／社会福祉法／根拠法）を組み立てる
   function buildTable(list) {
-    var h = '<table class="svc-table"><thead><tr>' +
+    var h = '<table class="svc-table">' +
+      '<colgroup><col class="col-name"><col class="col-target"><col class="col-shakai"><col class="col-law"></colgroup>' +
+      '<thead><tr>' +
       '<th scope="col">サービス名</th>' +
       '<th scope="col">対象者</th>' +
       '<th scope="col">社会福祉法</th>' +

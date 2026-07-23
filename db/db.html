@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>社会福祉法人データベース｜フクダネ</title>
+<link rel="stylesheet" href="db.css">
+</head>
+<body>
+<header class="site">
+  <h1>社会福祉法人データベース</h1>
+  <p>全国の社会福祉法人の基本情報と主要な財務値（2020〜2024年度）を検索できます。金額の単位は円です。</p>
+</header>
+
+<div class="wrap">
+  <!-- 検索パネル -->
+  <div class="search">
+    <div class="full">
+      <label for="q-name">法人名で検索（部分一致）</label>
+      <input type="text" id="q-name" placeholder="例：福祉会">
+    </div>
+    <div>
+      <label for="q-no">法人番号で検索（前方一致・13桁）</label>
+      <input type="text" id="q-no" inputmode="numeric" placeholder="例：1010001">
+    </div>
+    <div>
+      <label for="q-pref">都道府県</label>
+      <select id="q-pref"><option value="">すべて</option></select>
+    </div>
+    <div>
+      <label for="q-biz">主たる事業</label>
+      <select id="q-biz">
+        <option value="">すべて</option>
+        <option value="高齢">高齢</option>
+        <option value="障害">障害</option>
+        <option value="児童">児童</option>
+        <option value="その他">その他</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- 件数バー -->
+  <div class="countbar">
+    <span>検索結果：<strong id="cnt">—</strong> 法人</span>
+    <span id="range"></span>
+  </div>
+
+  <!-- 結果一覧 -->
+  <div class="list" id="list">
+    <div class="loading">データを読み込んでいます…</div>
+  </div>
+
+  <!-- ページング -->
+  <div class="pager" id="pager"></div>
+</div>
+
+<footer class="src">
+  <p class="unit">金額の単位：円（社会福祉法人会計基準に基づく計算書類の金額をそのまま表示しています）。</p>
+  <p id="src-text">出典：独立行政法人福祉医療機構「財務諸表等電子開示システム」および厚生労働省への行政文書開示請求により取得したデータを基に、フクダネが独自に再構成。政府標準利用規約（PDL1.0）に基づく利用。</p>
+  <p>本データベースは法人の基本情報と計算書類上の数値のみを掲載しています。役員等の個人名・連絡先・番地は掲載していません。数値は各法人が提出した計算書類に基づくもので、内容の正確性を保証するものではありません。市区町村が空欄の法人は所在地情報が取得できなかったものです。</p>
+</footer>
+
+<script>
+const PAGE_SIZE = 50;
+let INDEX = [];          // 軽量索引
+let filtered = [];       // 絞り込み結果
+let page = 0;
+const prefCache = {};    // 都道府県別詳細のキャッシュ
+
+const YEARS = [2020,2021,2022,2023,2024];
+const FIN = [            // 表示順とラベル（評価語を含めない）
+  ["rev","事業収益"],
+  ["keijo","経常増減差額"],
+  ["touki","当期活動増減差額"],
+  ["asset","資産合計"],
+  ["net","純資産合計"],
+  ["staff","職員数"],
+];
+
+// 金額を円・3桁区切りで表示（null は該当なし）
+function yen(v){ return (v===null||v===undefined) ? null : v.toLocaleString('ja-JP')+'円'; }
+function num(v,unit){ return (v===null||v===undefined) ? null : v.toLocaleString('ja-JP')+unit; }
+
+async function init(){
+  const res = await fetch('data/index.json');
+  INDEX = await res.json();
+  // 都道府県セレクトを構築（索引に出現する順で一意化）
+  const prefs = {};
+  INDEX.forEach(r => { prefs[r.pref] = r.pcode; });
+  const sel = document.getElementById('q-pref');
+  Object.keys(prefs).sort((a,b)=>prefs[a].localeCompare(prefs[b])).forEach(p=>{
+    const o = document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o);
+  });
+  ['q-name','q-no'].forEach(id=>document.getElementById(id).addEventListener('input', apply));
+  ['q-pref','q-biz'].forEach(id=>document.getElementById(id).addEventListener('change', apply));
+  apply();
+}
+
+function apply(){
+  const qn = document.getElementById('q-name').value.trim();
+  const qno = document.getElementById('q-no').value.trim().replace(/\D/g,'');
+  const qp = document.getElementById('q-pref').value;
+  const qb = document.getElementById('q-biz').value;
+  filtered = INDEX.filter(r=>{
+    if(qn && !r.name.includes(qn)) return false;
+    if(qno && !r.no.startsWith(qno)) return false;
+    if(qp && r.pref!==qp) return false;
+    if(qb && r.biz!==qb) return false;
+    return true;
+  });
+  page = 0;
+  render();
+}
+
+function render(){
+  const list = document.getElementById('list');
+  document.getElementById('cnt').textContent = filtered.length.toLocaleString('ja-JP');
+  const total = filtered.length;
+  const start = page*PAGE_SIZE;
+  const slice = filtered.slice(start, start+PAGE_SIZE);
+  document.getElementById('range').textContent =
+    total ? `${(start+1).toLocaleString('ja-JP')}〜${(start+slice.length).toLocaleString('ja-JP')} 件目を表示` : '';
+  if(!total){ list.innerHTML = '<div class="loading">該当する法人はありません。</div>'; document.getElementById('pager').innerHTML=''; return; }
+  list.innerHTML = '';
+  slice.forEach(r=>{
+    const row = document.createElement('div');
+    row.className='row';
+    row.innerHTML = `<div>
+        <div class="name">${esc(r.name)}</div>
+        <div class="meta">${esc(r.pref)}　法人番号 ${esc(r.no)}${r.latest?`　最新データ：${r.latest}年度`:''}</div>
+      </div>
+      <span class="tag">${esc(r.biz)}</span>
+      <span class="arrow">詳細 ＋</span>`;
+    row.addEventListener('click', ()=>toggle(row, r));
+    list.appendChild(row);
+  });
+  renderPager(total);
+}
+
+function renderPager(total){
+  const pages = Math.ceil(total/PAGE_SIZE);
+  const p = document.getElementById('pager');
+  if(pages<=1){ p.innerHTML=''; return; }
+  p.innerHTML='';
+  const prev = document.createElement('button'); prev.textContent='← 前へ'; prev.disabled=(page===0);
+  prev.onclick=()=>{ page--; render(); window.scrollTo(0,0); };
+  const next = document.createElement('button'); next.textContent='次へ →'; next.disabled=(page>=pages-1);
+  next.onclick=()=>{ page++; render(); window.scrollTo(0,0); };
+  const info = document.createElement('span'); info.textContent=`${page+1} / ${pages} ページ`;
+  p.append(prev, info, next);
+}
+
+async function toggle(row, r){
+  // 既に開いていれば閉じる
+  if(row.nextElementSibling && row.nextElementSibling.classList.contains('detail')){
+    row.nextElementSibling.remove();
+    row.querySelector('.arrow').textContent='詳細 ＋';
+    return;
+  }
+  row.querySelector('.arrow').textContent='詳細 −';
+  const det = document.createElement('div');
+  det.className='detail';
+  det.innerHTML='<div class="loading">読み込み中…</div>';
+  row.after(det);
+  const corp = await loadCorp(r.pcode, r.no);
+  if(!corp){ det.innerHTML='<div class="loading">データを取得できませんでした。</div>'; return; }
+  det.innerHTML = detailHtml(corp);
+}
+
+async function loadCorp(pcode, no){
+  if(!prefCache[pcode]){
+    const res = await fetch(`data/pref_${pcode}.json`);
+    prefCache[pcode] = await res.json();
+  }
+  return prefCache[pcode].corps.find(c=>c.no===no);
+}
+
+function detailHtml(c){
+  const attrs = [
+    ['所在地', c.pref + (c.city?('　'+c.city):'')],
+    ['法人番号', c.no],
+    ['設立年', c.setsuritsu ? c.setsuritsu+'年' : '—'],
+    ['主たる事業', c.biz],
+    ['事業所数', c.offices!=null ? c.offices+'か所' : '—'],
+  ].map(([k,v])=>`<span><b>${esc(k)}：</b>${esc(String(v))}</span>`).join('');
+  // 5か年テーブル（行＝項目、列＝年度）
+  let head = '<th>項目</th>' + YEARS.map(y=>`<th>${y}年度</th>`).join('');
+  let body = FIN.map(([key,label])=>{
+    const tds = YEARS.map(y=>{
+      const yr = c.years[String(y)];
+      const v = yr ? yr[key] : null;
+      const disp = key==='staff' ? num(v,'人') : yen(v);
+      return disp===null ? '<td class="na">—</td>' : `<td>${disp}</td>`;
+    }).join('');
+    return `<tr><th>${label}</th>${tds}</tr>`;
+  }).join('');
+  return `<div class="attrs">${attrs}</div>
+    <div class="tblwrap"><table class="fin"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
+function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+init();
+</script>
+</body>
+</html>

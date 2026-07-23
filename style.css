@@ -422,16 +422,37 @@ section p:last-child { margin-bottom: 0; }
 .list-controls .result-count { margin: 0; }
 .view-toggle { display: flex; gap: 6px; }
 
-/* 4列テーブル（サービス名／対象者／社会福祉法／根拠法） */
-.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 8px; }
-.svc-table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: 13.5px; background: #fff; }
+/* 4列テーブル（サービス名／対象者／社会福祉法／根拠法）
+   崩れ対策：スクロールコンテナで囲み、table-layout:fixed＋列幅指定＋長文の折り返しで壊れないようにする */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  max-width: 100%;
+}
+.svc-table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 620px;          /* これ未満の幅では横スクロール（ページ全体は伸びない） */
+  table-layout: fixed;        /* 列幅を固定し、長文はセル内で折り返す */
+  font-size: 13.5px;
+  background: #fff;
+}
+.svc-table .col-name { width: 27%; }
+.svc-table .col-target { width: 27%; }
+.svc-table .col-shakai { width: 24%; }
+.svc-table .col-law { width: 22%; }
 .svc-table th, .svc-table td {
   border: 1px solid var(--line);
   padding: 9px 12px;
   text-align: left;
   vertical-align: top;
+  white-space: normal;        /* 折り返しを許可 */
+  overflow-wrap: anywhere;    /* 長い連続文字列でもセルからはみ出さない */
+  word-break: break-word;
 }
-.svc-table thead th { background: var(--primary-tint); color: var(--primary-dark); white-space: nowrap; position: sticky; top: 0; }
+.svc-table thead th { background: var(--primary-tint); color: var(--primary-dark); white-space: nowrap; }
 .svc-table tbody td:first-child { font-weight: 700; }
 .svc-table a { color: var(--link); }
 

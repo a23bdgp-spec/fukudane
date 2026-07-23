@@ -1,0 +1,89 @@
+/* フクダネ 社会福祉法人データベース 専用スタイル
+   深緑ブランド・白基調。WAM NET 的な実直な一覧の趣。派手な装飾はしない。 */
+:root{
+  --primary:#176B5B;      /* ブランド深緑 */
+  --primary-d:#0f4f43;    /* 濃い深緑（ヘッダ等） */
+  --primary-l:#e6f1ee;    /* 淡い深緑（帯・ホバー） */
+  --ink:#1c2b28;          /* 本文色 */
+  --sub:#5a6b67;          /* 補助テキスト */
+  --line:#d5ddda;         /* 罫線 */
+  --bg:#ffffff;
+  --bg2:#f6f8f7;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:"Hiragino Kaku Gothic ProN","Meiryo",system-ui,sans-serif;
+  color:var(--ink);background:var(--bg2);line-height:1.6;font-size:15px;
+}
+header.site{
+  background:var(--primary-d);color:#fff;padding:18px 20px;
+}
+header.site h1{margin:0;font-size:20px;font-weight:700}
+header.site p{margin:4px 0 0;font-size:13px;color:#cfe4de}
+.wrap{max-width:960px;margin:0 auto;padding:20px}
+
+/* 検索パネル */
+.search{
+  background:var(--bg);border:1px solid var(--line);border-radius:8px;
+  padding:16px;margin-bottom:16px;display:grid;gap:10px;
+  grid-template-columns:1fr 1fr 180px;
+}
+.search .full{grid-column:1 / -1}
+.search label{display:block;font-size:12px;color:var(--sub);margin-bottom:3px}
+.search input,.search select{
+  width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:5px;
+  font-size:14px;background:#fff;
+}
+.search input:focus,.search select:focus{outline:2px solid var(--primary);border-color:var(--primary)}
+@media(max-width:640px){.search{grid-template-columns:1fr}}
+
+/* 件数バー */
+.countbar{
+  display:flex;justify-content:space-between;align-items:center;
+  font-size:13px;color:var(--sub);margin:6px 2px 10px;flex-wrap:wrap;gap:8px;
+}
+.countbar strong{color:var(--primary-d);font-size:15px}
+
+/* 結果一覧 */
+.list{background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.row{
+  border-bottom:1px solid var(--line);padding:12px 16px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+.row:last-child{border-bottom:none}
+.row:hover{background:var(--primary-l)}
+.row .name{font-weight:600;color:var(--primary-d)}
+.row .meta{font-size:12px;color:var(--sub);margin-top:2px}
+.row .tag{
+  flex:0 0 auto;font-size:11px;background:var(--primary-l);color:var(--primary-d);
+  border-radius:10px;padding:2px 9px;white-space:nowrap;
+}
+.row .arrow{flex:0 0 auto;color:var(--primary);font-size:13px}
+
+/* 詳細（開閉） */
+.detail{background:var(--bg2);border-bottom:1px solid var(--line);padding:14px 16px;font-size:14px}
+.detail .attrs{display:flex;flex-wrap:wrap;gap:6px 22px;margin-bottom:10px;color:var(--sub);font-size:13px}
+.detail .attrs b{color:var(--ink);font-weight:600}
+.tblwrap{overflow-x:auto}
+table.fin{border-collapse:collapse;width:100%;min-width:560px;font-size:13px;background:#fff}
+table.fin th,table.fin td{border:1px solid var(--line);padding:6px 9px;text-align:right;white-space:nowrap}
+table.fin thead th{background:var(--primary);color:#fff;font-weight:600;text-align:center}
+table.fin tbody th{background:var(--bg2);text-align:left;font-weight:600;color:var(--ink)}
+table.fin td.na{color:#aab4b1;text-align:center}
+
+/* ページング */
+.pager{display:flex;justify-content:center;align-items:center;gap:8px;margin:16px 0}
+.pager button{
+  border:1px solid var(--line);background:#fff;color:var(--primary-d);
+  padding:6px 12px;border-radius:5px;cursor:pointer;font-size:13px;
+}
+.pager button:disabled{color:#b9c2bf;cursor:default;background:var(--bg2)}
+.pager span{font-size:13px;color:var(--sub)}
+
+/* 出典・注記フッター */
+footer.src{
+  max-width:960px;margin:24px auto 40px;padding:14px 20px;font-size:12px;
+  color:var(--sub);border-top:1px solid var(--line);line-height:1.7;
+}
+footer.src .unit{color:var(--primary-d);font-weight:600}
+.loading{padding:40px;text-align:center;color:var(--sub)}
