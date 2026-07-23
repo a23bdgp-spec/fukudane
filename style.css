@@ -1162,3 +1162,22 @@ section p:last-child { margin-bottom: 0; }
 /* 検索ボタン内の虫眼鏡アイコン */
 .hero-search-btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
 .hero-search-btn .btn-icon { width: 17px; height: 17px; }
+
+/* ===== service.html：チップ件数バッジ／関連ガイドライン（追加タスク） ===== */
+/* 分野・受け方チップの件数バッジ（旧・入口ブロックの件数表示を吸収） */
+.chip-count { font-weight: 400; font-size: .85em; opacity: .72; margin-left: 1px; }
+.chip[aria-pressed="true"] .chip-count { opacity: .92; }
+/* サービス詳細内の関連ガイドライン（小見出し＋箇条リンク） */
+.s-gl { margin: 10px 0 0; }
+.s-gl-heading { font-size: 12.5px; color: var(--ink-soft); font-weight: 700; margin: 0 0 4px; }
+.s-gl-list { margin: 0; padding-left: 1.15em; }
+.s-gl-list li { margin: 3px 0; font-size: 13.5px; line-height: 1.6; }
+.s-gl-list a { color: var(--primary-dark); text-decoration: none; border-bottom: 1px solid var(--line-strong); }
+.s-gl-list a:hover { border-bottom-color: var(--primary); color: var(--primary); }
+
+/* service.html：似た役割のサービス（名称の箇条書き＋免責注記） */
+.s-sim-list { margin: 2px 0 0; padding-left: 1.15em; }
+.s-sim-list li { margin: 2px 0; font-size: 14px; line-height: 1.6; }
+.s-sim-list a { color: var(--primary-dark); text-decoration: none; border-bottom: 1px solid var(--line-strong); }
+.s-sim-list a:hover { border-bottom-color: var(--primary); color: var(--primary); }
+.s-sim-note { margin: 6px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }

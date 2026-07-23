@@ -14,7 +14,8 @@
     { key: "fee", label: "報酬" },
     { key: "kitei", label: "モデル規程" },
     { key: "foreign", label: "外国人材" },
-    { key: "grant", label: "助成団体" }
+    { key: "grant", label: "助成団体" },
+    { key: "donation", label: "寄附" }
   ];
   var TYPE_LABEL = {};
   TYPES.forEach(function (t) { TYPE_LABEL[t.key] = t.label; });
