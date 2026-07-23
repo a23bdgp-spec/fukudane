@@ -11,6 +11,7 @@
     { key: "organization", label: "福祉業界団体" },
     { key: "guideline", label: "ガイドライン" },
     { key: "management", label: "経営資料" },
+    { key: "foreign", label: "外国人材" },
     { key: "term", label: "用語" }
   ];
   var TYPE_LABEL = {};

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>外国人材の受入れ｜介護分野の在留資格4ルートと育成就労制度｜フクダネ</title>
+<meta name="description" content="介護分野の外国人材の受入れ4ルート（EPA・在留資格「介護」・技能実習・特定技能1号）を根拠・所管・在留期間・業務範囲で比較し、育成就労制度や公式の手引き・試験・相談窓口へのリンクを整理します。">
+<link rel="canonical" href="https://fukudane.com/foreign-workers.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="外国人材の受入れ｜介護分野の在留資格4ルートと育成就労制度｜フクダネ">
+<meta property="og:description" content="介護分野の外国人材の受入れ4ルート（EPA・在留資格「介護」・技能実習・特定技能1号）を根拠・所管・在留期間・業務範囲で比較し、育成就労制度や公式の手引き・試験・相談窓口へのリンクを整理します。">
+<meta property="og:url" content="https://fukudane.com/foreign-workers.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="フクダネ">
+<meta property="og:image" content="https://fukudane.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://fukudane.com/og-image.png">
+<link rel="stylesheet" href="style.css">
+<!-- JSONLD_START -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://fukudane.com/" },
+        { "@type": "ListItem", "position": 2, "name": "外国人材の受入れ", "item": "https://fukudane.com/foreign-workers.html" }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "外国人材の受入れ",
+      "description": "介護分野の外国人材の受入れ4ルート（EPA・在留資格「介護」・技能実習・特定技能1号）を根拠・所管・在留期間・業務範囲で比較し、育成就労制度や公式の手引き・試験・相談窓口へのリンクを整理します。",
+      "url": "https://fukudane.com/foreign-workers.html",
+      "inLanguage": "ja",
+      "publisher": { "@type": "Organization", "name": "フクダネ", "url": "https://fukudane.com/" }
+    }
+  ]
+}
+</script>
+<!-- JSONLD_END -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html" class="logo">
+        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+          <g stroke="currentColor" stroke-width="1.3">
+            <line x1="13" y1="13" x2="6" y2="7"/>
+            <line x1="13" y1="13" x2="20" y2="7"/>
+            <line x1="13" y1="13" x2="7" y2="20"/>
+            <line x1="13" y1="13" x2="20" y2="19"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="13" cy="13" r="2.7"/>
+            <circle cx="6" cy="7" r="2"/>
+            <circle cx="20" cy="7" r="2"/>
+            <circle cx="7" cy="20" r="2"/>
+            <circle cx="20" cy="19" r="2"/>
+          </g>
+        </svg>
+        <span class="logo-text">フクダネ</span>
+      </a>
+      <span class="tagline">社会福祉法人の総合情報サイト</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <nav class="site-nav" id="primary-nav">
+      <a href="index.html" class="nav-home">ホーム</a>
+      <a href="service.html">福祉サービス一覧</a>
+      <a href="history.html">制度の歴史</a>
+      <a href="jobs.html">福祉の仕事</a>
+      <a href="organizations.html">福祉業界団体</a>
+      <a href="guidelines.html">ガイドライン集</a>
+      <a href="management.html">経営関連資料</a>
+      <a href="foreign-workers.html" aria-current="page">外国人材</a>
+      <a href="db/db.html">社会福祉法人データベース</a>
+      <a href="about.html">フクダネについて</a>
+      <a href="search.html">サイト内検索</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1 class="catch">外国人材の受入れ</h1>
+    <p class="lead" id="fw-desc"></p>
+  </div>
+</div>
+
+<section class="list-page">
+  <div class="wrap">
+    <!-- 比較表・育成就労の注記・分類別リンク。build_map.py が FOREIGN_WORKERS に注入したデータからJSで描画 -->
+    <div id="fw-root"></div>
+    <p class="guidelines-note">制度・運用要領・試験は改訂されることがあります。最新の内容は必ずリンク先（原本）をご確認ください。</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">フクダネ</span>
+        <span class="footer-tagline">社会福祉法人の総合情報サイト</span>
+      </div>
+      <nav class="footer-nav" aria-label="フッターナビゲーション">
+        <a href="index.html">ホーム</a>
+        <a href="service.html">福祉サービス一覧</a>
+        <a href="history.html">制度の歴史</a>
+        <a href="jobs.html">福祉の仕事</a>
+        <a href="organizations.html">福祉業界団体</a>
+        <a href="guidelines.html">ガイドライン集</a>
+        <a href="management.html">経営関連資料</a>
+        <a href="foreign-workers.html">外国人材</a>
+        <a href="db/db.html">社会福祉法人データベース</a>
+        <a href="about.html">フクダネについて</a>
+        <a href="search.html">サイト内検索</a>
+        <a href="terms.html">利用規約</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="disclaimer">
+        掲載情報は公的機関の公表物に基づきます。最新・正確な内容は、必ず出典（原本）をご確認ください。
+      </p>
+      <p class="copy">© 2026 フクダネ</p>
+    </div>
+  </div>
+</footer>
+
+<!--
+  データ埋め込み枠。content/foreign_workers.json の内容を build_map.py が下の FOREIGN_WORKERS に注入する。
+  データ形式：{ title, description, comparison:{ heading, description, fields[], routes[], ikusei_shuro{} },
+              categories:[ { category, items:[ { 名称, 発行, 年, 概要, URL } ] } ] }
+-->
+<script>
+/* __FOREIGN_WORKERS_INJECT_START__ ここから下を build_map.py が content/foreign_workers.json で置き換える（未注入時は空） */
+const FOREIGN_WORKERS = {
+  "title": "外国人材の受入れ",
+  "description": "介護分野を中心に、外国人材の受入れに関わる公的な制度・ガイドライン・関係機関を整理したページです。受入れの4つのルート（EPA介護福祉士候補者・在留資格「介護」・技能実習・特定技能1号）の比較と、技能実習に代わる育成就労制度の情報、公式の手引き・試験・相談窓口へのリンクをまとめています。名称・所管・年・URLは公式ページまたは公式PDFで確認したものを掲載しています。",
+  "confirmed_date": "2026-07-23",
+  "source_policy": "各制度の名称・根拠法・所管・在留期間・業務範囲は、出入国在留管理庁・厚生労働省・国際厚生事業団（JICWELS）・外国人技能実習機構（OTIT）の公式ページまたは公式PDFをWebFetchで実際に確認して収録した。恒常的な掲載ページを優先し、確認できなかったURL・数値は収録していない。",
+  "note": "掲載URLは確認時点（2026-07-23）のもの。制度・運用要領・試験は改訂されることがあるため、利用時は各ページで最新版を確認してください。特に育成就労制度は2027年4月1日施行に向けて関連告示・運用要領が順次公表されています。",
+  "comparison": {
+    "heading": "介護分野の受入れ4ルートの比較",
+    "description": "介護分野で外国人材を受け入れる主な在留資格・制度は4つあります。それぞれ根拠となる法令・所管・目的・在留期間・介護福祉士資格との関係・従事できる業務が異なります。",
+    "fields": [
+      "制度名",
+      "根拠・所管",
+      "目的",
+      "在留期間",
+      "介護福祉士国家資格との関係",
+      "従事できる業務の範囲",
+      "出典URL"
+    ],
+    "routes": [
+      {
+        "制度名": "経済連携協定（EPA）に基づく外国人介護福祉士候補者の受入れ",
+        "根拠・所管": "経済連携協定（日インドネシア・日フィリピン・日ベトナムの各EPA）。所管は外務省・厚生労働省で、日本で唯一の受入れ調整機関は公益社団法人 国際厚生事業団（JICWELS）。在留資格は「特定活動」。",
+        "目的": "二国間の経済連携の強化を目的とした協定に基づく受入れで、相手国からの要望を踏まえたもの。国内の人手不足への対応を直接の目的とする制度ではない。",
+        "在留期間": "介護福祉士候補者として原則4年。この間、就労・研修を行いながら介護福祉士国家試験の合格をめざす。",
+        "介護福祉士国家資格との関係": "在留中に介護福祉士国家試験の合格をめざすことが前提。合格すれば在留資格「特定活動（EPA介護福祉士）」として在留期間の更新を重ね、就労を継続できる。",
+        "従事できる業務の範囲": "受入れ施設での介護業務（就労・研修）。訪問系サービスは対象外。",
+        "出典URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/gaikokujin/other22/index.html"
+      },
+      {
+        "制度名": "在留資格「介護」",
+        "根拠・所管": "出入国管理及び難民認定法（別表第一の二「介護」）。所管は出入国在留管理庁。2016年の入管法改正で創設され、2017年9月1日に施行。2020年4月1日の上陸基準省令改正で、資格取得ルートを問わず対象となった。",
+        "目的": "介護福祉士の国家資格を持つ外国人が、専門職として介護に従事するための在留資格。",
+        "在留期間": "5年・3年・1年又は3月（更新回数の制限はない）。",
+        "介護福祉士国家資格との関係": "介護福祉士の国家資格の取得が必須。この資格を有する者が対象となる。",
+        "従事できる業務の範囲": "本邦の公私の機関との契約に基づき、介護福祉士として介護又は介護の指導を行う業務。",
+        "出典URL": "https://www.moj.go.jp/isa/applications/status/nursingcare.html"
+      },
+      {
+        "制度名": "外国人技能実習制度（職種「介護」）",
+        "根拠・所管": "外国人の技能実習の適正な実施及び技能実習生の保護に関する法律（平成28年法律第89号、2017年11月1日施行）。所管は出入国在留管理庁・厚生労働省で、監督機関は外国人技能実習機構（OTIT）。介護は2017年11月に対象職種へ追加。",
+        "目的": "技能・技術・知識の開発途上地域等への移転を図る国際協力を目的とする制度。",
+        "在留期間": "技能実習1号・2号・3号を合わせて最長5年。",
+        "介護福祉士国家資格との関係": "資格は不要。ただし介護職種には固有要件があり、入国時・実習期間中に段階的な日本語能力（入国時はN4程度など）が求められる。",
+        "従事できる業務の範囲": "介護（身体介護等）。介護職種の固有要件により、対象施設や実習内容が定められている。訪問系サービスは対象外。",
+        "出典URL": "https://www.otit.go.jp/system/specific_type/care/"
+      },
+      {
+        "制度名": "在留資格「特定技能1号」（介護分野）",
+        "根拠・所管": "出入国管理及び難民認定法。所管は出入国在留管理庁で、介護分野の所管は厚生労働省。2019年4月1日に施行。",
+        "目的": "深刻化する人手不足に対応するため、一定の専門性・技能を持ち即戦力となる外国人材を受け入れる。",
+        "在留期間": "通算で最長5年（1年・6月又は4月ごとに更新）。",
+        "介護福祉士国家資格との関係": "資格は不要。介護技能評価試験と日本語試験（国際交流基金日本語基礎テスト又は日本語能力試験＋介護日本語評価試験）等の合格が必要。在留中に介護福祉士資格を取得すれば在留資格「介護」へ移行できる。介護分野は特定技能2号の対象外。",
+        "従事できる業務の範囲": "身体介護等（利用者の心身の状況に応じた入浴・食事・排せつの介助等）及びこれに付随する支援業務。訪問系サービスは対象外。",
+        "出典URL": "https://www.mhlw.go.jp/stf/newpage_000117702.html"
+      }
+    ],
+    "ikusei_shuro": {
+      "名称": "育成就労制度（技能実習制度に代わる新制度）",
+      "根拠": "出入国管理及び難民認定法及び外国人の技能実習の適正な実施及び技能実習生の保護に関する法律の一部を改正する法律（令和6年法律第60号）。2024年6月21日公布。",
+      "施行時期": "令和9年（2027年）4月1日施行（一部の規定を除く）。",
+      "概要": "人材の確保と人材の育成を目的として、技能実習制度を発展的に解消し移行する新しい制度。分野別の運用方針・運用要領が順次整備されている。",
+      "出典URL": "https://www.moj.go.jp/isa/03_00163.html"
+    }
+  },
+  "fields": [
+    "名称",
+    "発行",
+    "年",
+    "概要",
+    "URL"
+  ],
+  "categories": [
+    {
+      "category": "公式ガイドライン・手引き",
+      "items": [
+        {
+          "名称": "介護分野における特定技能外国人の受入れについて",
+          "発行": "厚生労働省 社会・援護局",
+          "年": "（恒常ページ）",
+          "概要": "特定技能「介護」の受入れの流れ、介護技能評価試験・日本語試験、介護分野における特定技能協議会などをまとめた厚生労働省の公式ページ。",
+          "URL": "https://www.mhlw.go.jp/stf/newpage_000117702.html"
+        },
+        {
+          "名称": "介護分野における特定技能の在留資格に係る制度の運用に関する方針（分野別運用方針）",
+          "発行": "出入国在留管理庁・厚生労働省",
+          "年": "（分野別運用方針）",
+          "概要": "特定技能「介護」で受け入れる外国人材の対象業務、求められる技能・日本語の水準、受入れ見込み数などを定めた分野別運用方針。",
+          "URL": "https://www.moj.go.jp/isa/content/930004961.pdf"
+        },
+        {
+          "名称": "特定の分野に係る特定技能外国人受入れに関する運用要領（介護分野）",
+          "発行": "出入国在留管理庁",
+          "年": "（随時更新）",
+          "概要": "特定技能「介護」の従事業務・対象施設・試験などの基準を示した運用要領。介護分野の情報ページからPDFで参照できる。",
+          "URL": "https://www.moj.go.jp/isa/policies/ssw/nursingcare.html"
+        },
+        {
+          "名称": "技能実習「介護」職種の固有要件（介護職種の基準について）",
+          "発行": "外国人技能実習機構（OTIT）・厚生労働省",
+          "年": "（恒常ページ）",
+          "概要": "技能実習「介護」の日本語能力要件、対象施設、監理団体・技能実習計画の認定基準など、介護職種固有の要件をまとめたページ。",
+          "URL": "https://www.otit.go.jp/system/specific_type/care/"
+        },
+        {
+          "名称": "インドネシア、フィリピン及びベトナムからの外国人看護師・介護福祉士候補者の受入れについて（EPA）",
+          "発行": "厚生労働省 職業安定局",
+          "年": "（恒常ページ）",
+          "概要": "経済連携協定（EPA）に基づく外国人看護師・介護福祉士候補者の受入れの仕組みと、受入れ調整機関（JICWELS）を案内する公式ページ。",
+          "URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/koyou_roudou/koyou/gaikokujin/other22/index.html"
+        },
+        {
+          "名称": "EPAに基づく外国人看護師・介護福祉士候補者受入れ事業（JICWELS）",
+          "発行": "公益社団法人 国際厚生事業団（JICWELS）",
+          "年": "（恒常ページ）",
+          "概要": "日本で唯一のEPA受入れ調整機関である国際厚生事業団による、EPA制度の概要・受入れの手引き・受入れ事例などをまとめたページ。",
+          "URL": "https://jicwels.or.jp/?page_id=16"
+        },
+        {
+          "名称": "育成就労制度について（制度概要・関係法令）",
+          "発行": "出入国在留管理庁",
+          "年": "2024年公布（2027年4月施行）",
+          "概要": "技能実習制度に代わる育成就労制度の目的・根拠法・施行時期・関係法令を示す公式ページ。基本方針・分野別運用方針・運用要領・Q&Aへのリンクを掲載。",
+          "URL": "https://www.moj.go.jp/isa/03_00163.html"
+        },
+        {
+          "名称": "外国人技能実習制度について",
+          "発行": "出入国在留管理庁",
+          "年": "（恒常ページ）",
+          "概要": "技能実習制度の仕組み・在留手続・運用要領・監理団体等の公表情報をまとめた公式ページ。育成就労制度への移行に関する資料も掲載されている。",
+          "URL": "https://www.moj.go.jp/isa/applications/titp/nyuukokukanri05_00014.html"
+        },
+        {
+          "名称": "特定技能制度について",
+          "発行": "出入国在留管理庁",
+          "年": "（恒常ページ）",
+          "概要": "特定技能1号・2号の制度概要、対象分野、在留手続、分野別情報、運用要領をまとめた公式ページ。",
+          "URL": "https://www.moj.go.jp/isa/applications/ssw/index.html"
+        },
+        {
+          "名称": "特定技能総合支援サイト",
+          "発行": "出入国在留管理庁",
+          "年": "（恒常ページ）",
+          "概要": "特定技能の制度内容・試験情報・申請手続などを、外国人材向けに多言語で総合的に案内する公式サイト。",
+          "URL": "https://www.ssw.go.jp/"
+        }
+      ]
+    },
+    {
+      "category": "試験・日本語学習支援",
+      "items": [
+        {
+          "名称": "介護技能評価試験・介護日本語評価試験",
+          "発行": "プロメトリック株式会社（厚生労働省委託の実施機関）",
+          "年": "（随時実施）",
+          "概要": "特定技能「介護」で求められる介護技能と介護の日本語を測る2つの評価試験。コンピュータ方式（CBT）で実施される。",
+          "URL": "http://ac.prometric-jp.com/testlist/nc/index.html"
+        },
+        {
+          "名称": "国際交流基金日本語基礎テスト（JFT-Basic）",
+          "発行": "独立行政法人 国際交流基金",
+          "年": "（随時実施）",
+          "概要": "生活場面で必要な日本語能力を測るテストで、特定技能1号の日本語要件を満たす手段の一つとして利用できる。",
+          "URL": "https://www.jpf.go.jp/jft-basic/"
+        },
+        {
+          "名称": "日本語能力試験（JLPT）",
+          "発行": "国際交流基金・日本国際教育支援協会",
+          "年": "（年2回実施）",
+          "概要": "日本語を母語としない人の日本語能力を測る試験。特定技能や技能実習「介護」等の日本語要件の判定に用いられる（N4・N3等）。",
+          "URL": "https://www.jlpt.jp/index.html"
+        },
+        {
+          "名称": "外国人介護人材向け 学習・相談支援（JICWELS）",
+          "発行": "公益社団法人 国際厚生事業団（JICWELS）",
+          "年": "（恒常ページ）",
+          "概要": "外国人介護人材と受入れ機関の双方に向けた、日本語・介護の学習ツール、無料相談、介護福祉士国家試験情報などを提供するポータル。",
+          "URL": "https://jicwels.or.jp/fcw/"
+        }
+      ]
+    },
+    {
+      "category": "関係機関リンク",
+      "items": [
+        {
+          "名称": "出入国在留管理庁",
+          "発行": "法務省 出入国在留管理庁",
+          "年": "（公式サイト）",
+          "概要": "在留資格・特定技能・育成就労・技能実習など、外国人の受入れと在留手続を所管する官庁の公式サイト。",
+          "URL": "https://www.moj.go.jp/isa/"
+        },
+        {
+          "名称": "外国人技能実習機構（OTIT）",
+          "発行": "外国人技能実習機構（Organization for Technical Intern Training）",
+          "年": "（公式サイト）",
+          "概要": "技能実習計画の認定、監理団体の許可・監督、技能実習生の相談支援などを担う認可法人の公式サイト。",
+          "URL": "https://www.otit.go.jp/"
+        },
+        {
+          "名称": "国際厚生事業団（JICWELS）",
+          "発行": "公益社団法人 国際厚生事業団",
+          "年": "（公式サイト）",
+          "概要": "EPAの受入れ調整機関であり、介護分野における特定技能協議会の事務局も担う法人の公式サイト。",
+          "URL": "https://jicwels.or.jp/"
+        },
+        {
+          "名称": "介護分野における特定技能協議会（事務局：国際厚生事業団）",
+          "発行": "厚生労働省（協議会）／事務局：国際厚生事業団",
+          "年": "（恒常ページ）",
+          "概要": "特定技能「介護」の受入れ機関が加入する協議会。事業所の入会申請や外国人材の情報登録を国際厚生事業団の事務局が管理する。",
+          "URL": "https://jicwels.or.jp/fcw/"
+        }
+      ]
+    },
+    {
+      "category": "障害福祉・保育分野での外国人材の扱い",
+      "items": [
+        {
+          "名称": "特定技能の対象16分野（介護分野の位置づけ）",
+          "発行": "出入国在留管理庁",
+          "年": "2026年時点",
+          "概要": "特定技能の対象は介護・建設・農業など16分野で、「保育」や「障害福祉」という独立した分野は設定されていない。障害福祉の現場での介護は、介護分野の枠組みで受け入れる。",
+          "URL": "https://www.moj.go.jp/isa/policies/ssw/sswfield.html"
+        },
+        {
+          "名称": "障害福祉分野での受入れ（介護分野の対象施設としての扱い）",
+          "発行": "厚生労働省 社会・援護局",
+          "年": "（恒常ページ）",
+          "概要": "特定技能「介護」・技能実習「介護」・EPA・在留資格「介護」は、介護保険施設のほか、障害者支援施設など介護業務を行う障害福祉分野の施設でも従事できる。訪問系サービスは特定技能・技能実習では対象外。",
+          "URL": "https://www.mhlw.go.jp/stf/newpage_000117702.html"
+        },
+        {
+          "名称": "保育分野での扱い",
+          "発行": "出入国在留管理庁",
+          "年": "2026年時点",
+          "概要": "保育士の業務は特定技能の対象16分野にも技能実習の対象職種にも含まれておらず、保育を目的とした外国人材の在留資格は設けられていない。",
+          "URL": "https://www.moj.go.jp/isa/policies/ssw/sswfield.html"
+        }
+      ]
+    }
+  ]
+};
+/* __FOREIGN_WORKERS_INJECT_END__ ここまで */
+
+/* ===== 描画処理（外国人材の受入れ） ===== */
+(function () {
+  var descEl = document.getElementById("fw-desc");
+  var rootEl = document.getElementById("fw-root");
+  var data = FOREIGN_WORKERS || {};
+  var cmp = data.comparison || {};
+  var cats = data.categories || [];
+
+  if (descEl && data.description) descEl.textContent = data.description;
+
+  if (!cmp.routes && cats.length === 0) {
+    rootEl.innerHTML =
+      '<div class="notice"><p class="notice-title">このページは現在準備中です。</p>' +
+      "<p>外国人材の受入れに関わる制度・手引き・関係機関を、公表情報に基づいて整理しています。</p></div>";
+    return;
+  }
+
+  var html = "";
+
+  // 受入れ4ルートの比較表
+  var routes = cmp.routes || [];
+  if (routes.length > 0) {
+    html += '<section class="fw-sec">';
+    if (cmp.heading) html += '<h2 class="section-title">' + esc(cmp.heading) + "</h2>";
+    if (cmp.description) html += '<p class="section-note">' + esc(cmp.description) + "</p>";
+    // 表示する行（制度名は見出し行、出典URLはリンク行として別扱い）
+    var rowFields = (cmp.fields || []).filter(function (f) { return f !== "制度名" && f !== "出典URL"; });
+    html += '<div class="fw-tablewrap"><table class="fw-table">';
+    html += "<thead><tr><th scope=\"col\" class=\"fw-corner\">項目</th>";
+    routes.forEach(function (r) { html += '<th scope="col">' + esc(r["制度名"]) + "</th>"; });
+    html += "</tr></thead><tbody>";
+    rowFields.forEach(function (f) {
+      html += '<tr><th scope="row">' + esc(f) + "</th>";
+      routes.forEach(function (r) { html += "<td>" + esc(r[f] || "") + "</td>"; });
+      html += "</tr>";
+    });
+    // 出典行
+    html += '<tr><th scope="row">出典</th>';
+    routes.forEach(function (r) {
+      var u = safeUrl(r["出典URL"]);
+      html += "<td>" + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">公式ページ↗</a>' : "") + "</td>";
+    });
+    html += "</tr></tbody></table></div></section>";
+  }
+
+  // 育成就労制度の注記
+  var ik = cmp.ikusei_shuro;
+  if (ik && ik["名称"]) {
+    html += '<section class="fw-sec"><div class="fw-note">';
+    html += '<h3 class="fw-note-title">' + esc(ik["名称"]) + "</h3>";
+    html += '<dl class="fw-dl">';
+    if (ik["根拠"]) html += "<dt>根拠</dt><dd>" + esc(ik["根拠"]) + "</dd>";
+    if (ik["施行時期"]) html += "<dt>施行時期</dt><dd>" + esc(ik["施行時期"]) + "</dd>";
+    if (ik["概要"]) html += "<dt>概要</dt><dd>" + esc(ik["概要"]) + "</dd>";
+    html += "</dl>";
+    var iu = safeUrl(ik["出典URL"]);
+    if (iu) html += '<p class="fw-note-link"><a href="' + esc(iu) + '" target="_blank" rel="noopener noreferrer">出典を見る↗</a></p>';
+    html += "</div></section>";
+  }
+
+  // 分類別リンク集（目次＋カード。ガイドライン集と同一デザイン）
+  if (cats.length > 0) {
+    var toc = "";
+    cats.forEach(function (c, i) { toc += '<a class="gl-toc-link" href="#fw-cat-' + i + '">' + esc(c.category) + "</a>"; });
+    html += '<nav class="gl-toc" aria-label="分類の目次">' + toc + "</nav>";
+    cats.forEach(function (c, i) {
+      html += '<section class="gl-cat" id="fw-cat-' + i + '">';
+      html += '<h2 class="section-title">' + esc(c.category) + "</h2>";
+      html += '<div class="gl-grid">';
+      (c.items || []).forEach(function (it) {
+        html += '<article class="gl-card">';
+        var url = safeUrl(it["URL"]);
+        if (url) {
+          html += '<h3 class="gl-name"><a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(it["名称"]) + "↗</a></h3>";
+        } else {
+          html += '<h3 class="gl-name">' + esc(it["名称"]) + "</h3>";
+        }
+        html += '<dl class="gl-dl">';
+        if (it["発行"]) html += "<dt>発行</dt><dd>" + esc(it["発行"]) + "</dd>";
+        if (it["年"]) html += "<dt>年</dt><dd>" + esc(it["年"]) + "</dd>";
+        if (it["概要"]) html += "<dt>概要</dt><dd>" + esc(it["概要"]) + "</dd>";
+        html += "</dl></article>";
+      });
+      html += "</div></section>";
+    });
+  }
+
+  rootEl.innerHTML = html;
+
+  // HTML特殊文字を無害化
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  // リンク先URLは http/https のみ許可
+  function safeUrl(u) {
+    var s = String(u == null ? "" : u).trim();
+    return /^https?:\/\//i.test(s) ? s : "";
+  }
+})();
+</script>
+
+<script src="nav.js" defer></script>
+</body>
+</html>

@@ -878,3 +878,19 @@ section p:last-child { margin-bottom: 0; }
 .s-keiei { margin: 8px 0 0; font-size: 13px; }
 .s-keiei a { color: var(--primary); font-weight: 700; border-bottom: 1px solid var(--line-strong); padding-bottom: 1px; }
 .s-keiei a:hover { border-bottom-color: var(--primary); }
+
+/* ===== 外国人材（受入れ比較表・育成就労の注記） ===== */
+.fw-sec { margin: 0 0 36px; }
+.fw-tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 8px; }
+.fw-table { border-collapse: collapse; width: 100%; min-width: 720px; background: #fff; font-size: 13.5px; }
+.fw-table th, .fw-table td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; line-height: 1.7; }
+.fw-table thead th { background: var(--primary); color: #fff; font-weight: 700; font-size: 13px; }
+.fw-table thead th.fw-corner { background: var(--primary-dark); }
+.fw-table tbody th[scope="row"] { background: var(--primary-tint); color: var(--primary-dark); font-weight: 700; white-space: nowrap; width: 12em; }
+.fw-table td a, .fw-note-link a { color: var(--primary); font-weight: 700; }
+.fw-note { background: var(--primary-tint); border-left: 4px solid var(--primary); border-radius: 0 8px 8px 0; padding: 16px 18px; }
+.fw-note-title { font-size: 16px; font-weight: 700; color: var(--primary-dark); margin: 0 0 10px; line-height: 1.5; }
+.fw-dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13.5px; line-height: 1.8; }
+.fw-dl dt { color: var(--ink-soft); font-weight: 700; white-space: nowrap; }
+.fw-dl dd { margin: 0; color: var(--ink); }
+.fw-note-link { margin: 12px 0 0; font-size: 13.5px; }
