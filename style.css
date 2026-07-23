@@ -747,6 +747,11 @@ section p:last-child { margin-bottom: 0; }
 .essay-sec { max-width: 44em; margin: 0 0 48px; }
 .essay-title { font-size: 20px; font-weight: 700; color: var(--primary-dark); margin: 0 0 16px; line-height: 1.5; }
 .essay-p { font-size: 16px; line-height: 1.95; margin: 0 0 16px; }
+/* 引用ブロック風の宣言文（発言者・出典は付けない＝フクダネのオリジナル・装飾のみ） */
+.essay-quote { position: relative; margin: 0; padding: 20px 24px 20px 32px; border-left: 4px solid var(--primary); background: var(--primary-tint); border-radius: 0 8px 8px 0; }
+.essay-quote::before { content: "\201C"; position: absolute; top: -6px; left: 14px; font-size: 56px; line-height: 1; color: var(--primary); opacity: .35; font-family: Georgia, "Times New Roman", serif; }
+.essay-quote .essay-p { font-size: 17.5px; line-height: 2; color: var(--primary-dark); margin: 0 0 14px; }
+.essay-quote .essay-p:last-child { margin-bottom: 0; }
 .essay-cite { font-size: 13px; color: var(--ink-soft); margin: 20px 0 0; padding-top: 12px; border-top: 1px solid var(--line); line-height: 1.7; }
 
 .creative-sec { margin: 0 0 44px; }
@@ -767,6 +772,7 @@ section p:last-child { margin-bottom: 0; }
 .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .video-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); margin: 10px 0 2px; line-height: 1.5; }
 .video-channel { font-size: 13px; color: var(--ink-soft); margin: 0; }
+.video-attr { font-size: 13px; color: var(--ink-soft); margin: 2px 0 0; line-height: 1.6; }
 
 /* 読む（creative_links） */
 .creative-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }

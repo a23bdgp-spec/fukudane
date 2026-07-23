@@ -115,18 +115,7 @@ const JOBS = {
     "title": "福祉の仕事は、クリエイティブな仕事です",
     "paragraphs": [
       "福祉の仕事は、決まった手順を繰り返す作業ではありません。相手は一人ひとり違い、その人の生活や体の状態、その日の気持ち、これからの希望も、同じものはひとつとしてありません。目の前の人に何が必要かを、その場で見きわめながら支援を組み立てていきます。",
-      "「生活を整える」という言葉は、静かですが奥行きのある営みを指します。よく観察し、いまの状態を読み取り、どう関わるかを判断し、相手に合わせて少しずつ調整していく。この観察・判断・調整の積み重ねには、新しいものを生み出す仕事と同じ種類の創造性があります。",
-      "福祉をたずねるクリエイティブマガジン〈こここ〉は、こうした営みを「福祉に宿るクリエイティビティ」という言葉で表しています。正解が一つに決まっていないからこそ、工夫の余地があります。うまくいかなければ考え直し、小さな手がかりから次の一手を探す。その思考のプロセスそのものが、福祉の仕事の中心にあります。",
-      "このページでは、そうした現場の創造性が伝わる動画と読みものを紹介します。プロの仕事ぶりを追った映像や、働く人たちの姿を伝える記事を通して、福祉の仕事のもうひとつの側面に触れていただければと思います。"
-    ],
-    "quote_source_url": "https://co-coco.jp/about/",
-    "引用出典": [
-      {
-        "語句": "福祉に宿るクリエイティビティ",
-        "発言者": "福祉をたずねるクリエイティブマガジン〈こここ〉編集部（運営：株式会社マガジンハウス）",
-        "媒体": "〈こここ〉「こここについて」",
-        "url": "https://co-coco.jp/about/"
-      }
+      "「生活を整える」という言葉は、静かですが奥行きのある営みを指します。よく観察し、いまの状態を読み取り、どう関わるかを判断し、相手に合わせて少しずつ調整していく。この観察・判断・調整の積み重ねには、新しいものを生み出す仕事と同じ種類の創造性があります。"
     ]
   },
   "categories": [
@@ -269,7 +258,8 @@ const JOBS = {
   "videos": [
     {
       "title": "ハリー杉山の介護を考える “生きる”を支えるプロの仕事",
-      "youtube_id": "MtHwcHn2GIY"
+      "youtube_id": "MtHwcHn2GIY",
+      "attribution": "BS朝日で放映（2022年）／令和3年度厚生労働省補助事業「介護のしごと魅力発信等事業」"
     },
     {
       "title": "介護とは何か。－生活を整えていく実践－",
@@ -334,9 +324,12 @@ const JOBS = {
   if (essay && essay.paragraphs && essay.paragraphs.length > 0) {
     html += '<section class="essay-sec">';
     if (essay.title) html += '<h2 class="essay-title">' + esc(essay.title) + "</h2>";
+    // 全文を引用ブロック風に装飾（発言者・出典は付けない＝フクダネのオリジナル宣言文）
+    html += '<blockquote class="essay-quote">';
     essay.paragraphs.forEach(function (p) {
       html += '<p class="essay-p">' + esc(p) + "</p>";
     });
+    html += "</blockquote>";
     // 引用の出典（媒体名を本文中に見える形で・URLはリンク）
     var cites = essay["引用出典"] || [];
     if (cites.length > 0) {
@@ -370,6 +363,7 @@ const JOBS = {
         '" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
       html += '<p class="video-title">' + esc(v.title) + "</p>";
       if (v.channel) html += '<p class="video-channel">' + esc(v.channel) + "</p>";
+      if (v.attribution) html += '<p class="video-attr">' + esc(v.attribution) + "</p>";
       html += "</div>";
     });
     html += "</div></section>";
