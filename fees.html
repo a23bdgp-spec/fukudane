@@ -350,6 +350,8 @@ const FEES = {
   cats.forEach(function (c, i) {
     html += '<section class="gl-cat" id="fees-cat-' + i + '">';
     html += '<h2 class="section-title">' + esc(c.category) + "</h2>";
+    // 分類見出しの直下に改定周期を表示（management.html の分類説明と同じ流儀）
+    if (c["改定周期"]) html += '<p class="mg-cat-desc">' + esc(c["改定周期"]) + "</p>";
     html += '<div class="gl-grid">';
     (c.items || []).forEach(function (it) {
       html += '<article class="gl-card">';
