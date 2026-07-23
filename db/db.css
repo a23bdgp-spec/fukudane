@@ -160,6 +160,12 @@ footer.src .unit{color:var(--primary-d);font-weight:600}
 .rankrow{display:flex;gap:18px;flex-wrap:wrap;margin:2px 0 8px;font-size:13px;color:var(--sub)}
 .rankrow b{color:var(--primary-d);font-size:15px;font-weight:700}
 
+/* 外部リンク（HP・地図・WAM） */
+.extlinks{display:flex;gap:8px;flex-wrap:wrap;margin:2px 0 10px}
+.extlinks a{font-size:13px;color:var(--primary-d);text-decoration:none;border:1px solid var(--primary);
+  border-radius:14px;padding:4px 12px;background:#fff;white-space:nowrap}
+.extlinks a:hover{background:var(--primary-l)}
+
 /* 財務サマリー */
 .summary{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:2px 0 6px}
 .sumcards{display:flex;gap:10px;flex-wrap:wrap;flex:1;min-width:220px}

@@ -83,9 +83,9 @@
   </div>
 </footer>
 
-<script src="filters.js?v=e4dd3ff8e0"></script>
+<script src="filters.js?v=ce8830ea09"></script>
 <script>
-const BUILD_VERSION="e4dd3ff8e0";   // ビルド時に置換（キャッシュバスティング）
+const BUILD_VERSION="ce8830ea09";   // ビルド時に置換（キャッシュバスティング）
 const PAGE_SIZE = 50;
 let INDEX = [], filtered = [], page = 0;
 function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
@@ -137,10 +137,11 @@ function render(){
       <td>${esc(r.pref)}</td>
       <td>${esc(r.biz||'')}</td>
       <td>${oku(r.sv)}億円</td>
+      <td>${r.ss!=null?r.ss.toLocaleString('ja-JP')+'人':'−'}</td>
       <td>${r.rn?r.rn.toLocaleString('ja-JP')+'位':'—'}</td>
     </tr>`).join('');
   list.innerHTML = `<div class="tblwrap"><table class="ranktbl"><thead><tr>
-      <th>順位</th><th class="nm">法人名</th><th>都道府県</th><th>主な事業</th><th>サービス活動収益</th><th>全国順位</th>
+      <th>順位</th><th class="nm">法人名</th><th>都道府県</th><th>主な事業</th><th>サービス活動収益</th><th>職員数</th><th>全国順位</th>
     </tr></thead><tbody>${body}</tbody></table></div>`;
   renderPager(total);
 }

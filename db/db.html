@@ -110,9 +110,9 @@
   </div>
 </footer>
 
-<script src="filters.js?v=e4dd3ff8e0"></script>
+<script src="filters.js?v=ce8830ea09"></script>
 <script>
-const BUILD_VERSION="e4dd3ff8e0";   // ビルド時に置換（キャッシュバスティング）
+const BUILD_VERSION="ce8830ea09";   // ビルド時に置換（キャッシュバスティング）
 const PAGE_SIZE = 50;
 let INDEX = [];          // 軽量索引
 let filtered = [];       // 絞り込み結果
@@ -216,9 +216,11 @@ function render(){
     const row = document.createElement('div');
     row.className='row';
     const inCmp = compare.some(x=>x.no===r.no);
+    const revStr = (r.sv!=null) ? oku(r.sv)+'億円' : '−';
+    const staffStr = (r.ss!=null) ? r.ss.toLocaleString('ja-JP')+'人' : '−';
     row.innerHTML = `<div>
         <div class="name">${esc(r.name)}</div>
-        <div class="meta">${esc(r.pref)}　法人番号 ${esc(r.no)}${r.latest?`　最新データ：${r.latest}年度`:''}</div>
+        <div class="meta">${esc(r.pref)}　収益 ${revStr}　職員 ${staffStr}</div>
       </div>
       <span class="tag">${esc(r.biz)}</span>
       <button class="cmpbtn${inCmp?' on':''}" type="button">${inCmp?'比較中✓':'＋比較'}</button>
@@ -303,7 +305,21 @@ function detailHtml(c){
     return `<tr><th>${label}</th>${tds}</tr>`;
   }).join('');
   const finTbl = `<div class="tblwrap"><table class="fin"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
-  return `<div class="attrs">${attrs}</div>${summaryHtml(c)}${rankHtml}${finTbl}${indHtml(c)}`;
+  return `<div class="attrs">${attrs}</div>${extLinks(c)}${summaryHtml(c)}${rankHtml}${finTbl}${indHtml(c)}`;
+}
+
+// 外部リンク（法人HP・地図・WAM現況報告）。いずれも公開情報への事実リンク。
+function extLinks(c){
+  const links = [];
+  if(c.hp) links.push(`<a href="${esc(c.hp)}" target="_blank" rel="noopener">ホームページ ↗</a>`);
+  if(c.addr_full){
+    const q = encodeURIComponent(c.name + ' ' + c.addr_full);
+    links.push(`<a href="https://www.google.com/maps/search/?api=1&query=${q}" target="_blank" rel="noopener">地図で見る ↗</a>`);
+  }
+  if(c.wam_id){
+    links.push(`<a href="https://www.wam.go.jp/wamnet/zaihyoukaiji/pub/PUB0201000E00.do?_FORMID=PUB0211100&vo_headVO_corporationId=${encodeURIComponent(c.wam_id)}" target="_blank" rel="noopener">WAMで現況報告書を見る ↗</a>`);
+  }
+  return links.length ? `<div class="extlinks">${links.join('')}</div>` : '';
 }
 
 const PIE_COLORS = ['#176B5B','#3a8f7d','#6bb3a2','#c98a1a','#b5651d','#7a6f9c','#5a8fbf','#9aa05a','#a0a0a0'];
