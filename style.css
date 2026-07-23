@@ -410,34 +410,104 @@ section p:last-child { margin-bottom: 0; }
 .s-detail-body dd { margin: 0 0 4px; font-size: 14px; }
 .s-source { margin: 6px 0 0; font-size: 13.5px; }
 
-/* 各法律上の対応表（横断表） */
-.correspondence { margin: 0 0 28px; padding: 0; }
-.corr-title { font-size: 18px; font-weight: 700; color: var(--primary-dark); margin: 0 0 6px; }
-.corr-note { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 12px; }
-.corr-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 8px; }
-.corr-table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 13.5px; background: #fff; }
-.corr-table th, .corr-table td {
+/* 一覧の操作行（件数＋表示切替） */
+.list-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 4px 0 18px;
+}
+.list-controls .result-count { margin: 0; }
+.view-toggle { display: flex; gap: 6px; }
+
+/* 4列テーブル（サービス名／対象者／社会福祉法／根拠法） */
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 8px; }
+.svc-table { border-collapse: collapse; width: 100%; min-width: 680px; font-size: 13.5px; background: #fff; }
+.svc-table th, .svc-table td {
   border: 1px solid var(--line);
-  padding: 8px 10px;
+  padding: 9px 12px;
   text-align: left;
   vertical-align: top;
 }
-.corr-table thead th { background: var(--primary-tint); color: var(--primary-dark); white-space: nowrap; }
-.corr-table tbody th { background: var(--page); font-weight: 700; white-space: nowrap; }
-.corr-cell {
-  display: block;
-  appearance: none;
-  border: none;
-  background: none;
-  color: var(--link);
-  font: inherit;
-  font-size: 13.5px;
-  text-align: left;
-  padding: 1px 0;
-  cursor: pointer;
-  text-decoration: underline;
+.svc-table thead th { background: var(--primary-tint); color: var(--primary-dark); white-space: nowrap; position: sticky; top: 0; }
+.svc-table tbody td:first-child { font-weight: 700; }
+.svc-table a { color: var(--link); }
+
+/* ===== 制度の歴史（年表） ===== */
+.period-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+  position: sticky;
+  top: 0;
+  background: var(--page);
+  padding: 10px 0;
+  z-index: 5;
+  border-bottom: 1px solid var(--line);
 }
-.corr-cell:hover { color: var(--link-hover); }
+.period-link {
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.period-link:hover { border-color: var(--primary); color: var(--primary); }
+
+.period { margin: 0 0 40px; scroll-margin-top: 64px; }
+.period-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--line);
+}
+.timeline { list-style: none; margin: 0; padding: 0; }
+.tl-item {
+  display: grid;
+  grid-template-columns: 108px 1fr;
+  gap: 0 18px;
+  padding: 0 0 22px 18px;
+  border-left: 2px solid var(--line);
+  position: relative;
+}
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--primary);
+}
+.tl-item:last-child { padding-bottom: 4px; }
+.tl-year { padding-top: 1px; }
+.tl-seireki { display: block; font-weight: 700; color: var(--primary-dark); font-size: 15px; }
+.tl-wareki { display: block; font-size: 12.5px; color: var(--ink-soft); }
+.tl-body { min-width: 0; }
+.tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 6px; }
+.tl-tag {
+  font-size: 11.5px;
+  color: var(--primary-dark);
+  background: var(--primary-tint);
+  border-radius: 4px;
+  padding: 1px 8px;
+}
+.tl-event { margin: 0; font-size: 14.5px; }
+.tl-source { margin: 6px 0 0; font-size: 13px; }
+
+@media (max-width: 520px) {
+  .tl-item { grid-template-columns: 1fr; gap: 4px; }
+  .tl-year { display: flex; gap: 10px; align-items: baseline; }
+  .tl-seireki, .tl-wareki { display: inline; }
+}
 
 /* 上部へ戻るボタン */
 .to-top {

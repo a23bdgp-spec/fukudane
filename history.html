@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>制度の歴史｜フクダネ</title>
+<meta name="description" content="日本の社会福祉制度の歩みを、法律・制度の成立と施行を骨格に年表としてまとめた、社会福祉法人・福祉制度の歴史です。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html" class="logo">
+        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+          <g stroke="currentColor" stroke-width="1.3">
+            <line x1="13" y1="13" x2="6" y2="7"/>
+            <line x1="13" y1="13" x2="20" y2="7"/>
+            <line x1="13" y1="13" x2="7" y2="20"/>
+            <line x1="13" y1="13" x2="20" y2="19"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="13" cy="13" r="2.7"/>
+            <circle cx="6" cy="7" r="2"/>
+            <circle cx="20" cy="7" r="2"/>
+            <circle cx="7" cy="20" r="2"/>
+            <circle cx="20" cy="19" r="2"/>
+          </g>
+        </svg>
+        <span class="logo-text">フクダネ</span>
+      </a>
+      <span class="tagline">社会福祉法人の総合情報サイト</span>
+    </div>
+    <nav class="site-nav">
+      <a href="index.html">ホーム</a>
+      <a href="map.html">福祉サービス一覧</a>
+      <a href="history.html" aria-current="page">制度の歴史</a>
+      <a href="principles.html">情報の原則</a>
+      <a href="about.html">フクダネとは？</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1 class="catch">制度の歴史</h1>
+    <p class="lead" id="history-desc"></p>
+  </div>
+</div>
+
+<section class="list-page">
+  <div class="wrap">
+    <!-- 時期3分割のページ内ナビ。JSで生成 -->
+    <nav class="period-nav" id="period-nav" aria-label="時期の切り替え"></nav>
+    <!-- 年表本体。JSで生成 -->
+    <div id="history-root"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">フクダネ</span>
+        <span class="footer-tagline">社会福祉法人の総合情報サイト</span>
+      </div>
+      <nav class="footer-nav" aria-label="フッターナビゲーション">
+        <a href="index.html">ホーム</a>
+        <a href="map.html">福祉サービス一覧</a>
+        <a href="history.html">制度の歴史</a>
+        <a href="principles.html">情報の原則</a>
+        <a href="about.html">フクダネとは？</a>
+        <a href="terms.html">利用規約</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="disclaimer">
+        掲載情報は公的機関の公表物に基づきます。最新・正確な内容は、必ず出典（原本）をご確認ください。
+      </p>
+      <p class="copy">© フクダネ</p>
+    </div>
+  </div>
+</footer>
+
+<!--
+  データ埋め込み枠。content/history.json の内容を build_map.py が下の HISTORY に注入する。
+  データを更新したら build_map.py を再実行するだけで反映される。file:// でも動作。
+  データ形式：{ title, description, periods:[ { period, events:[ { year_西暦, year_和暦, event, tags:[], source_url } ] } ] }
+-->
+<script>
+/* __HISTORY_INJECT_START__ ここから下を build_map.py が content/history.json で置き換える（未注入時は空） */
+const HISTORY = {
+  "periods": []
+};
+/* __HISTORY_INJECT_END__ ここまで */
+
+/* ===== 描画処理（年表） ===== */
+(function () {
+  var descEl = document.getElementById("history-desc");
+  var navEl = document.getElementById("period-nav");
+  var rootEl = document.getElementById("history-root");
+  var periods = (HISTORY && HISTORY.periods) || [];
+
+  // 説明文（JSONのまま）
+  if (descEl && HISTORY && HISTORY.description) descEl.textContent = HISTORY.description;
+
+  if (periods.length === 0) {
+    rootEl.innerHTML =
+      '<div class="notice"><p class="notice-title">このページは現在準備中です。</p>' +
+      "<p>制度の歴史を、一次情報・公的資料で確認しながら作成しています。</p></div>";
+    return;
+  }
+
+  // 時期3分割のページ内ナビ
+  navEl.innerHTML = periods
+    .map(function (p, i) {
+      return '<a class="period-link" href="#period-' + i + '">' + esc(p.period) + "</a>";
+    })
+    .join("");
+
+  // 各時期のタイムライン
+  rootEl.innerHTML = periods
+    .map(function (p, i) {
+      var h = '<section class="period" id="period-' + i + '">';
+      h += '<h2 class="period-title">' + esc(p.period) + "</h2>";
+      h += '<ol class="timeline">';
+      (p.events || []).forEach(function (ev) {
+        h += '<li class="tl-item">';
+        h += '<div class="tl-year"><span class="tl-seireki">' + esc(ev["year_西暦"]) + "</span>";
+        if (ev["year_和暦"]) h += '<span class="tl-wareki">' + esc(ev["year_和暦"]) + "</span>";
+        h += "</div>";
+        h += '<div class="tl-body">';
+        var tags = ev.tags || [];
+        if (tags.length) {
+          h += '<div class="tl-tags">';
+          tags.forEach(function (t) { h += '<span class="tl-tag">' + esc(t) + "</span>"; });
+          h += "</div>";
+        }
+        h += '<p class="tl-event">' + esc(ev.event) + "</p>";
+        var url = safeUrl(ev.source_url);
+        if (url) {
+          h += '<p class="tl-source"><a href="' + esc(url) +
+            '" target="_blank" rel="noopener noreferrer">出典を見る↗</a></p>';
+        }
+        h += "</div></li>";
+      });
+      h += "</ol></section>";
+      return h;
+    })
+    .join("");
+
+  // HTML特殊文字を無害化
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  // リンク先URLは http/https のみ許可
+  function safeUrl(u) {
+    var s = String(u == null ? "" : u).trim();
+    return /^https?:\/\//i.test(s) ? s : "";
+  }
+})();
+</script>
+
+</body>
+</html>

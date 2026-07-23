@@ -52,9 +52,6 @@
     <!-- 導入文（前提＝社会福祉法）。build_map.py が MAP_INTRO から段落を描画。準備中でも表示 -->
     <div id="map-intro" class="map-intro"></div>
 
-    <!-- 各法律上の対応表（横断表）。correspondence.json 到着時のみJSで表示。未到着は非表示 -->
-    <section id="map-correspondence" class="correspondence" hidden></section>
-
     <!-- 検索窓（対象＝正式名称・通称・根拠法・対象者・概要・対応。全て埋め込みJSON。外部通信なし） -->
     <div class="search-bar">
       <label for="q" class="visually-hidden">サービスを検索</label>
@@ -73,9 +70,16 @@
       </div>
     </div>
 
-    <p class="result-count" id="result-count" role="status" aria-live="polite"></p>
+    <div class="list-controls">
+      <p class="result-count" id="result-count" role="status" aria-live="polite"></p>
+      <div class="view-toggle" role="group" aria-label="表示の切替">
+        <button type="button" class="chip" id="view-card" data-view="card" aria-pressed="true">カード表示</button>
+        <button type="button" class="chip" id="view-table" data-view="table" aria-pressed="false">表表示</button>
+      </div>
+    </div>
 
     <div id="map-results" class="card-grid"></div>
+    <div id="map-table" class="table-scroll" hidden></div>
     <div id="map-empty" class="notice" hidden></div>
 
     <!-- このデータについて（確定日・出典・注記）。出典はページ最下部に配置。折りたたみ。中身はJSで描画 -->
@@ -136,7 +140,8 @@ const SERVICES_MAP = {
     "出典URL",
     "通称",
     "形態",
-    "WAMNET_URL"
+    "WAMNET_URL",
+    "社会福祉法上の位置づけ"
   ],
   "domains": [
     {
@@ -379,7 +384,8 @@ const SERVICES_MAP = {
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
               "通称": "特別養護老人ホーム（特養）",
               "形態": "入所",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-17.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-17.html",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）"
             },
             {
               "正式名称": "介護老人保健施設（老健）",
@@ -415,7 +421,8 @@ const SERVICES_MAP = {
               "概要": "対象者を入所させて養護し、自立した日常生活・社会的活動への参加に必要な指導・訓練その他の援助を行う施設。",
               "類似サービスとの対応": "該当なし（措置による養護で高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/338AC0000000133",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）"
             },
             {
               "正式名称": "特別養護老人ホーム",
@@ -424,7 +431,8 @@ const SERVICES_MAP = {
               "概要": "対象者を入所させて養護することを目的とする施設。介護保険法上の介護老人福祉施設・地域密着型介護老人福祉施設の実体。",
               "類似サービスとの対応": "障害者は障害者支援施設（施設入所支援）に機能的に相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/338AC0000000133",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）"
             },
             {
               "正式名称": "軽費老人ホーム",
@@ -433,7 +441,8 @@ const SERVICES_MAP = {
               "概要": "無料または低額な料金で老人を入所させ、食事の提供その他日常生活上必要な便宜を供与する施設。",
               "類似サービスとの対応": "該当なし（高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/338AC0000000133",
-              "形態": "居住"
+              "形態": "居住",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）"
             },
             {
               "正式名称": "老人デイサービスセンター",
@@ -442,7 +451,8 @@ const SERVICES_MAP = {
               "概要": "対象者を通わせ、入浴・食事などの便宜を供与することを目的とする施設。",
               "類似サービスとの対応": "介護保険法の通所介護の実施場所。障害者は生活介護事業所、障害児は放課後等デイサービス事業所に機能的に相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/338AC0000000133",
-              "形態": "通所"
+              "形態": "通所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四号）"
             },
             {
               "正式名称": "老人短期入所施設",
@@ -451,7 +461,8 @@ const SERVICES_MAP = {
               "概要": "対象者を短期間入所させて養護することを目的とする施設。",
               "類似サービスとの対応": "介護保険法の短期入所生活介護の実施場所。障害分野の短期入所（ショートステイ）に相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/338AC0000000133",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四号）"
             },
             {
               "正式名称": "老人福祉センター",
@@ -460,7 +471,8 @@ const SERVICES_MAP = {
               "概要": "無料または低額な料金で、老人に関する各種相談に応じ、健康増進・教養向上・レクリエーションの便宜を総合的に供与する施設。",
               "類似サービスとの対応": "該当なし（地域の高齢者向け福祉拠点で固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/338AC0000000133",
-              "形態": "相談・支援"
+              "形態": "相談・支援",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四号）"
             },
             {
               "正式名称": "老人介護支援センター",
@@ -469,7 +481,8 @@ const SERVICES_MAP = {
               "概要": "地域の高齢者福祉の問題について相談に応じて助言し、居宅で介護を受ける老人等と市町村・事業者・施設等との連絡調整その他の援助を総合的に行う施設。",
               "類似サービスとの対応": "機能面で地域包括支援センターの前身的役割。",
               "出典URL": "https://laws.e-gov.go.jp/law/338AC0000000133",
-              "形態": "相談・支援"
+              "形態": "相談・支援",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四号）"
             }
           ]
         }
@@ -492,7 +505,8 @@ const SERVICES_MAP = {
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "通称": "ホームヘルプ",
               "形態": "訪問",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-01.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-01.html",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "重度訪問介護",
@@ -501,7 +515,8 @@ const SERVICES_MAP = {
               "概要": "自宅で、入浴・排せつ・食事の介護に加え、外出時の移動中の介護までを総合的・長時間にわたり提供する。",
               "類似サービスとの対応": "居宅介護と移動支援を包括した重度者向けの類型で、介護保険に直接の対応はない。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "訪問"
+              "形態": "訪問",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "同行援護",
@@ -510,7 +525,8 @@ const SERVICES_MAP = {
               "概要": "外出時に同行し、移動に必要な情報提供（代筆・代読を含む）と移動の援護を行う。",
               "類似サービスとの対応": "地域生活支援事業の移動支援と機能が近い（視覚障害に特化した個別給付）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "訪問"
+              "形態": "訪問",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "行動援護",
@@ -519,7 +535,8 @@ const SERVICES_MAP = {
               "概要": "行動する際に生じる危険を回避するための援護、外出時の移動中の介護その他の便宜を提供する。",
               "類似サービスとの対応": "介護保険に直接の対応はない（行動障害への支援に特化）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "訪問"
+              "形態": "訪問",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "療養介護",
@@ -528,7 +545,8 @@ const SERVICES_MAP = {
               "概要": "主に昼間、病院等で機能訓練・療養上の管理・看護・医学的管理下の介護および日常生活上の世話を行う。",
               "類似サービスとの対応": "医療的ケアを伴う点で介護医療院・医療型サービスに機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "生活介護",
@@ -538,7 +556,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "高齢者は通所介護（デイサービス／介護保険法）、障害児は放課後等デイサービスに相当。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "形態": "通所",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-06.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-06.html",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "短期入所（ショートステイ）",
@@ -549,7 +568,8 @@ const SERVICES_MAP = {
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "通称": "ショートステイ",
               "形態": "入所",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-13.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-13.html",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "重度障害者等包括支援",
@@ -558,7 +578,8 @@ const SERVICES_MAP = {
               "概要": "居宅介護その他の複数の障害福祉サービスを包括的に提供する。",
               "類似サービスとの対応": "複数サービスを一体提供する点で明確な高齢分野の対応はない。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "その他"
+              "形態": "その他",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "施設入所支援",
@@ -568,7 +589,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "夜間の介護を受ける点で介護老人福祉施設（特別養護老人ホーム）に機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "形態": "入所",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-16.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-16.html",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第四号）"
             }
           ]
         },
@@ -584,7 +606,8 @@ const SERVICES_MAP = {
               "概要": "一定期間、身体機能または生活能力の向上のための訓練その他の便宜を提供する（機能訓練・生活訓練の類型がある）。",
               "類似サービスとの対応": "機能訓練は高齢者の通所リハビリテーションに機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "通所"
+              "形態": "通所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "就労選択支援",
@@ -593,7 +616,8 @@ const SERVICES_MAP = {
               "概要": "短期間の生産活動等の機会を通じて就労に関する適性・知識・能力の評価を行い、本人に合った就労先の選択を支援する。",
               "類似サービスとの対応": "高齢分野に対応はない（就労支援固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "就労"
+              "形態": "就労",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "就労移行支援",
@@ -603,7 +627,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "高齢分野に対応はない（就労支援固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "形態": "就労",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-20.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-20.html",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "就労継続支援A型（雇用型）",
@@ -613,7 +638,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "高齢分野に対応はない（障害者就労固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "形態": "就労",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-21.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-21.html",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "就労継続支援B型（非雇用型）",
@@ -623,7 +649,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "高齢分野に対応はない（障害者就労固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "形態": "就労",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-22.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-22.html",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "就労定着支援",
@@ -632,7 +659,8 @@ const SERVICES_MAP = {
               "概要": "就労の継続を図るため、事業所・関係機関との連絡調整その他の便宜を提供する。",
               "類似サービスとの対応": "高齢分野に対応はない（就労支援固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "就労"
+              "形態": "就労",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "自立生活援助",
@@ -641,7 +669,8 @@ const SERVICES_MAP = {
               "概要": "定期的な巡回訪問または随時の相談対応により、必要な情報提供・助言その他の援助を行う。",
               "類似サービスとの対応": "高齢分野に直接の対応はない（地域移行後の見守り型支援）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "訪問"
+              "形態": "訪問",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "共同生活援助（グループホーム）",
@@ -652,7 +681,8 @@ const SERVICES_MAP = {
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
               "通称": "グループホーム",
               "形態": "居住",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-23.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-23.html",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             }
           ]
         },
@@ -668,7 +698,8 @@ const SERVICES_MAP = {
               "概要": "市町村が地域の実情に応じて実施する、外出のための移動を支援する事業。",
               "類似サービスとの対応": "個別給付の同行援護・行動援護と機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "訪問"
+              "形態": "訪問",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "地域活動支援センター",
@@ -677,7 +708,8 @@ const SERVICES_MAP = {
               "概要": "創作的活動・生産活動の機会提供、社会との交流促進の便宜を供与する施設（市町村事業）。",
               "類似サービスとの対応": "日中活動の場という点で生活介護や高齢分野の通所系に一部機能が重なるが、市町村事業として位置づけが異なる。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "形態": "通所"
+              "形態": "通所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
             {
               "正式名称": "意思疎通支援事業",
@@ -721,7 +753,8 @@ const SERVICES_MAP = {
               "概要": "身体障害者福祉センター、補装具製作施設、盲導犬訓練施設、視聴覚障害者情報提供施設の4種を指す。相談・訓練・情報提供などにより社会参加を支援する施設。",
               "類似サービスとの対応": "身体障害者福祉法固有の施設群で、機能面では障害者総合支援法の地域生活支援事業と重なる部分がある。",
               "出典URL": "https://laws.e-gov.go.jp/law/324AC1000000283",
-              "形態": "その他"
+              "形態": "その他",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第五号）"
             }
           ]
         },
@@ -759,7 +792,8 @@ const SERVICES_MAP = {
               "概要": "障害児を児童発達支援センター等に通わせ、日常生活の基本的動作・知識技能の習得や集団生活への適応のための支援を行う。",
               "類似サービスとの対応": "高齢者は通所介護、障害者は生活介護に機能が近い、就学前の障害児向けの通所支援。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "通所"
+              "形態": "通所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             },
             {
               "正式名称": "放課後等デイサービス",
@@ -768,7 +802,8 @@ const SERVICES_MAP = {
               "概要": "就学中の障害児を、授業終了後や学校休業日に施設へ通わせ、生活能力の向上や社会との交流促進のための支援を行う。",
               "類似サービスとの対応": "高齢者は通所介護（デイサービス）、障害者は生活介護に相当する、学齢期の障害児向けの通所支援。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "通所"
+              "形態": "通所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             },
             {
               "正式名称": "居宅訪問型児童発達支援",
@@ -777,7 +812,8 @@ const SERVICES_MAP = {
               "概要": "通所が困難な重度障害児の居宅を訪問し、基本的動作の習得や生活能力向上のための支援を行う。",
               "類似サービスとの対応": "訪問により提供する点で居宅介護など訪問系サービスに近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "訪問"
+              "形態": "訪問",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             },
             {
               "正式名称": "保育所等訪問支援",
@@ -786,7 +822,8 @@ const SERVICES_MAP = {
               "概要": "保育所等を訪問し、障害児が集団生活へ適応するための専門的な支援を行う。",
               "類似サービスとの対応": "施設を訪問して専門支援を行う点で他分野の巡回・訪問型の専門支援に近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "訪問"
+              "形態": "訪問",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             }
           ]
         },
@@ -802,7 +839,8 @@ const SERVICES_MAP = {
               "概要": "障害児を入所させ、保護と、日常生活における基本的動作・独立自活に必要な知識技能の習得のための支援を行う。",
               "類似サービスとの対応": "障害者の障害者支援施設（施設入所支援）に相当する、障害児向けの入所施設。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
             },
             {
               "正式名称": "医療型障害児入所施設",
@@ -811,7 +849,8 @@ const SERVICES_MAP = {
               "概要": "福祉型と同様の保護・支援に加え、治療を併せて行う入所施設。",
               "類似サービスとの対応": "医療を伴う点で障害者の療養介護に近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
             }
           ]
         },
@@ -827,7 +866,8 @@ const SERVICES_MAP = {
               "概要": "保育を必要とする乳幼児を日々保護者の下から通わせて保育を行う施設（利用定員20人以上）。",
               "類似サービスとの対応": "子ども・子育て支援法上の教育・保育施設の一類型。地域型保育（小規模保育等）は少人数版。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "通所"
+              "形態": "通所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             },
             {
               "正式名称": "乳児院",
@@ -836,7 +876,8 @@ const SERVICES_MAP = {
               "概要": "乳幼児を入所させて養育し、あわせて退所した者への相談その他の援助を行う施設。",
               "類似サービスとの対応": "社会的養護の入所施設で、より低年齢を対象とする点で児童養護施設と対をなす。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
             },
             {
               "正式名称": "児童養護施設",
@@ -845,7 +886,8 @@ const SERVICES_MAP = {
               "概要": "養護を要する児童を入所させて養護し、あわせて退所した者への相談その他の自立のための援助を行う施設。",
               "類似サービスとの対応": "社会的養護の中心的な入所施設。低年齢は乳児院が対応。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
             },
             {
               "正式名称": "母子生活支援施設",
@@ -854,7 +896,8 @@ const SERVICES_MAP = {
               "概要": "母と子を入所させて保護するとともに、自立の促進のため生活を支援し、退所者への相談その他の援助を行う施設。",
               "類似サービスとの対応": "母子を一体で支援する入所施設で、女性・母子の自立支援施策に位置づく。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
             },
             {
               "正式名称": "児童家庭支援センター",
@@ -863,7 +906,8 @@ const SERVICES_MAP = {
               "概要": "地域の児童福祉に関する専門的知識・技術を要する相談に応じて助言し、市町村への技術的助言、児童相談所・児童福祉施設等との連絡調整その他の援助を総合的に行う施設。",
               "類似サービスとの対応": "地域の相談拠点である点で、高齢分野の地域包括支援センターや障害分野の基幹相談支援センターに機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "相談・支援"
+              "形態": "相談・支援",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             },
             {
               "正式名称": "助産施設",
@@ -872,7 +916,8 @@ const SERVICES_MAP = {
               "概要": "経済的理由で入院助産を受けられない妊産婦を入所させて助産を受けさせる施設。",
               "類似サービスとの対応": "分野固有（母子保健・出産支援）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             },
             {
               "正式名称": "児童心理治療施設",
@@ -881,7 +926,8 @@ const SERVICES_MAP = {
               "概要": "対象児童を短期入所または通所させ、社会生活への適応のための心理治療と生活指導を行う施設。",
               "類似サービスとの対応": "社会的養護の一類型（心理治療に特化）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
             },
             {
               "正式名称": "児童自立支援施設",
@@ -890,7 +936,8 @@ const SERVICES_MAP = {
               "概要": "対象児童を入所または通所させ、必要な指導を行って自立を支援する施設。",
               "類似サービスとの対応": "社会的養護の一類型（自立支援に特化）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
             }
           ]
         },
@@ -907,7 +954,8 @@ const SERVICES_MAP = {
               "類似サービスとの対応": "障害児の放課後等デイサービスに対応する一般児童向けの放課後支援。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
               "通称": "放課後児童クラブ（学童保育）",
-              "形態": "通所"
+              "形態": "通所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             },
             {
               "正式名称": "一時預かり事業",
@@ -916,7 +964,8 @@ const SERVICES_MAP = {
               "概要": "保育所等で一時的に預かり、必要な保護を行う事業。",
               "類似サービスとの対応": "分野固有（一時的な保育）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "通所"
+              "形態": "通所",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             },
             {
               "正式名称": "地域子育て支援拠点事業",
@@ -925,7 +974,8 @@ const SERVICES_MAP = {
               "概要": "乳幼児と保護者が相互に交流を行う場所を開設し、子育てについての相談・情報提供・助言その他の援助を行う事業。",
               "類似サービスとの対応": "地域の子育て相談・交流拠点（分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "形態": "相談・支援"
+              "形態": "相談・支援",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             }
           ]
         },
@@ -976,7 +1026,8 @@ const SERVICES_MAP = {
               "概要": "都道府県または市町村が、乳幼児の保育や食事の世話、生活・生業に関する助言・指導などの便宜を、居宅等で供与し、または団体に委託して行う事業。父子家庭・寡婦にも同様の日常生活支援事業がある。",
               "類似サービスとの対応": "在宅での家事・育児支援という点で、高齢者の訪問介護や障害者の居宅介護に機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/339AC0000000129",
-              "形態": "訪問"
+              "形態": "訪問",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第三号）"
             },
             {
               "正式名称": "母子・父子福祉施設（母子・父子福祉センター、母子・父子休養ホーム）",
@@ -985,7 +1036,8 @@ const SERVICES_MAP = {
               "概要": "母子・父子福祉センターは、無料または低額な料金で各種の相談に応じ、生活指導・生業指導を行う施設。母子・父子休養ホームは、レクリエーションその他休養のための便宜を供与する施設。",
               "類似サービスとの対応": "分野固有（ひとり親家庭向けの相談・休養拠点）。",
               "出典URL": "https://laws.e-gov.go.jp/law/339AC0000000129",
-              "形態": "相談・支援"
+              "形態": "相談・支援",
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第三号）"
             }
           ]
         }
@@ -1006,7 +1058,8 @@ const SERVICES_MAP = {
               "概要": "対象者を入所させて生活扶助を行うことを目的とする施設。",
               "類似サービスとの対応": "介護・障害の入所施設と対象が重なるが、生活保護に基づく最後のセーフティネットとして位置づく。",
               "出典URL": "https://laws.e-gov.go.jp/law/325AC0000000144",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第一号）"
             },
             {
               "正式名称": "更生施設",
@@ -1015,7 +1068,8 @@ const SERVICES_MAP = {
               "概要": "対象者を入所させて生活扶助を行うことを目的とする施設。",
               "類似サービスとの対応": "分野固有（生活保護）。",
               "出典URL": "https://laws.e-gov.go.jp/law/325AC0000000144",
-              "形態": "入所"
+              "形態": "入所",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第一号）"
             },
             {
               "正式名称": "医療保護施設",
@@ -1033,7 +1087,8 @@ const SERVICES_MAP = {
               "概要": "就労または技能の修得のための機会・便宜を与えて、その自立を助長することを目的とする施設。",
               "類似サービスとの対応": "就労・生産活動の機会を提供する点で障害者の就労継続支援に機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/325AC0000000144",
-              "形態": "就労"
+              "形態": "就労",
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第七号）"
             },
             {
               "正式名称": "宿所提供施設",
@@ -1176,175 +1231,6 @@ const MAP_INTRO = {
 };
 /* __MAP_INTRO_INJECT_END__ ここまで */
 
-/* __CORRESPONDENCE_INJECT_START__ ここから下を build_map.py が content/correspondence.json で置き換える（未注入時は null＝対応表なし） */
-const CORRESPONDENCE = {
-  "note": "この対応表は、根拠法の異なるサービスを機能面（何をする支援か）で横に並べた参考情報です。同じ行に並ぶサービスも、根拠法・対象者・利用要件は異なり、法令上の同一や等価を意味しません。機能対応が条文で明らかに言えるものだけを載せ、対応が無い欄は空にしています。各サービスの詳しい内容と根拠法は一覧本体を参照してください。",
-  "columns": [
-    "高齢",
-    "障害者",
-    "障害児",
-    "児童",
-    "生活困窮"
-  ],
-  "rows": [
-    {
-      "類型": "日中に通って過ごす支援（デイサービス・生活介護系）",
-      "cells": {
-        "高齢": [
-          "通所介護（デイサービス）"
-        ],
-        "障害者": [
-          "生活介護"
-        ],
-        "障害児": [
-          "児童発達支援"
-        ],
-        "児童": [],
-        "生活困窮": []
-      }
-    },
-    {
-      "類型": "放課後・学齢期に通う支援",
-      "cells": {
-        "高齢": [],
-        "障害者": [],
-        "障害児": [
-          "放課後等デイサービス"
-        ],
-        "児童": [
-          "放課後児童健全育成事業（学童保育）"
-        ],
-        "生活困窮": []
-      }
-    },
-    {
-      "類型": "短期間泊まる支援（ショートステイ系）",
-      "cells": {
-        "高齢": [
-          "短期入所生活介護（ショートステイ）",
-          "短期入所療養介護（医療型ショートステイ）"
-        ],
-        "障害者": [
-          "短期入所（ショートステイ）"
-        ],
-        "障害児": [],
-        "児童": [],
-        "生活困窮": []
-      }
-    },
-    {
-      "類型": "自宅を訪問する支援（ホームヘルプ系）",
-      "cells": {
-        "高齢": [
-          "訪問介護"
-        ],
-        "障害者": [
-          "居宅介護（ホームヘルプ）",
-          "重度訪問介護"
-        ],
-        "障害児": [],
-        "児童": [
-          "母子家庭日常生活支援事業"
-        ],
-        "生活困窮": []
-      }
-    },
-    {
-      "類型": "共同で暮らす支援（グループホーム系）",
-      "cells": {
-        "高齢": [
-          "認知症対応型共同生活介護（認知症グループホーム）"
-        ],
-        "障害者": [
-          "共同生活援助（グループホーム）"
-        ],
-        "障害児": [],
-        "児童": [],
-        "生活困窮": []
-      }
-    },
-    {
-      "類型": "入所して暮らす支援（施設入所）",
-      "cells": {
-        "高齢": [
-          "介護老人福祉施設（特別養護老人ホーム）",
-          "養護老人ホーム"
-        ],
-        "障害者": [
-          "施設入所支援"
-        ],
-        "障害児": [
-          "福祉型障害児入所施設",
-          "医療型障害児入所施設"
-        ],
-        "児童": [
-          "児童養護施設",
-          "乳児院"
-        ],
-        "生活困窮": [
-          "救護施設",
-          "更生施設"
-        ]
-      }
-    },
-    {
-      "類型": "相談する窓口",
-      "cells": {
-        "高齢": [
-          "居宅介護支援（ケアマネジメント）",
-          "老人介護支援センター"
-        ],
-        "障害者": [
-          "知的障害者更生相談所"
-        ],
-        "障害児": [],
-        "児童": [
-          "児童家庭支援センター",
-          "地域子育て支援拠点事業"
-        ],
-        "生活困窮": [
-          "生活困窮者自立相談支援事業"
-        ]
-      }
-    },
-    {
-      "類型": "就労を支援する",
-      "cells": {
-        "高齢": [],
-        "障害者": [
-          "就労移行支援",
-          "就労継続支援A型（雇用型）",
-          "就労継続支援B型（非雇用型）",
-          "就労定着支援",
-          "就労選択支援"
-        ],
-        "障害児": [],
-        "児童": [],
-        "生活困窮": [
-          "生活困窮者就労準備支援事業",
-          "授産施設"
-        ]
-      }
-    },
-    {
-      "類型": "福祉用具・日常生活用具の給付",
-      "cells": {
-        "高齢": [
-          "福祉用具貸与",
-          "特定福祉用具販売"
-        ],
-        "障害者": [
-          "日常生活用具給付等事業"
-        ],
-        "障害児": [],
-        "児童": [],
-        "生活困窮": []
-      }
-    }
-  ]
-};
-/* __CORRESPONDENCE_INJECT_END__ ここまで */
-
 /* ===== 描画処理（検索・フィルター・カード。データ形式が変わらなければ差し替え不要） ===== */
 (function () {
   var introEl = document.getElementById("map-intro");
@@ -1356,9 +1242,12 @@ const CORRESPONDENCE = {
   var typeBlockEl = document.getElementById("filter-type-block");
   var countEl = document.getElementById("result-count");
   var resultsEl = document.getElementById("map-results");
+  var tableEl = document.getElementById("map-table");
   var emptyEl = document.getElementById("map-empty");
-  var corrEl = document.getElementById("map-correspondence");
+  var viewCardBtn = document.getElementById("view-card");
+  var viewTableBtn = document.getElementById("view-table");
   var domains = (SERVICES_MAP && SERVICES_MAP.domains) || [];
+  var currentView = "card";
 
   // 分野識別色（小ラベル・カード上部の細線のみに使用）
   var DOMAIN_COLORS = {
@@ -1402,6 +1291,7 @@ const CORRESPONDENCE = {
           correspond: sv["類似サービスとの対応"] || "",
           url: sv["出典URL"] || "",
           wam: sv["WAMNET_URL"] || "",
+          shakai: sv["社会福祉法上の位置づけ"] || "",
           form: sv["形態"] || "",
           domain: dm.domain || ""
         });
@@ -1438,11 +1328,12 @@ const CORRESPONDENCE = {
   // 検索入力
   qEl.addEventListener("input", apply);
 
+  // 表示切替（カード表示／表表示）。どちらも検索・分野・形態の絞り込み結果に連動
+  viewCardBtn.addEventListener("click", function () { setView("card"); });
+  viewTableBtn.addEventListener("click", function () { setView("table"); });
+
   // 初期描画
   apply();
-
-  // 各法律上の対応表（correspondence.json 到着時のみ）
-  renderCorrespondence();
 
   /* ---------- 関数定義（以下は宣言のため巻き上げされ、上で呼べる） ---------- */
 
@@ -1460,11 +1351,14 @@ const CORRESPONDENCE = {
     render(list);
   }
 
-  // 結果カードを描画
+  // 絞り込み結果をカード・表の両方に描画し、現在のビューだけ表示する
   function render(list) {
     countEl.innerHTML = "該当 <strong>" + list.length + "</strong> 件 / 全 " + items.length + " 件";
     if (list.length === 0) {
       resultsEl.innerHTML = "";
+      tableEl.innerHTML = "";
+      resultsEl.hidden = true;
+      tableEl.hidden = true;
       emptyEl.hidden = false;
       emptyEl.innerHTML =
         '<p class="notice-title">該当するサービスが見つかりませんでした。</p>' +
@@ -1474,6 +1368,49 @@ const CORRESPONDENCE = {
     emptyEl.hidden = true;
     emptyEl.innerHTML = "";
     resultsEl.innerHTML = list.map(buildCard).join("");
+    tableEl.innerHTML = buildTable(list);
+    applyView();
+  }
+
+  // 現在のビューに合わせてカード／表の表示を切り替える
+  function applyView() {
+    var showTable = currentView === "table";
+    resultsEl.hidden = showTable;
+    tableEl.hidden = !showTable;
+  }
+
+  // ビューを設定してチップ状態を更新
+  function setView(view) {
+    currentView = view;
+    viewCardBtn.setAttribute("aria-pressed", view === "card" ? "true" : "false");
+    viewTableBtn.setAttribute("aria-pressed", view === "table" ? "true" : "false");
+    if (emptyEl.hidden) applyView();
+  }
+
+  // 4列テーブル（サービス名／対象者／社会福祉法／根拠法）を組み立てる
+  function buildTable(list) {
+    var h = '<table class="svc-table"><thead><tr>' +
+      '<th scope="col">サービス名</th>' +
+      '<th scope="col">対象者</th>' +
+      '<th scope="col">社会福祉法</th>' +
+      '<th scope="col">根拠法</th>' +
+      "</tr></thead><tbody>";
+    list.forEach(function (it) {
+      h += "<tr>";
+      var wam = safeUrl(it.wam);
+      if (wam) {
+        h += '<td><a href="' + esc(wam) +
+          '" target="_blank" rel="noopener noreferrer">' + esc(it.name) + "↗</a></td>";
+      } else {
+        h += "<td>" + esc(it.name) + "</td>";
+      }
+      h += "<td>" + esc(it.target || "−") + "</td>";
+      h += "<td>" + esc(it.shakai || "−") + "</td>";
+      h += "<td>" + esc(it.law || "−") + "</td>";
+      h += "</tr>";
+    });
+    h += "</tbody></table>";
+    return h;
   }
 
   // 1件分のカードHTML（WAM NET型：表面は最小限＝分野ラベル・正式名称・通称・概要のみ。
@@ -1512,70 +1449,6 @@ const CORRESPONDENCE = {
     h += "</div></details>";
     h += "</article>";
     return h;
-  }
-
-  // 対応表を描画（correspondence.json 到着時のみ。列＝分野、行＝支援の類型）
-  function renderCorrespondence() {
-    var c = CORRESPONDENCE;
-    if (!corrEl || !c || !c.rows || c.rows.length === 0) return;
-    // 列はcorrespondence.json自身のcolumnsを使う（分野名の粒度が一覧本体と異なるため）
-    var cols = (c.columns && c.columns.length) ? c.columns : domains.map(function (d) { return d.domain; });
-    var h = '<h2 class="corr-title">各法律上の対応表</h2>';
-    if (c.note) h += '<p class="corr-note">' + esc(c.note) + "</p>";
-    h += '<div class="corr-scroll"><table class="corr-table"><thead><tr><th scope="col">類型</th>';
-    cols.forEach(function (col) { h += '<th scope="col">' + esc(col) + "</th>"; });
-    h += "</tr></thead><tbody>";
-    c.rows.forEach(function (row) {
-      h += '<tr><th scope="row">' + esc(row["類型"]) + "</th>";
-      cols.forEach(function (col) {
-        var names = (row.cells && row.cells[col]) || [];
-        h += "<td>";
-        names.forEach(function (nm) {
-          h += '<button type="button" class="corr-cell" data-target="' + esc(nm) + '">' + esc(nm) + "</button>";
-        });
-        h += "</td>";
-      });
-      h += "</tr>";
-    });
-    h += "</tbody></table></div>";
-    corrEl.innerHTML = h;
-    corrEl.hidden = false;
-    corrEl.querySelectorAll(".corr-cell").forEach(function (btn) {
-      btn.addEventListener("click", function () { jumpToService(btn.getAttribute("data-target")); });
-    });
-  }
-
-  // 対応表セルから該当カードへ移動（フィルターを解除して全件表示→詳細を開いてスクロール）
-  function jumpToService(name) {
-    selectedDomain = "すべて";
-    selectedForm = "すべて";
-    qEl.value = "";
-    syncChipStates();
-    apply();
-    var cards = resultsEl.querySelectorAll(".s-card");
-    var target = null;
-    cards.forEach(function (card) {
-      if (!target && card.getAttribute("data-name") === name) target = card;
-    });
-    if (target) {
-      var d = target.querySelector("details.s-detail");
-      if (d) d.open = true;
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }
-
-  // チップの選択状態を現在のselectedに合わせて更新（プログラムからの解除用）
-  function syncChipStates() {
-    if (domainFilterEl) {
-      domainFilterEl.querySelectorAll(".chip").forEach(function (c) {
-        c.setAttribute("aria-pressed", c.textContent === selectedDomain ? "true" : "false");
-      });
-    }
-    if (typeFilterEl) {
-      typeFilterEl.querySelectorAll(".chip").forEach(function (c) {
-        c.setAttribute("aria-pressed", c.textContent === selectedForm ? "true" : "false");
-      });
-    }
   }
 
   // チップUIを生成（グループ内は単一選択）
