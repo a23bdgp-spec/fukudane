@@ -310,72 +310,69 @@ function indHtml(c){
   }).join('');
   const indTbl = `<div class="tblwrap"><table class="ind"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 
-  // 推移グラフ（指標セレクト＋SVG）
-  const opts = DEFS.map((d,i)=>`<option value="${d.key}">${esc(d.name)}</option>`).join('');
+  // 推移グラフ（固定の複合グラフ。切替UIは持たない）
   const chart = `<div class="chartbox">
-      <select class="ind-sel">${opts}</select>
-      <div class="chart-svg"></div>
-      <div class="chart-legend"><span><i style="background:#176B5B"></i>当該法人</span><span><i style="background:#c98a1a"></i>全国中央値</span></div>
+      <div class="chart-svg">${svgOverview(c)}</div>
+      <div class="chart-legend">
+        <span><i style="background:#8fc7b8;height:10px;width:12px"></i>サービス活動収益（億円・左軸）</span>
+        <span><i style="background:#176B5B"></i>経常増減差額率（%・右軸）</span>
+        <span><i style="background:#c98a1a"></i>経常増減差額率の全国中央値</span>
+      </div>
     </div>`;
-
-  // 定義・計算式・中立解説
-  const defs = `<div class="defs">${DEFS.map(d=>`
-      <details><summary>${esc(d.name)}</summary>
-        <div class="defbody">
-          ${d.definition?`<b>定義</b>：${esc(d.definition)}<br>`:''}
-          ${d.formula?`<b>計算式</b><pre>${esc(d.formula)}</pre>`:''}
-          ${d.desc?`<b>指標の見方</b>：${esc(d.desc)}`:''}
-        </div>
-      </details>`).join('')}</div>`;
 
   return `<h4>財務指標（5年度推移と業界中央値）</h4>
     <p class="note">単位：比率は%、資金余裕は月数、償還年数は年、職員一人当たり収益は千円。中央値は最新データ年度（${esc(ly)}年度）の当該セグメントの中央値です。${esc(IND_SOURCE_NOTE)}</p>
     ${indTbl}
-    <h4>指標の推移グラフ</h4>
+    <h4>収益と経常増減差額率の推移</h4>
     ${chart}
-    <h4>指標の定義・計算式・見方</h4>
-    <div class="note">経営分析参考ツールの定義に基づく事実の説明です（良否の判定は表示していません）。</div>
-    ${defs}`;
+    <p class="note">各指標の定義・計算式・見方は <a href="indicators.html" target="_blank" rel="noopener">指標の解説 ↗</a> をご覧ください（良否の判定は表示していません）。</p>`;
 }
 
-// 詳細描画後にグラフをバインド
-function bindDetail(det, c){
-  const sel = det.querySelector('.ind-sel');
-  const box = det.querySelector('.chart-svg');
-  if(!sel || !box) return;
-  const draw = ()=>{ box.innerHTML = svgTrend(c, sel.value); };
-  sel.addEventListener('change', draw);
-  // 初期表示は当該法人に値がある最初の指標
-  const first = DEFS.find(d => YEARS.some(y => (c.ind||{})[String(y)] && (c.ind||{})[String(y)][d.key]!==undefined));
-  if(first) sel.value = first.key;
-  draw();
-}
+// 詳細描画後の処理（固定グラフのため特別なバインドは不要）
+function bindDetail(det, c){ /* 切替UIを廃止したため何もしない */ }
 
-// 指標の5年度推移SVG（当該法人＋全国中央値）。外部ライブラリ不使用。
-function svgTrend(c, key){
-  const d = DEFBYKEY[key]; if(!d) return '';
-  const corpPts = YEARS.map(y=>{ const yr=(c.ind||{})[String(y)]; return yr&&yr[key]!==undefined?yr[key]:null; });
-  const medPts  = YEARS.map(y=> medOf(key,'nat','',y));
-  const all = corpPts.concat(medPts).filter(v=>v!==null&&v!==undefined);
-  if(!all.length) return '<p class="note">この指標に表示できるデータがありません。</p>';
-  let mn=Math.min(...all), mx=Math.max(...all);
-  if(mn===mx){ mn-=1; mx+=1; }
-  const pad=(mx-mn)*0.12; mn-=pad; mx+=pad;
-  const W=600,H=220,L=56,R=16,T=16,B=32;
-  const x=i=> L + (W-L-R)*(i/(YEARS.length-1));
-  const y=v=> T + (H-T-B)*(1-(v-mn)/(mx-mn));
-  const grid=[0,.25,.5,.75,1].map(t=>{const yy=T+(H-T-B)*t;const val=mx-(mx-mn)*t;
-    return `<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#eee"/><text x="${L-6}" y="${yy+4}" text-anchor="end" font-size="10" fill="#889">${val.toLocaleString('ja-JP',{maximumFractionDigits:1})}</text>`;}).join('');
-  const xlab=YEARS.map((yr,i)=>`<text x="${x(i)}" y="${H-10}" text-anchor="middle" font-size="10" fill="#889">${yr}</text>`).join('');
-  const line=(pts,color)=>{
-    const seg=pts.map((v,i)=>v===null||v===undefined?null:`${x(i)},${y(v)}`).filter(Boolean);
-    const poly = seg.length ? `<polyline points="${seg.join(' ')}" fill="none" stroke="${color}" stroke-width="2.2"/>` : '';
-    const dots = pts.map((v,i)=>v===null||v===undefined?'':`<circle cx="${x(i)}" cy="${y(v)}" r="3.2" fill="${color}"/>`).join('');
-    return poly+dots;
-  };
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(d.name)}の推移">
-    ${grid}${xlab}${line(medPts,'#c98a1a')}${line(corpPts,'#176B5B')}
-    <text x="${L}" y="12" font-size="11" fill="#5a6b67">${esc(d.name)}（${esc(d.unit)}）</text>
+// 概要の複合グラフ：サービス活動収益(棒・左軸)＋経常増減差額率(折れ線・右軸)＋全国中央値(点線)。
+// 外部ライブラリ不使用の自作SVG。既存ツールの概要タブと同じ構成。
+function svgOverview(c){
+  const RATE='i02';  // 経常増減差額率
+  const revPts  = YEARS.map(y=>{ const yr=(c.years||{})[String(y)]; return yr&&yr.rev!=null?yr.rev:null; });
+  const ratePts = YEARS.map(y=>{ const yr=(c.ind||{})[String(y)]; return yr&&yr[RATE]!==undefined?yr[RATE]:null; });
+  const medPts  = YEARS.map(y=> medOf(RATE,'nat','',y));
+  const revVals = revPts.filter(v=>v!=null);
+  const rateAll = ratePts.concat(medPts).filter(v=>v!=null&&v!==undefined);
+  if(!revVals.length && !rateAll.length) return '<p class="note">表示できるデータがありません。</p>';
+  const W=620,H=260,L=64,R=54,T=20,B=36, PH=H-T-B, PW=W-L-R;
+  // 左軸（収益・億円換算）
+  const maxRev = Math.max(1, ...revVals);
+  // 右軸（率・0を含める）
+  let rmin=Math.min(0,...(rateAll.length?rateAll:[0])), rmax=Math.max(0,...(rateAll.length?rateAll:[0]));
+  if(rmin===rmax){ rmin-=1; rmax+=1; }
+  const rpad=(rmax-rmin)*0.15; rmin-=rpad; rmax+=rpad;
+  const band=PW/YEARS.length, cx=i=>L+band*(i+0.5), barW=band*0.46;
+  const yRev = v=> T+PH*(1-v/maxRev);
+  const yRate= v=> T+PH*(1-(v-rmin)/(rmax-rmin));
+  // 横グリッド5本＋左右軸ラベル
+  let grid='';
+  for(let p=0;p<=4;p++){ const frac=p/4, yy=T+PH*frac;
+    const lv=maxRev*(1-frac)/1e8, rv=rmax-(rmax-rmin)*frac;
+    grid+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#eee"/>`
+       + `<text x="${L-6}" y="${yy+4}" text-anchor="end" font-size="9" fill="#889">${lv.toLocaleString('ja-JP',{maximumFractionDigits:1})}</text>`
+       + `<text x="${W-R+6}" y="${yy+4}" text-anchor="start" font-size="9" fill="#889">${rv.toLocaleString('ja-JP',{maximumFractionDigits:1})}</text>`;
+  }
+  const xlab=YEARS.map((yr,i)=>`<text x="${cx(i)}" y="${H-12}" text-anchor="middle" font-size="10" fill="#889">${yr}</text>`).join('');
+  const bars=revPts.map((v,i)=>v==null?'':`<rect x="${cx(i)-barW/2}" y="${yRev(v)}" width="${barW}" height="${T+PH-yRev(v)}" fill="#8fc7b8"/>`).join('');
+  const linePts=(pts)=>pts.map((v,i)=>v==null||v===undefined?null:`${cx(i)},${yRate(v)}`).filter(Boolean);
+  const rateSeg=linePts(ratePts), medSeg=linePts(medPts);
+  const medLine = medSeg.length? `<polyline points="${medSeg.join(' ')}" fill="none" stroke="#c98a1a" stroke-width="2" stroke-dasharray="5 4"/>`:'';
+  const rateLine= rateSeg.length? `<polyline points="${rateSeg.join(' ')}" fill="none" stroke="#176B5B" stroke-width="2.4"/>`
+     + ratePts.map((v,i)=>v==null||v===undefined?'':`<circle cx="${cx(i)}" cy="${yRate(v)}" r="3.2" fill="#176B5B"/>`).join('') : '';
+  // 0%基準線（率軸）
+  const zeroY=yRate(0);
+  const zero = (0>=rmin&&0<=rmax)? `<line x1="${L}" y1="${zeroY}" x2="${W-R}" y2="${zeroY}" stroke="#cfd8d5" stroke-width="1"/>`:'';
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="収益と経常増減差額率の推移">
+    ${grid}${zero}${bars}${medLine}${rateLine}${xlab}
+    <text x="${L-58}" y="${T-6}" font-size="9" fill="#5a6b67">億円</text>
+    <text x="${W-R+2}" y="${T-6}" font-size="9" fill="#5a6b67">%</text>
   </svg>`;
 }
 
