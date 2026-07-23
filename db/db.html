@@ -422,7 +422,8 @@ function detailHtml(c){
     return `<tr><th>${label}</th>${tds}</tr>`;
   }).join('');
   const finTbl = `<div class="tblwrap"><table class="fin"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
-  return `<div class="attrs">${attrs}</div>${extLinks(c)}${summaryHtml(c)}${rankHtml}${finTbl}${indHtml(c)}`;
+  const simBlock = `<div class="simblock"><button type="button" class="simbtn" aria-expanded="false">類似法人を見る</button><div class="simlist" hidden></div></div>`;
+  return `<div class="attrs">${attrs}</div>${extLinks(c)}${summaryHtml(c)}${rankHtml}${finTbl}${indHtml(c)}${simBlock}`;
 }
 
 // 外部リンク（法人HP・地図・WAM現況報告）。いずれも公開情報への事実リンク。
@@ -544,7 +545,49 @@ function indHtml(c){
 }
 
 // 詳細描画後の処理（固定グラフのため特別なバインドは不要）
-function bindDetail(det, c){ /* 切替UIを廃止したため何もしない */ }
+function bindDetail(det, c){
+  const btn = det.querySelector('.simbtn');
+  if(!btn) return;
+  const box = det.querySelector('.simlist');
+  btn.addEventListener('click', ()=>{
+    if(!box.getAttribute('data-loaded')){
+      box.innerHTML = renderSimilar(c);
+      box.setAttribute('data-loaded','1');
+    }
+    const open = box.hidden;
+    box.hidden = !open;
+    btn.setAttribute('aria-expanded', open?'true':'false');
+    btn.textContent = open ? '類似法人を閉じる' : '類似法人を見る';
+  });
+}
+
+// 類似法人（機械的・基準公開・評価なし）。同じ主な事業分類のうち、サービス活動収益の規模が近い順。
+// index（INDEX）だけで完結＝追加ロードなし。同一都道府県と全国の2グループで表示。
+function renderSimilar(c){
+  const self = INDEX.find(x=>x.no===c.no);
+  if(!self || self.sv==null || self.sv<=0 || !self.biz){
+    return '<p class="note">この法人は主な事業分類または収益額のデータがないため、類似法人を表示できません。</p>';
+  }
+  const base = self.sv;
+  const pool = INDEX.filter(r=> r.no!==self.no && r.biz===self.biz && r.sv!=null && r.sv>0);
+  pool.forEach(r=>{ r._d = Math.abs(Math.log(r.sv/base)); });   // 収益比の対数距離＝規模の近さ
+  pool.sort((a,b)=> a._d - b._d);
+  const samePref = pool.filter(r=> r.pref===self.pref).slice(0,5);
+  const others   = pool.filter(r=> r.pref!==self.pref).slice(0,10);
+  const rowsHtml = list => list.map(r=>
+    `<tr><td class="nm"><a href="db.html?no=${encodeURIComponent(r.no)}">${esc(r.name)}</a></td>`
+    + `<td>${esc(r.pref)}</td><td class="r">${manYen(r.sv)}</td>`
+    + `<td class="r">${r.ss!=null? r.ss.toLocaleString('ja-JP')+'人':'−'}</td></tr>`).join('');
+  const tbl = (title, list) => list.length ?
+    `<h4 class="simh">${title}</h4><div class="tblwrap"><table class="simtbl">`
+    + `<thead><tr><th>法人名</th><th>都道府県</th><th>収益</th><th>職員数</th></tr></thead>`
+    + `<tbody>${rowsHtml(list)}</tbody></table></div>` : '';
+  let html = '<p class="note">主な事業分類（' + esc(self.biz) + '）が同じで、サービス活動収益の規模が近い法人を機械的に表示しています。経営の類似性や優劣を示すものではありません。</p>';
+  html += tbl('同じ都道府県（' + esc(self.pref) + '）', samePref);
+  html += tbl('全国（同じ主な事業分類）', others);
+  if(!samePref.length && !others.length) html += '<p class="note">同じ主な事業分類で収益規模の近い法人が見つかりませんでした。</p>';
+  return html;
+}
 
 // 概要の複合グラフ：サービス活動収益(棒・左軸)＋経常増減差額率(折れ線・右軸)＋全国中央値(点線)。
 // 外部ライブラリ不使用の自作SVG。既存ツールの概要タブと同じ構成。
@@ -670,15 +713,21 @@ async function openCompare(){
     const head = `<th>項目</th>` + corps.map(c=>`<th>${esc(c.name)}<br><small>${esc(c.pref)}${c.city?' '+esc(c.city):''}</small></th>`).join('') + `<th>全国中央値</th>`;
     let rows = `<tr class="sec"><td colspan="${corps.length+2}">基本情報・財務（${ly}年度）</td></tr>`;
     rows += `<tr><th>主な事業</th>${corps.map(c=>`<td>${esc(c.biz||'—')}</td>`).join('')}<td class="med">—</td></tr>`;
-    rows += CMP_FIN.map(([k,lab])=>`<tr><th>${lab}</th>${corps.map(c=>{ const yr=(c.years||{})[ly]; return `<td>${numFmt(yr?yr[k]:null)}</td>`; }).join('')}<td class="med">—</td></tr>`).join('');
+    // 金額行は万円統一（職員数は人）。単位は行名に付ける。
+    rows += CMP_FIN.map(([k,lab])=>{
+      const money = k!=='staff';
+      const label = money ? lab.replace('（円）','（万円）') : lab;
+      const cell = c=>{ const yr=(c.years||{})[ly]; const v=yr?yr[k]:null; return money ? (v==null?'—':manNum(v)) : numFmt(v); };
+      return `<tr><th>${label}</th>${corps.map(c=>`<td>${cell(c)}</td>`).join('')}<td class="med">—</td></tr>`;
+    }).join('');
     rows += `<tr class="sec"><td colspan="${corps.length+2}">財務指標（${ly}年度）</td></tr>`;
     rows += DEFS.map(d=>{
       const cells = corps.map(c=>{ const yr=(c.ind||{})[ly]; const v=yr?yr[d.key]:null; return `<td>${indFmt(v===undefined?null:v)}</td>`; }).join('');
       const mn = medOf(d.key,'nat','',ly);
       return `<tr><th>${esc(d.name)}（${esc(d.unit)}）</th>${cells}<td class="med">${indFmt(mn)}</td></tr>`;
     }).join('');
-    inner = `<p class="note">数値と全国中央値をそのまま並べています。順位付け・優劣の判定はしていません。単位は各行名に記載。${esc(IND_SOURCE_NOTE)}</p>
-      <div style="overflow-x:auto"><table class="cmptbl"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
+    inner = `<p class="note">数値と全国中央値をそのまま並べています。順位付け・優劣の判定はしていません。金額は万円単位、その他の単位は各行名に記載。${esc(IND_SOURCE_NOTE)}</p>
+      <div class="cmp-scroll"><table class="cmptbl"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
   }
   openModal(`法人の比較（${corps.length}法人）`, inner);
 }

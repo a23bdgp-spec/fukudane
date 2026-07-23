@@ -252,6 +252,11 @@ table.ind td.med{color:var(--sub);background:#fafcfb}
 .cmptbl tbody th{background:var(--bg2);text-align:left;position:sticky;left:0}
 .cmptbl td.med{color:var(--sub);background:#fafcfb}
 .cmptbl .sec td{background:var(--primary-l);color:var(--primary-d);font-weight:600;text-align:left}
+/* 比較表のモバイル対応：横スクロール＋1列目（項目）固定＋数値nowrap */
+.cmp-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:8px;margin-top:10px}
+.cmp-scroll .cmptbl{margin-top:0;border:none;min-width:480px}
+.cmptbl tbody th{z-index:1}
+.cmptbl thead th:first-child{position:sticky;left:0;z-index:2;background:var(--primary-d)}
 
 /* 財務指標の解説ページ（本体側）への導線 */
 .src .ind-link { margin: 0 0 10px; }
@@ -276,3 +281,17 @@ table.ind td.med{color:var(--sub);background:#fafcfb}
 .stats-table th,.stats-table td { border:1px solid var(--line);padding:6px 10px;text-align:left }
 .stats-table thead th { background:var(--primary);color:#fff;font-weight:600 }
 .stats-table th.r,.stats-table td.r { text-align:right;white-space:nowrap }
+
+/* 類似法人（機械的・基準公開・評価なし） */
+.simblock{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+.simbtn{font-family:inherit;font-size:13px;font-weight:600;color:var(--primary-d);background:var(--primary-l);border:1px solid var(--primary);border-radius:20px;padding:8px 16px;cursor:pointer}
+.simbtn:hover{background:#fff}
+.simbtn:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.simlist{margin-top:10px}
+.simh{font-size:13px;color:var(--primary-d);margin:12px 0 6px;font-weight:700}
+.simtbl{border-collapse:collapse;width:100%;min-width:420px;font-size:13px;background:#fff}
+.simtbl th,.simtbl td{border:1px solid var(--line);padding:6px 9px;text-align:left;white-space:nowrap}
+.simtbl thead th{background:var(--primary);color:#fff;text-align:center}
+.simtbl td.nm{white-space:normal}
+.simtbl td.r{text-align:right}
+.simtbl td.nm a{color:var(--primary-d);font-weight:600}

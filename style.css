@@ -883,7 +883,7 @@ section p:last-child { margin-bottom: 0; }
 .fw-sec { margin: 0 0 36px; }
 .fw-tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 8px; }
 .fw-table { border-collapse: collapse; width: 100%; min-width: 720px; background: #fff; font-size: 13.5px; }
-.fw-table th, .fw-table td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; line-height: 1.7; }
+.fw-table th, .fw-table td { border: 1px solid var(--line); padding: 10px 12px; text-align: left; vertical-align: top; line-height: 1.7; word-break: break-word; overflow-wrap: anywhere; }
 .fw-table thead th { background: var(--primary); color: #fff; font-weight: 700; font-size: 13px; }
 .fw-table thead th.fw-corner { background: var(--primary-dark); }
 .fw-table tbody th[scope="row"] { background: var(--primary-tint); color: var(--primary-dark); font-weight: 700; white-space: nowrap; width: 12em; }
