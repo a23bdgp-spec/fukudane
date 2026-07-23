@@ -53,6 +53,65 @@
         <option value="その他">その他</option>
       </select>
     </div>
+    <div>
+      <label for="q-size">収益規模帯</label>
+      <select id="q-size">
+        <option value="">すべて</option>
+        <option value="1億未満">1億円未満</option>
+        <option value="1-3億">1〜3億円</option>
+        <option value="3-5億">3〜5億円</option>
+        <option value="5-10億">5〜10億円</option>
+        <option value="10-30億">10〜30億円</option>
+        <option value="30億以上">30億円以上</option>
+      </select>
+    </div>
+    <div>
+      <label for="q-era">設立年代</label>
+      <select id="q-era">
+        <option value="">すべて</option>
+        <option value="〜1950">〜1950年</option>
+        <option value="1951-1975">1951〜1975年</option>
+        <option value="1976-2000">1976〜2000年</option>
+        <option value="2001〜">2001年〜</option>
+      </select>
+    </div>
+    <div>
+      <label for="q-year">データ年度</label>
+      <select id="q-year">
+        <option value="">すべて</option>
+        <option value="2024">2024年度に在籍</option>
+        <option value="past">過去年度のみ</option>
+      </select>
+    </div>
+    <div>
+      <label for="q-hq">法人本部</label>
+      <select id="q-hq">
+        <option value="">すべて</option>
+        <option value="1">本部あり</option>
+        <option value="0">本部なし</option>
+      </select>
+    </div>
+    <div class="sortrow">
+      <div>
+        <label for="q-sort">並び替え</label>
+        <select id="q-sort">
+          <option value="name">法人名（50音）</option>
+          <option value="sv">サービス活動収益</option>
+          <option value="sr">経常増減差額率</option>
+          <option value="sn">純資産合計</option>
+          <option value="ss">職員数</option>
+          <option value="sy">設立年</option>
+        </select>
+      </div>
+      <div>
+        <label for="q-dir">順序</label>
+        <select id="q-dir">
+          <option value="asc">昇順</option>
+          <option value="desc">降順</option>
+        </select>
+      </div>
+      <button type="button" class="clearbtn" id="q-clear">条件をクリア</button>
+    </div>
   </div>
 
   <!-- 収益規模ランキング（事実の集計） -->
@@ -155,8 +214,23 @@ async function init(){
     const o = document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o);
   });
   ['q-name','q-no'].forEach(id=>document.getElementById(id).addEventListener('input', apply));
-  ['q-pref','q-biz'].forEach(id=>document.getElementById(id).addEventListener('change', apply));
+  ['q-pref','q-biz','q-size','q-era','q-year','q-hq','q-sort','q-dir'].forEach(id=>document.getElementById(id).addEventListener('change', apply));
+  document.getElementById('q-clear').addEventListener('click', ()=>{
+    ['q-name','q-no'].forEach(id=>document.getElementById(id).value='');
+    ['q-pref','q-biz','q-size','q-era','q-year','q-hq'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('q-sort').value='name'; document.getElementById('q-dir').value='asc';
+    apply();
+  });
   apply();
+}
+
+// 設立年 → 年代区分
+function eraOf(y){
+  if(!y) return null;
+  if(y<=1950) return '〜1950';
+  if(y<=1975) return '1951-1975';
+  if(y<=2000) return '1976-2000';
+  return '2001〜';
 }
 
 function apply(){
@@ -164,15 +238,43 @@ function apply(){
   const qno = document.getElementById('q-no').value.trim().replace(/\D/g,'');
   const qp = document.getElementById('q-pref').value;
   const qb = document.getElementById('q-biz').value;
+  const qsize = document.getElementById('q-size').value;
+  const qera = document.getElementById('q-era').value;
+  const qyear = document.getElementById('q-year').value;
+  const qhq = document.getElementById('q-hq').value;
   filtered = INDEX.filter(r=>{
     if(qn && !r._n.includes(qn)) return false;
     if(qno && !r.no.startsWith(qno)) return false;
     if(qp && r.pref!==qp) return false;
     if(qb && r.biz!==qb) return false;
+    if(qsize && r.sz!==qsize) return false;
+    if(qera && eraOf(r.sy)!==qera) return false;
+    if(qyear==='2024' && r.latest!==2024) return false;
+    if(qyear==='past' && r.latest===2024) return false;
+    if(qhq!=='' && String(r.hq)!==qhq) return false;
     return true;
   });
+  sortFiltered();
   page = 0;
   render();
+}
+
+// 並び替え（利用者操作。優劣表示ではなく、選んだ値の昇順/降順に並べるだけ）
+function sortFiltered(){
+  const key = document.getElementById('q-sort').value;
+  const dir = document.getElementById('q-dir').value==='desc' ? -1 : 1;
+  if(key==='name'){
+    filtered.sort((a,b)=>a.name.localeCompare(b.name,'ja')*dir);
+    return;
+  }
+  filtered.sort((a,b)=>{
+    const va=a[key], vb=b[key];
+    const na=(va===null||va===undefined), nb=(vb===null||vb===undefined);
+    if(na&&nb) return 0;
+    if(na) return 1;          // 値なしは常に末尾
+    if(nb) return -1;
+    return (va-vb)*dir;
+  });
 }
 
 function render(){
@@ -251,12 +353,14 @@ function detailHtml(c){
     ['主たる事業', c.biz],
     ['事業所数', c.offices!=null ? c.offices+'か所' : '—'],
   ].map(([k,v])=>`<span><b>${esc(k)}：</b>${esc(String(v))}</span>`).join('');
-  // 収益規模順位（事実。優劣ではない旨を明記）
+  // 収益規模順位（事実。優劣ではない旨を明記。上位%も併記）
   let rankHtml = '';
   if(c.rank){
     const parts = [];
-    if(c.rank.nat) parts.push(`全国 <b>${c.rank.nat.toLocaleString('ja-JP')}位</b> / ${c.rank.nat_n.toLocaleString('ja-JP')}法人中`);
-    if(c.rank.pref) parts.push(`${esc(c.pref)}内 <b>${c.rank.pref.toLocaleString('ja-JP')}位</b> / ${c.rank.pref_n.toLocaleString('ja-JP')}法人中`);
+    if(c.rank.nat){ const p=((c.rank.nat-1)/c.rank.nat_n*100).toFixed(1);
+      parts.push(`全国 <b>${c.rank.nat.toLocaleString('ja-JP')}位</b> / ${c.rank.nat_n.toLocaleString('ja-JP')}法人中 <small>（上位${p}%）</small>`); }
+    if(c.rank.pref){ const p=((c.rank.pref-1)/c.rank.pref_n*100).toFixed(1);
+      parts.push(`${esc(c.pref)}内 <b>${c.rank.pref.toLocaleString('ja-JP')}位</b> / ${c.rank.pref_n.toLocaleString('ja-JP')}法人中 <small>（上位${p}%）</small>`); }
     if(parts.length) rankHtml = `<div class="rankrow"><span>サービス活動収益の規模順位（${c.rank.year}年度）：</span>${parts.map(p=>`<span>${p}</span>`).join('')}</div>`;
   }
   // 5か年テーブル（行＝項目、列＝年度）
@@ -271,7 +375,55 @@ function detailHtml(c){
     return `<tr><th>${label}</th>${tds}</tr>`;
   }).join('');
   const finTbl = `<div class="tblwrap"><table class="fin"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
-  return `<div class="attrs">${attrs}</div>${rankHtml}${finTbl}${indHtml(c)}`;
+  return `<div class="attrs">${attrs}</div>${summaryHtml(c)}${rankHtml}${finTbl}${indHtml(c)}`;
+}
+
+const PIE_COLORS = ['#176B5B','#3a8f7d','#6bb3a2','#c98a1a','#b5651d','#7a6f9c','#5a8fbf','#9aa05a','#a0a0a0'];
+// 億円換算（表示用。/1e8 のみで丸め誤差を持ち込まない）
+function oku(v){ return (v/1e8).toLocaleString('ja-JP',{maximumFractionDigits:2})+'億円'; }
+
+// 財務サマリー（最新年度）：3指標＋事業区分別収益の円グラフ
+function summaryHtml(c){
+  const ly = c.latest ? String(c.latest) : null;
+  const fin = ly ? (c.years||{})[ly] : null;
+  const rate = ly ? ((c.ind||{})[ly]||{}).i02 : null;
+  if(!fin && !(c.seg&&Object.keys(c.seg).length)) return '';
+  const rev = fin ? fin.rev : null, asset = fin ? fin.asset : null;
+  const rateStr = (rate===null||rate===undefined) ? '—'
+    : (rate>=0 ? rate.toFixed(2)+'%' : '▲'+Math.abs(rate).toFixed(2)+'%');
+  const card = (k,big,sub)=>`<div class="sumcard"><div class="k">${k}</div><div class="v">${big}</div>${sub?`<div class="sub">${sub}</div>`:''}</div>`;
+  const cards = `<div class="sumcards">
+      ${card('サービス活動収益（最新年度）', rev!=null?oku(rev):'—', rev!=null?rev.toLocaleString('ja-JP')+'円':'')}
+      ${card('資産合計', asset!=null?oku(asset):'—', asset!=null?asset.toLocaleString('ja-JP')+'円':'')}
+      ${card('経常増減差額率', rateStr, '経常増減差額 ÷ サービス活動収益')}
+    </div>`;
+  return `<h4>財務サマリー（${ly||'—'}年度）</h4>
+    <div class="summary">${cards}${pieHtml(c.seg)}</div>`;
+}
+
+// 事業区分別収益の円グラフ（SVG自作）。数値のみ・評価表示なし。
+function pieHtml(seg){
+  if(!seg || !Object.keys(seg).length) return '';
+  const entries = Object.entries(seg).filter(([k,v])=>v>0).sort((a,b)=>b[1]-a[1]);
+  const total = entries.reduce((s,[,v])=>s+v,0);
+  if(total<=0) return '';
+  const cx=60,cy=60,r=54; let ang=-90, arcs='', legend='';
+  const polar=(deg)=>{ const a=deg*Math.PI/180; return [cx+r*Math.cos(a), cy+r*Math.sin(a)]; };
+  entries.forEach(([k,v],i)=>{
+    const frac=v/total, sweep=frac*360, col=PIE_COLORS[i%PIE_COLORS.length];
+    if(entries.length===1){
+      arcs=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${col}"/>`;
+    }else{
+      const [x1,y1]=polar(ang), [x2,y2]=polar(ang+sweep), large=sweep>180?1:0;
+      arcs+=`<path d="M${cx},${cy} L${x1.toFixed(2)},${y1.toFixed(2)} A${r},${r} 0 ${large} 1 ${x2.toFixed(2)},${y2.toFixed(2)} Z" fill="${col}"/>`;
+      ang+=sweep;
+    }
+    legend+=`<span><i style="background:${col}"></i>${esc(k)} <small>${oku(v)}（${(frac*100).toFixed(1)}%）</small></span>`;
+  });
+  return `<div class="pieblock">
+      <svg viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="事業区分別のサービス活動収益内訳">${arcs}</svg>
+      <div class="pielegend">${legend}</div>
+    </div>`;
 }
 
 // 指標の単位付き整形（null は該当なし）

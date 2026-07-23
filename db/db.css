@@ -43,7 +43,7 @@ header.site p{margin:4px 0 0;font-size:13px;color:#cfe4de}
 .search{
   background:var(--bg);border:1px solid var(--line);border-radius:8px;
   padding:16px;margin-bottom:16px;display:grid;gap:10px;
-  grid-template-columns:1fr 1fr 180px;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
 }
 .search .full{grid-column:1 / -1}
 .search label{display:block;font-size:12px;color:var(--sub);margin-bottom:3px}
@@ -52,7 +52,11 @@ header.site p{margin:4px 0 0;font-size:13px;color:#cfe4de}
   font-size:14px;background:#fff;
 }
 .search input:focus,.search select:focus{outline:2px solid var(--primary);border-color:var(--primary)}
-@media(max-width:640px){.search{grid-template-columns:1fr}}
+.search .sortrow{grid-column:1 / -1;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;
+  border-top:1px dashed var(--line);padding-top:10px;margin-top:2px}
+.search .sortrow > div{flex:1;min-width:150px}
+.search .clearbtn{border:1px solid var(--line);background:var(--bg2);color:var(--primary-d);
+  border-radius:5px;padding:8px 12px;cursor:pointer;font-size:13px;white-space:nowrap}
 
 /* 件数バー */
 .countbar{
@@ -122,6 +126,20 @@ footer.src .unit{color:var(--primary-d);font-weight:600}
 /* 詳細の順位バッジ */
 .rankrow{display:flex;gap:18px;flex-wrap:wrap;margin:2px 0 8px;font-size:13px;color:var(--sub)}
 .rankrow b{color:var(--primary-d);font-size:15px;font-weight:700}
+
+/* 財務サマリー */
+.summary{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;margin:2px 0 6px}
+.sumcards{display:flex;gap:10px;flex-wrap:wrap;flex:1;min-width:220px}
+.sumcard{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:8px 12px;min-width:110px;flex:1}
+.sumcard .k{font-size:11px;color:var(--sub)}
+.sumcard .v{font-size:17px;font-weight:700;color:var(--primary-d);margin-top:2px}
+.sumcard .sub{font-size:11px;color:var(--sub)}
+.pieblock{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.pieblock svg{flex:0 0 auto}
+.pielegend{font-size:12px;color:var(--ink);display:flex;flex-direction:column;gap:3px}
+.pielegend span{display:flex;align-items:center;gap:6px}
+.pielegend i{width:11px;height:11px;border-radius:2px;flex:0 0 auto}
+.pielegend small{color:var(--sub)}
 
 /* ───── 財務指標（実額・比率＋中央値） ───── */
 .detail h4{margin:14px 0 6px;font-size:14px;color:var(--primary-d)}
