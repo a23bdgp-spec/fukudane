@@ -218,7 +218,7 @@ footer.src .unit{color:var(--primary-d);font-weight:600}
 table.ind{border-collapse:collapse;width:100%;min-width:640px;font-size:13px;background:#fff}
 table.ind th,table.ind td{border:1px solid var(--line);padding:5px 8px;text-align:right;white-space:nowrap}
 table.ind thead th{background:var(--primary);color:#fff;font-weight:600;text-align:center}
-table.ind tbody th{background:var(--bg2);text-align:left;font-weight:600;color:var(--ink);position:sticky;left:0}
+table.ind tbody th{background:var(--bg2);text-align:left;font-weight:600;color:var(--ink);position:sticky;left:0;z-index:1;white-space:normal;word-break:break-word;max-width:38vw}
 table.ind td.na{color:#aab4b1;text-align:center}
 table.ind td.med{color:var(--sub);background:#fafcfb}
 .indname{cursor:help;border-bottom:1px dotted var(--sub)}
@@ -261,14 +261,14 @@ table.ind td.med{color:var(--sub);background:#fafcfb}
 .cmptbl{border-collapse:collapse;width:100%;font-size:13px;margin-top:10px}
 .cmptbl th,.cmptbl td{border:1px solid var(--line);padding:6px 9px;text-align:right;white-space:nowrap}
 .cmptbl thead th{background:var(--primary);color:#fff;text-align:center}
-.cmptbl tbody th{background:var(--bg2);text-align:left;position:sticky;left:0}
+.cmptbl tbody th{background:var(--bg2);text-align:left;position:sticky;left:0;white-space:normal;word-break:break-word;max-width:38vw}
 .cmptbl td.med{color:var(--sub);background:#fafcfb}
 .cmptbl .sec td{background:var(--primary-l);color:var(--primary-d);font-weight:600;text-align:left}
 /* 比較表のモバイル対応：横スクロール＋1列目（項目）固定＋数値nowrap */
 .cmp-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:8px;margin-top:10px}
 .cmp-scroll .cmptbl{margin-top:0;border:none;min-width:480px}
 .cmptbl tbody th{z-index:1}
-.cmptbl thead th:first-child{position:sticky;left:0;z-index:2;background:var(--primary-d)}
+.cmptbl thead th:first-child{position:sticky;left:0;z-index:2;background:var(--primary-d);white-space:normal;word-break:break-word;max-width:38vw}
 
 /* 財務指標の解説ページ（本体側）への導線 */
 .src .ind-link { margin: 0 0 10px; }

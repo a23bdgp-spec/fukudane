@@ -1090,8 +1090,8 @@ section p:last-child { margin-bottom: 0; }
 .fw-cmp-table { border-collapse: collapse; width: 100%; min-width: 640px; background: #fff; font-size: 13.5px; }
 .fw-cmp-table th, .fw-cmp-table td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
 .fw-cmp-table thead th { background: var(--primary); color: #fff; font-weight: 600; }
-.fw-cmp-table tbody th[scope="row"] { background: var(--primary-tint); font-weight: 700; color: var(--ink); position: sticky; left: 0; z-index: 2; }
-.fw-cmp-table thead th.fw-cmp-corner { position: sticky; left: 0; z-index: 3; background: var(--primary); }
+.fw-cmp-table tbody th[scope="row"] { background: var(--primary-tint); font-weight: 700; color: var(--ink); position: sticky; left: 0; z-index: 2; max-width: 40vw; word-break: break-word; }
+.fw-cmp-table thead th.fw-cmp-corner { position: sticky; left: 0; z-index: 3; background: var(--primary); max-width: 40vw; }
 .fw-col-short { display: block; font-weight: 700; }
 .fw-col-full { display: block; font-size: 11px; font-weight: 400; opacity: .92; margin-top: 2px; line-height: 1.4; }
 .fw-cost-list { margin: 0; padding-left: 1.1em; }
