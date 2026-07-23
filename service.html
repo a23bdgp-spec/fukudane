@@ -110,6 +110,31 @@
 
 <section class="list-page">
   <div class="wrap">
+    <!-- 探し方の入口（分野／受け方から絞り込み。既存の分野・形態フィルタを作動させる。JSで実データに存在する値のみ有効化） -->
+    <div class="finder" id="finder" hidden>
+      <div class="finder-group">
+        <p class="finder-label">分野から探す</p>
+        <div class="finder-btns">
+          <button type="button" class="finder-btn" data-kind="domain" data-value="高齢">高齢者の支援</button>
+          <button type="button" class="finder-btn" data-kind="domain" data-value="障害">障害のある人の支援</button>
+          <button type="button" class="finder-btn" data-kind="domain" data-value="児童・子育て">子ども・子育ての支援</button>
+          <button type="button" class="finder-btn" data-kind="domain" data-value="生活困窮・その他">生活にお困りの方の支援</button>
+        </div>
+      </div>
+      <div class="finder-group">
+        <p class="finder-label">受け方から探す</p>
+        <div class="finder-btns">
+          <button type="button" class="finder-btn" data-kind="form" data-value="訪問">自宅で受ける</button>
+          <button type="button" class="finder-btn" data-kind="form" data-value="通所">施設などに通う</button>
+          <button type="button" class="finder-btn" data-kind="form" data-value="短期入所">短期間泊まる</button>
+          <button type="button" class="finder-btn" data-kind="form" data-value="入所,居住">暮らす（入所・居住）</button>
+          <button type="button" class="finder-btn" data-kind="form" data-value="就労">働く</button>
+          <button type="button" class="finder-btn" data-kind="form" data-value="相談・支援">相談する</button>
+        </div>
+      </div>
+      <button type="button" class="finder-all" id="finder-all">すべてのサービスを見る</button>
+    </div>
+
     <!-- 検索（サービス名・通称・根拠法から。全て埋め込みJSON。外部通信なし） -->
     <div class="search-bar">
       <label for="q" class="search-heading">サービス名・通称・根拠法から検索</label>
@@ -1811,11 +1836,13 @@ const MAP_INTRO = {
   // フィルターの状態
   var selectedDomain = "すべて";
   var selectedForm = "すべて";
+  var entryFormSet = null;   // 入口「受け方」ボタンで選んだ複数形態のOR絞り込み（null＝未使用）
 
   // 分野チップ（すべて＋データ内の分野）
   var domainValues = ["すべて"].concat(domains.map(function (d) { return d.domain; }));
   buildChips(domainFilterEl, domainValues, function () { return selectedDomain; }, function (v) {
     selectedDomain = v;
+    clearFinderActive();
     apply();
   });
 
@@ -1826,6 +1853,8 @@ const MAP_INTRO = {
     var formValues = ["すべて"].concat(formsPresent);
     buildChips(typeFilterEl, formValues, function () { return selectedForm; }, function (v) {
       selectedForm = v;
+      entryFormSet = null;                 // 形態チップの手動選択は入口の複数形態指定を解除
+      clearFinderActive();
       apply();
     }, function (v) { return v === "すべて" ? "すべて" : formLabel(v); });
     if (typeBlockEl) typeBlockEl.hidden = false;
@@ -1833,6 +1862,56 @@ const MAP_INTRO = {
 
   // 検索入力
   qEl.addEventListener("input", apply);
+
+  // 探し方の入口（分野／受け方）。既存の分野・形態フィルタを作動させる。実データに存在する値のみ有効化。
+  var finderEl = document.getElementById("finder");
+  if (finderEl) {
+    var domainSet = {}; domains.forEach(function (d) { domainSet[d.domain] = true; });
+    var formSet = {}; items.forEach(function (it) { if (it.form) formSet[it.form] = true; });
+    var anyBtn = false;
+    finderEl.querySelectorAll(".finder-btn").forEach(function (btn) {
+      var kind = btn.getAttribute("data-kind");
+      var vals = btn.getAttribute("data-value").split(",");
+      // 対応する値がデータに1つも無いボタンは出さない（推測の割り当てをしない）
+      var present = vals.filter(function (v) { return kind === "domain" ? domainSet[v] : formSet[v]; });
+      if (present.length === 0) { btn.hidden = true; return; }
+      anyBtn = true;
+      btn.addEventListener("click", function () {
+        clearFinderActive();
+        btn.classList.add("is-active");
+        if (kind === "domain") {
+          selectedDomain = present[0];
+          entryFormSet = null; selectedForm = "すべて";
+        } else {
+          // 受け方の入口は分野を横断（分野リセット）。複数形態のOR（例：暮らす＝入所・居住）
+          entryFormSet = present;
+          selectedForm = "すべて"; selectedDomain = "すべて";
+        }
+        syncChips(domainFilterEl, selectedDomain);
+        syncChips(typeFilterEl, selectedForm);
+        apply();
+      });
+    });
+    if (anyBtn) finderEl.hidden = false;
+    var allBtn = document.getElementById("finder-all");
+    if (allBtn) allBtn.addEventListener("click", function () {
+      clearFinderActive();
+      selectedDomain = "すべて"; selectedForm = "すべて"; entryFormSet = null;
+      qEl.value = "";
+      syncChips(domainFilterEl, "すべて"); syncChips(typeFilterEl, "すべて");
+      apply();
+    });
+  }
+  function clearFinderActive() {
+    if (finderEl) finderEl.querySelectorAll(".finder-btn.is-active").forEach(function (b) { b.classList.remove("is-active"); });
+  }
+  // チップの押下状態を現在の選択値に合わせて同期する
+  function syncChips(container, selValue) {
+    if (!container) return;
+    container.querySelectorAll(".chip").forEach(function (c) {
+      c.setAttribute("aria-pressed", c.getAttribute("data-value") === selValue ? "true" : "false");
+    });
+  }
 
   // 表示切替（カード表示／表表示）。どちらも検索・分野・形態の絞り込み結果に連動
   viewCardBtn.addEventListener("click", function () { setView("card"); });
@@ -1854,7 +1933,12 @@ const MAP_INTRO = {
     var terms = norm(qEl.value).split(/\s+/).filter(Boolean);
     var list = items.filter(function (it) {
       if (selectedDomain !== "すべて" && it.domain !== selectedDomain) return false;
-      if (selectedForm !== "すべて" && it.form !== selectedForm) return false;
+      // 受け方：入口の複数形態（entryFormSet）があればOR、無ければ形態チップの単一選択
+      if (entryFormSet) {
+        if (entryFormSet.indexOf(it.form) === -1) return false;
+      } else if (selectedForm !== "すべて" && it.form !== selectedForm) {
+        return false;
+      }
       for (var i = 0; i < terms.length; i++) {
         if (it._hay.indexOf(terms[i]) === -1) return false;
       }

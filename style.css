@@ -953,3 +953,15 @@ section p:last-child { margin-bottom: 0; }
 .mg-related-list > li { font-size: 13.5px; line-height: 1.6; }
 .mg-related-list a { color: var(--primary); font-weight: 700; }
 .mg-related-desc { display: block; font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+
+/* サービス一覧：探し方の入口 */
+.finder { background: var(--primary-tint); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 0 0 20px; }
+.finder-group { margin: 0 0 12px; }
+.finder-label { font-size: 13px; font-weight: 700; color: var(--primary-dark); margin: 0 0 8px; }
+.finder-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+.finder-btn { font-family: inherit; font-size: 13.5px; font-weight: 700; color: var(--primary-dark); background: #fff; border: 1px solid var(--line-strong); border-radius: 20px; padding: 8px 16px; cursor: pointer; }
+.finder-btn:hover { border-color: var(--primary); }
+.finder-btn.is-active { background: var(--primary); color: #fff; border-color: var(--primary-dark); }
+.finder-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.finder-all { font-family: inherit; font-size: 13px; color: var(--primary); background: none; border: none; cursor: pointer; padding: 4px 2px; text-decoration: underline; }
+.finder-all:hover { color: var(--primary-dark); }
