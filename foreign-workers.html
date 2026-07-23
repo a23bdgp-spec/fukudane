@@ -30,7 +30,7 @@
     },
     {
       "@type": "Article",
-      "headline": "外国人材の受入れ",
+      "headline": "介護分野の外国人材受入れ4ルート",
       "description": "介護分野の外国人材の受入れ4ルート（EPA・在留資格「介護」・技能実習・特定技能1号）を根拠・所管・在留期間・業務範囲で比較し、育成就労制度や公式の手引き・試験・相談窓口へのリンクを整理します。",
       "url": "https://fukudane.com/foreign-workers.html",
       "inLanguage": "ja",
@@ -104,8 +104,8 @@
 
 <div class="hero">
   <div class="wrap">
-    <h1 class="catch">外国人材の受入れ</h1>
-    <p class="lead" id="fw-desc"></p>
+    <h1 class="catch">介護分野の外国人材受入れ4ルート</h1>
+    <p class="lead">4つのルートでは、対象者、在留期間、資格、受入れ手続、法人が行う支援が異なります。まず主な違いを確認し、詳しい要件は各制度の公式資料をご確認ください。</p>
   </div>
 </div>
 
@@ -714,86 +714,148 @@ const FOREIGN_WORKERS = {
 };
 /* __FOREIGN_WORKERS_INJECT_END__ ここまで */
 
-/* ===== 描画処理（外国人材の受入れ） ===== */
+/* ===== 描画処理（外国人材の受入れ・4ルートの表示用 display 構造で再構築） ===== */
 (function () {
-  var descEl = document.getElementById("fw-desc");
   var rootEl = document.getElementById("fw-root");
   var data = FOREIGN_WORKERS || {};
   var cmp = data.comparison || {};
+  var disp = cmp.display || {};
+  var routes = cmp.routes || [];
   var cats = data.categories || [];
+  var ik = cmp.ikusei_shuro;
 
-  if (descEl && data.description) descEl.textContent = data.description;
+  var columns = disp.columns || [];        // {短名, 正式名称}
+  var cards = disp.cards || [];            // {短名, 要約}
+  var entries = disp.entry_points || [];   // {目的, ルート}
+  var tbl = disp.table || {};
+  var rows = tbl.rows || [];               // {番号, 項目, 参照フィールド, [費目リスト]}
+  var costNote = disp.cost_note || "";
 
-  if (!cmp.routes && cats.length === 0) {
+  // 正式名称→routeオブジェクト（比較セルの短文・全文を引くため）
+  var routeByName = {};
+  routes.forEach(function (r) { routeByName[r["制度名"]] = r; });
+
+  if (columns.length === 0 || rows.length === 0) {
     rootEl.innerHTML =
       '<div class="notice"><p class="notice-title">このページは現在準備中です。</p>' +
       "<p>外国人材の受入れに関わる制度・手引き・関係機関を、公表情報に基づいて整理しています。</p></div>";
     return;
   }
 
-  var html = "";
-  var routes = cmp.routes || [];
-  var ik = cmp.ikusei_shuro;
-
-  // ① このページで分かること（静的・事実の箇条書き。各セクションへのジャンプを兼ねる）
-  html += '<div class="fw-summary-box"><p class="fw-summary-title">このページで分かること</p>';
-  html += '<ul class="fw-summary-list">';
-  if (routes.length > 0) html += '<li><a href="#fw-comparison">受入れ4ルートの違い（比較表）</a></li>';
-  if (ik && ik["名称"]) html += '<li><a href="#fw-ikusei">育成就労制度（2027年施行）</a></li>';
-  html += '<li><a href="#fw-resources">公式ガイドライン・手引き</a></li>';
-  html += '<li><a href="#fw-resources">受入れに関わる費用と活用できる支援制度</a></li>';
-  html += '<li><a href="#fw-resources">関係機関の窓口</a></li>';
-  html += "</ul></div>";
-
-  // ② もくじ（比較表・育成就労・各分類へのページ内ジャンプ）
-  var tocParts = [];
-  if (routes.length > 0) tocParts.push('<a class="gl-toc-link" href="#fw-comparison">受入れ4ルートの比較</a>');
-  if (ik && ik["名称"]) tocParts.push('<a class="gl-toc-link" href="#fw-ikusei">育成就労制度</a>');
-  cats.forEach(function (c, i) { tocParts.push('<a class="gl-toc-link" href="#fw-cat-' + i + '">' + esc(c.category) + "</a>"); });
-  if (tocParts.length) html += '<nav class="gl-toc" aria-label="もくじ">' + tocParts.join("") + "</nav>";
-
-  // 受入れ4ルートの比較表（h2）
-  // 表示するのは、制度を大づかみに理解するための主要6項目のみ。各セルは短文（_短文）だけを表示し全文は載せない。
-  // 詳しい要件・手続は表の下の公式ガイドライン・手引き（分類別リンク集）へ誘導する。
-  var CMP_ROWS = [
-    "制度の性格（公式の位置づけ）",
-    "在留期間",
-    "介護福祉士国家資格との関係",
-    "訪問介護など訪問系サービスへの従事",
-    "受入れ・支援に関わる機関",
-    "費用（公表・公定されているもの）"
-  ];
-  if (routes.length > 0) {
-    html += '<section class="fw-sec" id="fw-comparison">';
-    if (cmp.heading) html += '<h2 class="section-title">' + esc(cmp.heading) + "</h2>";
-    if (cmp.description) html += '<p class="section-note">' + esc(cmp.description) + "</p>";
-    html += '<div class="fw-tablewrap"><table class="fw-table">';
-    html += "<thead><tr><th scope=\"col\" class=\"fw-corner\">項目</th>";
-    routes.forEach(function (r) { html += '<th scope="col">' + esc(r["制度名"]) + "</th>"; });
-    html += "</tr></thead><tbody>";
-    CMP_ROWS.forEach(function (f) {
-      html += '<tr><th scope="row">' + esc(f) + "</th>";
-      routes.forEach(function (r) {
-        // 短文（_短文）を優先表示。無い場合のみ全文にフォールバック
-        var short = r[f + "_短文"] || r[f] || "";
-        html += "<td>" + esc(short) + "</td>";
-      });
-      html += "</tr>";
-    });
-    html += '<tr><th scope="row">出典</th>';
-    routes.forEach(function (r) {
-      var u = safeUrl(r["出典URL"]);
-      html += "<td>" + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">公式ページ↗</a>' : "") + "</td>";
-    });
-    html += "</tr></tbody></table></div>";
-    html += '<p class="section-note fw-detail-guide">要件・手続の詳細は、下の公式ガイドライン・手引きでご確認ください。</p>';
-    html += "</section>";
+  // ①〜⑧のセル：短文を表示し、全文があれば「詳しく見る」で開閉
+  function cell(field, route) {
+    if (!route) return "—";
+    var short = route[field + "_短文"] || route[field] || "";
+    var full = route[field] || "";
+    if (full && full !== short) {
+      return '<details class="fw-cell"><summary>' + esc(short) + '</summary><div class="fw-cell-full">' + esc(full) + "</div></details>";
+    }
+    return esc(short);
+  }
+  // ⑨費用：費目リスト（短名キー）
+  function costList(row, shortName) {
+    var arr = (row["費目リスト"] || {})[shortName] || [];
+    if (!arr.length) return "—";
+    return '<ul class="fw-cost-list">' + arr.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>";
   }
 
-  // 育成就労制度（h2＝データの名称。技能実習に代わる新制度・2027年施行の事実）
+  var html = "";
+
+  // ① このページで分かること（新構成に合わせ簡素化）
+  html += '<div class="fw-summary-box"><p class="fw-summary-title">このページで分かること</p><ul class="fw-summary-list">';
+  html += '<li><a href="#fw-cards">4ルートをひとことで</a></li>';
+  html += '<li><a href="#fw-entry">制度の違いをつかむ入口</a></li>';
+  html += '<li><a href="#fw-compare">主な違いを比較（' + rows.length + "項目）</a></li>";
+  if (ik && ik["名称"]) html += '<li><a href="#fw-ikusei">育成就労制度（2027年施行）</a></li>';
+  html += '<li><a href="#fw-resources">公式ガイドライン・手引き・相談窓口</a></li>';
+  html += "</ul></div>";
+
+  // ② もくじ
+  var tocParts = [
+    '<a class="gl-toc-link" href="#fw-cards">4ルートをひとことで</a>',
+    '<a class="gl-toc-link" href="#fw-entry">制度の違いをつかむ入口</a>',
+    '<a class="gl-toc-link" href="#fw-compare">主な違いを比較</a>'
+  ];
+  if (ik && ik["名称"]) tocParts.push('<a class="gl-toc-link" href="#fw-ikusei">育成就労制度</a>');
+  cats.forEach(function (c, i) { tocParts.push('<a class="gl-toc-link" href="#fw-cat-' + i + '">' + esc(c.category) + "</a>"); });
+  html += '<nav class="gl-toc" aria-label="もくじ">' + tocParts.join("") + "</nav>";
+
+  // A. 4ルートをひとことで（cards）
+  html += '<section class="fw-sec" id="fw-cards"><h2 class="section-title">4ルートをひとことで</h2>';
+  html += '<div class="fw-cards">';
+  cards.forEach(function (cd) {
+    var col = columns.filter(function (c) { return c["短名"] === cd["短名"]; })[0] || {};
+    var full = col["正式名称"] || "";
+    html += '<div class="fw-card" data-name="' + esc(full) + '">';
+    html += '<p class="fw-card-short">' + esc(cd["短名"]) + "</p>";
+    if (full && full !== cd["短名"]) html += '<p class="fw-card-full">' + esc(full) + "</p>";
+    html += '<p class="fw-card-sum">' + esc(cd["要約"]) + "</p>";
+    html += "</div>";
+  });
+  html += "</div></section>";
+
+  // B. 制度の違いをつかむ入口（entry_points。目的→ルート。おすすめ表現なし＝データ通り）
+  html += '<section class="fw-sec" id="fw-entry"><h2 class="section-title">制度の違いをつかむ入口</h2>';
+  html += '<ul class="fw-entry-list">';
+  entries.forEach(function (e) {
+    html += '<li class="fw-entry"><span class="fw-entry-goal">' + esc(e["目的"]) +
+      '</span><span class="fw-entry-arrow" aria-hidden="true">→</span><span class="fw-entry-route">' + esc(e["ルート"]) + "</span></li>";
+  });
+  html += "</ul></section>";
+
+  // C. 主な違いを比較（9行×4列。PC＝表、スマホ＝ルート切替タブ＋カード。表はトグルで開閉）
+  // 表HTML（PC常時表示・モバイルはトグルで開閉。1列目sticky）
+  var tableHtml = '<div class="fw-cmp-tablewrap" id="fw-cmp-tablewrap"><table class="fw-cmp-table"><thead><tr>';
+  tableHtml += '<th scope="col" class="fw-cmp-corner">項目</th>';
+  columns.forEach(function (c) {
+    tableHtml += '<th scope="col" data-name="' + esc(c["正式名称"]) + '"><span class="fw-col-short">' + esc(c["短名"]) +
+      '</span><span class="fw-col-full">' + esc(c["正式名称"]) + "</span></th>";
+  });
+  tableHtml += "</tr></thead><tbody>";
+  rows.forEach(function (row) {
+    tableHtml += '<tr><th scope="row">' + esc(row["項目"]) + "</th>";
+    columns.forEach(function (c) {
+      var route = routeByName[c["正式名称"]];
+      tableHtml += "<td>" + (row["費目リスト"] ? costList(row, c["短名"]) : cell(row["参照フィールド"], route)) + "</td>";
+    });
+    tableHtml += "</tr>";
+  });
+  tableHtml += "</tbody></table></div>";
+
+  // モバイル用ルートパネル（1ルートの9項目をカード型で表示）
+  function panelHtml(idx) {
+    var c = columns[idx] || {};
+    var route = routeByName[c["正式名称"]];
+    var h = '<p class="fw-cmp-panel-name"><span class="fw-col-short">' + esc(c["短名"]) +
+      '</span><span class="fw-col-full">' + esc(c["正式名称"]) + "</span></p>";
+    h += '<dl class="fw-cmp-dl">';
+    rows.forEach(function (row) {
+      h += "<dt>" + esc(row["項目"]) + "</dt><dd>" +
+        (row["費目リスト"] ? costList(row, c["短名"]) : cell(row["参照フィールド"], route)) + "</dd>";
+    });
+    h += "</dl>";
+    return h;
+  }
+  var tabsHtml = '<div class="fw-cmp-tabs" role="tablist" aria-label="ルートの切替">';
+  columns.forEach(function (c, i) {
+    tabsHtml += '<button type="button" role="tab" class="fw-cmp-tab' + (i === 0 ? " is-active" : "") +
+      '" data-idx="' + i + '" aria-selected="' + (i === 0 ? "true" : "false") + '">' + esc(c["短名"]) + "</button>";
+  });
+  tabsHtml += "</div>";
+
+  html += '<section class="fw-sec" id="fw-compare"><h2 class="section-title">主な違いを比較</h2>';
+  html += '<div class="fw-cmp-sp">' + tabsHtml +
+    '<div class="fw-cmp-panel" id="fw-cmp-panel">' + panelHtml(0) + "</div>" +
+    '<button type="button" class="fw-cmp-tabletoggle" aria-expanded="false" aria-controls="fw-cmp-tablewrap">4制度を表で比較</button></div>';
+  html += tableHtml;
+  if (costNote) html += '<p class="fw-cost-note section-note">' + esc(costNote) + "</p>";
+  html += '<p class="section-note fw-neutral-note">各項目は制度の事実であり、優劣や向き不向きの評価は含みません。詳しい要件は各制度の公式資料でご確認ください。</p>';
+  html += "</section>";
+
+  // D. 育成就労制度（既存）
   if (ik && ik["名称"]) {
     html += '<section class="fw-sec" id="fw-ikusei">';
-    html += '<h2 class="section-title">' + esc(ik["名称"]) + "</h2>";
+    html += '<h2 class="section-title" data-name="' + esc(ik["名称"]) + '">' + esc(ik["名称"]) + "</h2>";
     html += '<div class="fw-note"><dl class="fw-dl">';
     if (ik["根拠"]) html += "<dt>根拠</dt><dd>" + esc(ik["根拠"]) + "</dd>";
     if (ik["施行時期"]) html += "<dt>施行時期</dt><dd>" + esc(ik["施行時期"]) + "</dd>";
@@ -804,7 +866,7 @@ const FOREIGN_WORKERS = {
     html += "</div></section>";
   }
 
-  // 分類別リンク集（分類ごとにアコーディオン。最初の分類のみ開く）
+  // E. 公式ガイドライン・手引き・相談窓口（既存アコーディオン）
   if (cats.length > 0) {
     html += '<section class="fw-sec" id="fw-resources">';
     cats.forEach(function (c, i) {
@@ -834,6 +896,32 @@ const FOREIGN_WORKERS = {
 
   rootEl.innerHTML = html;
 
+  // ルート切替タブ（モバイル）
+  var panelEl = document.getElementById("fw-cmp-panel");
+  var tabWrap = rootEl.querySelector(".fw-cmp-tabs");
+  if (tabWrap && panelEl) {
+    tabWrap.addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-idx]");
+      if (!b) return;
+      var idx = parseInt(b.getAttribute("data-idx"), 10) || 0;
+      tabWrap.querySelectorAll(".fw-cmp-tab").forEach(function (x) {
+        var on = x === b;
+        x.classList.toggle("is-active", on);
+        x.setAttribute("aria-selected", on ? "true" : "false");
+      });
+      panelEl.innerHTML = panelHtml(idx);
+    });
+  }
+  // 「4制度を表で比較」トグル（モバイルで表を開閉）
+  var toggle = rootEl.querySelector(".fw-cmp-tabletoggle");
+  var tableWrap = document.getElementById("fw-cmp-tablewrap");
+  if (toggle && tableWrap) {
+    toggle.addEventListener("click", function () {
+      var open = tableWrap.classList.toggle("is-open");
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
+
   // ハッシュ（#fw-cat-i 等）で指定された分類アコーディオンを開いてスクロール
   function openHashTarget() {
     var id = (location.hash || "").replace(/^#/, "");
@@ -844,7 +932,6 @@ const FOREIGN_WORKERS = {
     if (det) det.open = true;
     el.scrollIntoView();
   }
-  // もくじ・分かることリンクのクリックで対象アコーディオンを開く
   rootEl.addEventListener("click", function (e) {
     var a = e.target.closest ? e.target.closest('a[href^="#fw-"]') : null;
     if (!a) return;

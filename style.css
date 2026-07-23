@@ -1019,3 +1019,50 @@ section p:last-child { margin-bottom: 0; }
 .fw-cell[open] > summary::after { content: " －"; }
 .fw-cell > summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .fw-cell-full { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); color: var(--ink); line-height: 1.7; }
+
+/* ===== 外国人材：4ルート早わかりカード ===== */
+.fw-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 4px 0 0; }
+.fw-card { border: 1px solid var(--line); border-left: 4px solid var(--primary); border-radius: 8px; padding: 12px 14px; background: #fff; }
+.fw-card-short { font-size: 15px; font-weight: 700; color: var(--primary); margin: 0; }
+.fw-card-full { font-size: 12px; color: var(--ink-soft); margin: 2px 0 0; line-height: 1.5; }
+.fw-card-sum { font-size: 13.5px; color: var(--ink); margin: 8px 0 0; line-height: 1.7; }
+
+/* 制度の違いをつかむ入口（目的→ルート） */
+.fw-entry-list { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 8px; }
+.fw-entry { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; background: #fff; font-size: 14px; }
+.fw-entry-goal { color: var(--ink); }
+.fw-entry-arrow { color: var(--primary); font-weight: 700; }
+.fw-entry-route { color: var(--primary); font-weight: 700; }
+
+/* 主な違いを比較（表＝PC・タブ＝スマホ） */
+.fw-cmp-sp { display: none; } /* PCでは非表示。スマホで有効化 */
+.fw-cmp-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 12px; }
+.fw-cmp-tab { font-family: inherit; font-size: 13px; font-weight: 700; color: var(--primary); background: #fff; border: 1px solid var(--line); border-radius: 20px; padding: 7px 14px; cursor: pointer; }
+.fw-cmp-tab.is-active { background: var(--primary); color: #fff; border-color: var(--primary-dark); }
+.fw-cmp-panel-name { margin: 0 0 8px; }
+.fw-cmp-panel-name .fw-col-short { font-size: 15px; font-weight: 700; color: var(--primary); }
+.fw-cmp-panel-name .fw-col-full { display: block; font-size: 12px; color: var(--ink-soft); font-weight: 400; margin-top: 2px; line-height: 1.5; }
+.fw-cmp-dl { margin: 0; }
+.fw-cmp-dl dt { font-size: 12.5px; font-weight: 700; color: var(--primary); margin: 10px 0 2px; }
+.fw-cmp-dl dd { margin: 0; font-size: 13.5px; color: var(--ink); line-height: 1.7; }
+.fw-cmp-tabletoggle { font-family: inherit; font-size: 13px; font-weight: 700; color: var(--primary); background: #fff; border: 1px solid var(--primary); border-radius: 8px; padding: 9px 16px; cursor: pointer; margin: 14px 0 0; width: 100%; }
+.fw-cmp-tabletoggle:hover { background: var(--primary); color: #fff; }
+.fw-cmp-tablewrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line); border-radius: 8px; margin: 4px 0 0; }
+.fw-cmp-table { border-collapse: collapse; width: 100%; min-width: 640px; background: #fff; font-size: 13.5px; }
+.fw-cmp-table th, .fw-cmp-table td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+.fw-cmp-table thead th { background: var(--primary); color: #fff; font-weight: 600; }
+.fw-cmp-table tbody th[scope="row"] { background: var(--primary-tint); font-weight: 700; color: var(--ink); position: sticky; left: 0; z-index: 2; }
+.fw-cmp-table thead th.fw-cmp-corner { position: sticky; left: 0; z-index: 3; background: var(--primary); }
+.fw-col-short { display: block; font-weight: 700; }
+.fw-col-full { display: block; font-size: 11px; font-weight: 400; opacity: .92; margin-top: 2px; line-height: 1.4; }
+.fw-cost-list { margin: 0; padding-left: 1.1em; }
+.fw-cost-list li { margin: 2px 0; line-height: 1.6; }
+.fw-cost-note { margin-top: 10px; }
+.fw-neutral-note { color: var(--ink-soft); }
+
+@media (max-width: 600px) {
+  .fw-cards { grid-template-columns: 1fr; }
+  .fw-cmp-sp { display: block; }
+  .fw-cmp-tablewrap { display: none; }
+  .fw-cmp-tablewrap.is-open { display: block; margin-top: 12px; }
+}
