@@ -134,11 +134,12 @@
       <label for="q" class="search-label">指標を検索（指標名・定義・見方の部分一致）</label>
       <input type="search" id="q" class="search-input" placeholder="例：純資産" autocomplete="off">
     </div>
+    <p class="ind-note">日本公認会計士協会 研究報告第27号の分類体系（収益性／安定性・持続性／合理性／効率性）で整理しています。<span class="ind-badge ind-badge-main">主要</span>は27号の主要指標、<span class="ind-badge ind-badge-ref">参考</span>は参考指標です。</p>
     <p class="ind-count">表示：<strong id="cnt">—</strong> 指標</p>
     <div class="ind-defs" id="list"><p class="ind-loading">読み込み中…</p></div>
     <div class="ind-src">
-      <p id="ind-src">財務指標は、独立行政法人福祉医療機構「経営分析参考ツール」の指標体系を参考に、本データベースの財務諸表データからフクダネが独自に算出したものです。母集団・期間・一部の指標定義が同機構の公表値とは異なるため、参考値としてご覧ください。</p>
-      <p>各指標の定義・計算式は同ツールの体系に基づいています。本ページでは判定値（基準となる数値）や良否の評価・警告は掲載していません。指標の数値は各法人が提出した計算書類に基づく事実であり、経営の良し悪しを示すものではありません。</p>
+      <p id="ind-src">財務指標は、日本公認会計士協会 非営利法人委員会研究報告第27号「社会福祉法人の経営指標」の指標体系に準拠し、本データベースの財務諸表データからフクダネが独自に算出したものです。</p>
+      <p id="ind-baseline">27号は特定の基準値（いき値）の提示を目的としない旨を明記しており、フクダネも良否の目安値・判定基準は掲載せず、事実としての指標値のみを提示します。</p>
     </div>
   </div>
 </section>
@@ -183,31 +184,49 @@
 </footer>
 
 <script>
-const BUILD_VERSION = "25a2ba7167";   // db/data のキャッシュバスター。build_db.py が再生成時に更新
+const BUILD_VERSION = "0194e1128f";   // db/data のキャッシュバスター。build_db.py が再生成時に更新
 var DEFS = [];
 function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (m) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]; }); }
+
+function kubunBadge(k) {
+  if (!k) return "";
+  var cls = k === "主要" ? "main" : "ref";
+  return '<span class="ind-badge ind-badge-' + cls + '">' + esc(k) + "</span>";
+}
 
 function render() {
   var q = document.getElementById("q").value.trim();
   var shown = DEFS.filter(function (d) {
     if (!q) return true;
-    return [d.name, d.definition, d.formula, d.desc].some(function (t) { return String(t || "").indexOf(q) >= 0; });
+    return [d.name, d.definition, d.formula, d.desc, d.group, d.subgroup].some(function (t) { return String(t || "").indexOf(q) >= 0; });
   });
   document.getElementById("cnt").textContent = shown.length + " / 全" + DEFS.length;
   var list = document.getElementById("list");
   if (!shown.length) { list.innerHTML = '<p class="ind-loading">該当する指標がありません。</p>'; return; }
-  list.innerHTML = shown.map(function (d) {
-    return '<details class="ind-item"><summary>' + esc(d.name) + (d.unit ? "（" + esc(d.unit) + "）" : "") + "</summary>" +
+  // 27号の分類（group）→小分類（subgroup）の順に見出しを挟んで描画。DEFSは27号順で並ぶ
+  var html = "", curG = null, curS = null;
+  shown.forEach(function (d) {
+    if (d.group !== curG) { curG = d.group; curS = null; html += '<h2 class="ind-group">' + esc(d.group) + "</h2>"; }
+    var sg = d.subgroup || "";
+    if (sg !== curS) { curS = sg; if (sg) html += '<h3 class="ind-subgroup">' + esc(sg) + "</h3>"; }
+    html += '<details class="ind-item"><summary><span class="ind-name">' + esc(d.name) +
+      (d.unit ? "（" + esc(d.unit) + "）" : "") + "</span>" + kubunBadge(d.kubun) + "</summary>" +
       '<div class="ind-body">' +
       (d.definition ? "<p><b>定義</b>：" + esc(d.definition) + "</p>" : "") +
       (d.formula ? "<p><b>計算式</b></p><pre class=\"ind-formula\">" + esc(d.formula) + "</pre>" : "") +
       (d.desc ? "<p><b>指標の見方</b>：" + esc(d.desc) + "</p>" : "") +
-      (!(d.definition || d.formula || d.desc) ? '<p class="ind-loading">この指標の解説はありません。</p>' : "") +
       "</div></details>";
-  }).join("");
+  });
+  list.innerHTML = html;
 }
 
 (function init() {
+  // 出典・基準値非掲載の文言は meta.json（build_db.py がv2メタから生成）を正とする
+  fetch("db/data/meta.json?v=" + BUILD_VERSION).then(function (r) { return r.ok ? r.json() : null; }).then(function (meta) {
+    if (!meta) return;
+    if (meta.indicator_source_text) { var s = document.getElementById("ind-src"); if (s) s.textContent = meta.indicator_source_text; }
+    if (meta.indicator_no_baseline_text) { var b = document.getElementById("ind-baseline"); if (b) b.textContent = meta.indicator_no_baseline_text; }
+  }).catch(function () {});
   fetch("db/data/indicator_defs.json?v=" + BUILD_VERSION)
     .then(function (r) { if (!r.ok) throw new Error("load"); return r.json(); })
     .then(function (data) {

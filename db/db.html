@@ -231,9 +231,9 @@
   </div>
 </footer>
 
-<script src="filters.js?v=25a2ba7167"></script>
+<script src="filters.js?v=0194e1128f"></script>
 <script>
-const BUILD_VERSION="25a2ba7167";   // ビルド時に置換（キャッシュバスティング）
+const BUILD_VERSION="0194e1128f";   // ビルド時に置換（キャッシュバスティング）
 const PAGE_SIZE = 30;    // 初期表示件数・「さらに表示」1回あたりの追加件数
 let INDEX = [];          // 軽量索引
 let filtered = [];       // 絞り込み結果
@@ -246,7 +246,7 @@ let RANKING = null;      // 収益規模ランキング
 let rankShowAll = false; // ランキングを全件表示中か
 let compare = [];        // 比較リスト [{no,pcode,name}]（最大5）
 const CMP_MAX = 5;
-const IND_SOURCE_NOTE = "財務指標は福祉医療機構「経営分析参考ツール」の指標体系を参考にフクダネが独自に算出した参考値です。";
+const IND_SOURCE_NOTE = "財務指標は日本公認会計士協会 研究報告第27号の指標体系に準拠し、フクダネが独自に算出した参考値です。良否の基準値は掲載していません。";
 
 const YEARS = [2020,2021,2022,2023,2024];
 const FIN = [            // 表示順とラベル（評価語を含めない）
@@ -515,7 +515,7 @@ function manYen(v){
 function summaryHtml(c){
   const ly = c.latest ? String(c.latest) : null;
   const fin = ly ? (c.years||{})[ly] : null;
-  const rate = ly ? ((c.ind||{})[ly]||{}).i02 : null;
+  const rate = ly ? ((c.ind||{})[ly]||{}).k02 : null;
   if(!fin && !(c.seg&&Object.keys(c.seg).length)) return '';
   const rev = fin ? fin.rev : null, asset = fin ? fin.asset : null;
   const rateStr = (rate===null||rate===undefined) ? '—' : keijoRate(rate);
@@ -574,7 +574,13 @@ function indHtml(c){
   // 表：行＝指標、列＝5年度＋中央値4系列（最新年度）
   let head = '<th>指標</th>' + YEARS.map(y=>`<th>${y}</th>`).join('')
     + `<th>全国中央値</th><th>${esc(c.pref)}中央値</th><th>${esc(c.biz)}中央値</th><th>${esc(c.size||'規模')}中央値</th>`;
-  let body = DEFS.map(d=>{
+  const colspan = 1 + YEARS.length + 4;   // 指標名＋5年度＋中央値4系列
+  let curG=null, curS=null, body='';
+  DEFS.forEach(d=>{
+    // 27号の分類（大分類＝group／小分類＝subgroup）で見出し行を挟む
+    if(d.group!==curG){ curG=d.group; curS=null; body += `<tr class="ind-grouprow"><th colspan="${colspan}">${esc(d.group)}</th></tr>`; }
+    const sg=d.subgroup||'';
+    if(sg!==curS){ curS=sg; if(sg) body += `<tr class="ind-subrow"><th colspan="${colspan}">${esc(sg)}</th></tr>`; }
     const tds = YEARS.map(y=>{
       const yr = (c.ind||{})[String(y)];
       const v = yr ? yr[d.key] : null;
@@ -586,8 +592,9 @@ function indHtml(c){
     const mb = fmtInd(medOf(d.key,'biz',c.biz,ly), d.unit);
     const ms = c.size ? fmtInd(medOf(d.key,'size',c.size,ly), d.unit) : null;
     const mcell = x => x===null ? '<td class="med na">—</td>' : `<td class="med">${x}</td>`;
-    return `<tr><th><span class="indname" title="${esc(d.definition)}">${esc(d.name)}</span></th>${tds}${mcell(mn)}${mcell(mp)}${mcell(mb)}${mcell(ms)}</tr>`;
-  }).join('');
+    const badge = d.kubun ? `<span class="ind-kubun ind-kubun-${d.kubun==='主要'?'main':'ref'}">${esc(d.kubun)}</span>` : '';
+    body += `<tr><th><span class="indname" title="${esc(d.definition)}">${esc(d.name)}</span>${badge}</th>${tds}${mcell(mn)}${mcell(mp)}${mcell(mb)}${mcell(ms)}</tr>`;
+  });
   const indTbl = `<div class="tblwrap"><table class="ind"><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 
   // 推移グラフ（固定の複合グラフ。切替UIは持たない）
@@ -656,7 +663,7 @@ function renderSimilar(c){
 // 概要の複合グラフ：サービス活動収益(棒・左軸)＋経常増減差額率(折れ線・右軸)＋全国中央値(点線)。
 // 外部ライブラリ不使用の自作SVG。既存ツールの概要タブと同じ構成。
 function svgOverview(c){
-  const RATE='i02';  // 経常増減差額率
+  const RATE='k02';  // 経常増減差額率
   const revPts  = YEARS.map(y=>{ const yr=(c.years||{})[String(y)]; return yr&&yr.rev!=null?yr.rev:null; });
   const ratePts = YEARS.map(y=>{ const yr=(c.ind||{})[String(y)]; return yr&&yr[RATE]!==undefined?yr[RATE]:null; });
   const medPts  = YEARS.map(y=> medOf(RATE,'nat','',y));
@@ -788,12 +795,18 @@ async function openCompare(){
       const cell = c=>{ const yr=(c.years||{})[ly]; const v=yr?yr[k]:null; return !money ? numFmt(v) : (k==='rev' ? okuYen(v) : manYen(v)); };
       return `<tr><th>${label}</th>${corps.map(c=>`<td>${cell(c)}</td>`).join('')}<td class="med">—</td></tr>`;
     }).join('');
-    rows += `<tr class="sec"><td colspan="${corps.length+2}">財務指標（${ly}年度）</td></tr>`;
-    rows += DEFS.map(d=>{
+    rows += `<tr class="sec"><td colspan="${corps.length+2}">財務指標（${ly}年度・日本公認会計士協会 研究報告第27号の分類）</td></tr>`;
+    const cspan = corps.length + 2;
+    let cg=null, cs=null;
+    DEFS.forEach(d=>{
+      if(d.group!==cg){ cg=d.group; cs=null; rows += `<tr class="ind-grouprow"><th colspan="${cspan}">${esc(d.group)}</th></tr>`; }
+      const sg=d.subgroup||'';
+      if(sg!==cs){ cs=sg; if(sg) rows += `<tr class="ind-subrow"><th colspan="${cspan}">${esc(sg)}</th></tr>`; }
       const cells = corps.map(c=>{ const yr=(c.ind||{})[ly]; const v=yr?yr[d.key]:null; return `<td>${indFmt(v===undefined?null:v)}</td>`; }).join('');
       const mn = medOf(d.key,'nat','',ly);
-      return `<tr><th>${esc(d.name)}（${esc(d.unit)}）</th>${cells}<td class="med">${indFmt(mn)}</td></tr>`;
-    }).join('');
+      const badge = d.kubun ? `<span class="ind-kubun ind-kubun-${d.kubun==='主要'?'main':'ref'}">${esc(d.kubun)}</span>` : '';
+      rows += `<tr><th>${esc(d.name)}（${esc(d.unit)}）${badge}</th>${cells}<td class="med">${indFmt(mn)}</td></tr>`;
+    });
     inner = `<p class="note">数値と全国中央値をそのまま並べています。順位付け・優劣の判定はしていません。金額は1億円未満を万円、1億円以上を「N億M万円」で表示。その他の単位は各行名に記載。${esc(IND_SOURCE_NOTE)}</p>
       <div class="cmp-scroll"><table class="cmptbl"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
       <p class="note">各指標の正式名称・定義・計算式は <a href="../indicators.html" target="_blank" rel="noopener">財務指標の解説 ↗</a> をご覧ください。</p>`;

@@ -331,3 +331,16 @@ table.ind td.med{color:var(--sub);background:#fafcfb}
 .simtbl td.nm{white-space:normal}
 .simtbl td.r{text-align:right}
 .simtbl td.nm a{color:var(--primary-d);font-weight:600}
+
+/* 財務指標テーブル：JICPA27号の分類見出し行・主要/参考バッジ */
+.ind tr.ind-grouprow th, .cmptbl tr.ind-grouprow th {
+  background: var(--primary, #176B5B); color: #fff; text-align: left;
+  font-size: 13px; font-weight: 700; padding: 6px 10px; position: static;
+}
+.ind tr.ind-subrow th, .cmptbl tr.ind-subrow th {
+  background: var(--primary-t, #e8f0ed); color: var(--primary-d, #0f4d42); text-align: left;
+  font-size: 12px; font-weight: 700; padding: 4px 10px; position: static;
+}
+.ind-kubun { display: inline-block; margin-left: 6px; font-size: 10.5px; font-weight: 700; padding: 0 6px; border-radius: 999px; vertical-align: middle; }
+.ind-kubun-main { background: var(--primary, #176B5B); color: #fff; }
+.ind-kubun-ref { background: var(--primary-t, #e8f0ed); color: var(--primary-d, #0f4d42); border: 1px solid var(--line, #e3e8e5); }
