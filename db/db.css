@@ -119,6 +119,7 @@ details.fgroup.pref-group[open] > summary{margin-bottom:4px}
 }
 .rowmain:hover{background:var(--primary-l)}
 .rowmain:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
+.row-seq{flex:0 0 auto;min-width:2.4em;text-align:right;color:var(--sub);font-size:12px;font-variant-numeric:tabular-nums}
 .rowinfo{flex:1;min-width:0}
 .row .name{font-weight:600;color:var(--primary-d);display:block}
 .row .meta{font-size:12px;color:var(--sub);margin-top:2px;display:block}

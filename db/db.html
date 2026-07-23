@@ -90,8 +90,8 @@
       <a href="../history.html">制度の歴史</a>
       <a href="../jobs.html">福祉の仕事</a>
       <a href="../organizations.html">福祉業界団体</a>
-      <a href="../guidelines.html">ガイドライン集（サービス運営）</a>
-      <a href="../work-guidelines.html">ガイドライン集（労務・経営）</a>
+      <a href="../guidelines.html">ガイドライン集（施設運営）</a>
+      <a href="../work-guidelines.html">ガイドライン集（法人運営）</a>
       <a href="../management.html">経営関連資料</a>
       <a href="../fees.html">報酬関連</a>
       <a href="../kitei.html">モデル規程</a>
@@ -118,10 +118,10 @@
 </noscript>
 
 <div class="wrap">
-  <!-- 2つの検索入口の切替 -->
+  <!-- DB内タブ（ランキングは本ページに統合。既定はサービス活動収益の大きい順） -->
   <nav class="tabnav">
-    <a class="active" aria-current="page">条件から検索</a>
-    <a href="ranking.html">ランキングから検索</a>
+    <a class="active" aria-current="page">法人を探す</a>
+    <a href="../stats.html">統計情報</a>
   </nav>
 
   <!-- 検索パネル（検索窓・並び替え） -->
@@ -138,9 +138,9 @@
       <div>
         <label for="q-sort">並び替え</label>
         <select id="q-sort">
+          <option value="sv">サービス活動収益</option>
           <option value="name">法人名（50音）</option>
           <option value="pref">都道府県</option>
-          <option value="sv">サービス活動収益</option>
           <option value="sr">経常増減差額率</option>
           <option value="sn">純資産合計</option>
           <option value="ss">職員数</option>
@@ -150,8 +150,8 @@
       <div>
         <label for="q-dir">順序</label>
         <select id="q-dir">
-          <option value="asc">昇順</option>
           <option value="desc">降順</option>
+          <option value="asc">昇順</option>
         </select>
       </div>
       <button type="button" class="clearbtn" id="q-clear">条件をクリア</button>
@@ -193,8 +193,8 @@
       <a href="../history.html">制度の歴史</a>
       <a href="../jobs.html">福祉の仕事</a>
       <a href="../organizations.html">福祉業界団体</a>
-      <a href="../guidelines.html">ガイドライン集（サービス運営）</a>
-      <a href="../work-guidelines.html">ガイドライン集（労務・経営）</a>
+      <a href="../guidelines.html">ガイドライン集（施設運営）</a>
+      <a href="../work-guidelines.html">ガイドライン集（法人運営）</a>
       <a href="../management.html">経営関連資料</a>
       <a href="../fees.html">報酬関連</a>
       <a href="../kitei.html">モデル規程</a>
@@ -281,7 +281,7 @@ async function init(){
   document.getElementById('q-clear').addEventListener('click', ()=>{
     ['q-name','q-no'].forEach(id=>document.getElementById(id).value='');
     clearFilters('filters');
-    document.getElementById('q-sort').value='name'; document.getElementById('q-dir').value='asc';
+    document.getElementById('q-sort').value='sv'; document.getElementById('q-dir').value='desc';
     apply();
   });
   apply();
@@ -350,12 +350,14 @@ function render(append){
   const startIdx = append ? list.querySelectorAll('.row').length : 0;
   if(!append) list.innerHTML = '';
   document.getElementById('range').textContent = `・${shown.toLocaleString('ja-JP')}件表示中`;
-  filtered.slice(startIdx, shown).forEach(r=>{
+  filtered.slice(startIdx, shown).forEach((r,j)=>{
+    const seq = startIdx + j + 1;   // 表示中の1件目からの通し番号（順位ではない）。さらに表示で継続。
     const row = document.createElement('div');
     row.className='row';
     const inCmp = compare.some(x=>x.no===r.no);
-    // 行の表示項目は共通関数 resultMeta（ranking.html と同一）。詳細開閉はbutton・比較ボタンは独立。
+    // 行の表示項目は共通関数 resultMeta。行頭は通し番号（連番）。詳細開閉はbutton・比較ボタンは独立。
     row.innerHTML = `<button class="rowmain" type="button" aria-expanded="false">
+        <span class="row-seq" aria-hidden="true">${seq.toLocaleString('ja-JP')}</span>
         <span class="rowinfo">
           <span class="name">${esc(r.name)}</span>
           <span class="meta">${resultMeta(r)}</span>
