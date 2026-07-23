@@ -58,6 +58,22 @@ header.site p{margin:4px 0 0;font-size:13px;color:#cfe4de}
 .search .clearbtn{border:1px solid var(--line);background:var(--bg2);color:var(--primary-d);
   border-radius:5px;padding:8px 12px;cursor:pointer;font-size:13px;white-space:nowrap}
 
+/* 絞り込み（チェックボックス群） */
+.filters{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-bottom:16px;
+  display:flex;flex-wrap:wrap;gap:10px 16px}
+.fgroup{border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin:0;min-width:150px}
+.fgroup legend,.fgroup > summary{font-size:12px;color:var(--sub);font-weight:600;padding:0 4px}
+.fgroup > summary{cursor:pointer;list-style:none}
+.fgroup .checks{display:flex;flex-wrap:wrap;gap:4px 8px;margin-top:6px}
+.fgroup label{display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--ink);
+  background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:3px 10px;cursor:pointer}
+.fgroup label:has(input:checked){background:var(--primary-l);border-color:var(--primary);color:var(--primary-d);font-weight:600}
+.fgroup input{accent-color:var(--primary);margin:0}
+details.fgroup.pref-group{flex-basis:100%}
+details.fgroup.pref-group[open] > summary{margin-bottom:4px}
+.pref-group .checks{max-height:180px;overflow:auto}
+@media(max-width:640px){.fgroup{min-width:100%}}
+
 /* 件数バー */
 .countbar{
   display:flex;justify-content:space-between;align-items:center;

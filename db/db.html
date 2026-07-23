@@ -29,67 +29,15 @@
 </header>
 
 <div class="wrap">
-  <!-- 検索パネル -->
+  <!-- 検索パネル（検索窓・並び替え） -->
   <div class="search">
     <div class="full">
       <label for="q-name">法人名で検索（部分一致）</label>
       <input type="text" id="q-name" placeholder="例：福祉会">
     </div>
-    <div>
+    <div class="full">
       <label for="q-no">法人番号で検索（前方一致・13桁）</label>
       <input type="text" id="q-no" inputmode="numeric" placeholder="例：1010001">
-    </div>
-    <div>
-      <label for="q-pref">都道府県</label>
-      <select id="q-pref"><option value="">すべて</option></select>
-    </div>
-    <div>
-      <label for="q-biz">主たる事業</label>
-      <select id="q-biz">
-        <option value="">すべて</option>
-        <option value="高齢">高齢</option>
-        <option value="障害">障害</option>
-        <option value="児童">児童</option>
-        <option value="その他">その他</option>
-      </select>
-    </div>
-    <div>
-      <label for="q-size">収益規模帯</label>
-      <select id="q-size">
-        <option value="">すべて</option>
-        <option value="1億未満">1億円未満</option>
-        <option value="1-3億">1〜3億円</option>
-        <option value="3-5億">3〜5億円</option>
-        <option value="5-10億">5〜10億円</option>
-        <option value="10-30億">10〜30億円</option>
-        <option value="30億以上">30億円以上</option>
-      </select>
-    </div>
-    <div>
-      <label for="q-era">設立年代</label>
-      <select id="q-era">
-        <option value="">すべて</option>
-        <option value="〜1950">〜1950年</option>
-        <option value="1951-1975">1951〜1975年</option>
-        <option value="1976-2000">1976〜2000年</option>
-        <option value="2001〜">2001年〜</option>
-      </select>
-    </div>
-    <div>
-      <label for="q-year">データ年度</label>
-      <select id="q-year">
-        <option value="">すべて</option>
-        <option value="2024">2024年度に在籍</option>
-        <option value="past">過去年度のみ</option>
-      </select>
-    </div>
-    <div>
-      <label for="q-hq">法人本部</label>
-      <select id="q-hq">
-        <option value="">すべて</option>
-        <option value="1">本部あり</option>
-        <option value="0">本部なし</option>
-      </select>
     </div>
     <div class="sortrow">
       <div>
@@ -113,6 +61,9 @@
       <button type="button" class="clearbtn" id="q-clear">条件をクリア</button>
     </div>
   </div>
+
+  <!-- 絞り込み（チェックボックス・複数選択可＝同じ枠内はOR、枠どうしはAND） -->
+  <div class="filters" id="filters"></div>
 
   <!-- 収益規模ランキング（事実の集計） -->
   <details class="rankbox" id="rankbox">
@@ -206,18 +157,12 @@ async function init(){
   DEFS.forEach(d => { DEFBYKEY[d.key] = d; });
   INDEX.forEach(r => { r._n = normName(r.name); });  // 正規化名を事前計算
   initRanking();
-  // 都道府県セレクトを構築（索引に出現する順で一意化）
-  const prefs = {};
-  INDEX.forEach(r => { prefs[r.pref] = r.pcode; });
-  const sel = document.getElementById('q-pref');
-  Object.keys(prefs).sort((a,b)=>prefs[a].localeCompare(prefs[b])).forEach(p=>{
-    const o = document.createElement('option'); o.value=p; o.textContent=p; sel.appendChild(o);
-  });
+  renderFilters();
   ['q-name','q-no'].forEach(id=>document.getElementById(id).addEventListener('input', apply));
-  ['q-pref','q-biz','q-size','q-era','q-year','q-hq','q-sort','q-dir'].forEach(id=>document.getElementById(id).addEventListener('change', apply));
+  ['q-sort','q-dir'].forEach(id=>document.getElementById(id).addEventListener('change', apply));
   document.getElementById('q-clear').addEventListener('click', ()=>{
     ['q-name','q-no'].forEach(id=>document.getElementById(id).value='');
-    ['q-pref','q-biz','q-size','q-era','q-year','q-hq'].forEach(id=>document.getElementById(id).value='');
+    document.querySelectorAll('#filters input[type=checkbox]:checked').forEach(cb=>{ cb.checked=false; });
     document.getElementById('q-sort').value='name'; document.getElementById('q-dir').value='asc';
     apply();
   });
@@ -233,25 +178,65 @@ function eraOf(y){
   return '2001〜';
 }
 
+// 絞り込み軸の定義（value, ラベル）。同じ枠内はOR、枠どうしはAND。
+const FILTER_AXES = [
+  {axis:'biz', label:'主な事業', opts:[['高齢','高齢'],['障害','障害'],['児童','児童'],['その他','その他']]},
+  {axis:'kubun', label:'法人区分', opts:[['一般法人','一般法人'],['社会福祉協議会','社会福祉協議会'],['共同募金会','共同募金会'],['社会福祉事業団','社会福祉事業団'],['その他','その他']]},
+  {axis:'size', label:'収益規模帯', opts:[['1億未満','1億円未満'],['1-3億','1〜3億円'],['3-5億','3〜5億円'],['5-10億','5〜10億円'],['10-30億','10〜30億円'],['30億以上','30億円以上']]},
+  {axis:'era', label:'設立年代', opts:[['〜1950','〜1950年'],['1951-1975','1951〜1975年'],['1976-2000','1976〜2000年'],['2001〜','2001年〜']]},
+  {axis:'year', label:'データ年度', opts:[['2024','2024年度に在籍'],['past','過去年度のみ']]},
+  {axis:'hq', label:'法人本部', opts:[['1','本部あり'],['0','本部なし']]},
+];
+
+// レコードから軸の値を取り出す
+function axisVal(r, axis){
+  switch(axis){
+    case 'biz':   return r.biz;
+    case 'kubun': return r.kb;
+    case 'size':  return r.sz;
+    case 'era':   return eraOf(r.sy);
+    case 'year':  return r.latest===2024 ? '2024' : 'past';
+    case 'hq':    return (r.hq===null||r.hq===undefined) ? null : String(r.hq);
+    case 'pref':  return r.pref;
+    default:      return null;
+  }
+}
+
+// 絞り込みチェックボックス群を生成
+function renderFilters(){
+  const box = document.getElementById('filters');
+  let html = FILTER_AXES.map(g=>`
+    <fieldset class="fgroup">
+      <legend>${g.label}</legend>
+      <div class="checks">${g.opts.map(([v,l])=>
+        `<label><input type="checkbox" data-axis="${g.axis}" value="${esc(v)}">${esc(l)}</label>`).join('')}</div>
+    </fieldset>`).join('');
+  // 都道府県は数が多いので開閉式（コード順）
+  const prefs = {};
+  INDEX.forEach(r=>{ if(r.pref) prefs[r.pref]=r.pcode; });
+  const prefOpts = Object.keys(prefs).sort((a,b)=>prefs[a].localeCompare(prefs[b]))
+    .map(p=>`<label><input type="checkbox" data-axis="pref" value="${esc(p)}">${esc(p)}</label>`).join('');
+  html += `<details class="fgroup pref-group"><summary>都道府県で絞り込む ▾</summary>
+    <div class="checks">${prefOpts}</div></details>`;
+  box.innerHTML = html;
+  box.querySelectorAll('input[type=checkbox]').forEach(cb=>cb.addEventListener('change', apply));
+}
+
 function apply(){
   const qn = normName(document.getElementById('q-name').value.trim());
   const qno = document.getElementById('q-no').value.trim().replace(/\D/g,'');
-  const qp = document.getElementById('q-pref').value;
-  const qb = document.getElementById('q-biz').value;
-  const qsize = document.getElementById('q-size').value;
-  const qera = document.getElementById('q-era').value;
-  const qyear = document.getElementById('q-year').value;
-  const qhq = document.getElementById('q-hq').value;
+  // チェック中の条件を軸ごとに集約（同一軸内はOR、軸どうしはAND）
+  const sel = {};
+  document.querySelectorAll('#filters input[type=checkbox]:checked').forEach(cb=>{
+    (sel[cb.dataset.axis] = sel[cb.dataset.axis] || new Set()).add(cb.value);
+  });
+  const axes = Object.keys(sel);
   filtered = INDEX.filter(r=>{
     if(qn && !r._n.includes(qn)) return false;
     if(qno && !r.no.startsWith(qno)) return false;
-    if(qp && r.pref!==qp) return false;
-    if(qb && r.biz!==qb) return false;
-    if(qsize && r.sz!==qsize) return false;
-    if(qera && eraOf(r.sy)!==qera) return false;
-    if(qyear==='2024' && r.latest!==2024) return false;
-    if(qyear==='past' && r.latest===2024) return false;
-    if(qhq!=='' && String(r.hq)!==qhq) return false;
+    for(const ax of axes){
+      if(!sel[ax].has(axisVal(r, ax))) return false;  // OR内・AND間
+    }
     return true;
   });
   sortFiltered();
@@ -349,6 +334,7 @@ function detailHtml(c){
   const attrs = [
     ['所在地', c.pref + (c.city?('　'+c.city):'')],
     ['法人番号', c.no],
+    ['法人区分', c.kubun || '—'],
     ['設立年', c.setsuritsu ? c.setsuritsu+'年' : '—'],
     ['主たる事業', c.biz],
     ['事業所数', c.offices!=null ? c.offices+'か所' : '—'],
