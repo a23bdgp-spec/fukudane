@@ -6,7 +6,9 @@
 <title>福祉サービス一覧｜高齢・障害・児童・生活困窮のサービスを根拠法から比較｜フクダネ</title>
 <meta name="description" content="高齢・障害・子ども・生活困窮などの福祉サービスを、正式名称・通称・主な対象・支援内容・根拠法で整理。e-Gov法令検索の条文やWAM NETの解説へリンクします。">
 <link rel="canonical" href="https://fukudane.com/service.html">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <meta property="og:title" content="福祉サービス一覧｜高齢・障害・児童・生活困窮のサービスを根拠法から比較｜フクダネ">
 <meta property="og:description" content="高齢・障害・子ども・生活困窮などの福祉サービスを、正式名称・通称・主な対象・支援内容・根拠法で整理。e-Gov法令検索の条文やWAM NETの解説へリンクします。">
 <meta property="og:url" content="https://fukudane.com/service.html">
@@ -69,21 +71,7 @@
   <div class="wrap">
     <div class="brand">
       <a href="index.html" class="logo">
-        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
-          <g stroke="currentColor" stroke-width="1.3">
-            <line x1="13" y1="13" x2="6" y2="7"/>
-            <line x1="13" y1="13" x2="20" y2="7"/>
-            <line x1="13" y1="13" x2="7" y2="20"/>
-            <line x1="13" y1="13" x2="20" y2="19"/>
-          </g>
-          <g fill="currentColor">
-            <circle cx="13" cy="13" r="2.7"/>
-            <circle cx="6" cy="7" r="2"/>
-            <circle cx="20" cy="7" r="2"/>
-            <circle cx="7" cy="20" r="2"/>
-            <circle cx="20" cy="19" r="2"/>
-          </g>
-        </svg>
+        <img class="logo-mark-img" src="logo-mark.png" width="28" height="28" alt="" aria-hidden="true">
         <span class="logo-text">フクダネ</span>
       </a>
       <span class="tagline">社会福祉法人の総合情報サイト</span>
@@ -91,19 +79,44 @@
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <nav class="site-nav" id="primary-nav">
       <a href="index.html" class="nav-home">ホーム</a>
-      <a href="service.html" aria-current="page">福祉サービス一覧</a>
-      <a href="history.html">制度の歴史</a>
-      <a href="jobs.html">福祉の仕事</a>
-      <a href="organizations.html">福祉業界団体</a>
-      <a href="guidelines.html">ガイドライン集（施設運営）</a>
-      <a href="work-guidelines.html">ガイドライン集（法人運営）</a>
-      <a href="management.html">経営関連資料</a>
-      <a href="fees.html">報酬関連</a>
-      <a href="kitei.html">モデル規程</a>
-      <a href="foreign-workers.html">外国人材</a>
-      <a href="grants.html">助成団体</a>
-      <a href="db/db.html">社会福祉法人データベース</a>
-      <a href="stats.html">統計情報</a>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">制度・報酬<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="service.html" role="menuitem">福祉サービス</a>
+          <a href="fees.html" role="menuitem">報酬・公定価格</a>
+          <a href="history.html" role="menuitem">福祉制度の変遷</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">運営実務<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="guidelines.html" role="menuitem">サービス運営のガイドライン</a>
+          <a href="kitei.html" role="menuitem">モデル規程・様式例</a>
+          <a href="grants.html" role="menuitem">助成金・支援制度</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">人材・労務<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="work-guidelines.html" role="menuitem">労務・経営のガイドライン</a>
+          <a href="foreign-workers.html" role="menuitem">外国人材の受入れ</a>
+          <a href="jobs.html" role="menuitem">福祉の仕事</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">法人・経営<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="management.html" role="menuitem">経営・財務資料</a>
+          <a href="organizations.html" role="menuitem">福祉業界団体</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">データ<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="db/db.html" role="menuitem">社会福祉法人データベース</a>
+          <a href="stats.html" role="menuitem">社会福祉法人の統計</a>
+        </div>
+      </div>
       <a href="about.html">フクダネについて</a>
       <a href="search.html">サイト内検索</a>
     </nav>
@@ -113,7 +126,7 @@
 <noscript>
   <div style="max-width:1080px;margin:0 auto;padding:16px 20px;background:#fff8e1;border:1px solid #e0c76b;color:#5a4a1a;font-size:14px;line-height:1.8">
     <p style="margin:0 0 6px;font-weight:700">このページの表示にはJavaScriptが必要です。</p>
-    <p style="margin:0">お使いのブラウザでJavaScriptを有効にしてご覧ください。主要なページ：<a href="index.html">ホーム</a>・<a href="service.html">福祉サービス一覧</a>・<a href="history.html">制度の歴史</a>・<a href="about.html">フクダネについて</a></p>
+    <p style="margin:0">お使いのブラウザでJavaScriptを有効にしてご覧ください。主要なページ：<a href="index.html">ホーム</a>・<a href="service.html">福祉サービス一覧</a>・<a href="history.html">福祉制度の変遷</a>・<a href="about.html">フクダネについて</a></p>
   </div>
 </noscript>
 
@@ -210,18 +223,18 @@
       <nav class="footer-nav" aria-label="フッターナビゲーション">
         <a href="index.html">ホーム</a>
         <a href="service.html">福祉サービス一覧</a>
-        <a href="history.html">制度の歴史</a>
+        <a href="history.html">福祉制度の変遷</a>
         <a href="jobs.html">福祉の仕事</a>
         <a href="organizations.html">福祉業界団体</a>
-        <a href="guidelines.html">ガイドライン集（施設運営）</a>
-        <a href="work-guidelines.html">ガイドライン集（法人運営）</a>
-        <a href="management.html">経営関連資料</a>
-        <a href="fees.html">報酬関連</a>
-        <a href="kitei.html">モデル規程</a>
-        <a href="foreign-workers.html">外国人材</a>
-        <a href="grants.html">助成団体</a>
+        <a href="guidelines.html">サービス運営のガイドライン</a>
+        <a href="work-guidelines.html">労務・経営のガイドライン</a>
+        <a href="management.html">経営・財務資料</a>
+        <a href="fees.html">報酬・公定価格</a>
+        <a href="kitei.html">モデル規程・様式例</a>
+        <a href="foreign-workers.html">外国人材の受入れ</a>
+        <a href="grants.html">助成金・支援制度</a>
         <a href="db/db.html">社会福祉法人データベース</a>
-        <a href="stats.html">統計情報</a>
+        <a href="stats.html">社会福祉法人の統計</a>
         <a href="about.html">フクダネについて</a>
         <a href="search.html">サイト内検索</a>
         <a href="indicators.html">財務指標の解説</a>
@@ -270,7 +283,8 @@ const SERVICES_MAP = {
     "WAMNET_URL",
     "社会福祉法上の位置づけ",
     "経営指標URL",
-    "経営指標リンク名"
+    "経営指標リンク名",
+    "関連ガイドライン"
   ],
   "domains": [
     {
@@ -289,14 +303,22 @@ const SERVICES_MAP = {
               "概要": "介護福祉士などが利用者の自宅を訪問し、入浴・排せつ・食事などの介護その他の日常生活上の世話を行う。",
               "類似サービスとの対応": "障害者では居宅介護（ホームヘルプ／障害者総合支援法）が役割の近いサービスです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "通称": "ホームヘルプ",
               "形態": "訪問",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-01.html",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（老人居宅介護等事業として社会福祉法第2条第3項第四号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/240809_No002.pdf",
-              "経営指標リンク名": "訪問介護の経営状況（WAM・2022年度決算）"
+              "経営指標リンク名": "訪問介護の経営状況（WAM・2022年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "訪問入浴介護",
@@ -306,9 +328,17 @@ const SERVICES_MAP = {
               "概要": "自宅を訪問し、浴槽を提供して行う入浴の介護。",
               "類似サービスとの対応": "障害者では地域生活支援事業の訪問入浴が役割の近いサービスです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
-              "形態": "訪問"
+              "形態": "訪問",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "訪問看護",
@@ -318,10 +348,18 @@ const SERVICES_MAP = {
               "概要": "看護師などが自宅を訪問し、療養上の世話または必要な診療の補助を行う。",
               "類似サービスとの対応": "障害児者にも同名の訪問看護があり、医療保険の訪問看護とも共通する分野横断的サービス。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "訪問",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-03.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-03.html",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "訪問リハビリテーション",
@@ -331,9 +369,17 @@ const SERVICES_MAP = {
               "概要": "自宅で行う、心身機能の維持回復と日常生活の自立を助けるための理学療法・作業療法などのリハビリ。",
               "類似サービスとの対応": "該当なし（機能面では障害者の自立訓練（機能訓練）に一部近い）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
-              "形態": "訪問"
+              "形態": "訪問",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "居宅療養管理指導",
@@ -343,9 +389,17 @@ const SERVICES_MAP = {
               "概要": "医師・歯科医師・薬剤師などが自宅を訪問し、療養上の管理・指導を行う。",
               "類似サービスとの対応": "該当なし（高齢分野固有の医療系サービス）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
-              "形態": "訪問"
+              "形態": "訪問",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "通所介護",
@@ -355,14 +409,22 @@ const SERVICES_MAP = {
               "概要": "老人デイサービスセンターなどに通わせ、入浴・排せつ・食事などの介護と機能訓練を行う。",
               "類似サービスとの対応": "障害者では生活介護（障害者総合支援法）、障害児では放課後等デイサービス・児童発達支援（児童福祉法）が役割の近いサービスです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "通称": "デイサービス",
               "形態": "通所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-09.html",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（老人デイサービス事業として社会福祉法第2条第3項第四号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250627_No003.pdf",
-              "経営指標リンク名": "通所介護の経営状況（WAM・2023年度決算）"
+              "経営指標リンク名": "通所介護の経営状況（WAM・2023年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "通所リハビリテーション",
@@ -372,10 +434,18 @@ const SERVICES_MAP = {
               "概要": "介護老人保健施設・病院などに通わせ、心身機能の維持回復と自立支援のためのリハビリを行う。",
               "類似サービスとの対応": "障害児は児童発達支援の訓練機能に一部近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "通称": "デイケア",
-              "形態": "通所"
+              "形態": "通所",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "短期入所生活介護",
@@ -385,12 +455,20 @@ const SERVICES_MAP = {
               "概要": "老人短期入所施設などに短期間入所させ、入浴・排せつ・食事などの介護と機能訓練を行う。",
               "類似サービスとの対応": "障害者・障害児では短期入所（ショートステイ／障害者総合支援法）が役割の近いサービスです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "通称": "ショートステイ",
               "形態": "短期入所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-12.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人短期入所事業として社会福祉法第2条第3項第四号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人短期入所事業として社会福祉法第2条第3項第四号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "短期入所療養介護",
@@ -400,10 +478,18 @@ const SERVICES_MAP = {
               "概要": "介護老人保健施設・介護医療院などに短期間入所させ、看護・医学的管理下の介護・機能訓練その他必要な医療と日常生活上の世話を行う。",
               "類似サービスとの対応": "障害児の医療型短期入所に一部近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "短期入所",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-13.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-13.html",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "特定施設入居者生活介護",
@@ -413,9 +499,17 @@ const SERVICES_MAP = {
               "概要": "特定施設が計画に基づいて行う入浴・排せつ・食事などの介護、機能訓練、療養上の世話。",
               "類似サービスとの対応": "障害者の施設入所支援に一部近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
-              "形態": "居住"
+              "形態": "居住",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "福祉用具貸与",
@@ -425,9 +519,13 @@ const SERVICES_MAP = {
               "概要": "厚生労働大臣が定める福祉用具の貸与。",
               "類似サービスとの対応": "障害者の補装具費支給・日常生活用具給付（障害者総合支援法・地域生活支援事業）と、一部の支援内容が近いです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
-              "形態": "給付・貸付"
+              "形態": "給付・貸付",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                }
+              ]
             },
             {
               "正式名称": "特定福祉用具販売",
@@ -437,9 +535,13 @@ const SERVICES_MAP = {
               "概要": "入浴・排せつの用に供する用具など、厚生労働大臣が定める特定福祉用具の販売。",
               "類似サービスとの対応": "障害者の日常生活用具給付と、一部の支援内容が近いです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
-              "形態": "給付・貸付"
+              "形態": "給付・貸付",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定居宅サービス等の事業の人員、設備及び運営に関する基準（平成11年厚生省令第37号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100037"
+                }
+              ]
             }
           ]
         },
@@ -456,10 +558,18 @@ const SERVICES_MAP = {
               "概要": "日中・夜間を通じ、定期巡回と随時対応により、訪問介護と訪問看護を一体的または連携して提供する。",
               "類似サービスとの対応": "該当なし（高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "訪問",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人居宅介護等事業として社会福祉法第2条第3項第四号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人居宅介護等事業として社会福祉法第2条第3項第四号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定地域密着型サービスの事業の人員、設備及び運営に関する基準（平成18年厚生労働省令第34号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100034"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "夜間対応型訪問介護",
@@ -469,10 +579,18 @@ const SERVICES_MAP = {
               "概要": "夜間に、定期巡回または随時通報を受けて自宅で行う入浴・排せつ・食事などの介護。",
               "類似サービスとの対応": "該当なし（高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "訪問",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人居宅介護等事業として社会福祉法第2条第3項第四号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人居宅介護等事業として社会福祉法第2条第3項第四号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定地域密着型サービスの事業の人員、設備及び運営に関する基準（平成18年厚生労働省令第34号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100034"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "地域密着型通所介護",
@@ -482,10 +600,18 @@ const SERVICES_MAP = {
               "概要": "通所介護と同内容だが、利用定員が一定数未満（小規模）のもの。",
               "類似サービスとの対応": "障害者の生活介護、障害児の放課後等デイサービスと機能面で近いです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "通所",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人デイサービス事業として社会福祉法第2条第3項第四号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人デイサービス事業として社会福祉法第2条第3項第四号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定地域密着型サービスの事業の人員、設備及び運営に関する基準（平成18年厚生労働省令第34号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100034"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "認知症対応型通所介護",
@@ -495,11 +621,19 @@ const SERVICES_MAP = {
               "概要": "老人デイサービスセンターなどに通わせ、入浴・排せつ・食事などの介護と機能訓練を行う。",
               "類似サービスとの対応": "該当なし（認知症に特化した高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "通所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-10.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人デイサービス事業として社会福祉法第2条第3項第四号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人デイサービス事業として社会福祉法第2条第3項第四号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定地域密着型サービスの事業の人員、設備及び運営に関する基準（平成18年厚生労働省令第34号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100034"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "小規模多機能型居宅介護",
@@ -509,12 +643,20 @@ const SERVICES_MAP = {
               "概要": "利用者の状況・選択に応じ、通い・訪問・宿泊を組み合わせて介護と機能訓練を行う。",
               "類似サービスとの対応": "該当なし（高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "その他",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（小規模多機能型居宅介護事業として社会福祉法第2条第3項第四号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260107_No008.pdf",
-              "経営指標リンク名": "小規模多機能型居宅介護の経営状況（WAM・2024年度決算）"
+              "経営指標リンク名": "小規模多機能型居宅介護の経営状況（WAM・2024年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定地域密着型サービスの事業の人員、設備及び運営に関する基準（平成18年厚生労働省令第34号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100034"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "認知症対応型共同生活介護",
@@ -524,13 +666,21 @@ const SERVICES_MAP = {
               "概要": "共同生活を営む住居において、入浴・排せつ・食事などの介護と機能訓練を行う。",
               "類似サービスとの対応": "障害者の共同生活援助（グループホーム／障害者総合支援法）と機能面で近いです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "通称": "グループホーム",
               "形態": "居住",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（認知症対応型老人共同生活援助事業として社会福祉法第2条第3項第四号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250509_No001.pdf",
-              "経営指標リンク名": "認知症高齢者グループホームの経営状況（WAM・2023年度決算）"
+              "経営指標リンク名": "認知症高齢者グループホームの経営状況（WAM・2023年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定地域密着型サービスの事業の人員、設備及び運営に関する基準（平成18年厚生労働省令第34号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100034"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "地域密着型特定施設入居者生活介護",
@@ -540,9 +690,17 @@ const SERVICES_MAP = {
               "概要": "当該施設が計画に基づいて行う入浴・排せつ・食事などの介護、機能訓練、療養上の世話。",
               "類似サービスとの対応": "特定施設入居者生活介護の小規模版。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
-              "形態": "居住"
+              "形態": "居住",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定地域密着型サービスの事業の人員、設備及び運営に関する基準（平成18年厚生労働省令第34号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100034"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "地域密着型介護老人福祉施設入所者生活介護",
@@ -552,10 +710,18 @@ const SERVICES_MAP = {
               "概要": "地域密着型施設サービス計画に基づく入浴・排せつ・食事などの介護、機能訓練、健康管理、療養上の世話。",
               "類似サービスとの対応": "障害者は施設入所支援に一部近い（特別養護老人ホームの小規模版）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（特別養護老人ホーム〈地域密着型介護老人福祉施設〉として社会福祉法第2条第2項第三号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（特別養護老人ホーム〈地域密着型介護老人福祉施設〉として社会福祉法第2条第2項第三号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定地域密着型サービスの事業の人員、設備及び運営に関する基準（平成18年厚生労働省令第34号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100034"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "複合型サービス（看護小規模多機能型居宅介護）",
@@ -565,10 +731,18 @@ const SERVICES_MAP = {
               "概要": "訪問介護・訪問看護・通所介護・小規模多機能型居宅介護など2種類以上を組み合わせて提供する。",
               "類似サービスとの対応": "該当なし（高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "その他",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（複合型サービス福祉事業として社会福祉法第2条第3項第四号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（複合型サービス福祉事業として社会福祉法第2条第3項第四号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定地域密着型サービスの事業の人員、設備及び運営に関する基準（平成18年厚生労働省令第34号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100034"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             }
           ]
         },
@@ -585,8 +759,6 @@ const SERVICES_MAP = {
               "概要": "利用者の依頼を受け、心身の状況や希望を勘案して居宅サービス計画（ケアプラン）を作成し、事業者等との連絡調整を行う。",
               "類似サービスとの対応": "障害者の計画相談支援、障害児の障害児相談支援と役割が近いです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "相談・支援"
             },
             {
@@ -597,14 +769,22 @@ const SERVICES_MAP = {
               "概要": "施設サービス計画に基づき、入浴・排せつ・食事などの介護、機能訓練、健康管理、療養上の世話を行う施設。",
               "類似サービスとの対応": "障害者の障害者支援施設（施設入所支援）と機能面で近いです。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "通称": "特別養護老人ホーム（特養）",
               "形態": "入所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-17.html",
               "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260220_No012.pdf",
-              "経営指標リンク名": "特別養護老人ホームの経営状況（WAM・2024年度決算）"
+              "経営指標リンク名": "特別養護老人ホームの経営状況（WAM・2024年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "指定介護老人福祉施設の人員、設備及び運営に関する基準（平成11年厚生省令第39号）",
+                  "URL": "https://laws.e-gov.go.jp/law/411M50000100039"
+                },
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "介護老人保健施設",
@@ -614,13 +794,17 @@ const SERVICES_MAP = {
               "概要": "施設サービス計画に基づき、看護・医学的管理下の介護・機能訓練その他必要な医療と日常生活上の世話を行う施設。",
               "類似サービスとの対応": "該当なし（医療・介護の中間施設で高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "通称": "老健",
               "形態": "入所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-19.html",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No017_rev3.pdf",
-              "経営指標リンク名": "介護老人保健施設の経営状況（WAM・2024年度決算）"
+              "経営指標リンク名": "介護老人保健施設の経営状況（WAM・2024年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             },
             {
               "正式名称": "介護医療院",
@@ -630,11 +814,15 @@ const SERVICES_MAP = {
               "概要": "施設サービス計画に基づき、療養上の管理・看護・医学的管理下の介護・機能訓練その他必要な医療と日常生活上の世話を行う施設。",
               "類似サービスとの対応": "該当なし（長期療養型で高齢分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
-              "通知リンク名": "介護報酬（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "入所",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/251219_No007.pdf",
-              "経営指標リンク名": "介護医療院の経営状況（WAM・2024年度決算）"
+              "経営指標リンク名": "介護医療院の経営状況（WAM・2024年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "介護現場における感染対策の手引き（第3版）",
+                  "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+                }
+              ]
             }
           ]
         },
@@ -760,12 +948,20 @@ const SERVICES_MAP = {
               "概要": "自宅で、入浴・排せつ・食事の介護その他の便宜を提供する。",
               "類似サービスとの対応": "高齢者では訪問介護（介護保険法）が役割の近いサービスです。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "通称": "ホームヘルプ",
               "形態": "訪問",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-01.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "重度訪問介護",
@@ -775,11 +971,19 @@ const SERVICES_MAP = {
               "概要": "自宅で、入浴・排せつ・食事の介護に加え、外出時の移動中の介護までを総合的・長時間にわたり提供する。",
               "類似サービスとの対応": "居宅介護と移動支援を包括した重度者向けの類型で、介護保険に直接の対応はない。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "訪問",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-08.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "同行援護",
@@ -789,11 +993,19 @@ const SERVICES_MAP = {
               "概要": "外出時に同行し、移動に必要な情報提供（代筆・代読を含む）と移動の援護を行う。",
               "類似サービスとの対応": "地域生活支援事業の移動支援と機能が近い（視覚障害に特化した個別給付）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "訪問",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-03.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "行動援護",
@@ -803,11 +1015,19 @@ const SERVICES_MAP = {
               "概要": "行動する際に生じる危険を回避するための援護、外出時の移動中の介護その他の便宜を提供する。",
               "類似サービスとの対応": "介護保険に直接の対応はない（行動障害への支援に特化）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "訪問",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-04.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "療養介護",
@@ -817,10 +1037,18 @@ const SERVICES_MAP = {
               "概要": "主に昼間、病院等で機能訓練・療養上の管理・看護・医学的管理下の介護および日常生活上の世話を行う。",
               "類似サービスとの対応": "医療的ケアを伴う点で介護医療院・医療型サービスに機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "生活介護",
@@ -830,13 +1058,21 @@ const SERVICES_MAP = {
               "概要": "主に昼間、施設で入浴・排せつ・食事の介護、創作的活動または生産活動の機会の提供その他の便宜を提供する。",
               "類似サービスとの対応": "高齢者では通所介護（デイサービス／介護保険法）、障害児では放課後等デイサービスが役割の近いサービスです。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "通所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-06.html",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250625_No002.pdf",
-              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）"
+              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "短期入所",
@@ -846,12 +1082,20 @@ const SERVICES_MAP = {
               "概要": "施設に短期間入所させ、入浴・排せつ・食事の介護その他の便宜を提供する。",
               "類似サービスとの対応": "高齢者では短期入所生活介護（ショートステイ／介護保険法）が役割の近いサービスです。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "通称": "ショートステイ",
               "形態": "短期入所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-13.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "重度障害者等包括支援",
@@ -861,11 +1105,19 @@ const SERVICES_MAP = {
               "概要": "居宅介護その他の複数の障害福祉サービスを包括的に提供する。",
               "類似サービスとの対応": "複数サービスを一体提供する点で明確な高齢分野の対応はない。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "その他",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-14.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "施設入所支援",
@@ -875,13 +1127,21 @@ const SERVICES_MAP = {
               "概要": "主に夜間、施設で入浴・排せつ・食事の介護その他の便宜を提供する（昼間の生活介護等と組み合わせて利用）。",
               "類似サービスとの対応": "夜間の介護を受ける点で介護老人福祉施設（特別養護老人ホーム）に機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "入所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-16.html",
               "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第四号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/230911_No005.pdf",
-              "経営指標リンク名": "居住系障害福祉サービスの経営状況（WAM・2021年度決算）"
+              "経営指標リンク名": "居住系障害福祉サービスの経営状況（WAM・2021年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害者支援施設等の人員、設備及び運営に関する基準（平成18年厚生労働省令第172号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100172"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             }
           ]
         },
@@ -898,10 +1158,18 @@ const SERVICES_MAP = {
               "概要": "一定期間、身体機能または生活能力の向上のための訓練その他の便宜を提供する（機能訓練・生活訓練の類型がある）。",
               "類似サービスとの対応": "機能訓練は高齢者の通所リハビリテーションに機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "通所",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "就労選択支援",
@@ -911,10 +1179,22 @@ const SERVICES_MAP = {
               "概要": "短期間の生産活動等の機会を通じて就労に関する適性・知識・能力の評価を行い、本人に合った就労先の選択を支援する。",
               "類似サービスとの対応": "高齢分野に対応はない（就労支援固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "就労",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                },
+                {
+                  "名称": "就労選択支援について",
+                  "URL": "https://www.mhlw.go.jp/stf/newpage_56733.html"
+                }
+              ]
             },
             {
               "正式名称": "就労移行支援",
@@ -924,13 +1204,25 @@ const SERVICES_MAP = {
               "概要": "一定期間、生産活動その他の活動の機会の提供を通じて、就労に必要な知識・能力の向上のための訓練その他の便宜を提供する。",
               "類似サービスとの対応": "高齢分野に対応はない（就労支援固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "就労",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-20.html",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250625_No002.pdf",
-              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）"
+              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                },
+                {
+                  "名称": "就労支援事業会計の運用ガイドライン",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/001004096.pdf"
+                }
+              ]
             },
             {
               "正式名称": "就労継続支援A型",
@@ -940,14 +1232,30 @@ const SERVICES_MAP = {
               "概要": "雇用契約を結んだうえで就労の機会を提供し、あわせて生産活動を通じて知識・能力の向上のための訓練を行う。",
               "類似サービスとの対応": "高齢分野に対応はない（障害者就労固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "通称": "雇用型",
               "形態": "就労",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-21.html",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250625_No002.pdf",
-              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）"
+              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                },
+                {
+                  "名称": "指定就労継続支援事業所の新規指定及び運営状況の把握・指導のためのガイドライン",
+                  "URL": "https://www.mhlw.go.jp/stf/newpage_66591.html"
+                },
+                {
+                  "名称": "就労支援事業会計の運用ガイドライン",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/001004096.pdf"
+                }
+              ]
             },
             {
               "正式名称": "就労継続支援B型",
@@ -957,14 +1265,34 @@ const SERVICES_MAP = {
               "概要": "雇用契約を結ばずに就労や生産活動の機会を提供し、知識・能力の向上のための訓練を行う（賃金でなく工賃を支払う）。",
               "類似サービスとの対応": "高齢分野に対応はない（障害者就労固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "通称": "非雇用型",
               "形態": "就労",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-22.html",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250625_No002.pdf",
-              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）"
+              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                },
+                {
+                  "名称": "指定就労継続支援事業所の新規指定及び運営状況の把握・指導のためのガイドライン",
+                  "URL": "https://www.mhlw.go.jp/stf/newpage_66591.html"
+                },
+                {
+                  "名称": "就労支援事業会計の運用ガイドライン",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/001004096.pdf"
+                },
+                {
+                  "名称": "就労継続支援事業所における工賃向上ガイドブック",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000676674.pdf"
+                }
+              ]
             },
             {
               "正式名称": "就労定着支援",
@@ -974,10 +1302,18 @@ const SERVICES_MAP = {
               "概要": "就労の継続を図るため、事業所・関係機関との連絡調整その他の便宜を提供する。",
               "類似サービスとの対応": "高齢分野に対応はない（就労支援固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "就労",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "自立生活援助",
@@ -987,10 +1323,18 @@ const SERVICES_MAP = {
               "概要": "定期的な巡回訪問または随時の相談対応により、必要な情報提供・助言その他の援助を行う。",
               "類似サービスとの対応": "高齢分野に直接の対応はない（地域移行後の見守り型支援）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "訪問",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             },
             {
               "正式名称": "共同生活援助",
@@ -1000,14 +1344,22 @@ const SERVICES_MAP = {
               "概要": "主に夜間、共同生活を営む住居で相談・入浴排せつ食事の介護・日常生活上の援助を行う。",
               "類似サービスとの対応": "高齢者は認知症対応型共同生活介護（グループホーム／介護保険法）に機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "通称": "グループホーム",
               "形態": "居住",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-23.html",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/230911_No005.pdf",
-              "経営指標リンク名": "居住系障害福祉サービスの経営状況（WAM・2021年度決算）"
+              "経営指標リンク名": "居住系障害福祉サービスの経営状況（WAM・2021年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "障害者の日常生活及び社会生活を総合的に支援するための法律に基づく指定障害福祉サービスの事業等の人員、設備及び運営に関する基準（平成18年厚生労働省令第171号）",
+                  "URL": "https://laws.e-gov.go.jp/law/418M60000100171"
+                },
+                {
+                  "名称": "障害福祉サービス事業所等における感染対策指針作成の手引き",
+                  "URL": "https://www.mhlw.go.jp/content/12200000/000712997.pdf"
+                }
+              ]
             }
           ]
         },
@@ -1024,8 +1376,6 @@ const SERVICES_MAP = {
               "概要": "市町村が地域の実情に応じて実施する、外出のための移動を支援する事業。",
               "類似サービスとの対応": "個別給付の同行援護・行動援護と機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "訪問",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
@@ -1037,8 +1387,6 @@ const SERVICES_MAP = {
               "概要": "創作的活動・生産活動の機会提供、社会との交流促進の便宜を供与する施設（市町村事業）。",
               "類似サービスとの対応": "日中活動の場という点で生活介護や高齢分野の通所系に一部機能が重なるが、市町村事業として位置づけが異なる。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "通所",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
             },
@@ -1050,8 +1398,6 @@ const SERVICES_MAP = {
               "概要": "手話通訳・要約筆記等の派遣、点訳等により意思疎通を支援する事業。",
               "類似サービスとの対応": "分野固有（意思疎通支援に特化）。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "その他"
             },
             {
@@ -1062,8 +1408,6 @@ const SERVICES_MAP = {
               "概要": "日常生活上の便宜を図る用具を給付・貸与する事業。",
               "類似サービスとの対応": "高齢者の福祉用具貸与・特定福祉用具販売（介護保険法）と、一部の支援内容が近いです。",
               "出典URL": "https://laws.e-gov.go.jp/law/417AC0000000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "給付・貸付"
             }
           ]
@@ -1082,8 +1426,6 @@ const SERVICES_MAP = {
               "概要": "身体に障害のある者が、都道府県知事の定める医師の診断書を添えて申請し、都道府県知事が審査のうえ交付する手帳。障害福祉サービス等を利用する際の基礎となる。",
               "類似サービスとの対応": "知的障害者は療育手帳、精神障害者は精神障害者保健福祉手帳が対応する（療育手帳は法令ではなく国の通知に基づく運用）。",
               "出典URL": "https://laws.e-gov.go.jp/law/324AC1000000283",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "その他"
             },
             {
@@ -1094,8 +1436,6 @@ const SERVICES_MAP = {
               "概要": "身体障害者福祉センター、補装具製作施設、盲導犬訓練施設、視聴覚障害者情報提供施設の4種を指す。相談・訓練・情報提供などにより社会参加を支援する施設。",
               "類似サービスとの対応": "身体障害者福祉法固有の施設群で、機能面では障害者総合支援法の地域生活支援事業と重なる部分がある。",
               "出典URL": "https://laws.e-gov.go.jp/law/324AC1000000283",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "その他",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第五号）"
             }
@@ -1115,8 +1455,6 @@ const SERVICES_MAP = {
               "概要": "都道府県が設置する専門機関。知的障害者に関する専門的な相談・判定に応じ、市町村への技術的援助などを行う。",
               "類似サービスとの対応": "身体障害者更生相談所（身体障害者福祉法）に対応する、知的障害分野の判定・相談機関。",
               "出典URL": "https://laws.e-gov.go.jp/law/335AC0000000037",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "相談・支援",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（知的障害者の更生相談に応ずる事業として社会福祉法第2条第3項第六号）"
             }
@@ -1148,8 +1486,6 @@ const SERVICES_MAP = {
               "概要": "都道府県（指定都市を含む）が置く専門機関。精神保健の向上と精神障害者の福祉の増進を図るため、知識の普及・調査研究、複雑困難な相談指導、精神医療審査会の事務、自立支援医療（精神通院医療）や精神障害者保健福祉手帳に係る専門的な判定などを行う。",
               "類似サービスとの対応": "身体障害者更生相談所・知的障害者更生相談所に対応する、精神保健福祉分野の専門機関です。",
               "出典URL": "https://laws.e-gov.go.jp/law/325AC0100000123",
-              "通知リンク名": "障害者福祉（厚生労働省）",
-              "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "相談・支援"
             }
           ]
@@ -1177,7 +1513,17 @@ const SERVICES_MAP = {
               "形態": "通所",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No015.pdf",
-              "経営指標リンク名": "児童系障害福祉サービスの経営状況（WAM・2024年度決算）"
+              "経営指標リンク名": "児童系障害福祉サービスの経営状況（WAM・2024年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                },
+                {
+                  "名称": "児童発達支援ガイドライン",
+                  "URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/7692b729-5944-45ee-bbd8-f0283126b7db/863f5ecf/20241101_policies_shougaijishien_shisaku_guideline_tebiki_02.pdf"
+                }
+              ]
             },
             {
               "正式名称": "放課後等デイサービス",
@@ -1192,7 +1538,13 @@ const SERVICES_MAP = {
               "形態": "通所",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No015.pdf",
-              "経営指標リンク名": "児童系障害福祉サービスの経営状況（WAM・2024年度決算）"
+              "経営指標リンク名": "児童系障害福祉サービスの経営状況（WAM・2024年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "放課後等デイサービスガイドライン",
+                  "URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/7692b729-5944-45ee-bbd8-f0283126b7db/def1acaf/20241101_policies_shougaijishien_shisaku_guideline_tebiki_06.pdf"
+                }
+              ]
             },
             {
               "正式名称": "居宅訪問型児童発達支援",
@@ -1238,7 +1590,13 @@ const SERVICES_MAP = {
               "通知リンク名": "障害児支援施策（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/policies/shougaijishien/shisaku",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                }
+              ]
             },
             {
               "正式名称": "医療型障害児入所施設",
@@ -1251,7 +1609,13 @@ const SERVICES_MAP = {
               "通知リンク名": "障害児支援施策（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/policies/shougaijishien/shisaku",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                }
+              ]
             }
           ]
         },
@@ -1268,12 +1632,48 @@ const SERVICES_MAP = {
               "概要": "保育を必要とする乳幼児を日々保護者の下から通わせて保育を行う施設（利用定員20人以上）。",
               "類似サービスとの対応": "子ども・子育て支援法上の教育・保育施設の一類型。地域型保育（小規模保育等）は少人数版。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "通所",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No016.pdf",
-              "経営指標リンク名": "保育所・幼保連携型認定こども園の経営状況（WAM・2024年度決算）"
+              "経営指標リンク名": "保育所・幼保連携型認定こども園の経営状況（WAM・2024年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                },
+                {
+                  "名称": "保育所における感染症対策ガイドライン（2018年改訂版）",
+                  "URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/e4b817c9-5282-4ccc-b0d5-ce15d7b5018c/cd6e454e/20231010_policies_hoiku_25.pdf"
+                },
+                {
+                  "名称": "教育・保育施設等における事故防止及び事故発生時の対応のためのガイドライン",
+                  "URL": "https://www.cfa.go.jp/policies/child-safety/effort/guideline"
+                },
+                {
+                  "名称": "保育所におけるアレルギー対応ガイドライン（2019年改訂版）",
+                  "URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/e4b817c9-5282-4ccc-b0d5-ce15d7b5018c/cc94d067/20240205_policies_hoiku_86.pdf"
+                },
+                {
+                  "名称": "保育所における食事の提供ガイドライン",
+                  "URL": "https://www.cfa.go.jp/policies/hoiku/shokuji-h24-bunkatsu"
+                },
+                {
+                  "名称": "保育所における自己評価ガイドライン（2020年改訂版）",
+                  "URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/e4b817c9-5282-4ccc-b0d5-ce15d7b5018c/200fee36/20231016_policies_hoiku_80.pdf"
+                },
+                {
+                  "名称": "保育所保育指針",
+                  "URL": "https://www.cfa.go.jp/policies/hoiku/shishin-h30-bunkatsu"
+                },
+                {
+                  "名称": "保育所や幼稚園等における虐待の防止及び発生時の対応等に関するガイドライン",
+                  "URL": "https://www.cfa.go.jp/policies/hoiku/hoiku-gyakutaiboushi"
+                },
+                {
+                  "名称": "こどものバス送迎・安全徹底マニュアル",
+                  "URL": "https://www.cfa.go.jp/policies/child-safety/effort/anzen_kanri"
+                }
+              ]
             },
             {
               "正式名称": "乳児院",
@@ -1283,12 +1683,24 @@ const SERVICES_MAP = {
               "概要": "乳幼児を入所させて養育し、あわせて退所した者への相談その他の援助を行う施設。",
               "類似サービスとの対応": "社会的養護の入所施設で、より低年齢を対象とする点で児童養護施設と対をなす。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
               "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
               "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
-              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                },
+                {
+                  "名称": "社会的養護関係施設における第三者評価及び自己評価の実施について",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo/daisansya-hyouka/"
+                },
+                {
+                  "名称": "児童養護施設等 社会的養護関係施設の運営指針",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo"
+                }
+              ]
             },
             {
               "正式名称": "児童養護施設",
@@ -1298,12 +1710,24 @@ const SERVICES_MAP = {
               "概要": "養護を要する児童を入所させて養護し、あわせて退所した者への相談その他の自立のための援助を行う施設。",
               "類似サービスとの対応": "社会的養護の中心的な入所施設。低年齢は乳児院が対応。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
               "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
               "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
-              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                },
+                {
+                  "名称": "社会的養護関係施設における第三者評価及び自己評価の実施について",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo/daisansya-hyouka/"
+                },
+                {
+                  "名称": "児童養護施設等 社会的養護関係施設の運営指針",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo"
+                }
+              ]
             },
             {
               "正式名称": "母子生活支援施設",
@@ -1313,12 +1737,24 @@ const SERVICES_MAP = {
               "概要": "母と子を入所させて保護するとともに、自立の促進のため生活を支援し、退所者への相談その他の援助を行う施設。",
               "類似サービスとの対応": "母子を一体で支援する入所施設で、女性・母子の自立支援施策に位置づく。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
               "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
               "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
-              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                },
+                {
+                  "名称": "社会的養護関係施設における第三者評価及び自己評価の実施について",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo/daisansya-hyouka/"
+                },
+                {
+                  "名称": "児童養護施設等 社会的養護関係施設の運営指針",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo"
+                }
+              ]
             },
             {
               "正式名称": "児童家庭支援センター",
@@ -1328,10 +1764,14 @@ const SERVICES_MAP = {
               "概要": "地域の児童福祉に関する専門的知識・技術を要する相談に応じて助言し、市町村への技術的助言、児童相談所・児童福祉施設等との連絡調整その他の援助を総合的に行う施設。",
               "類似サービスとの対応": "地域の相談拠点である点で、高齢分野の地域包括支援センターや障害分野の基幹相談支援センターに機能が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "相談・支援",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                }
+              ]
             },
             {
               "正式名称": "助産施設",
@@ -1341,10 +1781,14 @@ const SERVICES_MAP = {
               "概要": "経済的理由で入院助産を受けられない妊産婦を入所させて助産を受けさせる施設。",
               "類似サービスとの対応": "分野固有（母子保健・出産支援）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                }
+              ]
             },
             {
               "正式名称": "児童心理治療施設",
@@ -1354,12 +1798,24 @@ const SERVICES_MAP = {
               "概要": "対象児童を短期入所または通所させ、社会生活への適応のための心理治療と生活指導を行う施設。",
               "類似サービスとの対応": "社会的養護の一類型（心理治療に特化）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
               "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
               "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
-              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                },
+                {
+                  "名称": "社会的養護関係施設における第三者評価及び自己評価の実施について",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo/daisansya-hyouka/"
+                },
+                {
+                  "名称": "児童養護施設等 社会的養護関係施設の運営指針",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo"
+                }
+              ]
             },
             {
               "正式名称": "児童自立支援施設",
@@ -1369,12 +1825,24 @@ const SERVICES_MAP = {
               "概要": "対象児童を入所または通所させ、必要な指導を行って自立を支援する施設。",
               "類似サービスとの対応": "社会的養護の一類型（自立支援に特化）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
               "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
               "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
-              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）",
+              "関連ガイドライン": [
+                {
+                  "名称": "児童福祉施設の設備及び運営に関する基準（昭和23年厚生省令第63号）",
+                  "URL": "https://laws.e-gov.go.jp/law/323M40000100063"
+                },
+                {
+                  "名称": "社会的養護関係施設における第三者評価及び自己評価の実施について",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo/daisansya-hyouka/"
+                },
+                {
+                  "名称": "児童養護施設等 社会的養護関係施設の運営指針",
+                  "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo"
+                }
+              ]
             }
           ]
         },
@@ -1391,8 +1859,6 @@ const SERVICES_MAP = {
               "概要": "授業終了後に児童厚生施設等を利用して、適切な遊び・生活の場を与える事業。",
               "類似サービスとの対応": "障害児の放課後等デイサービスに対応する一般児童向けの放課後支援。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "通称": "放課後児童クラブ（学童保育）",
               "形態": "通所",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
@@ -1405,8 +1871,6 @@ const SERVICES_MAP = {
               "概要": "保育所等で一時的に預かり、必要な保護を行う事業。",
               "類似サービスとの対応": "分野固有（一時的な保育）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "通所",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             },
@@ -1418,8 +1882,6 @@ const SERVICES_MAP = {
               "概要": "乳幼児と保護者が相互に交流を行う場所を開設し、子育てについての相談・情報提供・助言その他の援助を行う事業。",
               "類似サービスとの対応": "地域の子育て相談・交流拠点（分野固有）。",
               "出典URL": "https://laws.e-gov.go.jp/law/322AC0000000164",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "相談・支援",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
             }
@@ -1438,8 +1900,6 @@ const SERVICES_MAP = {
               "概要": "施設型給付費・特例施設型給付費・地域型保育給付費・特例地域型保育給付費の支給からなる。給付対象の教育・保育施設は認定こども園・幼稚園・保育所の3類型、地域型保育は家庭的保育・小規模保育・居宅訪問型保育・事業所内保育。",
               "類似サービスとの対応": "児童福祉法の保育所を含む、就学前の教育・保育を財政給付で支える仕組み。",
               "出典URL": "https://laws.e-gov.go.jp/law/424AC0000000065",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "給付・貸付"
             },
             {
@@ -1450,8 +1910,6 @@ const SERVICES_MAP = {
               "概要": "市町村が地域の実情に応じて行う事業群。利用者支援、放課後児童健全育成事業、子育て短期支援事業、乳児家庭全戸訪問事業、地域子育て支援拠点事業、一時預かり事業、病児保育事業、ファミリー・サポート・センター事業、妊婦健康診査、産後ケア事業等を含む。",
               "類似サービスとの対応": "個別事業の多くは児童福祉法第6条の3で定義される事業を、子ども・子育て支援法が市町村事業として位置づけたもの。",
               "出典URL": "https://laws.e-gov.go.jp/law/424AC0000000065",
-              "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
-              "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "その他"
             }
           ]
@@ -1475,7 +1933,29 @@ const SERVICES_MAP = {
               "形態": "通所",
               "社会福祉法上の位置づけ": "第二種社会福祉事業（就学前の子どもに関する教育、保育等の総合的な提供の推進に関する法律に規定する幼保連携型認定こども園を経営する事業として社会福祉法第2条第3項第二号の二）",
               "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No016.pdf",
-              "経営指標リンク名": "保育所・幼保連携型認定こども園の経営状況（WAM・2024年度決算）"
+              "経営指標リンク名": "保育所・幼保連携型認定こども園の経営状況（WAM・2024年度決算）",
+              "関連ガイドライン": [
+                {
+                  "名称": "特定教育・保育施設及び特定地域型保育事業並びに特定子ども・子育て支援施設等の運営に関する基準（平成26年内閣府令第39号）",
+                  "URL": "https://laws.e-gov.go.jp/law/426M60000002039"
+                },
+                {
+                  "名称": "教育・保育施設等における事故防止及び事故発生時の対応のためのガイドライン",
+                  "URL": "https://www.cfa.go.jp/policies/child-safety/effort/guideline"
+                },
+                {
+                  "名称": "幼保連携型認定こども園教育・保育要領",
+                  "URL": "https://www.cfa.go.jp/policies/kokoseido/kodomoen/kokuji/"
+                },
+                {
+                  "名称": "保育所や幼稚園等における虐待の防止及び発生時の対応等に関するガイドライン",
+                  "URL": "https://www.cfa.go.jp/policies/hoiku/hoiku-gyakutaiboushi"
+                },
+                {
+                  "名称": "こどものバス送迎・安全徹底マニュアル",
+                  "URL": "https://www.cfa.go.jp/policies/child-safety/effort/anzen_kanri"
+                }
+              ]
             }
           ]
         },

@@ -6,7 +6,9 @@
 <title>福祉業界団体｜事業者団体・職能団体・共同募金を系統別に整理｜フクダネ</title>
 <meta name="description" content="全国の主要な福祉業界団体を、社会福祉協議会系・経営者団体・種別事業者団体・職能団体・共同募金などの系統別に、設立年や会員規模などの公表情報で整理し、関係図で示します。">
 <link rel="canonical" href="https://fukudane.com/organizations.html">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <meta property="og:title" content="福祉業界団体｜事業者団体・職能団体・共同募金を系統別に整理｜フクダネ">
 <meta property="og:description" content="全国の主要な福祉業界団体を、社会福祉協議会系・経営者団体・種別事業者団体・職能団体・共同募金などの系統別に、設立年や会員規模などの公表情報で整理し、関係図で示します。">
 <meta property="og:url" content="https://fukudane.com/organizations.html">
@@ -69,21 +71,7 @@
   <div class="wrap">
     <div class="brand">
       <a href="index.html" class="logo">
-        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
-          <g stroke="currentColor" stroke-width="1.3">
-            <line x1="13" y1="13" x2="6" y2="7"/>
-            <line x1="13" y1="13" x2="20" y2="7"/>
-            <line x1="13" y1="13" x2="7" y2="20"/>
-            <line x1="13" y1="13" x2="20" y2="19"/>
-          </g>
-          <g fill="currentColor">
-            <circle cx="13" cy="13" r="2.7"/>
-            <circle cx="6" cy="7" r="2"/>
-            <circle cx="20" cy="7" r="2"/>
-            <circle cx="7" cy="20" r="2"/>
-            <circle cx="20" cy="19" r="2"/>
-          </g>
-        </svg>
+        <img class="logo-mark-img" src="logo-mark.png" width="28" height="28" alt="" aria-hidden="true">
         <span class="logo-text">フクダネ</span>
       </a>
       <span class="tagline">社会福祉法人の総合情報サイト</span>
@@ -91,19 +79,44 @@
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <nav class="site-nav" id="primary-nav">
       <a href="index.html" class="nav-home">ホーム</a>
-      <a href="service.html">福祉サービス一覧</a>
-      <a href="history.html">制度の歴史</a>
-      <a href="jobs.html">福祉の仕事</a>
-      <a href="organizations.html" aria-current="page">福祉業界団体</a>
-      <a href="guidelines.html">ガイドライン集（施設運営）</a>
-      <a href="work-guidelines.html">ガイドライン集（法人運営）</a>
-      <a href="management.html">経営関連資料</a>
-      <a href="fees.html">報酬関連</a>
-      <a href="kitei.html">モデル規程</a>
-      <a href="foreign-workers.html">外国人材</a>
-      <a href="grants.html">助成団体</a>
-      <a href="db/db.html">社会福祉法人データベース</a>
-      <a href="stats.html">統計情報</a>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">制度・報酬<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="service.html" role="menuitem">福祉サービス</a>
+          <a href="fees.html" role="menuitem">報酬・公定価格</a>
+          <a href="history.html" role="menuitem">福祉制度の変遷</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">運営実務<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="guidelines.html" role="menuitem">サービス運営のガイドライン</a>
+          <a href="kitei.html" role="menuitem">モデル規程・様式例</a>
+          <a href="grants.html" role="menuitem">助成金・支援制度</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">人材・労務<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="work-guidelines.html" role="menuitem">労務・経営のガイドライン</a>
+          <a href="foreign-workers.html" role="menuitem">外国人材の受入れ</a>
+          <a href="jobs.html" role="menuitem">福祉の仕事</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">法人・経営<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="management.html" role="menuitem">経営・財務資料</a>
+          <a href="organizations.html" role="menuitem">福祉業界団体</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">データ<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="db/db.html" role="menuitem">社会福祉法人データベース</a>
+          <a href="stats.html" role="menuitem">社会福祉法人の統計</a>
+        </div>
+      </div>
       <a href="about.html">フクダネについて</a>
       <a href="search.html">サイト内検索</a>
     </nav>
@@ -113,7 +126,7 @@
 <noscript>
   <div style="max-width:1080px;margin:0 auto;padding:16px 20px;background:#fff8e1;border:1px solid #e0c76b;color:#5a4a1a;font-size:14px;line-height:1.8">
     <p style="margin:0 0 6px;font-weight:700">このページの表示にはJavaScriptが必要です。</p>
-    <p style="margin:0">お使いのブラウザでJavaScriptを有効にしてご覧ください。主要なページ：<a href="index.html">ホーム</a>・<a href="service.html">福祉サービス一覧</a>・<a href="history.html">制度の歴史</a>・<a href="about.html">フクダネについて</a></p>
+    <p style="margin:0">お使いのブラウザでJavaScriptを有効にしてご覧ください。主要なページ：<a href="index.html">ホーム</a>・<a href="service.html">福祉サービス一覧</a>・<a href="history.html">福祉制度の変遷</a>・<a href="about.html">フクダネについて</a></p>
   </div>
 </noscript>
 
@@ -142,18 +155,18 @@
       <nav class="footer-nav" aria-label="フッターナビゲーション">
         <a href="index.html">ホーム</a>
         <a href="service.html">福祉サービス一覧</a>
-        <a href="history.html">制度の歴史</a>
+        <a href="history.html">福祉制度の変遷</a>
         <a href="jobs.html">福祉の仕事</a>
         <a href="organizations.html">福祉業界団体</a>
-        <a href="guidelines.html">ガイドライン集（施設運営）</a>
-        <a href="work-guidelines.html">ガイドライン集（法人運営）</a>
-        <a href="management.html">経営関連資料</a>
-        <a href="fees.html">報酬関連</a>
-        <a href="kitei.html">モデル規程</a>
-        <a href="foreign-workers.html">外国人材</a>
-        <a href="grants.html">助成団体</a>
+        <a href="guidelines.html">サービス運営のガイドライン</a>
+        <a href="work-guidelines.html">労務・経営のガイドライン</a>
+        <a href="management.html">経営・財務資料</a>
+        <a href="fees.html">報酬・公定価格</a>
+        <a href="kitei.html">モデル規程・様式例</a>
+        <a href="foreign-workers.html">外国人材の受入れ</a>
+        <a href="grants.html">助成金・支援制度</a>
         <a href="db/db.html">社会福祉法人データベース</a>
-        <a href="stats.html">統計情報</a>
+        <a href="stats.html">社会福祉法人の統計</a>
         <a href="about.html">フクダネについて</a>
         <a href="search.html">サイト内検索</a>
         <a href="indicators.html">財務指標の解説</a>

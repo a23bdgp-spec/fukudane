@@ -3,12 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>フクダネ｜社会福祉法人と福祉制度の情報を探しやすく、確かめやすく</title>
-<meta name="description" content="社会福祉法人や福祉制度に関する公的情報を整理。福祉サービス、制度の歴史、福祉の仕事、業界団体、ガイドライン、経営関連資料、法人データベースを出典付きで確認できます。">
+<title>フクダネ｜福祉の情報を、探しやすく、確かめやすく</title>
+<meta name="description" content="福祉事業者の制度確認・施設運営・法人経営に必要な公的情報を整理。報酬・公定価格、ガイドライン、モデル規程・様式例、経営・財務資料、助成金・支援制度、社会福祉法人データベースなどを出典付きで確認できます。">
 <link rel="canonical" href="https://fukudane.com/">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
-<meta property="og:title" content="フクダネ｜社会福祉法人と福祉制度の情報を探しやすく、確かめやすく">
-<meta property="og:description" content="社会福祉法人や福祉制度に関する公的情報を整理。福祉サービス、制度の歴史、福祉の仕事、業界団体、ガイドライン、経営関連資料、法人データベースを出典付きで確認できます。">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<meta property="og:title" content="フクダネ｜福祉の情報を、探しやすく、確かめやすく">
+<meta property="og:description" content="福祉事業者の制度確認・施設運営・法人経営に必要な公的情報を整理。報酬・公定価格、ガイドライン、モデル規程・様式例、経営・財務資料、助成金・支援制度、社会福祉法人データベースなどを出典付きで確認できます。">
 <meta property="og:url" content="https://fukudane.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="フクダネ">
@@ -33,7 +35,7 @@
       "@id": "https://fukudane.com/#website",
       "name": "フクダネ",
       "url": "https://fukudane.com/",
-      "description": "社会福祉法人や福祉制度に関する公的情報を整理。福祉サービス、制度の歴史、福祉の仕事、業界団体、ガイドライン、経営関連資料、法人データベースを出典付きで確認できます。",
+      "description": "福祉事業者の制度確認・施設運営・法人経営に必要な公的情報を整理。報酬・公定価格、ガイドライン、モデル規程・様式例、経営・財務資料、助成金・支援制度、社会福祉法人データベースなどを出典付きで確認できます。",
       "inLanguage": "ja",
       "publisher": {
         "@id": "https://fukudane.com/#organization"
@@ -54,45 +56,104 @@
 </head>
 <body>
 
+<!-- カード用アイコン（自作インライン線画・深緑currentColor・外部参照なし） -->
+<svg class="svg-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-keisan" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="3" width="14" height="18" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/>
+    <line x1="8.5" y1="12" x2="8.5" y2="12"/><line x1="12" y1="12" x2="12" y2="12"/><line x1="15.5" y1="12" x2="15.5" y2="12"/>
+    <line x1="8.5" y1="16" x2="8.5" y2="16"/><line x1="12" y1="16" x2="12" y2="16"/><line x1="15.5" y1="16" x2="15.5" y2="16"/>
+  </symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 7a1 1 0 0 1 1-1h4l2 2h8a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><line x1="4" y1="11" x2="20" y2="11"/>
+  </symbol>
+  <symbol id="i-check-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/><path d="M14 3v4h4"/><path d="M9.3 14l2 2 3.4-4"/>
+  </symbol>
+  <symbol id="i-doc-pen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M13 3H7a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-8"/><path d="M17 3.5l3 3-6.5 6.5-3.5.5.5-3.5z"/>
+  </symbol>
+  <symbol id="i-line-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 4v16h16"/><polyline points="7 14 11 10 14 12 19 6"/>
+  </symbol>
+  <symbol id="i-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8"/><path d="M9 9l3 3 3-3"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9.3" y1="13.6" x2="14.7" y2="13.6"/>
+  </symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8"/><line x1="4" y1="12" x2="20" y2="12"/><path d="M12 4c2.6 2.7 2.6 13.3 0 16M12 4c-2.6 2.7-2.6 13.3 0 16"/>
+  </symbol>
+  <symbol id="i-people" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="8" r="3"/><path d="M3.5 20c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 15.3c2.7.4 4.5 2.2 4.5 4.7"/>
+  </symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 5h11a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1H8l-4 3v-3H3a0 0 0 0 1 0 0z"/><path d="M17 9h3a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-1v3l-4-3h-3"/>
+  </symbol>
+  <symbol id="i-database" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>
+  </symbol>
+  <symbol id="i-bar-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="4" y1="20" x2="20" y2="20"/><rect x="6" y="10" width="3" height="8"/><rect x="11" y="5" width="3" height="13"/><rect x="16" y="13" width="3" height="5"/>
+  </symbol>
+  <symbol id="i-org" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="9" y="3" width="6" height="4"/><rect x="3" y="17" width="6" height="4"/><rect x="15" y="17" width="6" height="4"/><path d="M12 7v4M6 17v-3h12v3M12 14v-3"/>
+  </symbol>
+  <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="11" cy="11" r="7"/><line x1="16.2" y1="16.2" x2="21" y2="21"/>
+  </symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8"/><path d="M12 7.5V12l3 2"/>
+  </symbol>
+</svg>
+
 <header class="site-header">
   <div class="wrap">
     <div class="brand">
       <a href="index.html" class="logo">
-        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
-          <g stroke="currentColor" stroke-width="1.3">
-            <line x1="13" y1="13" x2="6" y2="7"/>
-            <line x1="13" y1="13" x2="20" y2="7"/>
-            <line x1="13" y1="13" x2="7" y2="20"/>
-            <line x1="13" y1="13" x2="20" y2="19"/>
-          </g>
-          <g fill="currentColor">
-            <circle cx="13" cy="13" r="2.7"/>
-            <circle cx="6" cy="7" r="2"/>
-            <circle cx="20" cy="7" r="2"/>
-            <circle cx="7" cy="20" r="2"/>
-            <circle cx="20" cy="19" r="2"/>
-          </g>
-        </svg>
+        <img class="logo-mark-img" src="logo-mark.png" width="28" height="28" alt="" aria-hidden="true">
         <span class="logo-text">フクダネ</span>
       </a>
       <span class="tagline">社会福祉法人の総合情報サイト</span>
     </div>
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <nav class="site-nav" id="primary-nav">
-      <a href="index.html" class="nav-home" aria-current="page">ホーム</a>
-      <a href="service.html">福祉サービス一覧</a>
-      <a href="history.html">制度の歴史</a>
-      <a href="jobs.html">福祉の仕事</a>
-      <a href="organizations.html">福祉業界団体</a>
-      <a href="guidelines.html">ガイドライン集（施設運営）</a>
-      <a href="work-guidelines.html">ガイドライン集（法人運営）</a>
-      <a href="management.html">経営関連資料</a>
-      <a href="fees.html">報酬関連</a>
-      <a href="kitei.html">モデル規程</a>
-      <a href="foreign-workers.html">外国人材</a>
-      <a href="grants.html">助成団体</a>
-      <a href="db/db.html">社会福祉法人データベース</a>
-      <a href="stats.html">統計情報</a>
+      <a href="index.html" class="nav-home">ホーム</a>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">制度・報酬<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="service.html" role="menuitem">福祉サービス</a>
+          <a href="fees.html" role="menuitem">報酬・公定価格</a>
+          <a href="history.html" role="menuitem">福祉制度の変遷</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">運営実務<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="guidelines.html" role="menuitem">サービス運営のガイドライン</a>
+          <a href="kitei.html" role="menuitem">モデル規程・様式例</a>
+          <a href="grants.html" role="menuitem">助成金・支援制度</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">人材・労務<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="work-guidelines.html" role="menuitem">労務・経営のガイドライン</a>
+          <a href="foreign-workers.html" role="menuitem">外国人材の受入れ</a>
+          <a href="jobs.html" role="menuitem">福祉の仕事</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">法人・経営<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="management.html" role="menuitem">経営・財務資料</a>
+          <a href="organizations.html" role="menuitem">福祉業界団体</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button type="button" class="nav-group-btn" aria-expanded="false" aria-haspopup="true">データ<span class="nav-caret" aria-hidden="true">▾</span></button>
+        <div class="nav-menu" role="menu">
+          <a href="db/db.html" role="menuitem">社会福祉法人データベース</a>
+          <a href="stats.html" role="menuitem">社会福祉法人の統計</a>
+        </div>
+      </div>
       <a href="about.html">フクダネについて</a>
       <a href="search.html">サイト内検索</a>
     </nav>
@@ -103,93 +164,151 @@
   <div class="wrap">
     <h1 class="catch">福祉の情報を、探しやすく、確かめやすく。</h1>
     <p class="lead">
-      社会福祉法人や福祉制度に関する公的情報を整理し、必要な情報とその根拠へたどり着きやすくします。
+      福祉事業者の制度確認、施設運営、法人経営に必要な公的情報を整理し、原典まで確認できるようにします。
     </p>
     <!-- ホームの検索窓。GET送信で search.html?q=<入力> へ遷移する（ホーム自体では検索しない＝索引を読み込まない） -->
     <form class="hero-search" role="search" action="search.html" method="get">
       <label for="hero-q" class="visually-hidden">サイト内をキーワードで検索</label>
-      <input type="search" id="hero-q" name="q" class="hero-search-input" placeholder="例：特養、デイサービス、虐待防止" autocomplete="off">
-      <button type="submit" class="hero-search-btn">検索</button>
+      <input type="search" id="hero-q" name="q" class="hero-search-input" placeholder="例：処遇改善、BCP、モデル就業規則、特定技能、法人名" autocomplete="off">
+      <button type="submit" class="hero-search-btn"><svg class="btn-icon" aria-hidden="true"><use href="#i-search"/></svg>検索</button>
     </form>
+    <p class="hero-search-note">報酬・制度・ガイドライン・規程・経営資料・法人データを横断して検索できます</p>
+    <p class="hero-chips">例：<a class="hero-chip" href="search.html?q=処遇改善">処遇改善</a><a class="hero-chip" href="search.html?q=BCP">BCP</a><a class="hero-chip" href="search.html?q=虐待防止">虐待防止</a><a class="hero-chip" href="search.html?q=モデル就業規則">モデル就業規則</a><a class="hero-chip" href="search.html?q=特定技能">特定技能</a><a class="hero-chip" href="search.html?q=法人名">法人名</a></p>
   </div>
 </div>
 
-<!-- 公開中のコンテンツ -->
+<!-- 事業運営に役立つ情報（福祉事業者向け：入口→実務→人材→データ→制度） -->
 <section id="contents">
   <div class="wrap">
-    <h2 class="section-title">公開中のコンテンツ</h2>
-    <div class="guide-grid">
-      <a class="guide-card" href="service.html">
-        <p class="g-title">福祉サービス一覧</p>
-        <p class="g-desc">正式名称、通称、対象、支援内容、根拠法から探せます。</p>
-        <span class="g-arrow">サービスを探す →</span>
+    <h2 class="section-title">事業運営に役立つ情報</h2>
+
+    <!-- 主要な入口3枚 -->
+    <div class="entry-grid">
+      <a class="entry-card" href="fees.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-keisan"/></svg>
+        <span class="e-title">報酬・制度を確認する</span>
+        <span class="e-desc">介護報酬・障害福祉サービス等報酬・公定価格・処遇改善など、国が定める報酬・制度の公式情報を整理しています。</span>
+        <span class="e-arrow">報酬情報を見る →</span>
       </a>
-      <a class="guide-card" href="history.html">
-        <p class="g-title">制度の歴史</p>
-        <p class="g-desc">福祉制度の成立と変化を、年表で確認できます。</p>
-        <span class="g-arrow">年表を見る →</span>
+      <a class="entry-card" href="#practical">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-folder"/></svg>
+        <span class="e-title">運営に必要な資料を探す</span>
+        <span class="e-desc">ガイドライン・モデル規程・様式例・経営資料など、施設運営・法人運営に使う公式資料を整理しています。</span>
+        <span class="e-arrow">実務資料を見る ↓</span>
+      </a>
+      <a class="entry-card" href="db/db.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-database"/></svg>
+        <span class="e-title">法人・経営データを調べる</span>
+        <span class="e-desc">全国21,301法人の基本情報と2020〜2024年度の財務情報を検索・比較できます。</span>
+        <span class="e-arrow">法人を探す →</span>
+      </a>
+    </div>
+
+    <!-- よく使う実務情報 -->
+    <h3 class="cat-h" id="practical">よく使う実務情報</h3>
+    <div class="guide-grid">
+      <a class="guide-card" href="fees.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-keisan"/></svg>
+        <p class="g-title">報酬・公定価格</p>
+        <p class="g-desc">介護報酬・障害福祉サービス等報酬・公定価格・処遇改善など、報酬・公定価格の国の公式情報を整理しています。</p>
+        <span class="g-arrow">報酬情報を見る →</span>
+      </a>
+      <a class="guide-card" href="guidelines.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-check-doc"/></svg>
+        <p class="g-title">サービス運営のガイドライン</p>
+        <p class="g-desc">運営基準・虐待防止・感染症対策・災害対策など、サービス運営のガイドラインを分野別に整理しています。</p>
+        <span class="g-arrow">ガイドラインを見る →</span>
+      </a>
+      <a class="guide-card" href="kitei.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-doc-pen"/></svg>
+        <p class="g-title">モデル規程・様式例</p>
+        <p class="g-desc">公式に一般公開されているモデル規程・様式例を分野別に整理しています。</p>
+        <span class="g-arrow">規程・様式を見る →</span>
+      </a>
+      <a class="guide-card" href="management.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-line-chart"/></svg>
+        <p class="g-title">経営・財務資料</p>
+        <p class="g-desc">社会福祉法人・社会福祉事業の経営・財務に関する調査・報告・手引きを、発行機関別に整理しています。</p>
+        <span class="g-arrow">資料を見る →</span>
+      </a>
+      <a class="guide-card" href="grants.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-coin"/></svg>
+        <p class="g-title">助成金・支援制度</p>
+        <p class="g-desc">福祉事業者が利用できる助成金・助成財団を、分野別に整理しています。</p>
+        <span class="g-arrow">助成情報を見る →</span>
+      </a>
+    </div>
+
+    <!-- 人材確保・組織運営 -->
+    <h3 class="cat-h">人材確保・組織運営</h3>
+    <div class="guide-grid">
+      <a class="guide-card" href="foreign-workers.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-globe"/></svg>
+        <p class="g-title">外国人材の受入れ</p>
+        <p class="g-desc">介護分野の外国人材の受入れ4ルートの比較と、公式の手引き・試験・相談窓口を整理しています。</p>
+        <span class="g-arrow">受入れ制度を見る →</span>
+      </a>
+      <a class="guide-card" href="work-guidelines.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-people"/></svg>
+        <p class="g-title">労務・経営のガイドライン</p>
+        <p class="g-desc">法人ガバナンス・監査・会計・情報管理・労務など、法人本部が扱うガイドラインを分野別に整理しています。</p>
+        <span class="g-arrow">ガイドラインを見る →</span>
       </a>
       <a class="guide-card" href="jobs.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-chat"/></svg>
         <p class="g-title">福祉の仕事</p>
-        <p class="g-desc">福祉の仕事の現場や創造性が伝わる動画・読みものを紹介しています。</p>
+        <p class="g-desc">福祉の仕事を考える言葉、実践者の言葉、動画・読みものを紹介します。</p>
         <span class="g-arrow">仕事を知る →</span>
       </a>
+    </div>
+
+    <!-- 法人・業界データ -->
+    <h3 class="cat-h">法人・業界データ</h3>
+    <div class="guide-grid">
       <a class="guide-card" href="db/db.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-database"/></svg>
         <p class="g-title">社会福祉法人データベース</p>
-        <p class="g-desc">全国の法人情報と2020〜2024年度の財務情報を検索・比較できます。</p>
+        <p class="g-desc">全国21,301法人の基本情報と2020〜2024年度の財務情報を検索・比較できます。</p>
         <span class="g-arrow">法人を検索する →</span>
       </a>
+      <a class="guide-card" href="stats.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-bar-chart"/></svg>
+        <p class="g-title">社会福祉法人の統計</p>
+        <p class="g-desc">全国の社会福祉法人の収益規模・黒字割合・事業分類・設立年代・都道府県別などの集計を事実として掲載しています。</p>
+        <span class="g-arrow">統計を見る →</span>
+      </a>
       <a class="guide-card" href="organizations.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-org"/></svg>
         <p class="g-title">福祉業界団体</p>
         <p class="g-desc">全国の主要な業界団体を、系統・設立年・会員規模などの公表情報で整理しています。</p>
         <span class="g-arrow">団体を見る →</span>
       </a>
-      <a class="guide-card" href="guidelines.html">
-        <p class="g-title">ガイドライン集（施設運営）</p>
-        <p class="g-desc">運営基準・虐待防止・感染症対策・事故防止・災害対策など、現場運営のガイドラインを分野別に整理しています。</p>
-        <span class="g-arrow">ガイドラインを見る →</span>
+    </div>
+
+    <!-- 制度・サービス -->
+    <h3 class="cat-h">制度・サービス</h3>
+    <div class="guide-grid">
+      <a class="guide-card" href="service.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <p class="g-title">福祉サービス・制度を調べる</p>
+        <p class="g-desc">正式名称・通称・対象・支援内容・根拠法から福祉サービスを検索・比較できます。</p>
+        <span class="g-arrow">サービスを探す →</span>
       </a>
-      <a class="guide-card" href="work-guidelines.html">
-        <p class="g-title">ガイドライン集（法人運営）</p>
-        <p class="g-desc">法人ガバナンス・監査・会計・個人情報・ICT・労務など、法人本部が扱う法人運営のガイドラインを分野別に整理しています。</p>
-        <span class="g-arrow">ガイドラインを見る →</span>
-      </a>
-      <a class="guide-card" href="management.html">
-        <p class="g-title">経営関連資料</p>
-        <p class="g-desc">社会福祉法人・社会福祉事業の経営に関する調査・報告・手引きを、発行機関別に整理しています。</p>
-        <span class="g-arrow">資料を見る →</span>
-      </a>
-      <a class="guide-card" href="fees.html">
-        <p class="g-title">報酬関連</p>
-        <p class="g-desc">介護報酬・障害福祉サービス等報酬・公定価格・処遇改善など、報酬・公定価格に関する国の公式情報を分野別に整理しています。</p>
-        <span class="g-arrow">報酬情報を見る →</span>
-      </a>
-      <a class="guide-card" href="kitei.html">
-        <p class="g-title">モデル規程</p>
-        <p class="g-desc">社会福祉法人の運営に用いる規程類のうち、公式に一般公開されているモデル・例を分野別に整理しています。</p>
-        <span class="g-arrow">規程を見る →</span>
-      </a>
-      <a class="guide-card" href="foreign-workers.html">
-        <p class="g-title">外国人材</p>
-        <p class="g-desc">介護分野の外国人材の受入れ4ルートの比較と、育成就労制度・公式の手引き・試験・相談窓口を整理しています。</p>
-        <span class="g-arrow">受入れ制度を見る →</span>
-      </a>
-      <a class="guide-card" href="grants.html">
-        <p class="g-title">助成団体</p>
-        <p class="g-desc">福祉事業者が利用できる助成金・助成財団を、共同募金・公的助成／施設整備／事業・調査研究の分野別に整理しています。</p>
-        <span class="g-arrow">助成団体を見る →</span>
-      </a>
-      <a class="guide-card" href="stats.html">
-        <p class="g-title">統計情報</p>
-        <p class="g-desc">全国の社会福祉法人の収益規模・赤字割合の推移・事業分類・設立年代・都道府県別などの集計を事実として掲載しています。</p>
-        <span class="g-arrow">統計を見る →</span>
-      </a>
-      <a class="guide-card" href="about.html">
-        <p class="g-title">フクダネについて</p>
-        <p class="g-desc">フクダネが解決したい課題、情報の扱い方、編集の独立性、運営方針について公開しています。</p>
-        <span class="g-arrow">フクダネについて見る →</span>
+      <a class="guide-card" href="history.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-clock"/></svg>
+        <p class="g-title">福祉制度の変遷</p>
+        <p class="g-desc">福祉制度の成立と変化を、年表で確認できます。</p>
+        <span class="g-arrow">年表を見る →</span>
       </a>
     </div>
+  </div>
+</section>
+
+<!-- フクダネについて（カード群から分離した小セクション） -->
+<section class="about-mini">
+  <div class="wrap">
+    <p class="about-mini-text">フクダネは、福祉の公的情報を出典付きで整理する、社会福祉法人の総合情報サイトです。</p>
+    <p class="about-mini-links"><a href="about.html">フクダネについて</a>　<a href="about.html#editorial-policy">編集方針</a>　<a href="terms.html">利用規約</a></p>
   </div>
 </section>
 
@@ -202,19 +321,19 @@
       </div>
       <nav class="footer-nav" aria-label="フッターナビゲーション">
         <a href="index.html">ホーム</a>
-        <a href="service.html">福祉サービス一覧</a>
-        <a href="history.html">制度の歴史</a>
+        <a href="service.html">福祉サービス</a>
+        <a href="fees.html">報酬・公定価格</a>
+        <a href="history.html">福祉制度の変遷</a>
+        <a href="guidelines.html">サービス運営のガイドライン</a>
+        <a href="kitei.html">モデル規程・様式例</a>
+        <a href="grants.html">助成金・支援制度</a>
+        <a href="work-guidelines.html">労務・経営のガイドライン</a>
+        <a href="foreign-workers.html">外国人材の受入れ</a>
         <a href="jobs.html">福祉の仕事</a>
+        <a href="management.html">経営・財務資料</a>
         <a href="organizations.html">福祉業界団体</a>
-        <a href="guidelines.html">ガイドライン集（施設運営）</a>
-        <a href="work-guidelines.html">ガイドライン集（法人運営）</a>
-        <a href="management.html">経営関連資料</a>
-        <a href="fees.html">報酬関連</a>
-        <a href="kitei.html">モデル規程</a>
-        <a href="foreign-workers.html">外国人材</a>
-        <a href="grants.html">助成団体</a>
         <a href="db/db.html">社会福祉法人データベース</a>
-        <a href="stats.html">統計情報</a>
+        <a href="stats.html">社会福祉法人の統計</a>
         <a href="about.html">フクダネについて</a>
         <a href="search.html">サイト内検索</a>
         <a href="indicators.html">財務指標の解説</a>

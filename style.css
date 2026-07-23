@@ -121,6 +121,27 @@ summary:focus-visible {
 /* PC横並びでは「ホーム」を出さない（ロゴがホームリンク）。スマホのハンバーガー内では表示 */
 .site-nav .nav-home { display: none; }
 
+/* ===== カテゴリ・ドロップダウンナビ（.nav-group＝見出しボタン＋.nav-menu） ===== */
+.nav-group { position: relative; }
+.nav-group-btn { font: inherit; font-size: 14.5px; color: var(--ink); background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; padding: 4px 0; display: inline-flex; align-items: center; gap: 4px; }
+.nav-group-btn:hover { color: var(--primary); }
+.nav-caret { font-size: 10px; }
+.nav-menu { display: none; }
+.nav-group.is-open > .nav-menu { display: block; }
+.nav-group.has-current > .nav-group-btn { color: var(--primary); font-weight: 700; }
+@media (min-width: 769px) {
+  .nav-menu { position: absolute; top: 100%; left: 0; min-width: 210px; background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.14); padding: 6px; z-index: 60; }
+  .nav-menu a { display: block; padding: 9px 12px; font-size: 13.5px; border: none; border-radius: 6px; white-space: nowrap; }
+  .nav-menu a:hover { background: var(--primary-tint); border: none; }
+}
+@media (max-width: 768px) {
+  .nav-group { display: block; }
+  .nav-group-btn { display: block; width: 100%; text-align: left; font-weight: 700; color: var(--primary); padding: 12px 4px; border-bottom: 1px solid var(--line); }
+  .nav-caret { display: none; }
+  .nav-menu { display: block; padding: 0 0 8px 14px; }
+  .nav-menu a { padding: 9px 4px; font-size: 14px; border-bottom: none; }
+}
+
 /* ===== ヒーロー（淡い深緑ティント） ===== */
 .hero {
   background: var(--primary-tint);
@@ -899,6 +920,31 @@ section p:last-child { margin-bottom: 0; }
 .hero-search-btn:hover { background: var(--primary-dark); }
 @media (max-width: 480px) { .hero-search { flex-wrap: wrap; } .hero-search-input, .hero-search-btn { width: 100%; } }
 
+/* ホーム：検索窓下の案内＋例チップ */
+.hero-search-note { margin: 8px 0 0; font-size: 13px; color: var(--ink-soft); }
+.hero-chips { margin: 8px 0 0; font-size: 13px; color: var(--ink-soft); display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.hero-chip { display: inline-block; padding: 3px 12px; border: 1px solid var(--line); border-radius: 16px; background: #fff; color: var(--primary); font-weight: 700; text-decoration: none; font-size: 12.5px; }
+.hero-chip:hover { background: var(--primary-tint); }
+
+/* ホーム：主要な入口3枚（大きめ） */
+.entry-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 0 0 8px; }
+.entry-card { display: flex; flex-direction: column; gap: 6px; padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--primary-tint); text-decoration: none; color: var(--ink); }
+.entry-card:hover { border-color: var(--primary); }
+.e-title { font-size: 18px; font-weight: 700; color: var(--primary); }
+.e-desc { font-size: 13.5px; color: var(--ink); line-height: 1.7; }
+.e-arrow { margin-top: auto; font-size: 13px; font-weight: 700; color: var(--primary); }
+
+/* ホーム：カテゴリ見出し */
+.cat-h { font-size: 16px; font-weight: 700; color: var(--primary); margin: 30px 0 12px; padding-bottom: 6px; border-bottom: 2px solid var(--line); scroll-margin-top: 70px; }
+
+/* ホーム：フクダネについて小セクション */
+.about-mini { padding: 0 0 48px; }
+.about-mini .wrap { border-top: 1px solid var(--line); padding-top: 20px; }
+.about-mini-text { font-size: 14px; color: var(--ink); margin: 0 0 6px; }
+.about-mini-links a { color: var(--primary); font-weight: 700; }
+
+@media (max-width: 700px) { .entry-grid { grid-template-columns: 1fr; } }
+
 /* サービスカード面の経営指標リンク（詳細を開かなくても分かる小さな導線） */
 .s-keiei { margin: 8px 0 0; font-size: 13px; }
 .s-keiei a { color: var(--primary); font-weight: 700; border-bottom: 1px solid var(--line-strong); padding-bottom: 1px; }
@@ -1105,3 +1151,14 @@ section p:last-child { margin-bottom: 0; }
   .fw-cmp-tablewrap { display: none; }
   .fw-cmp-tablewrap.is-open { display: block; margin-top: 12px; }
 }
+
+/* ===== 公式ロゴ（ヘッダーのマーク画像）とカードアイコン（トップ最終版） ===== */
+/* ヘッダーのマーク画像（本と芽の公式ロゴ。テキスト「フクダネ」の左） */
+.logo-mark-img { display: block; height: 28px; width: auto; flex: none; }
+/* アイコンスプライト本体は非表示（各カードから <use> で参照） */
+.svg-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+/* カード用アイコン（自作インライン線画・深緑currentColor・24px基準） */
+.card-icon { width: 26px; height: 26px; color: var(--primary); display: block; margin: 0 0 4px; flex: none; }
+/* 検索ボタン内の虫眼鏡アイコン */
+.hero-search-btn { display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+.hero-search-btn .btn-icon { width: 17px; height: 17px; }

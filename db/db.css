@@ -28,6 +28,26 @@ body{
 /* ハンバーガーボタン（スマホのみ表示） */
 .nav-toggle{display:none;appearance:none;border:1px solid var(--line);background:#fff;color:var(--primary-d);width:44px;height:44px;border-radius:8px;cursor:pointer;align-items:center;justify-content:center}
 .nav-toggle:hover{border-color:var(--primary)}
+/* カテゴリ・ドロップダウンナビ（db側） */
+.nav-group{position:relative}
+.nav-group-btn{font:inherit;font-size:14px;color:var(--ink);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;padding:3px 0;display:inline-flex;align-items:center;gap:4px}
+.nav-group-btn:hover{color:var(--primary)}
+.nav-caret{font-size:10px}
+.nav-menu{display:none}
+.nav-group.is-open>.nav-menu{display:block}
+.nav-group.has-current>.nav-group-btn{color:var(--primary);font-weight:700}
+@media(min-width:769px){
+  .nav-menu{position:absolute;top:100%;left:0;min-width:210px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.14);padding:6px;z-index:60}
+  .nav-menu a{display:block;padding:9px 12px;font-size:13px;border:none;border-radius:6px;white-space:nowrap}
+  .nav-menu a:hover{background:var(--primary-l);border:none}
+}
+@media(max-width:768px){
+  .nav-group{display:block}
+  .nav-group-btn{display:block;width:100%;text-align:left;font-weight:700;color:var(--primary);padding:12px 4px;border-bottom:1px solid var(--line)}
+  .nav-caret{display:none}
+  .nav-menu{display:block;padding:0 0 8px 14px}
+  .nav-menu a{padding:9px 4px;font-size:14px;border-bottom:none}
+}
 @media(max-width:768px){
   .nav-toggle{display:inline-flex}
   .sitenav-links{display:none;width:100%;flex-direction:column;gap:0;margin-top:12px;border-top:1px solid var(--line)}
