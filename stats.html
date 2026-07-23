@@ -935,6 +935,7 @@ const STATS = {
     if (agg.excluded_missing != null) foot.push("欠損除外：" + num(agg.excluded_missing) + "法人");
     if (agg.excluded_negative != null) foot.push("負値除外：" + num(agg.excluded_negative) + "法人");
     if (agg.excluded_future != null && agg.excluded_future) foot.push("未来値除外：" + num(agg.excluded_future) + "法人");
+    if (agg.excluded != null) foot.push("除外：" + num(agg.excluded) + "法人");
     if (foot.length) h += '<p class="stats-foot">' + foot.join("　/　") + "</p>";
     h += "</section>";
     return h;
@@ -952,29 +953,132 @@ const STATS = {
     return h;
   }
 
+  // ===== ヒートマップ用（深緑単色の濃淡。色だけに頼らずセル内に必ず数値を表示） =====
+  // 値vをmin..maxで正規化し、明るい緑→暗い緑へ補間。データなしは中立グレー。
+  function heatColor(v, min, max) {
+    if (v == null) return { bg: "#f3f5f4", fg: "#9aa8a4" };
+    var t = (max > min) ? (v - min) / (max - min) : 0.5;
+    t = Math.max(0, Math.min(1, t));
+    var r = Math.round(232 + (14 - 232) * t);
+    var g = Math.round(242 + (76 - 242) * t);
+    var b = Math.round(238 + (65 - 238) * t);
+    return { bg: "rgb(" + r + "," + g + "," + b + ")", fg: (t > 0.55 ? "#ffffff" : "#12433a") };
+  }
+  // 凡例（薄い=低い／濃い=高い、実レンジ併記）
+  function heatLegend(min, max) {
+    return '<div class="heat-legend"><span class="heat-legend-cap">薄い＝低い</span>' +
+      '<span class="heat-legend-lo">' + pct(min) + "%</span>" +
+      '<span class="heat-legend-bar" aria-hidden="true"></span>' +
+      '<span class="heat-legend-hi">' + pct(max) + "%</span>" +
+      '<span class="heat-legend-cap">濃い＝高い</span></div>';
+  }
+  function minMax(arr) {
+    var v = arr.filter(function (x) { return x != null; });
+    return { min: Math.min.apply(null, v), max: Math.max.apply(null, v) };
+  }
+
+  // 都道府県別 黒字割合のセル一覧（表形式の色付きセル。県名＋割合＋n を必ず表示）
+  function prefHeatGrid(p) {
+    var mm = minMax(p.surplus_rate);
+    var h = '<div class="heat-prefgrid" role="list" aria-label="都道府県別の黒字割合">';
+    p.labels.forEach(function (lb, i) {
+      var v = p.surplus_rate[i], nn = p.base_n[i], c = heatColor(v, mm.min, mm.max);
+      h += '<div class="heat-pref" role="listitem" style="background:' + c.bg + ";color:" + c.fg + '">' +
+        '<span class="heat-pref-name">' + esc(lb) + "</span>" +
+        '<span class="heat-val">' + pct(v) + "%</span>" +
+        '<span class="heat-n">n=' + num(nn) + "</span></div>";
+    });
+    h += "</div>";
+    return h + heatLegend(mm.min, mm.max);
+  }
+
+  // 規模×事業分類 5×5 マトリクス（色付き表。n<30は明記、n0/nullは「—」）
+  function matrixHeat(m) {
+    var flat = [];
+    m.surplus_rate.forEach(function (row) { row.forEach(function (v) { if (v != null) flat.push(v); }); });
+    var mm = minMax(flat);
+    var h = '<div class="heat-matrixwrap"><table class="heat-matrix"><thead><tr><th scope="col">規模＼事業</th>';
+    m.col_labels.forEach(function (c) { h += '<th scope="col">' + esc(c) + "</th>"; });
+    h += "</tr></thead><tbody>";
+    m.row_labels.forEach(function (rl, i) {
+      h += '<tr><th scope="row">' + esc(rl) + "</th>";
+      m.col_labels.forEach(function (cl, j) {
+        var v = m.surplus_rate[i][j], nn = m.n[i][j];
+        if (v == null || nn === 0) {
+          h += '<td class="heat-na">—</td>';
+        } else {
+          var c = heatColor(v, mm.min, mm.max);
+          h += '<td class="heat-cell' + (nn < 30 ? " heat-small" : "") + '" style="background:' + c.bg + ";color:" + c.fg + '">' +
+            '<span class="heat-val">' + pct(v) + '%</span><span class="heat-n">n=' + num(nn) + "</span></td>";
+        }
+      });
+      h += "</tr>";
+    });
+    h += "</tbody></table></div>";
+    return h + heatLegend(mm.min, mm.max);
+  }
+
+  // 都道府県タイルマップ（日本列島の形に並べたグリッド。純HTML/CSS＝外部通信・ライセンス不要）。
+  // 各タイルに県名（略）と黒字割合を表示し、タップ／ホバーで県名・割合・法人数を示す。
+  var JP_POS = {
+    "北海道": [0, 11], "青森県": [1, 10], "秋田県": [2, 9], "岩手県": [2, 10],
+    "山形県": [3, 9], "宮城県": [3, 10], "新潟県": [4, 8], "福島県": [4, 10],
+    "石川県": [5, 6], "富山県": [5, 7], "長野県": [5, 8], "群馬県": [5, 9], "栃木県": [5, 10], "茨城県": [5, 11],
+    "福井県": [6, 6], "岐阜県": [6, 7], "山梨県": [6, 8], "埼玉県": [6, 9], "東京都": [6, 10], "千葉県": [6, 11],
+    "京都府": [7, 5], "滋賀県": [7, 6], "愛知県": [7, 7], "静岡県": [7, 8], "神奈川県": [7, 10],
+    "鳥取県": [8, 4], "兵庫県": [8, 5], "大阪府": [8, 6], "奈良県": [8, 7], "三重県": [8, 8],
+    "島根県": [9, 3], "岡山県": [9, 4], "香川県": [9, 5], "和歌山県": [9, 6],
+    "山口県": [10, 2], "広島県": [10, 3], "愛媛県": [10, 4], "徳島県": [10, 5],
+    "福岡県": [11, 2], "大分県": [11, 3], "高知県": [11, 4],
+    "佐賀県": [12, 1], "熊本県": [12, 2], "宮崎県": [12, 3],
+    "長崎県": [13, 1], "鹿児島県": [13, 2], "沖縄県": [15, 0]
+  };
+  function shortPref(n) { return n === "北海道" ? "北海" : n.replace(/[都道府県]$/, ""); }
+  function japanMap(p) {
+    var mm = minMax(p.surplus_rate);
+    var h = '<div class="japan-map-wrap"><div class="japan-map" role="group" aria-label="都道府県別の黒字割合マップ">';
+    p.labels.forEach(function (lb, i) {
+      var pos = JP_POS[lb]; if (!pos) return;
+      var v = p.surplus_rate[i], nn = p.base_n[i], c = heatColor(v, mm.min, mm.max);
+      var info = lb + "：黒字割合 " + pct(v) + "%（n=" + num(nn) + "）";
+      h += '<button type="button" class="japan-tile" style="grid-row:' + (pos[0] + 1) + ";grid-column:" + (pos[1] + 1) +
+        ";background:" + c.bg + ";color:" + c.fg + '" data-info="' + esc(info) + '" aria-label="' + esc(info) + '" title="' + esc(info) + '">' +
+        '<span class="jt-name">' + esc(shortPref(lb)) + '</span><span class="jt-val">' + pct(v) + "%</span></button>";
+    });
+    h += "</div>";
+    h += '<p class="japan-tip" id="japan-tip" aria-live="polite">タイルをタップ／ポイントすると、県名・黒字割合・法人数を表示します。</p>';
+    h += "</div>";
+    return h + heatLegend(mm.min, mm.max);
+  }
+
   var html = "";
   var sz = S.size_distribution;
   if (sz) {
     var b = '<canvas class="stats-canvas" data-chart="bars-outline" data-id="c-size" height="220"></canvas>';
-    b += table(["収益規模", "法人数", "赤字割合", "赤字法人数", "母数"],
-      sz.labels.map(function (lb, i) { return [esc(lb), num(sz.counts[i]), pct(sz.deficit_rate[i]) + "%", num(sz.deficit_n[i]), num(sz.base_n[i])]; }),
-      [null, "r", "r", "r", "r"]);
-    html += section("stats-size", "収益規模別の法人数と赤字割合", sz, b);
+    b += table(["収益規模", "法人数", "黒字割合", "黒字法人数", "赤字割合", "母数"],
+      sz.labels.map(function (lb, i) { return [esc(lb), num(sz.counts[i]), pct(sz.surplus_rate[i]) + "%", num(sz.surplus_n[i]), pct(sz.deficit_rate[i]) + "%", num(sz.base_n[i])]; }),
+      [null, "r", "r", "r", "r", "r"]);
+    html += section("stats-size", "収益規模別の黒字割合と法人数", sz, b);
   }
   var dt = S.deficit_trend;
   if (dt) {
     var b2 = '<canvas class="stats-canvas" data-chart="line" data-id="c-deficit" height="220"></canvas>';
-    b2 += table(["年度", "赤字割合", "赤字法人数", "母数"],
-      dt.labels.map(function (lb, i) { return [esc(lb), pct(dt.deficit_rate[i]) + "%", num(dt.deficit_n[i]), num(dt.base_n[i])]; }),
-      [null, "r", "r", "r"]);
-    html += section("stats-deficit", "赤字法人割合の推移", dt, b2);
+    b2 += table(["年度", "黒字割合", "黒字法人数", "赤字割合", "母数"],
+      dt.labels.map(function (lb, i) { return [esc(lb), pct(dt.surplus_rate[i]) + "%", num(dt.surplus_n[i]), pct(dt.deficit_rate[i]) + "%", num(dt.base_n[i])]; }),
+      [null, "r", "r", "r", "r"]);
+    html += section("stats-deficit", "黒字法人割合の推移", dt, b2);
   }
   var bc = S.biz_class;
   if (bc) {
-    var b3 = table(["事業分類", "法人数", "収益中央値", "赤字割合", "赤字法人数", "母数"],
-      bc.labels.map(function (lb, i) { return [esc(lb), num(bc.counts[i]), num(bc.rev_median[i]) + " 円", pct(bc.deficit_rate[i]) + "%", num(bc.deficit_n[i]), num(bc.base_n[i])]; }),
-      [null, "r", "r", "r", "r", "r"]);
-    html += section("stats-biz", "主な事業分類別の法人数・収益・赤字割合", bc, b3);
+    var b3 = '<canvas class="stats-canvas" data-chart="bars-outline" data-id="c-biz" height="220"></canvas>';
+    b3 += table(["事業分類", "法人数", "収益中央値", "黒字割合", "黒字法人数", "赤字割合", "母数"],
+      bc.labels.map(function (lb, i) { return [esc(lb), num(bc.counts[i]), num(bc.rev_median[i]) + " 円", pct(bc.surplus_rate[i]) + "%", num(bc.surplus_n[i]), pct(bc.deficit_rate[i]) + "%", num(bc.base_n[i])]; }),
+      [null, "r", "r", "r", "r", "r", "r"]);
+    html += section("stats-biz", "主な事業分類別の黒字割合・法人数・収益", bc, b3);
+  }
+  var mtx = S.size_biz_surplus_matrix;
+  if (mtx) {
+    html += section("stats-matrix", "収益規模×事業分類の黒字割合（ヒートマップ）", mtx, matrixHeat(mtx));
   }
   var fe = S.founding_era;
   if (fe) {
@@ -999,6 +1103,10 @@ const STATS = {
     var b6 = table(["都道府県", "法人数", "収益中央値"],
       pf.labels.map(function (lb, i) { return [esc(lb), num(pf.counts[i]), num(pf.rev_median[i]) + " 円"]; }), [null, "r", "r"]);
     html += section("stats-pref", "都道府県別の法人数・収益中央値", pf, b6);
+  }
+  var ps = S.prefecture_surplus;
+  if (ps) {
+    html += section("stats-pref-surplus", "都道府県別の黒字割合（地図・一覧）", ps, japanMap(ps) + prefHeatGrid(ps));
   }
   var st = S.submission_trend;
   if (st) {
@@ -1042,7 +1150,7 @@ const STATS = {
     return [s.slice(0, mid), s.slice(mid)];
   }
 
-  function drawBarsOutline(cv, labels, values) {
+  function drawBarsOutline(cv, labels, values, suffix) {
     var s = setupCanvas(cv, CHART_H); if (!s) return;
     var ctx = s.ctx, W = s.W, H = s.H;
     var padL = 8, padR = 8, padT = 22, padB = 48, plotW = W - padL - padR, plotH = H - padT - padB;
@@ -1054,7 +1162,7 @@ const STATS = {
       var cx = padL + i * slot + slot / 2, bh = plotH * (values[i] / max), y = padT + plotH - bh;
       ctx.strokeStyle = GREEN; ctx.lineWidth = 1.5; ctx.strokeRect(cx - bw / 2, y, bw, bh);
       ctx.font = "11px sans-serif"; ctx.fillStyle = "#0f4d42";
-      ctx.fillText(Number(values[i]).toLocaleString("en-US"), cx, y - 5); // 値ラベル（棒の上）
+      ctx.fillText(Number(values[i]).toLocaleString("en-US") + (suffix || ""), cx, y - 5); // 値ラベル（棒の上）
       ctx.fillStyle = "#5a6b67"; // 目盛りラベル（軸下）。長い場合は2行に折り返す
       var lines = wrapLabel(labels[i], maxChars);
       for (var k = 0; k < lines.length; k++) ctx.fillText(lines[k], cx, H - padB + 16 + k * 13);
@@ -1084,15 +1192,30 @@ const STATS = {
   function safeDraw(fn) { try { fn(); } catch (e) { /* 個々のグラフ失敗は無視。表は表示済み。 */ } }
   function renderCharts() {
     try {
-      if (sz) { var c1 = document.querySelector('[data-id="c-size"]'); if (c1) safeDraw(function () { drawBarsOutline(c1, sz.labels, sz.counts); }); }
+      // 黒字割合を主体に描画（規模別・事業分類別＝棒、推移＝折れ線）。設立年代は法人数の棒（従来）。
+      if (sz) { var c1 = document.querySelector('[data-id="c-size"]'); if (c1) safeDraw(function () { drawBarsOutline(c1, sz.labels, sz.surplus_rate, "%"); }); }
+      if (bc) { var cb = document.querySelector('[data-id="c-biz"]'); if (cb) safeDraw(function () { drawBarsOutline(cb, bc.labels, bc.surplus_rate, "%"); }); }
       if (fe) { var c2 = document.querySelector('[data-id="c-era"]'); if (c2) safeDraw(function () { drawBarsOutline(c2, fe.labels, fe.counts); }); }
-      if (dt) { var c3 = document.querySelector('[data-id="c-deficit"]'); if (c3) safeDraw(function () { drawLine(c3, dt.labels, dt.deficit_rate, "%"); }); }
+      if (dt) { var c3 = document.querySelector('[data-id="c-deficit"]'); if (c3) safeDraw(function () { drawLine(c3, dt.labels, dt.surplus_rate, "%"); }); }
     } catch (e) { /* グラフ全体が失敗しても表は表示済み */ }
   }
   if (typeof window !== "undefined" && window.requestAnimationFrame) {
     window.requestAnimationFrame(renderCharts);
     var t; window.addEventListener("resize", function () { clearTimeout(t); t = setTimeout(renderCharts, 200); });
   } else { renderCharts(); }
+
+  // 都道府県タイルのタップ／ホバーで、県名・黒字割合・法人数を凡例下に表示（スマホ対応）
+  var tipEl = document.getElementById("japan-tip");
+  if (root && tipEl) {
+    root.addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest(".japan-tile") : null;
+      if (b) tipEl.textContent = b.getAttribute("data-info");
+    });
+    root.addEventListener("mouseover", function (e) {
+      var b = e.target.closest ? e.target.closest(".japan-tile") : null;
+      if (b) tipEl.textContent = b.getAttribute("data-info");
+    });
+  }
 })();
 </script>
 <script src="nav.js" defer></script>
