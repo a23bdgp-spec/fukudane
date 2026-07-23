@@ -1188,68 +1188,16 @@ const STATS = {
   }
 
   var html = "";
-  var sz = S.size_distribution;
-  if (sz) {
-    var b = '<canvas class="stats-canvas" data-chart="bars-outline" data-id="c-size" height="220"></canvas>';
-    b += table(["収益規模", "法人数", "黒字割合", "黒字法人数", "赤字割合", "母数"],
-      sz.labels.map(function (lb, i) { return [esc(lb), num(sz.counts[i]), pct(sz.surplus_rate[i]) + "%", num(sz.surplus_n[i]), pct(sz.deficit_rate[i]) + "%", num(sz.base_n[i])]; }),
-      [null, "r", "r", "r", "r", "r"]);
-    html += section("stats-size", "収益規模別の黒字割合と法人数", sz, b);
+  // NaoK指示によりヒートマップ2種のみに簡素化（他の棒グラフ・折れ線・表は表示削除。stats.jsonのデータは保持）。
+  // ① 実形状の日本地図ヒートマップ（県別黒字割合。タップ／ホバーで県名・割合・法人数）＋数値セル一覧（濃淡だけに依存しない）
+  var ps = S.prefecture_surplus;
+  if (ps) {
+    html += section("stats-pref-surplus", "都道府県別の黒字割合（日本地図ヒートマップ）", ps, japanMap(ps) + prefHeatGrid(ps));
   }
-  var dt = S.deficit_trend;
-  if (dt) {
-    var b2 = '<canvas class="stats-canvas" data-chart="line" data-id="c-deficit" height="220"></canvas>';
-    b2 += table(["年度", "黒字割合", "黒字法人数", "赤字割合", "母数"],
-      dt.labels.map(function (lb, i) { return [esc(lb), pct(dt.surplus_rate[i]) + "%", num(dt.surplus_n[i]), pct(dt.deficit_rate[i]) + "%", num(dt.base_n[i])]; }),
-      [null, "r", "r", "r", "r"]);
-    html += section("stats-deficit", "黒字法人割合の推移", dt, b2);
-  }
-  var bc = S.biz_class;
-  if (bc) {
-    var b3 = '<canvas class="stats-canvas" data-chart="bars-outline" data-id="c-biz" height="220"></canvas>';
-    b3 += table(["事業分類", "法人数", "収益中央値", "黒字割合", "黒字法人数", "赤字割合", "母数"],
-      bc.labels.map(function (lb, i) { return [esc(lb), num(bc.counts[i]), num(bc.rev_median[i]) + " 円", pct(bc.surplus_rate[i]) + "%", num(bc.surplus_n[i]), pct(bc.deficit_rate[i]) + "%", num(bc.base_n[i])]; }),
-      [null, "r", "r", "r", "r", "r", "r"]);
-    html += section("stats-biz", "主な事業分類別の黒字割合・法人数・収益", bc, b3);
-  }
+  // ② 収益規模5階級×事業分類8区分の黒字割合ヒートマップ（40セル・セル内に数値表示・n表示規則は従来どおり）
   var mtx = S.size_biz_surplus_matrix;
   if (mtx) {
     html += section("stats-matrix", "収益規模×事業分類の黒字割合（ヒートマップ）", mtx, matrixHeat(mtx));
-  }
-  var fe = S.founding_era;
-  if (fe) {
-    var b4 = '<canvas class="stats-canvas" data-chart="bars-outline" data-id="c-era" height="220"></canvas>';
-    b4 += table(["設立年代", "法人数"], fe.labels.map(function (lb, i) { return [esc(lb), num(fe.counts[i])]; }), [null, "r"]);
-    html += section("stats-era", "設立年代別の法人数", fe, b4);
-  }
-  var rc = S.revenue_concentration;
-  if (rc) {
-    var b5 = "";
-    if (rc.share_pct && rc.share_pct.length >= 2) {
-      b5 += '<p class="stats-sentence">' + esc("収益上位1%（" + num(rc.corp_n[0]) + "法人）が全体のサービス活動収益合計の " + pct(rc.share_pct[0]) +
-        "%、上位10%（" + num(rc.corp_n[1]) + "法人）が " + pct(rc.share_pct[1]) + "% を占めています。") + "</p>";
-    }
-    b5 += table(["区分", "法人数", "収益合計に占める割合"],
-      rc.labels.map(function (lb, i) { return [esc(lb), num(rc.corp_n[i]), pct(rc.share_pct[i]) + "%"]; }), [null, "r", "r"]);
-    b5 += '<p class="stats-note-inline">対象法人数：' + num(rc.total_corps) + " 法人／サービス活動収益合計：" + num(rc.total_rev_yen) + " 円</p>";
-    html += section("stats-conc", "収益の集中度", rc, b5);
-  }
-  var pf = S.prefecture;
-  if (pf) {
-    var b6 = table(["都道府県", "法人数", "収益中央値"],
-      pf.labels.map(function (lb, i) { return [esc(lb), num(pf.counts[i]), num(pf.rev_median[i]) + " 円"]; }), [null, "r", "r"]);
-    html += section("stats-pref", "都道府県別の法人数・収益中央値", pf, b6);
-  }
-  var ps = S.prefecture_surplus;
-  if (ps) {
-    html += section("stats-pref-surplus", "都道府県別の黒字割合（地図・一覧）", ps, japanMap(ps) + prefHeatGrid(ps));
-  }
-  var st = S.submission_trend;
-  if (st) {
-    var b7 = table(["年度", "掲載法人数", "新規掲載", "掲載終了"],
-      st.labels.map(function (lb, i) { return [esc(lb), num(st.listed[i]), st.newly_listed[i] == null ? "—" : num(st.newly_listed[i]), st.no_longer_listed[i] == null ? "—" : num(st.no_longer_listed[i])]; }),
-      [null, "r", "r", "r"]);
-    html += section("stats-sub", "掲載法人数の推移", st, b7);
   }
 
   root.innerHTML = html || '<p class="ind-loading">統計データを読み込めませんでした。</p>';
