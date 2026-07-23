@@ -939,3 +939,7 @@ section p:last-child { margin-bottom: 0; }
 
 .mg-related { font-size: 13.5px; color: var(--ink-soft); margin: 20px 0 8px; }
 .mg-related a { color: var(--primary); font-weight: 700; }
+
+/* 深リンク着地時のハイライト（点滅なし・深緑系の淡色） */
+.deeplink-flash { animation: deeplinkFlash 2.6s ease; border-radius: 8px; }
+@keyframes deeplinkFlash { 0% { background: var(--primary-tint); } 70% { background: var(--primary-tint); } 100% { background: transparent; } }
