@@ -50,6 +50,7 @@
       <a href="jobs.html">福祉の仕事</a>
       <a href="organizations.html">福祉業界団体</a>
       <a href="guidelines.html">ガイドライン集</a>
+      <a href="management.html">経営関連資料</a>
       <a href="db/db.html">社会福祉法人データベース</a>
       <a href="about.html">フクダネについて</a>
     </nav>
@@ -127,6 +128,7 @@
         <a href="jobs.html">福祉の仕事</a>
         <a href="organizations.html">福祉業界団体</a>
         <a href="guidelines.html">ガイドライン集</a>
+        <a href="management.html">経営関連資料</a>
         <a href="db/db.html">社会福祉法人データベース</a>
         <a href="about.html">フクダネについて</a>
         <a href="terms.html">利用規約</a>
@@ -171,7 +173,9 @@ const SERVICES_MAP = {
     "通称",
     "形態",
     "WAMNET_URL",
-    "社会福祉法上の位置づけ"
+    "社会福祉法上の位置づけ",
+    "経営指標URL",
+    "経営指標リンク名"
   ],
   "domains": [
     {
@@ -259,7 +263,9 @@ const SERVICES_MAP = {
               "通称": "デイサービス",
               "形態": "通所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-09.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人デイサービス事業として社会福祉法第2条第3項第四号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（老人デイサービス事業として社会福祉法第2条第3項第四号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250627_No003.pdf",
+              "経営指標リンク名": "通所介護の経営状況（WAM・2023年度決算）"
             },
             {
               "正式名称": "通所リハビリテーション",
@@ -409,7 +415,9 @@ const SERVICES_MAP = {
               "通知リンク名": "介護報酬（厚生労働省）",
               "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "形態": "その他",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（小規模多機能型居宅介護事業として社会福祉法第2条第3項第四号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（小規模多機能型居宅介護事業として社会福祉法第2条第3項第四号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260107_No008.pdf",
+              "経営指標リンク名": "小規模多機能型居宅介護の経営状況（WAM・2024年度決算）"
             },
             {
               "正式名称": "認知症対応型共同生活介護",
@@ -423,7 +431,9 @@ const SERVICES_MAP = {
               "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "通称": "グループホーム",
               "形態": "居住",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（認知症対応型老人共同生活援助事業として社会福祉法第2条第3項第四号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（認知症対応型老人共同生活援助事業として社会福祉法第2条第3項第四号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250509_No001.pdf",
+              "経営指標リンク名": "認知症高齢者グループホームの経営状況（WAM・2023年度決算）"
             },
             {
               "正式名称": "地域密着型特定施設入居者生活介護",
@@ -495,7 +505,9 @@ const SERVICES_MAP = {
               "通称": "特別養護老人ホーム（特養）",
               "形態": "入所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-17.html",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260220_No012.pdf",
+              "経営指標リンク名": "特別養護老人ホームの経営状況（WAM・2024年度決算）"
             },
             {
               "正式名称": "介護老人保健施設",
@@ -509,7 +521,9 @@ const SERVICES_MAP = {
               "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
               "通称": "老健",
               "形態": "入所",
-              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-19.html"
+              "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/kaigo/handbook/service/c078-p02-02-Kaigo-19.html",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No017_rev3.pdf",
+              "経営指標リンク名": "介護老人保健施設の経営状況（WAM・2024年度決算）"
             },
             {
               "正式名称": "介護医療院",
@@ -521,7 +535,9 @@ const SERVICES_MAP = {
               "出典URL": "https://laws.e-gov.go.jp/law/409AC0000000123",
               "通知リンク名": "介護報酬（厚生労働省）",
               "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html",
-              "形態": "入所"
+              "形態": "入所",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/251219_No007.pdf",
+              "経営指標リンク名": "介護医療院の経営状況（WAM・2024年度決算）"
             }
           ]
         },
@@ -554,7 +570,9 @@ const SERVICES_MAP = {
               "通知リンク名": "介護・高齢者福祉（厚生労働省）",
               "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/index.html",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260220_No012.pdf",
+              "経営指標リンク名": "特別養護老人ホームの経営状況（WAM・2024年度決算）"
             },
             {
               "正式名称": "軽費老人ホーム",
@@ -567,7 +585,9 @@ const SERVICES_MAP = {
               "通知リンク名": "介護・高齢者福祉（厚生労働省）",
               "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/index.html",
               "形態": "居住",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第三号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260220_No011.pdf",
+              "経営指標リンク名": "軽費老人ホーム（ケアハウス）の経営状況（WAM・2024年度決算）"
             },
             {
               "正式名称": "老人デイサービスセンター",
@@ -715,7 +735,9 @@ const SERVICES_MAP = {
               "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "通所",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-06.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250625_No002.pdf",
+              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）"
             },
             {
               "正式名称": "短期入所",
@@ -805,7 +827,9 @@ const SERVICES_MAP = {
               "通知URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/index.html",
               "形態": "就労",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-20.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250625_No002.pdf",
+              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）"
             },
             {
               "正式名称": "就労継続支援A型",
@@ -820,7 +844,9 @@ const SERVICES_MAP = {
               "通称": "雇用型",
               "形態": "就労",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-21.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250625_No002.pdf",
+              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）"
             },
             {
               "正式名称": "就労継続支援B型",
@@ -835,7 +861,9 @@ const SERVICES_MAP = {
               "通称": "非雇用型",
               "形態": "就労",
               "WAMNET_URL": "https://www.wam.go.jp/content/wamnet/pcpub/syogai/handbook/service/c078-p02-02-Shogai-22.html",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第四の二号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/250625_No002.pdf",
+              "経営指標リンク名": "日中活動系障害福祉サービスの経営状況（WAM・2023年度決算）"
             },
             {
               "正式名称": "就労定着支援",
@@ -1044,7 +1072,9 @@ const SERVICES_MAP = {
               "通知リンク名": "障害児支援施策（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/policies/shougaijishien/shisaku",
               "形態": "通所",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No015.pdf",
+              "経営指標リンク名": "児童系障害福祉サービスの経営状況（WAM・2024年度決算）"
             },
             {
               "正式名称": "放課後等デイサービス",
@@ -1057,7 +1087,9 @@ const SERVICES_MAP = {
               "通知リンク名": "障害児支援施策（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/policies/shougaijishien/shisaku",
               "形態": "通所",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No015.pdf",
+              "経営指標リンク名": "児童系障害福祉サービスの経営状況（WAM・2024年度決算）"
             },
             {
               "正式名称": "居宅訪問型児童発達支援",
@@ -1136,7 +1168,9 @@ const SERVICES_MAP = {
               "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "通所",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（社会福祉法第2条第3項第二号）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No016.pdf",
+              "経営指標リンク名": "保育所・幼保連携型認定こども園の経営状況（WAM・2024年度決算）"
             },
             {
               "正式名称": "乳児院",
@@ -1149,7 +1183,9 @@ const SERVICES_MAP = {
               "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
+              "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
             },
             {
               "正式名称": "児童養護施設",
@@ -1162,7 +1198,9 @@ const SERVICES_MAP = {
               "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
+              "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
             },
             {
               "正式名称": "母子生活支援施設",
@@ -1175,7 +1213,9 @@ const SERVICES_MAP = {
               "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
+              "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
             },
             {
               "正式名称": "児童家庭支援センター",
@@ -1214,7 +1254,9 @@ const SERVICES_MAP = {
               "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
+              "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
             },
             {
               "正式名称": "児童自立支援施設",
@@ -1227,7 +1269,9 @@ const SERVICES_MAP = {
               "通知リンク名": "各政策の通知・事務連絡（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/laws/tuuchi",
               "形態": "入所",
-              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）"
+              "社会福祉法上の位置づけ": "第一種社会福祉事業（社会福祉法第2条第2項第二号）",
+              "経営指標URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/660cb68b-a5d8-4ca1-bf5b-da4a66838145/fa1f2e4d/20241015_policies_kosodateshien_chousa_suishinchosa_r05-01_h10.pdf",
+              "経営指標リンク名": "社会的養護関係施設等の経営実態及び施設等職員の勤務実態に関する調査研究（こども家庭庁・2024年3月）"
             }
           ]
         },
@@ -1326,7 +1370,9 @@ const SERVICES_MAP = {
               "通知リンク名": "認定こども園（こども家庭庁）",
               "通知URL": "https://www.cfa.go.jp/policies/kokoseido/kodomoen/",
               "形態": "通所",
-              "社会福祉法上の位置づけ": "第二種社会福祉事業（就学前の子どもに関する教育、保育等の総合的な提供の推進に関する法律に規定する幼保連携型認定こども園を経営する事業として社会福祉法第2条第3項第二号の二）"
+              "社会福祉法上の位置づけ": "第二種社会福祉事業（就学前の子どもに関する教育、保育等の総合的な提供の推進に関する法律に規定する幼保連携型認定こども園を経営する事業として社会福祉法第2条第3項第二号の二）",
+              "経営指標URL": "https://www.wam.go.jp/hp/wp-content/uploads/260327_No016.pdf",
+              "経営指標リンク名": "保育所・幼保連携型認定こども園の経営状況（WAM・2024年度決算）"
             }
           ]
         },
@@ -1511,7 +1557,7 @@ const SERVICES_MAP = {
               "根拠法": "生活困窮者自立支援法第3条第6項",
               "法令上の対象者": "一定の住居を持たない生活困窮者等",
               "主な対象": "住まいのない、生活困窮者",
-              "概要": "一定期間、宿泊場所や衣食等の供与を行う事業、および訪問による情報提供・助言等を行う事業。令和6年改正で従来の一時生活支援事業と地域居住支援を統合・改称。",
+              "概要": "一定期間、宿泊場所や衣食等の供与を行う事業、および訪問による情報提供・助言等を行う事業。2024年改正で従来の一時生活支援事業と地域居住支援を統合・改称。",
               "類似サービスとの対応": "生活保護法の宿所提供施設と支援対象が近い。",
               "出典URL": "https://laws.e-gov.go.jp/law/425AC0000000105",
               "通知リンク名": "生活困窮者自立支援制度（厚生労働省）",
@@ -1536,7 +1582,7 @@ const SERVICES_MAP = {
           "law": "困難な問題を抱える女性への支援に関する法律（令和4年法律第52号）",
           "law_id": "504AC0100000052",
           "category": "女性への支援（施設・相談支援機関）",
-          "note": "困難な問題を抱える女性への支援に関する法律（女性支援新法）は、困難な問題を抱える女性の福祉の増進を図るため、その支援に関する必要な事項を定める法律。令和6年4月に施行され、売春防止法に基づく婦人保護事業（婦人相談所・婦人保護施設等）を再編したもの。",
+          "note": "困難な問題を抱える女性への支援に関する法律（女性支援新法）は、困難な問題を抱える女性の福祉の増進を図るため、その支援に関する必要な事項を定める法律。2024年4月に施行され、売春防止法に基づく婦人保護事業（婦人相談所・婦人保護施設等）を再編したもの。",
           "services": [
             {
               "正式名称": "女性自立支援施設",
@@ -1696,6 +1742,8 @@ const MAP_INTRO = {
           wam: sv["WAMNET_URL"] || "",
           notice: sv["通知URL"] || "",
           noticeLabel: sv["通知リンク名"] || "",
+          keiei: sv["経営指標URL"] || "",
+          keieiLabel: sv["経営指標リンク名"] || "",
           shakai: sv["社会福祉法上の位置づけ"] || "",
           form: sv["形態"] || "",
           domain: dm.domain || ""
@@ -1897,6 +1945,13 @@ const MAP_INTRO = {
       var noticeText = it.noticeLabel ? (it.noticeLabel + "↗") : "運営に関わる通知・基準を見る↗";
       h += '<p class="s-wam"><a class="wam-btn" href="' + esc(notice) +
         '" target="_blank" rel="noopener noreferrer">' + esc(noticeText) + "</a></p>";
+    }
+    // 経営指標リンク（経営指標URLがある場合のみ。他リンクと同じ並び・流儀）
+    var keiei = safeUrl(it.keiei);
+    if (keiei) {
+      var keieiText = it.keieiLabel ? (it.keieiLabel + "↗") : "経営指標を見る↗";
+      h += '<p class="s-wam"><a class="wam-btn" href="' + esc(keiei) +
+        '" target="_blank" rel="noopener noreferrer">' + esc(keieiText) + "</a></p>";
     }
     h += "</div></details>";
     h += "</article>";
