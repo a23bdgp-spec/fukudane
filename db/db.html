@@ -12,7 +12,8 @@
 <nav class="sitenav" aria-label="サイトナビゲーション">
   <div class="sitenav-in">
     <a class="sitenav-logo" href="../index.html">フクダネ</a>
-    <div class="sitenav-links">
+    <button class="nav-toggle" type="button" aria-controls="db-nav-links" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <div class="sitenav-links" id="db-nav-links">
       <a href="../index.html">ホーム</a>
       <a href="../map.html">福祉サービス一覧</a>
       <a href="../history.html">制度の歴史</a>
@@ -632,5 +633,6 @@ function openModal(title, innerHtml){
 
 init();
 </script>
+<script src="../nav.js" defer></script>
 </body>
 </html>

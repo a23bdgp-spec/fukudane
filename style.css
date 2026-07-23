@@ -88,6 +88,22 @@ summary:focus-visible {
 .logo-text { line-height: 1; }
 .brand .tagline { font-size: 13px; color: var(--ink-soft); }
 
+/* ハンバーガーボタン（スマホのみ表示） */
+.nav-toggle {
+  display: none;
+  appearance: none;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--primary-dark);
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+.nav-toggle:hover { border-color: var(--primary); }
+
 .site-nav { display: flex; flex-wrap: wrap; gap: 4px 22px; }
 .site-nav a {
   color: var(--ink);
@@ -643,4 +659,26 @@ section p:last-child { margin-bottom: 0; }
   section { padding: 44px 0; }
   .list-page { padding: 32px 0 48px; }
   .card-grid { grid-template-columns: 1fr; }
+}
+
+/* スマホ幅：ヘッダーナビをハンバーガーに集約 */
+@media (max-width: 768px) {
+  .site-header .wrap { flex-wrap: wrap; }
+  .nav-toggle { display: inline-flex; }
+  .site-nav {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 12px;
+    border-top: 1px solid var(--line);
+  }
+  .site-nav.nav-open { display: flex; }
+  .site-nav a {
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--line);
+    border-top: none;
+    font-size: 15px;
+  }
+  .site-nav a[aria-current="page"] { border-bottom-color: var(--primary); }
 }
