@@ -411,8 +411,10 @@ function detailHtml(c){
     ['設立年', c.setsuritsu ? c.setsuritsu+'年' : '—'],
     ['主たる事業', c.biz],
     ['事業所数', c.offices!=null ? c.offices+'か所' : '—'],
-    ['法人本部拠点', c.hq===1 ? 'あり' : (c.hq===0 ? 'なし' : '—')],
-    ['本部の職員数（常勤換算）', c.hq_staff!=null ? c.hq_staff.toLocaleString('ja-JP')+'人' : '—'],
+    // 本部拠点の有無と常勤換算職員数を1行に統合（人数はデータが整数のため「◯人」。欠損は「人数不明」）
+    ['法人本部拠点', c.hq===1
+      ? ('あり（' + (c.hq_staff!=null ? c.hq_staff.toLocaleString('ja-JP')+'人' : '人数不明') + '）')
+      : (c.hq===0 ? 'なし' : '—')],
   ].map(([k,v])=>`<span><b>${esc(k)}：</b>${esc(String(v))}</span>`).join('');
   // 収益規模順位（事実。順位と母数のみ・優劣ではない旨を明記）
   let rankHtml = '';
@@ -751,7 +753,8 @@ async function openCompare(){
       return `<tr><th>${esc(d.name)}（${esc(d.unit)}）</th>${cells}<td class="med">${indFmt(mn)}</td></tr>`;
     }).join('');
     inner = `<p class="note">数値と全国中央値をそのまま並べています。順位付け・優劣の判定はしていません。金額は1億円未満を万円、1億円以上を「N億M万円」で表示。その他の単位は各行名に記載。${esc(IND_SOURCE_NOTE)}</p>
-      <div class="cmp-scroll"><table class="cmptbl"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
+      <div class="cmp-scroll"><table class="cmptbl"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+      <p class="note">各指標の正式名称・定義・計算式は <a href="../indicators.html" target="_blank" rel="noopener">財務指標の解説 ↗</a> をご覧ください。</p>`;
   }
   openModal(`法人の比較（${corps.length}法人）`, inner);
 }
