@@ -278,6 +278,17 @@ section p:last-child { margin-bottom: 0; }
    ============================================================ */
 .list-page { padding: 40px 0 56px; }
 
+/* ヒーローの最終確認日 */
+.hero-date { font-size: 13px; color: var(--ink-soft); margin: 12px 0 0; }
+
+/* 検索見出し・条件を絞る見出し */
+.search-heading { display: block; font-size: 14px; font-weight: 700; color: var(--primary-dark); margin: 0 0 8px; }
+.filters-heading { font-size: 15px; font-weight: 700; color: var(--primary-dark); margin: 0 0 10px; }
+
+/* この一覧の考え方（旧・導入文を一覧の後へ移設） */
+.intro-section { margin: 40px 0 0; padding-top: 28px; border-top: 1px solid var(--line); }
+.intro-link { font-weight: 700; white-space: nowrap; }
+
 /* 導入文（前提＝社会福祉法の3段落） */
 .map-intro { margin: 0 0 24px; }
 .map-intro p { font-size: 16px; line-height: 1.9; margin: 0 0 14px; color: var(--ink); }
@@ -391,6 +402,15 @@ section p:last-child { margin-bottom: 0; }
   font-weight: 700;
   color: var(--dc, var(--primary));
 }
+/* 受け方・目的ラベル（形態の表示語） */
+.form-label {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  padding: 0 7px;
+  line-height: 1.6;
+}
 /* 第一種＝濃緑枠・第二種＝薄緑枠で控えめに区別 */
 .shakai-badge {
   font-size: 11px;
@@ -404,6 +424,22 @@ section p:last-child { margin-bottom: 0; }
 .s-title { font-size: 16px; font-weight: 700; color: var(--primary-dark); margin: 0 0 2px; line-height: 1.45; }
 .s-alias { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 6px; }
 .s-summary { font-size: 14px; margin: 0 0 10px; }
+.s-maintarget { font-size: 13px; margin: 0 0 10px; color: var(--ink); }
+.s-mt-label { color: var(--ink-soft); }
+/* WAM NETボタン（詳細内） */
+.s-wam { margin: 8px 0 0; }
+.wam-btn {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary-dark);
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  padding: 5px 12px;
+  text-decoration: none;
+  background: var(--primary-tint);
+}
+.wam-btn:hover { border-color: var(--primary); }
 
 /* 詳細（開閉） */
 .s-detail { margin-top: auto; border-top: 1px solid var(--line); padding-top: 8px; }
@@ -450,14 +486,15 @@ section p:last-child { margin-bottom: 0; }
 .svc-table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 620px;          /* これ未満の幅では横スクロール（ページ全体は伸びない） */
+  min-width: 720px;          /* これ未満の幅では横スクロール（ページ全体は伸びない） */
   table-layout: fixed;        /* 列幅を固定し、長文はセル内で折り返す */
   font-size: 13.5px;
   background: #fff;
 }
-.svc-table .col-name { width: 27%; }
-.svc-table .col-target { width: 27%; }
-.svc-table .col-shakai { width: 24%; }
+.svc-table .col-name { width: 24%; }
+.svc-table .col-domain { width: 12%; }
+.svc-table .col-form { width: 16%; }
+.svc-table .col-target { width: 26%; }
 .svc-table .col-law { width: 22%; }
 .svc-table th, .svc-table td {
   border: 1px solid var(--line);
