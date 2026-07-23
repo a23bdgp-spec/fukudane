@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-07-23 15:27 JST",
+    "generated": "2026-07-23 15:34 JST",
     "years": [
       2020,
       2021,
@@ -24,8 +24,8 @@
     "no_addr": 216,
     "pref_unknown": 0,
     "name_from_cleaned": 41,
-    "name_prefix_removed": 17641,
-    "name_no_prefix": 3612,
+    "name_prefix_removed": 17645,
+    "name_no_prefix": 3608,
     "name_abnormal": 48,
     "name_no_prefix_examples": [
       "福島幸愛会",
@@ -37,7 +37,7 @@
       "釧路丹頂協会",
       "釧路愛育協会"
     ],
-    "version": "8850325844"
+    "version": "b34cdd1986"
   },
   "gate": {
     "gate1_no_forbidden_columns": true,
