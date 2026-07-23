@@ -27,12 +27,16 @@
 
   var INDEX = [];
   var activeType = "all";
+  var PAGE_SIZE = 30;      // 初期表示件数・「さらに表示」1回あたりの追加件数
+  var shown = PAGE_SIZE;   // 現在表示している件数（種別タブ切替・新しい入力でリセット）
+  var loaded = false;      // 索引の読み込み完了フラグ
   var ver = (typeof BUILD_VERSION !== "undefined") ? BUILD_VERSION : "";
 
   // 全角→半角・カタカナ→ひらがな・小文字化・空白記号除去（build_search.py の norm と一致）
   var PUNCT = " 　\t\n\r、。・，．,.（）()「」『』〈〉《》【】［］[]｜|/／-−–—〜~！!？?：:；;";
   function norm(s) {
-    s = String(s == null ? "" : s).toLowerCase();
+    // NFKC正規化を前置（半角カナ・全角英数などを標準形へ）。build_search.py・deeplink.js と一致させること
+    s = String(s == null ? "" : s).normalize("NFKC").toLowerCase();
     var out = "";
     for (var i = 0; i < s.length; i++) {
       var ch = s[i], o = s.charCodeAt(i);
@@ -75,18 +79,35 @@
     return score;
   }
 
+  // 正規化文字列の各文字が元文（NFKC後）のどの位置に対応するかの対応表つき正規化
+  function normWithMap(base) {
+    var out = "", map = [];
+    for (var i = 0; i < base.length; i++) {
+      var ch = base[i], o = base.charCodeAt(i);
+      if (o >= 0x30A1 && o <= 0x30F6) { out += String.fromCharCode(o - 0x60); map.push(i); }
+      else if (o >= 0xFF01 && o <= 0xFF5E) { var hc = String.fromCharCode(o - 0xFEE0); if (PUNCT.indexOf(hc) < 0) { out += hc.toLowerCase(); map.push(i); } }
+      else if (PUNCT.indexOf(ch) >= 0) { /* skip */ }
+      else { out += ch.toLowerCase(); map.push(i); }
+    }
+    return { n: out, map: map };
+  }
+
+  // 本文から、一致語を中心に前後を切り出した抜粋を返す（プレーンテキスト。cardHtml側でescする）
   function snippet(body, terms) {
-    var t = String(body || "");
-    if (!t) return "";
-    var lower = norm(t);
+    var raw = String(body || "");
+    if (!raw) return "";
+    var base = raw.normalize("NFKC");         // 表示用の基準文字列
+    var nm = normWithMap(base);               // 正規化文字列と元位置の対応
     var pos = -1;
     for (var i = 0; i < terms.length; i++) {
-      var p = lower.indexOf(terms[i]);
+      var p = nm.n.indexOf(terms[i]);
       if (p >= 0) { pos = p; break; }
     }
-    // 正規化で位置がずれるため、元文からは概ねの位置で前後を切り出す（安全側に全文短縮）
-    var out = t.length > 120 ? t.slice(0, 120) + "…" : t;
-    return out;
+    if (pos < 0) return base.length > 120 ? base.slice(0, 120) + "…" : base;
+    var origPos = nm.map[pos] != null ? nm.map[pos] : 0;
+    var start = Math.max(0, origPos - 30);
+    var end = Math.min(base.length, origPos + 90);
+    return (start > 0 ? "…" : "") + base.slice(start, end) + (end < base.length ? "…" : "");
   }
 
   function matchedAlias(rec, terms) {
@@ -125,7 +146,8 @@
 
   function currentQuery() {
     var raw = qEl.value;
-    var terms = norm(raw).length ? raw.split(/[\s　]+/).map(norm).filter(Boolean) : [];
+    // 空白に加え、中黒・スラッシュ・読点・句点など記号でも語を分割する
+    var terms = norm(raw).length ? raw.split(/[\s　・／/、,。]+/).map(norm).filter(Boolean) : [];
     return { terms: terms, qFull: norm(raw) };
   }
 
@@ -151,7 +173,8 @@
     TYPES.forEach(function (t) {
       var n = counts ? (counts[t.key] || 0) : 0;
       var cls = "search-tab" + (t.key === activeType ? " is-active" : "") + (n === 0 && counts ? " is-empty" : "");
-      h += '<button type="button" class="' + cls + '" data-type="' + t.key + '"' + (n === 0 && counts && t.key !== "all" ? " disabled" : "") + ">" +
+      var pressed = (t.key === activeType) ? "true" : "false";
+      h += '<button type="button" class="' + cls + '" data-type="' + t.key + '" aria-pressed="' + pressed + '"' + (n === 0 && counts && t.key !== "all" ? " disabled" : "") + ">" +
         esc(t.label) + '<span class="search-tab-n">' + (counts ? "（" + n + "）" : "") + "</span></button>";
     });
     tabsEl.innerHTML = h;
@@ -167,17 +190,27 @@
     }
     var list = m.list;
     if (activeType !== "all") list = list.filter(function (s) { return s.rec.type === activeType; });
-    countEl.textContent = list.length + "件";
-    if (list.length === 0) {
+    var total = list.length;
+    countEl.textContent = total + "件";
+    if (total === 0) {
       resultsEl.innerHTML =
         '<div class="sr-empty"><p>該当する情報が見つかりませんでした。検索語を変えてお試しください。</p>' +
         '<p class="sr-empty-links">よく使う入口：' +
-        '<a href="map.html">福祉サービス一覧</a>　<a href="history.html">制度の歴史</a>　' +
+        '<a href="service.html">福祉サービス一覧</a>　<a href="history.html">制度の歴史</a>　' +
         '<a href="organizations.html">福祉業界団体</a>　<a href="guidelines.html">ガイドライン集</a></p></div>';
       return;
     }
+    if (shown > total) shown = total;
     var html = "";
-    for (var i = 0; i < list.length; i++) html += cardHtml(list[i].rec, m.terms);
+    for (var i = 0; i < shown; i++) html += cardHtml(list[i].rec, m.terms);
+    // 「さらに表示」（残りがある場合のみ）。件数表記は「◯件中◯件を表示」
+    if (total > shown) {
+      html += '<div class="sr-more">' +
+        '<p class="sr-more-count">' + total + "件中" + shown + "件を表示</p>" +
+        '<button type="button" class="sr-more-btn">さらに表示</button></div>';
+    } else if (total > PAGE_SIZE) {
+      html += '<div class="sr-more"><p class="sr-more-count">' + total + "件中" + total + "件を表示</p></div>";
+    }
     resultsEl.innerHTML = html;
   }
 
@@ -185,20 +218,45 @@
     var btn = e.target.closest("button[data-type]");
     if (!btn || btn.disabled) return;
     activeType = btn.getAttribute("data-type");
+    shown = PAGE_SIZE; // 種別タブ切替で表示件数をリセット
     render();
   });
 
-  qEl.addEventListener("input", function () { activeType = "all"; render(); });
+  qEl.addEventListener("input", function () { activeType = "all"; shown = PAGE_SIZE; render(); });
+
+  // 「さらに表示」で表示件数を増やす（リセットせず追加）
+  resultsEl.addEventListener("click", function (e) {
+    var b = e.target.closest(".sr-more-btn");
+    if (!b) return;
+    shown += PAGE_SIZE;
+    render();
+  });
 
   // ?q= を初期値に反映
   var q0 = new URLSearchParams(location.search).get("q");
   if (q0) qEl.value = q0;
 
+  // 索引の読み込みが終わるまで入力を無効化し、案内プレースホルダを表示する
+  var basePlaceholder = qEl.getAttribute("placeholder") || "";
+  qEl.disabled = true;
+  qEl.setAttribute("placeholder", "検索データを読み込んでいます…");
+
   // 索引読み込み
   fetch("search-index.json?v=" + ver)
     .then(function (r) { if (!r.ok) throw new Error("load"); return r.json(); })
-    .then(function (data) { INDEX = Array.isArray(data) ? data : []; render(); qEl.focus(); })
+    .then(function (data) {
+      INDEX = Array.isArray(data) ? data : [];
+      loaded = true;
+      qEl.disabled = false;
+      qEl.setAttribute("placeholder", basePlaceholder);
+      render();
+      // フォーカスは ?q= 初期値がある場合、またはPC（精密ポインタ）のときのみ
+      var isFinePointer = window.matchMedia && window.matchMedia("(pointer:fine)").matches;
+      if (q0 || isFinePointer) qEl.focus();
+    })
     .catch(function () {
+      qEl.disabled = false;
+      qEl.setAttribute("placeholder", basePlaceholder);
       resultsEl.innerHTML = '<p class="sr-hint">検索データを読み込めませんでした。時間をおいて再度お試しください。</p>';
     });
 })();

@@ -9,7 +9,8 @@
 
   var PUNCT = " 　\t\n\r、。・，．,.（）()「」『』〈〉《》【】［］[]｜|/／-−–—〜~！!？?：:；;";
   function norm(s) {
-    s = String(s == null ? "" : s).toLowerCase();
+    // NFKC正規化を前置（search.js・build_search.py と一致させること）
+    s = String(s == null ? "" : s).normalize("NFKC").toLowerCase();
     var out = "";
     for (var i = 0; i < s.length; i++) {
       var ch = s[i], o = s.charCodeAt(i);
