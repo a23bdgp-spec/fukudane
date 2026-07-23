@@ -127,6 +127,15 @@ details.fgroup.pref-group[open] > summary{margin-bottom:4px}
   border-radius:10px;padding:2px 9px;white-space:nowrap;
 }
 .row .arrow{flex:0 0 auto;color:var(--primary);font-size:13px}
+/* 検索結果の共通メタ（db.html・ranking.html 共通の表示項目） */
+.row .meta{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline}
+.rm-pref{font-weight:600;color:var(--primary-d)}
+.rm-biz{font-size:11px;background:var(--primary-l);color:var(--primary-d);border-radius:10px;padding:1px 8px}
+.rm-item b{color:var(--ink);font-weight:700}
+/* ランキング＝共通カード行にリンク＋順位バッジ */
+a.row.rowlink{text-decoration:none;color:inherit;padding:12px 16px}
+a.row.rowlink:hover{background:var(--primary-l)}
+.rank-badge{flex:0 0 auto;align-self:center;font-weight:700;color:#fff;background:var(--primary);border-radius:8px;padding:3px 10px;font-size:13px;min-width:48px;text-align:center}
 
 /* 詳細（開閉） */
 .detail{background:var(--bg2);border-bottom:1px solid var(--line);padding:14px 16px;font-size:14px}

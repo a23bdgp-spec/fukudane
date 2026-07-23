@@ -107,7 +107,7 @@
 
 <header class="site">
   <h1>社会福祉法人データベース</h1>
-  <p>全国の社会福祉法人の基本情報と主要な財務値（2020〜2024年度）を検索できます。金額は万円単位（3桁区切り）で表示しています。</p>
+  <p>全国の社会福祉法人の基本情報と主要な財務値（2020〜2024年度）を検索できます。サービス活動収益は0.1億円単位、その他の金額は万円単位（3桁区切り）で表示しています。</p>
 </header>
 
 <noscript>
@@ -139,6 +139,7 @@
         <label for="q-sort">並び替え</label>
         <select id="q-sort">
           <option value="name">法人名（50音）</option>
+          <option value="pref">都道府県</option>
           <option value="sv">サービス活動収益</option>
           <option value="sr">経常増減差額率</option>
           <option value="sn">純資産合計</option>
@@ -178,7 +179,7 @@
 
 <footer class="src">
   <p class="ind-link"><a href="../indicators.html">財務指標の定義・計算式の解説はこちら ↗</a>　<a href="../stats.html">統計情報はこちら ↗</a></p>
-  <p class="unit">金額は万円単位（3桁区切り）で表示しています。元データは社会福祉法人会計基準に基づく計算書類の円単位の金額です。</p>
+  <p class="unit">サービス活動収益は0.1億円単位、その他の金額は万円単位（3桁区切り）で表示しています。元データは社会福祉法人会計基準に基づく計算書類の円単位の金額です。</p>
   <p id="src-text">出典：独立行政法人福祉医療機構「財務諸表等電子開示システム」および厚生労働省への行政文書開示請求により取得したデータを基に、フクダネが独自に再構成。政府標準利用規約（PDL1.0）に基づく利用。</p>
   <p>本データベースは法人の基本情報と計算書類上の数値のみを掲載しています。役員等の個人名・連絡先・番地は掲載していません。数値は各法人が提出した計算書類に基づくもので、内容の正確性を保証するものではありません。市区町村が空欄の法人は所在地情報が取得できなかったものです。</p>
 </footer>
@@ -210,9 +211,9 @@
   </div>
 </footer>
 
-<script src="filters.js?v=b34cdd1986"></script>
+<script src="filters.js?v=25a2ba7167"></script>
 <script>
-const BUILD_VERSION="b34cdd1986";   // ビルド時に置換（キャッシュバスティング）
+const BUILD_VERSION="25a2ba7167";   // ビルド時に置換（キャッシュバスティング）
 const PAGE_SIZE = 30;    // 初期表示件数・「さらに表示」1回あたりの追加件数
 let INDEX = [];          // 軽量索引
 let filtered = [];       // 絞り込み結果
@@ -315,6 +316,14 @@ function sortFiltered(){
     filtered.sort((a,b)=>a.name.localeCompare(b.name,'ja')*dir);
     return;
   }
+  if(key==='pref'){   // 都道府県はJISコード順（欠損は常に末尾）
+    filtered.sort((a,b)=>{
+      const na=!a.pcode, nb=!b.pcode;
+      if(na&&nb) return 0; if(na) return 1; if(nb) return -1;
+      return (Number(a.pcode)-Number(b.pcode))*dir;
+    });
+    return;
+  }
   filtered.sort((a,b)=>{
     const va=a[key], vb=b[key];
     const na=(va===null||va===undefined), nb=(vb===null||vb===undefined);
@@ -345,15 +354,12 @@ function render(append){
     const row = document.createElement('div');
     row.className='row';
     const inCmp = compare.some(x=>x.no===r.no);
-    const revStr = manYen(r.sv);
-    const staffStr = (r.ss!=null) ? r.ss.toLocaleString('ja-JP')+'人' : '−';
-    // 詳細開閉はbutton要素（キーボード操作可・aria-expanded）。比較ボタンは独立させる。
+    // 行の表示項目は共通関数 resultMeta（ranking.html と同一）。詳細開閉はbutton・比較ボタンは独立。
     row.innerHTML = `<button class="rowmain" type="button" aria-expanded="false">
         <span class="rowinfo">
           <span class="name">${esc(r.name)}</span>
-          <span class="meta">${esc(r.pref)}　収益 ${revStr}　職員 ${staffStr}</span>
+          <span class="meta">${resultMeta(r)}</span>
         </span>
-        <span class="tag">${esc(r.biz)}</span>
         <span class="arrow">詳細 ＋</span>
       </button>
       <button class="cmpbtn${inCmp?' on':''}" type="button">${inCmp?'比較中✓':'＋比較'}</button>`;
@@ -490,11 +496,10 @@ function summaryHtml(c){
   const rate = ly ? ((c.ind||{})[ly]||{}).i02 : null;
   if(!fin && !(c.seg&&Object.keys(c.seg).length)) return '';
   const rev = fin ? fin.rev : null, asset = fin ? fin.asset : null;
-  const rateStr = (rate===null||rate===undefined) ? '—'
-    : (rate>=0 ? rate.toFixed(2)+'%' : '▲'+Math.abs(rate).toFixed(2)+'%');
+  const rateStr = (rate===null||rate===undefined) ? '—' : keijoRate(rate);
   const card = (k,big,sub)=>`<div class="sumcard"><div class="k">${k}</div><div class="v">${big}</div>${sub?`<div class="sub">${sub}</div>`:''}</div>`;
   const cards = `<div class="sumcards">
-      ${card('サービス活動収益（最新年度）', rev!=null?manYen(rev):'—', rev!=null?rev.toLocaleString('ja-JP')+'円':'')}
+      ${card('サービス活動収益（最新年度）', rev!=null?okuYen(rev):'—', rev!=null?rev.toLocaleString('ja-JP')+'円':'')}
       ${card('資産合計', asset!=null?manYen(asset):'—', asset!=null?asset.toLocaleString('ja-JP')+'円':'')}
       ${card('経常増減差額率', rateStr, '経常増減差額 ÷ サービス活動収益')}
     </div>`;
@@ -613,7 +618,7 @@ function renderSimilar(c){
   const others   = pool.filter(r=> r.pref!==self.pref).slice(0,10);
   const rowsHtml = list => list.map(r=>
     `<tr><td class="nm"><a href="db.html?no=${encodeURIComponent(r.no)}">${esc(r.name)}</a></td>`
-    + `<td>${esc(r.pref)}</td><td class="r">${manYen(r.sv)}</td>`
+    + `<td>${esc(r.pref)}</td><td class="r">${okuYen(r.sv)}</td>`
     + `<td class="r">${r.ss!=null? r.ss.toLocaleString('ja-JP')+'人':'−'}</td></tr>`).join('');
   const tbl = (title, list) => list.length ?
     `<h4 class="simh">${title}</h4><div class="tblwrap"><table class="simtbl">`
@@ -639,7 +644,7 @@ function svgOverview(c){
   const W=620,H=260,L=64,R=54,T=20,B=36, PH=H-T-B, PW=W-L-R;
   // 左軸（収益）。値域が1億円以上なら億円軸、未満なら万円軸を自動選択（軸単位は必ず明記）。
   const maxRev = Math.max(1, ...revVals);
-  const revAxisOku = maxRev >= 1e8;
+  const revAxisOku = true;   // 収益軸は常に0.1億円単位（軸単位「億円」を明記）
   // 右軸（率・0を含める）
   let rmin=Math.min(0,...(rateAll.length?rateAll:[0])), rmax=Math.max(0,...(rateAll.length?rateAll:[0]));
   if(rmin===rmax){ rmin-=1; rmax+=1; }
@@ -757,7 +762,8 @@ async function openCompare(){
     rows += CMP_FIN.map(([k,lab])=>{
       const money = k!=='staff';
       const label = money ? lab.replace('（円）','') : lab;
-      const cell = c=>{ const yr=(c.years||{})[ly]; const v=yr?yr[k]:null; return money ? manYen(v) : numFmt(v); };
+      // サービス活動収益（rev）は0.1億円単位、その他の金額は従来の万円/億万円表記のまま。
+      const cell = c=>{ const yr=(c.years||{})[ly]; const v=yr?yr[k]:null; return !money ? numFmt(v) : (k==='rev' ? okuYen(v) : manYen(v)); };
       return `<tr><th>${label}</th>${corps.map(c=>`<td>${cell(c)}</td>`).join('')}<td class="med">—</td></tr>`;
     }).join('');
     rows += `<tr class="sec"><td colspan="${corps.length+2}">財務指標（${ly}年度）</td></tr>`;

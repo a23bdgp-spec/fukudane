@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-07-23 15:34 JST",
+    "generated": "2026-07-23 23:21 JST",
     "years": [
       2020,
       2021,
@@ -37,7 +37,7 @@
       "釧路丹頂協会",
       "釧路愛育協会"
     ],
-    "version": "b34cdd1986"
+    "version": "25a2ba7167"
   },
   "gate": {
     "gate1_no_forbidden_columns": true,
@@ -55,7 +55,7 @@
     "gate2_defs_found": [],
     "gate2_no_eval_words_in_indicators_html": true,
     "gate2_indicators_found": [],
-    "gate3_indicator_source_in_html": true,
+    "gate3_indicator_source_in_html": false,
     "gate2_no_eval_words_in_ranking_html": true,
     "gate2_ranking_found": [],
     "gate3_source_in_ranking_html": true

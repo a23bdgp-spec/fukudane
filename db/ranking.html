@@ -99,7 +99,7 @@
 
 <header class="site">
   <h1>ランキングから検索</h1>
-  <p>条件で絞り込んだ法人を、サービス活動収益（事業の規模）の大きい順に並べます。金額は万円単位（3桁区切り）で表示しています。</p>
+  <p>条件で絞り込んだ法人を、既定はサービス活動収益（事業の規模）の大きい順です。並び替えの項目・順序は変更できます。サービス活動収益は0.1億円単位で表示しています。</p>
 </header>
 
 <div class="wrap">
@@ -119,6 +119,19 @@
       <input type="text" id="q-no" inputmode="numeric" placeholder="例：1010001">
     </div>
     <div class="sortrow">
+      <label for="q-sort">並び替え</label>
+      <select id="q-sort">
+        <option value="sv">サービス活動収益</option>
+        <option value="name">法人名（50音）</option>
+        <option value="pref">都道府県</option>
+        <option value="sr">経常増減差額率</option>
+        <option value="ss">職員数</option>
+      </select>
+      <label for="q-dir">順序</label>
+      <select id="q-dir">
+        <option value="desc">降順</option>
+        <option value="asc">昇順</option>
+      </select>
       <button type="button" class="clearbtn" id="q-clear">条件をクリア</button>
     </div>
   </div>
@@ -139,7 +152,7 @@
 <footer class="src">
   <p class="ind-link"><a href="../indicators.html">財務指標の定義・計算式の解説はこちら ↗</a>　<a href="../stats.html">統計情報はこちら ↗</a></p>
   <p id="src-text">出典：独立行政法人福祉医療機構「財務諸表等電子開示システム」および厚生労働省への行政文書開示請求により取得したデータを基に、フクダネが独自に再構成。政府標準利用規約（PDL1.0）に基づく利用。</p>
-  <p>順位は絞り込んだ集合の中での並び順です。各行に全国順位（全法人中のサービス活動収益の順位）も事実として併記しています。金額は万円単位（3桁区切り）で表示しています。</p>
+  <p>順位は絞り込んだ集合の中での並び順です。詳細は各行から法人データベースの個別ページで確認できます。サービス活動収益は0.1億円単位で表示しています。</p>
 </footer>
 
 <footer class="sitefoot">
@@ -168,9 +181,9 @@
   </div>
 </footer>
 
-<script src="filters.js?v=b34cdd1986"></script>
+<script src="filters.js?v=25a2ba7167"></script>
 <script>
-const BUILD_VERSION="b34cdd1986";   // ビルド時に置換（キャッシュバスティング）
+const BUILD_VERSION="25a2ba7167";   // ビルド時に置換（キャッシュバスティング）
 const PAGE_SIZE = 30;    // 初期表示件数・「さらに表示」1回あたりの追加件数
 let INDEX = [], filtered = [], shown = PAGE_SIZE;
 function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
@@ -202,6 +215,7 @@ async function init(){
   }catch(e){ /* 取得失敗時は全国順位を空欄表示 */ }
   buildFilters('filters', INDEX, apply);
   ['q-name','q-no'].forEach(id=>document.getElementById(id).addEventListener('input', apply));
+  ['q-sort','q-dir'].forEach(id=>document.getElementById(id).addEventListener('change', apply));
   document.getElementById('q-clear').addEventListener('click', ()=>{
     document.getElementById('q-name').value=''; document.getElementById('q-no').value='';
     clearFilters('filters'); apply();
@@ -219,9 +233,18 @@ function apply(){
     if(r.sv===null||r.sv===undefined) return false;   // 収益額のない法人はランキング対象外
     return pred(r);
   });
-  filtered.sort((a,b)=> b.sv - a.sv);   // サービス活動収益の大きい順（集合内順位）
-  shown = PAGE_SIZE;   // 絞り込み・並び替えの変更で表示件数をリセット
+  sortFiltered();       // 既定＝サービス活動収益の降順（＝ランキング）。項目・順序は選択で変更可
+  shown = PAGE_SIZE;    // 絞り込み・検索・並び替えの変更で表示件数をリセット
   render();
+}
+
+// 並び替え（db.html と同一仕様。欠損値は常に末尾）
+function sortFiltered(){
+  const key = document.getElementById('q-sort').value;
+  const dir = document.getElementById('q-dir').value==='desc' ? -1 : 1;
+  if(key==='name'){ filtered.sort((a,b)=>a.name.localeCompare(b.name,'ja')*dir); return; }
+  if(key==='pref'){ filtered.sort((a,b)=>{ const na=!a.pcode,nb=!b.pcode; if(na&&nb)return 0; if(na)return 1; if(nb)return -1; return (Number(a.pcode)-Number(b.pcode))*dir; }); return; }
+  filtered.sort((a,b)=>{ const va=a[key],vb=b[key]; const na=(va==null||va===undefined),nb=(vb==null||vb===undefined); if(na&&nb)return 0; if(na)return 1; if(nb)return -1; return (va-vb)*dir; });
 }
 
 function render(){
@@ -232,18 +255,9 @@ function render(){
   if(shown>total) shown = total;
   const slice = filtered.slice(0, shown);   // 上位から shown 件（順位は1位から連番）
   document.getElementById('range').textContent = `・上位${shown.toLocaleString('ja-JP')}件表示中`;
-  const body = slice.map((r,i)=>`<tr>
-      <td>${(i+1).toLocaleString('ja-JP')}位</td>
-      <td class="nm"><a href="db.html?no=${encodeURIComponent(r.no)}">${esc(r.name)}</a></td>
-      <td>${esc(r.pref)}</td>
-      <td>${esc(r.biz||'')}</td>
-      <td>${manYen(r.sv)}</td>
-      <td>${r.ss!=null?r.ss.toLocaleString('ja-JP')+'人':'−'}</td>
-      <td>${r.rn?r.rn.toLocaleString('ja-JP')+'位':'—'}</td>
-    </tr>`).join('');
-  list.innerHTML = `<div class="tblwrap"><table class="ranktbl"><thead><tr>
-      <th>順位</th><th class="nm">法人名</th><th>都道府県</th><th>主な事業</th><th>サービス活動収益</th><th>職員数</th><th>全国順位</th>
-    </tr></thead><tbody>${body}</tbody></table></div>`;
+  // 結果表示は db.html と同一の共通カード（resultCardHtml）。順位バッジ付き・詳細はdb.htmlへ。
+  const body = slice.map((r,i)=>resultCardHtml(r,{rank:i+1, href:`db.html?no=${encodeURIComponent(r.no)}`})).join('');
+  list.innerHTML = `<div class="list">${body}</div>`;
   renderMore(total);
 }
 

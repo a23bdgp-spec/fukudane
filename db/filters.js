@@ -8,7 +8,7 @@ const PREF_CODE = {"北海道":"01","青森県":"02","岩手県":"03","宮城県
 
 // コード→ラベルの復元表（build 側のコード化と一致させること）
 const CODE_PREF = Object.fromEntries(Object.entries(PREF_CODE).map(([k,v])=>[v,k]));
-const IDX_BIZ_LABELS = ['高齢','障害','児童','医療','その他'];
+const IDX_BIZ_LABELS = ['高齢','老人福祉','児童','保育','障害','就労支援','医療','その他'];
 const IDX_SZ_LABELS = ['1億未満','1-3億','3-5億','5-10億','10-30億','30億以上'];
 const IDX_KB_LABELS = ['一般法人','社会福祉協議会','共同募金会','社会福祉事業団','その他'];
 
@@ -54,7 +54,7 @@ function eraOf(y){
 
 // チェックボックスの絞り込み軸（都道府県はプルダウンのため含めない）
 const FILTER_AXES = [
-  {axis:'biz', label:'主な事業', opts:[['高齢','高齢'],['障害','障害'],['児童','児童'],['医療','医療'],['その他','その他']]},
+  {axis:'biz', label:'主な事業', opts:[['高齢','高齢'],['老人福祉','老人福祉'],['児童','児童'],['保育','保育'],['障害','障害'],['就労支援','就労支援'],['医療','医療'],['その他','その他']]},
   {axis:'kubun', label:'法人区分', opts:[['一般法人','一般法人'],['社会福祉協議会','社会福祉協議会'],['共同募金会','共同募金会'],['社会福祉事業団','社会福祉事業団'],['その他','その他']]},
   {axis:'size', label:'収益規模帯', opts:[['1億未満','1億円未満'],['1-3億','1〜3億円'],['3-5億','3〜5億円'],['5-10億','5〜10億円'],['10-30億','10〜30億円'],['30億以上','30億円以上']]},
   {axis:'era', label:'設立年代', opts:[['〜1950','〜1950年'],['1951-1975','1951〜1975年'],['1976-2000','1976〜2000年'],['2001〜','2001年〜']]},
@@ -117,4 +117,29 @@ function clearFilters(containerId){
   const box = document.getElementById(containerId);
   box.querySelector('.pref-select').value = '';
   box.querySelectorAll('input[type=checkbox]:checked').forEach(cb=>{ cb.checked=false; });
+}
+
+// ===== 検索結果の共通表示（db.html・ranking.html で二重管理しない） =====
+// サービス活動収益を0.1億円単位で表示（小数1桁・四捨五入）。金額の単位付与はこの関数1か所に集約。
+function okuYen(v){ return (v==null||v===undefined) ? '−' : (v/1e8).toLocaleString('ja-JP',{minimumFractionDigits:1,maximumFractionDigits:1})+'億円'; }
+// 経常増減差額率（%・小数1桁）。負値は「−」（評価的な色分けはしない）。
+function keijoRate(v){ return (v==null||v===undefined) ? '−' : (v<0?'−':'')+Math.abs(Number(v)).toFixed(1)+'%'; }
+// 検索結果の共通メタ（都道府県・主な事業・収益0.1億円・経常増減差額率・職員数）。両ページで同一。
+function resultMeta(r){
+  const staff = (r.ss!=null&&r.ss!==undefined) ? r.ss.toLocaleString('ja-JP')+'人' : '−';
+  return `<span class="rm-pref">${fesc(r.pref||'')}</span>`
+    + `<span class="rm-biz">${fesc(r.biz||'')}</span>`
+    + `<span class="rm-item">収益 <b>${okuYen(r.sv)}</b></span>`
+    + `<span class="rm-item">経常増減差額率 <b>${keijoRate(r.sr)}</b></span>`
+    + `<span class="rm-item">職員 <b>${staff}</b></span>`;
+}
+// 検索結果1件のカード（両ページ共通の行デザイン）。opts.rank があれば順位バッジ、opts.href があればリンク化。
+function resultCardHtml(r, opts){
+  opts = opts || {};
+  const rank = opts.rank ? `<span class="rank-badge">${opts.rank.toLocaleString('ja-JP')}位</span>` : '';
+  const info = `<span class="rowinfo"><span class="name">${fesc(r.name)}</span><span class="meta">${resultMeta(r)}</span></span>`;
+  if(opts.href){
+    return `<a class="row rowlink" href="${opts.href}">${rank}${info}<span class="arrow">詳細 ↗</span></a>`;
+  }
+  return info; // db.html は展開ボタン側で包む
 }
