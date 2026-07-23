@@ -603,7 +603,7 @@ const FOREIGN_WORKERS = {
   // ① このページで分かること（静的・事実の箇条書き。各セクションへのジャンプを兼ねる）
   html += '<div class="fw-summary-box"><p class="fw-summary-title">このページで分かること</p>';
   html += '<ul class="fw-summary-list">';
-  if (routes.length > 0) html += '<li><a href="#fw-comparison">受入れ4ルートの違い（' + ((cmp.fields || []).length || "") + "項目の比較表）</a></li>";
+  if (routes.length > 0) html += '<li><a href="#fw-comparison">受入れ4ルートの違い（比較表）</a></li>';
   if (ik && ik["名称"]) html += '<li><a href="#fw-ikusei">育成就労制度（2027年施行）</a></li>';
   html += '<li><a href="#fw-resources">公式ガイドライン・手引き</a></li>';
   html += '<li><a href="#fw-resources">受入れに関わる費用と活用できる支援制度</a></li>';
@@ -618,28 +618,30 @@ const FOREIGN_WORKERS = {
   if (tocParts.length) html += '<nav class="gl-toc" aria-label="もくじ">' + tocParts.join("") + "</nav>";
 
   // 受入れ4ルートの比較表（h2）
+  // 表示するのは、制度を大づかみに理解するための主要6項目のみ。各セルは短文（_短文）だけを表示し全文は載せない。
+  // 詳しい要件・手続は表の下の公式ガイドライン・手引き（分類別リンク集）へ誘導する。
+  var CMP_ROWS = [
+    "制度の性格（公式の位置づけ）",
+    "在留期間",
+    "介護福祉士国家資格との関係",
+    "訪問介護など訪問系サービスへの従事",
+    "受入れ・支援に関わる機関",
+    "費用（公表・公定されているもの）"
+  ];
   if (routes.length > 0) {
     html += '<section class="fw-sec" id="fw-comparison">';
     if (cmp.heading) html += '<h2 class="section-title">' + esc(cmp.heading) + "</h2>";
     if (cmp.description) html += '<p class="section-note">' + esc(cmp.description) + "</p>";
-    var rowFields = (cmp.fields || []).filter(function (f) { return f !== "制度名" && f !== "出典URL"; });
-    // 短文キー（field＋"_短文"）が1つでもあれば、セルは短文を既定表示し全文はタップで展開
-    var hasShort = routes.some(function (r) { return rowFields.some(function (f) { return r[f + "_短文"]; }); });
-    if (hasShort) html += '<p class="fw-tap-hint">各セルはタップ（クリック）で全文が開きます。</p>';
     html += '<div class="fw-tablewrap"><table class="fw-table">';
     html += "<thead><tr><th scope=\"col\" class=\"fw-corner\">項目</th>";
     routes.forEach(function (r) { html += '<th scope="col">' + esc(r["制度名"]) + "</th>"; });
     html += "</tr></thead><tbody>";
-    rowFields.forEach(function (f) {
+    CMP_ROWS.forEach(function (f) {
       html += '<tr><th scope="row">' + esc(f) + "</th>";
       routes.forEach(function (r) {
-        var full = r[f] || "";
-        var short = r[f + "_短文"] || "";
-        if (short && short !== full) {
-          html += '<td><details class="fw-cell"><summary>' + esc(short) + '</summary><div class="fw-cell-full">' + esc(full) + "</div></details></td>";
-        } else {
-          html += "<td>" + esc(full) + "</td>";
-        }
+        // 短文（_短文）を優先表示。無い場合のみ全文にフォールバック
+        var short = r[f + "_短文"] || r[f] || "";
+        html += "<td>" + esc(short) + "</td>";
       });
       html += "</tr>";
     });
@@ -648,7 +650,9 @@ const FOREIGN_WORKERS = {
       var u = safeUrl(r["出典URL"]);
       html += "<td>" + (u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">公式ページ↗</a>' : "") + "</td>";
     });
-    html += "</tr></tbody></table></div></section>";
+    html += "</tr></tbody></table></div>";
+    html += '<p class="section-note fw-detail-guide">要件・手続の詳細は、下の公式ガイドライン・手引きでご確認ください。</p>';
+    html += "</section>";
   }
 
   // 育成就労制度（h2＝データの名称。技能実習に代わる新制度・2027年施行の事実）
