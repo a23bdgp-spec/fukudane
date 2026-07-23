@@ -397,14 +397,30 @@ const FOREIGN_WORKERS = {
   }
 
   var html = "";
-
-  // 受入れ4ルートの比較表
   var routes = cmp.routes || [];
+  var ik = cmp.ikusei_shuro;
+
+  // ① このページで分かること（静的・事実の箇条書き。各セクションへのジャンプを兼ねる）
+  html += '<div class="fw-summary-box"><p class="fw-summary-title">このページで分かること</p>';
+  html += '<ul class="fw-summary-list">';
+  if (routes.length > 0) html += '<li><a href="#fw-comparison">受入れ4ルートの違い（比較表）</a></li>';
+  if (ik && ik["名称"]) html += '<li><a href="#fw-ikusei">育成就労制度（2027年施行）</a></li>';
+  html += '<li><a href="#fw-resources">公式ガイドライン・手引き</a></li>';
+  html += '<li><a href="#fw-resources">関係機関の窓口</a></li>';
+  html += "</ul></div>";
+
+  // ② もくじ（比較表・育成就労・各分類へのページ内ジャンプ）
+  var tocParts = [];
+  if (routes.length > 0) tocParts.push('<a class="gl-toc-link" href="#fw-comparison">受入れ4ルートの比較</a>');
+  if (ik && ik["名称"]) tocParts.push('<a class="gl-toc-link" href="#fw-ikusei">育成就労制度</a>');
+  cats.forEach(function (c, i) { tocParts.push('<a class="gl-toc-link" href="#fw-cat-' + i + '">' + esc(c.category) + "</a>"); });
+  if (tocParts.length) html += '<nav class="gl-toc" aria-label="もくじ">' + tocParts.join("") + "</nav>";
+
+  // 受入れ4ルートの比較表（h2）
   if (routes.length > 0) {
-    html += '<section class="fw-sec">';
+    html += '<section class="fw-sec" id="fw-comparison">';
     if (cmp.heading) html += '<h2 class="section-title">' + esc(cmp.heading) + "</h2>";
     if (cmp.description) html += '<p class="section-note">' + esc(cmp.description) + "</p>";
-    // 表示する行（制度名は見出し行、出典URLはリンク行として別扱い）
     var rowFields = (cmp.fields || []).filter(function (f) { return f !== "制度名" && f !== "出典URL"; });
     html += '<div class="fw-tablewrap"><table class="fw-table">';
     html += "<thead><tr><th scope=\"col\" class=\"fw-corner\">項目</th>";
@@ -415,7 +431,6 @@ const FOREIGN_WORKERS = {
       routes.forEach(function (r) { html += "<td>" + esc(r[f] || "") + "</td>"; });
       html += "</tr>";
     });
-    // 出典行
     html += '<tr><th scope="row">出典</th>';
     routes.forEach(function (r) {
       var u = safeUrl(r["出典URL"]);
@@ -424,12 +439,11 @@ const FOREIGN_WORKERS = {
     html += "</tr></tbody></table></div></section>";
   }
 
-  // 育成就労制度の注記
-  var ik = cmp.ikusei_shuro;
+  // 育成就労制度（h2＝データの名称。技能実習に代わる新制度・2027年施行の事実）
   if (ik && ik["名称"]) {
-    html += '<section class="fw-sec"><div class="fw-note">';
-    html += '<h3 class="fw-note-title">' + esc(ik["名称"]) + "</h3>";
-    html += '<dl class="fw-dl">';
+    html += '<section class="fw-sec" id="fw-ikusei">';
+    html += '<h2 class="section-title">' + esc(ik["名称"]) + "</h2>";
+    html += '<div class="fw-note"><dl class="fw-dl">';
     if (ik["根拠"]) html += "<dt>根拠</dt><dd>" + esc(ik["根拠"]) + "</dd>";
     if (ik["施行時期"]) html += "<dt>施行時期</dt><dd>" + esc(ik["施行時期"]) + "</dd>";
     if (ik["概要"]) html += "<dt>概要</dt><dd>" + esc(ik["概要"]) + "</dd>";
@@ -439,14 +453,14 @@ const FOREIGN_WORKERS = {
     html += "</div></section>";
   }
 
-  // 分類別リンク集（目次＋カード。ガイドライン集と同一デザイン）
+  // 分類別リンク集（分類ごとにアコーディオン。最初の分類のみ開く）
   if (cats.length > 0) {
-    var toc = "";
-    cats.forEach(function (c, i) { toc += '<a class="gl-toc-link" href="#fw-cat-' + i + '">' + esc(c.category) + "</a>"; });
-    html += '<nav class="gl-toc" aria-label="分類の目次">' + toc + "</nav>";
+    html += '<section class="fw-sec" id="fw-resources">';
     cats.forEach(function (c, i) {
-      html += '<section class="gl-cat" id="fw-cat-' + i + '">';
-      html += '<h2 class="section-title">' + esc(c.category) + "</h2>";
+      var openAttr = i === 0 ? " open" : "";
+      html += '<details class="fw-acc" id="fw-cat-' + i + '"' + openAttr + ">";
+      html += '<summary class="fw-acc-summary"><h2 class="fw-acc-title">' + esc(c.category) +
+        '<span class="fw-acc-count">（' + (c.items || []).length + "）</span></h2></summary>";
       html += '<div class="gl-grid">';
       (c.items || []).forEach(function (it) {
         html += '<article class="gl-card">';
@@ -462,11 +476,34 @@ const FOREIGN_WORKERS = {
         if (it["概要"]) html += "<dt>概要</dt><dd>" + esc(it["概要"]) + "</dd>";
         html += "</dl></article>";
       });
-      html += "</div></section>";
+      html += "</div></details>";
     });
+    html += "</section>";
   }
 
   rootEl.innerHTML = html;
+
+  // ハッシュ（#fw-cat-i 等）で指定された分類アコーディオンを開いてスクロール
+  function openHashTarget() {
+    var id = (location.hash || "").replace(/^#/, "");
+    if (!id) return;
+    var el = document.getElementById(id);
+    if (!el) return;
+    var det = el.tagName && el.tagName.toLowerCase() === "details" ? el : (el.closest ? el.closest("details.fw-acc") : null);
+    if (det) det.open = true;
+    el.scrollIntoView();
+  }
+  // もくじ・分かることリンクのクリックで対象アコーディオンを開く
+  rootEl.addEventListener("click", function (e) {
+    var a = e.target.closest ? e.target.closest('a[href^="#fw-"]') : null;
+    if (!a) return;
+    var id = a.getAttribute("href").replace(/^#/, "");
+    var el = document.getElementById(id);
+    var det = el && (el.tagName.toLowerCase() === "details" ? el : (el.closest ? el.closest("details.fw-acc") : null));
+    if (det) det.open = true;
+  });
+  window.addEventListener("hashchange", openHashTarget);
+  openHashTarget();
 
   // HTML特殊文字を無害化
   function esc(s) {
