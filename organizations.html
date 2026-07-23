@@ -107,6 +107,7 @@
 const ORGANIZATIONS = {
   "title": "福祉業界団体",
   "description": "日本の福祉分野の主要な業界団体（事業者団体・経営者団体・職能団体・共同募金・政治連盟など）を系統別に整理したものです。各団体の情報は公式サイト・公表資料で確認し、設立年・会員規模（出典年併記）・目的など事実のみを記載しています。会員数などで確認できなかった項目は空欄としています。影響力や力関係の評価は行いません。",
+  "diagram_note": "本図は、各団体が公表している情報に基づく組織上の関係（全国社会福祉協議会の組織内の種別協議会・組織内組織であるか、独立した法人・団体であるか等）を示したものです。団体間の影響力や力関係を示すものではありません。関係が公表情報で確認できない団体は「独立した法人・団体」または「関係情報なし」としています。",
   "systems": [
     {
       "system": "社会福祉協議会系",
@@ -119,7 +120,12 @@ const ORGANIZATIONS = {
           "会員規模": "全国の都道府県・指定都市社会福祉協議会や各種別協議会等で構成される連合体（単一の会員数は非公表）",
           "公式URL": "https://www.shakyo.or.jp/",
           "出典URL": "https://www.shakyo.or.jp/tsuite/gaiyo/index.html",
-          "主な活動": "社会福祉協議会や種別協議会等のネットワークによる連絡調整、福祉サービス・福祉人材に関する事業、社会福祉に関する調査研究・提言など。1951年に財団法人中央社会福祉協議会として設立され、1955年に現名称へ改称。"
+          "主な活動": "社会福祉協議会や種別協議会等のネットワークによる連絡調整、福祉サービス・福祉人材に関する事業、社会福祉に関する調査研究・提言など。1951年に財団法人中央社会福祉協議会として設立され、1955年に現名称へ改称。",
+          "関係": {
+            "位置づけ": "全国の社会福祉協議会・種別協議会等が集まる連合組織（関係図の中心）",
+            "親団体": "",
+            "関係の出典URL": "https://www.shakyo.or.jp/tsuite/gaiyo/index.html"
+          }
         }
       ]
     },
@@ -134,7 +140,12 @@ const ORGANIZATIONS = {
           "会員規模": "約7,800法人（2018年6月時点）",
           "公式URL": "https://www.keieikyo.com/",
           "出典URL": "https://www.keieikyo.com/about/",
-          "主な活動": "会員法人を対象とした研修、社会福祉法人に関する調査研究・広報啓発などを「経営」「支援」「地域」「福祉人材」の4つの柱で行う。"
+          "主な活動": "会員法人を対象とした研修、社会福祉法人に関する調査研究・広報啓発などを「経営」「支援」「地域」「福祉人材」の4つの柱で行う。",
+          "関係": {
+            "位置づけ": "全国社会福祉協議会の組織内の種別協議会",
+            "親団体": "社会福祉法人全国社会福祉協議会",
+            "関係の出典URL": "https://www.shakyo.or.jp/tsuite/gaiyo/index.html"
+          }
         }
       ]
     },
@@ -149,7 +160,12 @@ const ORGANIZATIONS = {
           "会員規模": "約11,000施設・事業所（時点は公表資料に明記なし）",
           "公式URL": "https://www.roushikyo.or.jp/",
           "出典URL": "https://www.roushikyo.or.jp/",
-          "主な活動": "会員施設への経営支援・研修、高齢者福祉に関する調査研究や広報啓発など。1962年に全国社会福祉協議会内の老人福祉施設協議会として設置され、2009年に公益社団法人となった。"
+          "主な活動": "会員施設への経営支援・研修、高齢者福祉に関する調査研究や広報啓発など。1962年に全国社会福祉協議会内の老人福祉施設協議会として設置され、2009年に公益社団法人となった。",
+          "関係": {
+            "位置づけ": "独立した法人（公益社団法人）。1962年に全国社会福祉協議会内の種別協議会として発足し、2009年に独立した公益社団法人となった。",
+            "親団体": "",
+            "関係の出典URL": "https://www.roushikyo.or.jp/"
+          }
         },
         {
           "名称": "公益社団法人全国老人保健施設協会",
@@ -159,7 +175,12 @@ const ORGANIZATIONS = {
           "会員規模": "約3,600施設（時点は公表資料に明記なし）",
           "公式URL": "https://www.roken.or.jp/",
           "出典URL": "https://www.roken.or.jp/kyokai/soshiki",
-          "主な活動": "介護老人保健施設（老健）を会員とし、調査研究・研修などを行う。1989年に社団法人として設立され、2011年に公益社団法人へ移行。"
+          "主な活動": "介護老人保健施設（老健）を会員とし、調査研究・研修などを行う。1989年に社団法人として設立され、2011年に公益社団法人へ移行。",
+          "関係": {
+            "位置づけ": "独立した法人（公益社団法人）",
+            "親団体": "",
+            "関係の出典URL": "https://www.roken.or.jp/kyokai/soshiki"
+          }
         }
       ]
     },
@@ -174,7 +195,12 @@ const ORGANIZATIONS = {
           "会員規模": "6,550施設・事業所（2026年4月現在）",
           "公式URL": "http://www.aigo.or.jp/",
           "出典URL": "http://www.aigo.or.jp/menu07/",
-          "主な活動": "職員の養成・研修、調査研究、広報啓発など。1934年に任意団体（日本精神薄弱児愛護協会）として設立、1967年に財団法人、2013年に公益財団法人へ移行。"
+          "主な活動": "職員の養成・研修、調査研究、広報啓発など。1934年に任意団体（日本精神薄弱児愛護協会）として設立、1967年に財団法人、2013年に公益財団法人へ移行。",
+          "関係": {
+            "位置づけ": "独立した法人（公益財団法人）",
+            "親団体": "",
+            "関係の出典URL": "http://www.aigo.or.jp/menu07/"
+          }
         },
         {
           "名称": "社会福祉法人全国社会福祉協議会 全国身体障害者施設協議会",
@@ -184,7 +210,12 @@ const ORGANIZATIONS = {
           "会員規模": "約510施設（時点は公表資料に明記なし）",
           "公式URL": "https://www.shinsyokyo.com/",
           "出典URL": "https://www.shinsyokyo.com/tuite/enkaku/",
-          "主な活動": "会員施設への支援や制度・施策に関する活動など。1976年に全国身体障害者療護施設協議会として発足、1986年に全国社会福祉協議会の種別協議会となり、1992年に現名称へ改称。"
+          "主な活動": "会員施設への支援や制度・施策に関する活動など。1976年に全国身体障害者療護施設協議会として発足、1986年に全国社会福祉協議会の種別協議会となり、1992年に現名称へ改称。",
+          "関係": {
+            "位置づけ": "全国社会福祉協議会の組織内の種別協議会（事務局は全国社会福祉協議会内）",
+            "親団体": "社会福祉法人全国社会福祉協議会",
+            "関係の出典URL": "https://www.shinsyokyo.com/tuite/enkaku/"
+          }
         }
       ]
     },
@@ -199,7 +230,12 @@ const ORGANIZATIONS = {
           "会員規模": "",
           "公式URL": "https://www.nippo.or.jp/",
           "出典URL": "https://www.nippo.or.jp/about/",
-          "主な活動": "保育所職員の研修、保育に関する調査研究・普及、出版などを行う。1962年に社団法人として設立、1973年に社会福祉法人へ改組。"
+          "主な活動": "保育所職員の研修、保育に関する調査研究・普及、出版などを行う。1962年に社団法人として設立、1973年に社会福祉法人へ改組。",
+          "関係": {
+            "位置づけ": "独立した法人（社会福祉法人）",
+            "親団体": "",
+            "関係の出典URL": "https://www.nippo.or.jp/about/"
+          }
         },
         {
           "名称": "公益社団法人全国私立保育連盟",
@@ -209,7 +245,12 @@ const ORGANIZATIONS = {
           "会員規模": "",
           "公式URL": "https://www.zenshihoren.or.jp/",
           "出典URL": "https://www.zenshihoren.or.jp/aboutus/index.html",
-          "主な活動": "研修や調査研究、保育に関する情報提供など。旧名称は全国私立保育園連盟（設立年は公表資料で確認できず未記載）。"
+          "主な活動": "研修や調査研究、保育に関する情報提供など。旧名称は全国私立保育園連盟（設立年は公表資料で確認できず未記載）。",
+          "関係": {
+            "位置づけ": "独立した法人（公益社団法人）",
+            "親団体": "",
+            "関係の出典URL": "https://www.zenshihoren.or.jp/aboutus/index.html"
+          }
         },
         {
           "名称": "社会福祉法人全国社会福祉協議会 全国保育協議会",
@@ -219,7 +260,12 @@ const ORGANIZATIONS = {
           "会員規模": "認可保育所の約9割・約21,000か所（公表値）",
           "公式URL": "https://www.zenhokyo.gr.jp/",
           "出典URL": "https://www.zenhokyo.gr.jp/",
-          "主な活動": "保育に関する連絡調整、調査研究、研修など。1952年に全国社会福祉協議会の保育部会として設立され、1962年に保育協議会へ改称。"
+          "主な活動": "保育に関する連絡調整、調査研究、研修など。1952年に全国社会福祉協議会の保育部会として設立され、1962年に保育協議会へ改称。",
+          "関係": {
+            "位置づけ": "全国社会福祉協議会の組織内組織（独立した法人格を持たない）",
+            "親団体": "社会福祉法人全国社会福祉協議会",
+            "関係の出典URL": "https://www.zenhokyo.gr.jp/"
+          }
         },
         {
           "名称": "社会福祉法人全国社会福祉協議会 全国児童養護施設協議会",
@@ -229,7 +275,92 @@ const ORGANIZATIONS = {
           "会員規模": "児童養護施設 全国約600施設",
           "公式URL": "https://www.zenyokyo.gr.jp/",
           "出典URL": "https://www.zenyokyo.gr.jp/outline/",
-          "主な活動": "連絡調整、調査研究、研修など。1950年に全国養護施設協議会として創立、1998年の児童福祉法改正で施設名称が「児童養護施設」に変更されたことに伴い現名称へ改称。"
+          "主な活動": "連絡調整、調査研究、研修など。1950年に全国養護施設協議会として創立、1998年の児童福祉法改正で施設名称が「児童養護施設」に変更されたことに伴い現名称へ改称。",
+          "関係": {
+            "位置づけ": "全国社会福祉協議会の組織内の種別協議会",
+            "親団体": "社会福祉法人全国社会福祉協議会",
+            "関係の出典URL": "https://www.zenyokyo.gr.jp/outline/"
+          }
+        }
+      ]
+    },
+    {
+      "system": "種別事業者団体系（社会的養護・里親）",
+      "orgs": [
+        {
+          "名称": "社会福祉法人全国社会福祉協議会 全国乳児福祉協議会",
+          "略称": "全乳協",
+          "設立年": null,
+          "目的": "乳児福祉事業の発展向上のため、全国的な連絡調整を行うとともに、乳児院の事業に関する調査・研究・協議とその実践を行う。",
+          "会員規模": "全国すべての乳児院が加入（施設数は公式ページに明記なし）",
+          "公式URL": "https://nyujiin.gr.jp/",
+          "出典URL": "https://nyujiin.gr.jp/zennyukyo/",
+          "主な活動": "乳児福祉に関する連絡調整・調査研究・研修など。全国社会福祉協議会の構成団体で、事務局は全国社会福祉協議会児童福祉部に置かれている。設立年は公式ページで確認できず未記載。",
+          "関係": {
+            "位置づけ": "全国社会福祉協議会の組織内の種別協議会（構成団体。事務局は全国社会福祉協議会児童福祉部）",
+            "親団体": "社会福祉法人全国社会福祉協議会",
+            "関係の出典URL": "https://nyujiin.gr.jp/zennyukyo/"
+          }
+        },
+        {
+          "名称": "社会福祉法人全国社会福祉協議会 全国母子生活支援施設協議会",
+          "略称": "全母協",
+          "設立年": null,
+          "目的": "母子生活支援施設に入所する母と子の権利擁護と生活の拠点づくりを目指し、施設に関する連絡調整や協議を行う。",
+          "会員規模": "",
+          "公式URL": "https://zenbokyou.jp/",
+          "出典URL": "https://zenbokyou.jp/outline/about",
+          "主な活動": "母子生活支援施設に関する連絡調整・調査研究・研修など。設立年・会員施設数は公式ページで確認できず未記載。",
+          "関係": {
+            "位置づけ": "全国社会福祉協議会の組織内の種別協議会（名称に全国社会福祉協議会を含む）",
+            "親団体": "社会福祉法人全国社会福祉協議会",
+            "関係の出典URL": "https://zenbokyou.jp/outline/about"
+          }
+        },
+        {
+          "名称": "公益財団法人全国里親会",
+          "略称": "",
+          "設立年": 1954,
+          "目的": "児童福祉法の精神にのっとり、里親に委託されている児童および里親委託が適当と思われる児童の福祉の増進を図る。里親制度に関する調査研究、里親希望者の開拓、相談指導などを行う。",
+          "会員規模": "登録里親数 11,405名（2017年3月末時点）",
+          "公式URL": "https://www.zensato.or.jp/",
+          "出典URL": "https://www.zensato.or.jp/zensatokai/about-us",
+          "主な活動": "全国里親大会・研修会の開催、情報誌の発行、里親制度に関する調査研究など。1954年に全国里親連合会として発足し、1971年に財団法人、2011年に公益財団法人へ移行。",
+          "関係": {
+            "位置づけ": "独立した法人（公益財団法人）",
+            "親団体": "",
+            "関係の出典URL": "https://www.zensato.or.jp/zensatokai/about-us"
+          }
+        },
+        {
+          "名称": "全国自立援助ホーム協議会",
+          "略称": "",
+          "設立年": 1993,
+          "目的": "各自立援助ホームへの支援と連携を促進し、全国の自立援助ホームの交流と研修を行い、青少年の次世代育成に寄与する。",
+          "会員規模": "",
+          "公式URL": "https://zenjienkyou.jp/",
+          "出典URL": "https://zenjienkyou.jp/conference/",
+          "主な活動": "自立援助ホーム相互の交流・研修、連絡調整など。1993年に全国自立援助ホーム連絡協議会として発足し、2010年に現名称へ変更。会員数は最新の公表値を確認できず未記載。",
+          "関係": {
+            "位置づけ": "独立した団体（全国社会福祉協議会の種別協議会であることは公表情報では確認できなかった）",
+            "親団体": "",
+            "関係の出典URL": "https://zenjienkyou.jp/conference/"
+          }
+        },
+        {
+          "名称": "全国児童家庭支援センター協議会",
+          "略称": "",
+          "設立年": null,
+          "目的": "全国の児童家庭支援センターの連絡・協議を行う。",
+          "会員規模": "202センター（2026年4月7日現在）",
+          "公式URL": "https://zenjikasen.com/",
+          "出典URL": "https://zenjikasen.com/",
+          "主な活動": "児童家庭支援センターの連絡調整、こども家庭福祉に関する協議・要望など。設立年・目的の詳細は公式トップページで確認できず未記載。",
+          "関係": {
+            "位置づけ": "独立した団体（全国社会福祉協議会の種別協議会であることは公表情報では確認できなかった）",
+            "親団体": "",
+            "関係の出典URL": "https://zenjikasen.com/"
+          }
         }
       ]
     },
@@ -244,7 +375,12 @@ const ORGANIZATIONS = {
           "会員規模": "43,267人（2023年3月末、都道府県社会福祉士会の会員合計）",
           "公式URL": "https://www.jacsw.or.jp/",
           "出典URL": "https://www.jacsw.or.jp/introduction/activity.html",
-          "主な活動": "研修・調査研究、社会福祉に関する提言など。1993年に任意団体として設立、1996年に社団法人、2014年に公益社団法人へ移行。全国47都道府県に社会福祉士会がある。"
+          "主な活動": "研修・調査研究、社会福祉に関する提言など。1993年に任意団体として設立、1996年に社団法人、2014年に公益社団法人へ移行。全国47都道府県に社会福祉士会がある。",
+          "関係": {
+            "位置づけ": "独立した法人（公益社団法人）",
+            "親団体": "",
+            "関係の出典URL": "https://www.jacsw.or.jp/introduction/activity.html"
+          }
         },
         {
           "名称": "公益社団法人日本介護福祉士会",
@@ -254,7 +390,12 @@ const ORGANIZATIONS = {
           "会員規模": "",
           "公式URL": "https://www.jaccw.or.jp/",
           "出典URL": "https://www.jaccw.or.jp/about/gaiyo",
-          "主な活動": "介護福祉士を対象とした研修や調査研究、普及啓発など。1994年設立。全国47都道府県に支部を置く。"
+          "主な活動": "介護福祉士を対象とした研修や調査研究、普及啓発など。1994年設立。全国47都道府県に支部を置く。",
+          "関係": {
+            "位置づけ": "独立した法人（公益社団法人）",
+            "親団体": "",
+            "関係の出典URL": "https://www.jaccw.or.jp/about/gaiyo"
+          }
         },
         {
           "名称": "公益社団法人日本精神保健福祉士協会",
@@ -264,7 +405,12 @@ const ORGANIZATIONS = {
           "会員規模": "",
           "公式URL": "https://www.jamhsw.or.jp/",
           "出典URL": "https://www.jamhsw.or.jp/syokai/gaiyo.htm",
-          "主な活動": "研修・調査研究、普及啓発など。1964年に前身の日本精神医学ソーシャル・ワーカー協会として設立、1999年に日本精神保健福祉士協会へ改称、2004年に社団法人、2020年に公益社団法人へ移行。"
+          "主な活動": "研修・調査研究、普及啓発など。1964年に前身の日本精神医学ソーシャル・ワーカー協会として設立、1999年に日本精神保健福祉士協会へ改称、2004年に社団法人、2020年に公益社団法人へ移行。",
+          "関係": {
+            "位置づけ": "独立した法人（公益社団法人）",
+            "親団体": "",
+            "関係の出典URL": "https://www.jamhsw.or.jp/syokai/gaiyo.htm"
+          }
         }
       ]
     },
@@ -279,7 +425,12 @@ const ORGANIZATIONS = {
           "会員規模": "47都道府県共同募金会の連合会",
           "公式URL": "https://www.akaihane.or.jp/",
           "出典URL": "https://www.akaihane.or.jp/chuo/",
-          "主な活動": "共同募金運動の全国的な企画・広報、都道府県共同募金会の連絡調整、助成事業、災害時支援など。共同募金運動は1947年に始まり、1952年に社会福祉法人中央共同募金会として認可された。"
+          "主な活動": "共同募金運動の全国的な企画・広報、都道府県共同募金会の連絡調整、助成事業、災害時支援など。共同募金運動は1947年に始まり、1952年に社会福祉法人中央共同募金会として認可された。",
+          "関係": {
+            "位置づけ": "独立した法人（社会福祉法人）。47都道府県共同募金会の連合会。",
+            "親団体": "",
+            "関係の出典URL": "https://www.akaihane.or.jp/chuo/"
+          }
         }
       ]
     },
@@ -294,7 +445,12 @@ const ORGANIZATIONS = {
           "会員規模": "",
           "公式URL": "https://kaigo-fukushi.jp/",
           "出典URL": "https://kaigo-fukushi.jp/about/",
-          "主な活動": "会が公表する範囲では、高齢者福祉・介護保険制度に関する要望活動などを行う政治団体。2000年の介護保険制度開始に合わせて設置された（本項目は存在と公表情報の事実のみを記載）。"
+          "主な活動": "会が公表する範囲では、高齢者福祉・介護保険制度に関する要望活動などを行う政治団体。2000年の介護保険制度開始に合わせて設置された（本項目は存在と公表情報の事実のみを記載）。",
+          "関係": {
+            "位置づけ": "特定の事業者団体を母体とする政治団体。全国老人福祉施設協議会の目的実現に向けた政治活動を行うと自ら位置づけている。",
+            "親団体": "公益社団法人全国老人福祉施設協議会（設立母体）",
+            "関係の出典URL": "https://kaigo-fukushi.jp/about/"
+          }
         }
       ]
     }
@@ -369,6 +525,12 @@ const ORGANIZATIONS = {
       "出典URL": "https://www.shakyo.or.jp/tsuite/gaiyo/index.html"
     },
     {
+      "year_西暦": 1954,
+      "year_和暦": "昭和29年",
+      "event": "全国里親連合会が発足した（のちの公益財団法人全国里親会）。",
+      "出典URL": "https://www.zensato.or.jp/zensatokai/about-us"
+    },
+    {
       "year_西暦": 1952,
       "year_和暦": "昭和27年",
       "event": "社会福祉法人中央共同募金会が認可された。全国社会福祉協議会に保育部会（のちの全国保育協議会）が設けられた。",
@@ -393,6 +555,12 @@ const ORGANIZATIONS = {
       "出典URL": "https://www.jamhsw.or.jp/syokai/gaiyo.htm"
     },
     {
+      "year_西暦": 1971,
+      "year_和暦": "昭和46年",
+      "event": "全国里親会が財団法人となった（2011年に公益財団法人へ移行）。",
+      "出典URL": "https://www.zensato.or.jp/zensatokai/about-us"
+    },
+    {
       "year_西暦": 1976,
       "year_和暦": "昭和51年",
       "event": "全国身体障害者療護施設協議会が発足した（のちの全国身体障害者施設協議会）。",
@@ -415,6 +583,12 @@ const ORGANIZATIONS = {
       "year_和暦": "平成5年",
       "event": "日本社会福祉士会が任意団体として設立された。",
       "出典URL": "https://www.jacsw.or.jp/introduction/activity.html"
+    },
+    {
+      "year_西暦": 1993,
+      "year_和暦": "平成5年",
+      "event": "全国自立援助ホーム連絡協議会が発足した（のちの全国自立援助ホーム協議会）。",
+      "出典URL": "https://zenjienkyou.jp/conference/"
     },
     {
       "year_西暦": 1994,
@@ -457,6 +631,7 @@ const ORGANIZATIONS = {
   var systems = (ORGANIZATIONS && ORGANIZATIONS.systems) || [];
   var policy = (ORGANIZATIONS && ORGANIZATIONS.policy_process) || [];
   var timeline = (ORGANIZATIONS && ORGANIZATIONS.timeline) || [];
+  var diagramNote = (ORGANIZATIONS && ORGANIZATIONS.diagram_note) || "";
 
   if (descEl && ORGANIZATIONS && ORGANIZATIONS.description) descEl.textContent = ORGANIZATIONS.description;
 
@@ -469,13 +644,112 @@ const ORGANIZATIONS = {
 
   var html = "";
 
+  // 全団体をフラット化し、カード用IDと名称→ノードの対応表を作る（データ駆動・団体が増えても自動対応）
+  var flat = [];
+  var nameToNode = {};
+  systems.forEach(function (sys) {
+    (sys.orgs || []).forEach(function (o) {
+      var node = { org: o, system: sys.system, id: "org-" + flat.length };
+      flat.push(node);
+      nameToNode[o["名称"]] = node;
+    });
+  });
+
+  // 名称の照合（完全一致→末尾の括弧書き除去→前方一致）。照合不能はコンソールに警告
+  function findNode(name) {
+    if (!name) return null;
+    if (nameToNode[name]) return nameToNode[name];
+    var base = String(name).replace(/（[^）]*）\s*$/, "").trim();
+    if (nameToNode[base]) return nameToNode[base];
+    for (var i = 0; i < flat.length; i++) {
+      var nm = flat[i].org["名称"];
+      if (nm.indexOf(base) === 0 || base.indexOf(nm) === 0) return flat[i];
+    }
+    return null;
+  }
+  function rel(o) { return o["関係"] || {}; }
+  function label(o) { return o["略称"] || o["名称"]; }
+
+  // 中心団体（位置づけに「中心」を含む。無ければ親団体として最多参照の団体）
+  var center = null;
+  flat.forEach(function (n) {
+    if (!center && /中心/.test(rel(n.org)["位置づけ"] || "")) center = n;
+  });
+  if (!center) {
+    var refCount = {};
+    flat.forEach(function (n) {
+      var p = (rel(n.org)["親団体"] || "").replace(/（[^）]*）\s*$/, "").trim();
+      if (p) refCount[p] = (refCount[p] || 0) + 1;
+    });
+    var best = null, bestC = 0;
+    Object.keys(refCount).forEach(function (k) { if (refCount[k] > bestC) { bestC = refCount[k]; best = k; } });
+    if (best) center = findNode(best);
+  }
+
+  // 分類：中心の組織内組織（親団体＝中心）／別母体の関連団体（親団体≠中心）／独立団体
+  var children = [], affiliates = [];
+  var childIds = {}, affiliateIds = {};
+  flat.forEach(function (n) {
+    if (n === center) return;
+    var p = (rel(n.org)["親団体"] || "").trim();
+    if (!p) return;
+    var pn = findNode(p);
+    if (pn && pn === center) { children.push(n); childIds[n.id] = true; }
+    else { affiliates.push({ node: n, parent: pn }); affiliateIds[n.id] = true; }
+  });
+
+  // 関係図（系統別一覧の前）
+  var dg = '<section class="org-diagram"><h2 class="section-title">関係図</h2>';
+  dg += '<p class="section-note">各団体をクリックすると、その団体の詳しい情報に移動します。</p>';
+  dg += '<div class="diagram-scroll"><div class="diagram">';
+  if (center) {
+    dg += '<div class="dg-center-wrap">';
+    dg += '<button type="button" class="dg-node dg-node-center" data-target="' + center.id + '">' + esc(label(center.org)) + "</button>";
+    if (children.length > 0) {
+      dg += '<div class="dg-trunk"></div>';
+      dg += '<div class="dg-children"><div class="dg-children-label">' + esc(label(center.org)) + 'の組織内組織</div><div class="dg-children-row">';
+      children.forEach(function (n) {
+        dg += '<button type="button" class="dg-node" data-target="' + n.id + '">' + esc(label(n.org)) + "</button>";
+      });
+      dg += "</div></div>";
+    }
+    dg += "</div>";
+  }
+  // 独立団体（系統ごとにグループ枠）＝中心・組織内・別母体関連を除く
+  dg += '<div class="dg-groups">';
+  systems.forEach(function (sys) {
+    var members = (sys.orgs || []).map(function (o) { return nameToNode[o["名称"]]; })
+      .filter(function (n) { return n && n !== center && !childIds[n.id] && !affiliateIds[n.id]; });
+    if (members.length === 0) return;
+    dg += '<div class="dg-group"><div class="dg-group-title">' + esc(sys.system) + '</div><div class="dg-group-row">';
+    members.forEach(function (n) {
+      dg += '<button type="button" class="dg-node" data-target="' + n.id + '">' + esc(label(n.org)) + "</button>";
+    });
+    dg += "</div></div>";
+  });
+  dg += "</div>";
+  // 別母体をもつ関連団体（政治連盟など）＝母体と点線でつなぐ
+  affiliates.forEach(function (a) {
+    var pLabel = a.parent ? label(a.parent.org) : (rel(a.node.org)["親団体"] || "").replace(/（[^）]*）\s*$/, "");
+    dg += '<div class="dg-affiliate-row">';
+    dg += '<button type="button" class="dg-node dg-node-affiliate" data-target="' + a.node.id + '">' + esc(label(a.node.org)) + "</button>";
+    dg += '<span class="dg-dash" aria-hidden="true"></span>';
+    dg += '<span class="dg-affiliate-note">設立母体：' + esc(pLabel) + "（公表情報）</span>";
+    dg += "</div>";
+  });
+  dg += "</div></div>";
+  if (diagramNote) dg += '<p class="diagram-note">' + esc(diagramNote) + "</p>";
+  dg += "</section>";
+  html += dg;
+
   // 系統別の団体一覧
   systems.forEach(function (sys) {
     html += '<section class="org-sys">';
     html += '<h2 class="section-title">' + esc(sys.system) + "</h2>";
     html += '<div class="org-grid">';
     (sys.orgs || []).forEach(function (o) {
-      html += '<article class="org-card">';
+      var _node = nameToNode[o["名称"]];
+      html += '<article class="org-card" id="' + (_node ? _node.id : "") + '">';
       html += '<h3 class="org-name">' + esc(o["名称"]);
       if (o["略称"]) html += '<span class="org-abbr">（' + esc(o["略称"]) + "）</span>";
       html += "</h3>";
@@ -530,6 +804,19 @@ const ORGANIZATIONS = {
   }
 
   rootEl.innerHTML = html;
+
+  // 関係図ノードのクリックで該当団体カードへスクロール（軽くハイライト）
+  var dgNodes = rootEl.querySelectorAll(".dg-node");
+  Array.prototype.forEach.call(dgNodes, function (btn) {
+    btn.addEventListener("click", function () {
+      var id = btn.getAttribute("data-target");
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      target.classList.add("org-card-flash");
+      setTimeout(function () { target.classList.remove("org-card-flash"); }, 1600);
+    });
+  });
 
   // HTML特殊文字を無害化
   function esc(s) {
