@@ -118,6 +118,50 @@ const JOBS = {
       "「生活を整える」という言葉は、静かですが奥行きのある営みを指します。よく観察し、いまの状態を読み取り、どう関わるかを判断し、相手に合わせて少しずつ調整していく。この観察・判断・調整の積み重ねには、新しいものを生み出す仕事と同じ種類の創造性があります。"
     ]
   },
+  "voices": [
+    {
+      "quote": "介護は医療よりはるかに広くて深いんです。医療は人体を相手にしている狭い世界だから専門性が高い。",
+      "name": "三好春樹",
+      "title": "理学療法士・生活とリハビリ研究所代表",
+      "media": "ケアネーネ",
+      "url": "https://carenene.com/article/kirari06_miyoshiharuki"
+    },
+    {
+      "quote": "世界と心と自己のどこをどれだけ変えられるんだろうと考えるのが、毎日の仕事です。",
+      "name": "東畑開人",
+      "title": "臨床心理学者・『居るのはつらいよ』著者",
+      "media": "現代ビジネス（講談社）",
+      "url": "https://gendai.media/articles/-/158820"
+    },
+    {
+      "quote": "語りの予期せぬ展開から利用者さんの生きてきた世界を知ることの醍醐味を感じてきた。",
+      "name": "六車由実",
+      "title": "民俗学者・作家・『驚きの介護民俗学』著者",
+      "media": "カドブン（KADOKAWA）",
+      "url": "https://kadobun.jp/serialstory/tsunagi/476s9fz7b82s.html"
+    },
+    {
+      "quote": "仲間に巡り合えた認知症のある方々は、ときに発想を転換して豊かな知恵を分かち合っています",
+      "name": "堀田聰子",
+      "title": "慶應義塾大学教授・認知症未来共創ハブ代表",
+      "media": "福祉をたずねるクリエイティブマガジン〈こここ〉",
+      "url": "https://co-coco.jp/series/nursing/satokohotta/"
+    },
+    {
+      "quote": "素人には見えないものが見えて、聞こえない声が聞こえる。これが介護のプロなんです。",
+      "name": "飯田大輔",
+      "title": "社会福祉法人福祉楽団 理事長",
+      "media": "福祉をたずねるクリエイティブマガジン〈こここ〉",
+      "url": "https://co-coco.jp/series/nursing/gakudan/"
+    },
+    {
+      "quote": "福祉に宿るクリエイティビティ",
+      "name": "〈こここ〉編集部",
+      "title": "福祉をたずねるクリエイティブマガジン（運営：株式会社マガジンハウス）",
+      "media": "〈こここ〉「こここについて」",
+      "url": "https://co-coco.jp/about/"
+    }
+  ],
   "categories": [
     {
       "category": "国家資格",
@@ -314,6 +358,7 @@ const JOBS = {
 (function () {
   var rootEl = document.getElementById("creative-root");
   var essay = (JOBS && JOBS.essay) || null;
+  var voices = (JOBS && JOBS.voices) || [];
   var videos = (JOBS && JOBS.videos) || [];
   var creativeLinks = (JOBS && JOBS["creative_links"]) || [];
   var generalLinks = (JOBS && JOBS["general_links"]) || [];
@@ -348,6 +393,31 @@ const JOBS = {
       html += "</p>";
     }
     html += "</section>";
+  }
+
+  // ことば集（essayの直後・動画の前）。データ駆動・無ければ非表示
+  if (voices.length > 0) {
+    html += '<section class="voices-sec"><h2 class="section-title">福祉の仕事をめぐることば</h2>';
+    html += '<div class="voices-grid">';
+    voices.forEach(function (v) {
+      html += '<figure class="voice-card">';
+      html += '<blockquote class="voice-quote">' + esc(v.quote) + "</blockquote>";
+      html += '<figcaption class="voice-meta">';
+      if (v.name) html += '<span class="voice-name">' + esc(v.name) + "</span>";
+      if (v.title) html += '<span class="voice-title">' + esc(v.title) + "</span>";
+      var vurl = safeUrl(v.url);
+      var vmedia = esc(v.media || "");
+      if (vmedia) {
+        if (vurl) {
+          html += '<span class="voice-src">出典：<a href="' + esc(vurl) +
+            '" target="_blank" rel="noopener noreferrer">' + vmedia + "↗</a></span>";
+        } else {
+          html += '<span class="voice-src">出典：' + vmedia + "</span>";
+        }
+      }
+      html += "</figcaption></figure>";
+    });
+    html += "</div></section>";
   }
 
   // 動画セクション（YouTube埋め込み＝外部依存ゼロ原則の唯一の例外・明示許可）
