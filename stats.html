@@ -1192,7 +1192,8 @@ const STATS = {
   // ① 実形状の日本地図ヒートマップ（県別黒字割合。タップ／ホバーで県名・割合・法人数）＋数値セル一覧（濃淡だけに依存しない）
   var ps = S.prefecture_surplus;
   if (ps) {
-    html += section("stats-pref-surplus", "都道府県別の黒字割合（日本地図ヒートマップ）", ps, japanMap(ps) + prefHeatGrid(ps));
+    // 地図＋凡例＋タッチ表示のみ（NaoK指示で47県の数値セル一覧は削除。県名・割合・nは地図タップ/ホバーで表示）
+    html += section("stats-pref-surplus", "都道府県別の黒字割合（日本地図ヒートマップ）", ps, japanMap(ps));
   }
   // ② 収益規模5階級×事業分類8区分の黒字割合ヒートマップ（40セル・セル内に数値表示・n表示規則は従来どおり）
   var mtx = S.size_biz_surplus_matrix;
