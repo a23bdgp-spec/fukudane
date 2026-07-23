@@ -747,16 +747,14 @@ section p:last-child { margin-bottom: 0; }
 .essay-sec { max-width: 44em; margin: 0 0 48px; }
 .essay-title { font-size: 20px; font-weight: 700; color: var(--primary-dark); margin: 0 0 16px; line-height: 1.5; }
 .essay-p { font-size: 16px; line-height: 1.95; margin: 0 0 16px; }
-/* 引用ブロック風の宣言文（発言者・出典は付けない＝フクダネのオリジナル・装飾のみ） */
-.essay-quote { position: relative; margin: 0; padding: 20px 24px 20px 32px; border-left: 4px solid var(--primary); background: var(--primary-tint); border-radius: 0 8px 8px 0; }
-.essay-quote::before { content: "\201C"; position: absolute; top: -6px; left: 14px; font-size: 56px; line-height: 1; color: var(--primary); opacity: .35; font-family: Georgia, "Times New Roman", serif; }
-.essay-quote .essay-p { font-size: 17.5px; line-height: 2; color: var(--primary-dark); margin: 0 0 14px; }
-.essay-quote .essay-p:last-child { margin-bottom: 0; }
 .essay-cite { font-size: 13px; color: var(--ink-soft); margin: 20px 0 0; padding-top: 12px; border-top: 1px solid var(--line); line-height: 1.7; }
 
-/* ことば集（静かで品のある引用カード・essay-quoteより控えめ） */
+/* ことば集（静かで品のある引用カード） */
 .voices-sec { margin: 0 0 44px; }
 .voices-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+.voices-more { margin-top: 18px; }
+.voices-toggle { display: block; margin: 20px auto 0; padding: 10px 22px; background: #fff; border: 1px solid var(--primary); border-radius: 24px; color: var(--primary); font-size: 14px; font-weight: 700; cursor: pointer; }
+.voices-toggle:hover { background: var(--primary-tint); }
 .voice-card { margin: 0; padding: 22px 22px 20px; background: #fff; border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; }
 .voice-quote { position: relative; margin: 0 0 14px; padding: 0 0 0 20px; border-left: 3px solid var(--primary); font-size: 16px; line-height: 1.85; color: var(--ink); }
 .voice-meta { display: flex; flex-direction: column; gap: 2px; margin-top: auto; }

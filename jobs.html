@@ -451,12 +451,9 @@ const JOBS = {
   if (essay && essay.paragraphs && essay.paragraphs.length > 0) {
     html += '<section class="essay-sec">';
     if (essay.title) html += '<h2 class="essay-title">' + esc(essay.title) + "</h2>";
-    // 全文を引用ブロック風に装飾（発言者・出典は付けない＝フクダネのオリジナル宣言文）
-    html += '<blockquote class="essay-quote">';
     essay.paragraphs.forEach(function (p) {
       html += '<p class="essay-p">' + esc(p) + "</p>";
     });
-    html += "</blockquote>";
     // 引用の出典（媒体名を本文中に見える形で・URLはリンク）
     var cites = essay["引用出典"] || [];
     if (cites.length > 0) {
@@ -477,29 +474,29 @@ const JOBS = {
     html += "</section>";
   }
 
-  // ことば集（essayの直後・動画の前）。データ駆動・無ければ非表示
+  // ことば集（essayの直後・動画の前）。初期6件のみ表示し、残りは開閉ボタンで展開
   if (voices.length > 0) {
+    // 初期表示の並び順（名前で照合。データ側は変更しない）
+    var INITIAL_ORDER = ["岸田奈美", "三好春樹", "加藤忠相", "熊谷晋一郎", "村瀨孝生", "飯田大輔"];
+    var byName = {};
+    voices.forEach(function (v) { if (v && v.name) byName[v.name] = v; });
+    var initial = [];
+    INITIAL_ORDER.forEach(function (n) { if (byName[n]) initial.push(byName[n]); });
+    var initialSet = {};
+    initial.forEach(function (v) { initialSet[v.name] = true; });
+    var rest = voices.filter(function (v) { return !(v && v.name && initialSet[v.name]); });
+
     html += '<section class="voices-sec"><h2 class="section-title">福祉の仕事をめぐることば</h2>';
     html += '<div class="voices-grid">';
-    voices.forEach(function (v) {
-      html += '<figure class="voice-card">';
-      html += '<blockquote class="voice-quote">' + esc(v.quote) + "</blockquote>";
-      html += '<figcaption class="voice-meta">';
-      if (v.name) html += '<span class="voice-name">' + esc(v.name) + "</span>";
-      if (v.title) html += '<span class="voice-title">' + esc(v.title) + "</span>";
-      var vurl = safeUrl(v.url);
-      var vmedia = esc(v.media || "");
-      if (vmedia) {
-        if (vurl) {
-          html += '<span class="voice-src">出典：<a href="' + esc(vurl) +
-            '" target="_blank" rel="noopener noreferrer">' + vmedia + "↗</a></span>";
-        } else {
-          html += '<span class="voice-src">出典：' + vmedia + "</span>";
-        }
-      }
-      html += "</figcaption></figure>";
-    });
-    html += "</div></section>";
+    initial.forEach(function (v) { html += voiceCard(v); });
+    html += "</div>";
+    if (rest.length > 0) {
+      html += '<div class="voices-more" id="voices-more" hidden><div class="voices-grid">';
+      rest.forEach(function (v) { html += voiceCard(v); });
+      html += "</div></div>";
+      html += '<button type="button" class="voices-toggle" id="voices-toggle" aria-expanded="false" aria-controls="voices-more">すべてのことばを見る（' + voices.length + "）</button>";
+    }
+    html += "</section>";
   }
 
   // 動画セクション（YouTube埋め込み＝外部依存ゼロ原則の唯一の例外・明示許可）
@@ -564,10 +561,49 @@ const JOBS = {
   }
   rootEl.innerHTML = html;
 
+  // ことば集の開閉（残り11件の展開・aria-expanded同期）
+  var voicesToggle = document.getElementById("voices-toggle");
+  if (voicesToggle) {
+    voicesToggle.addEventListener("click", function () {
+      var more = document.getElementById("voices-more");
+      var expanded = voicesToggle.getAttribute("aria-expanded") === "true";
+      if (expanded) {
+        if (more) more.hidden = true;
+        voicesToggle.setAttribute("aria-expanded", "false");
+        voicesToggle.textContent = "すべてのことばを見る（" + voices.length + "）";
+      } else {
+        if (more) more.hidden = false;
+        voicesToggle.setAttribute("aria-expanded", "true");
+        voicesToggle.textContent = "ことばを閉じる";
+      }
+    });
+  }
+
   /*
     ※16職種カード（JOBS.categories）は現在非表示です。
     データとビルド機構（build_map.py の JOBS 注入）は温存しており、将来この描画を復活できます。
   */
+
+  // ことば集の1枚のカードを組み立てる
+  function voiceCard(v) {
+    var s = '<figure class="voice-card">';
+    s += '<blockquote class="voice-quote">' + esc(v.quote) + "</blockquote>";
+    s += '<figcaption class="voice-meta">';
+    if (v.name) s += '<span class="voice-name">' + esc(v.name) + "</span>";
+    if (v.title) s += '<span class="voice-title">' + esc(v.title) + "</span>";
+    var vurl = safeUrl(v.url);
+    var vmedia = esc(v.media || "");
+    if (vmedia) {
+      if (vurl) {
+        s += '<span class="voice-src">出典：<a href="' + esc(vurl) +
+          '" target="_blank" rel="noopener noreferrer">' + vmedia + "↗</a></span>";
+      } else {
+        s += '<span class="voice-src">出典：' + vmedia + "</span>";
+      }
+    }
+    s += "</figcaption></figure>";
+    return s;
+  }
 
   // HTML特殊文字を無害化
   function esc(s) {
