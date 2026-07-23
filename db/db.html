@@ -163,7 +163,7 @@
 
   <!-- 件数バー -->
   <div class="countbar">
-    <span>検索結果：<strong id="cnt">—</strong> 法人</span>
+    <span><strong id="cnt">—</strong> 法人 見つかりました</span>
     <span id="range"></span>
   </div>
 
@@ -172,7 +172,7 @@
     <div class="loading">データを読み込んでいます…</div>
   </div>
 
-  <!-- ページング -->
+  <!-- さらに表示（30件ずつ） -->
   <div class="pager" id="pager"></div>
 </div>
 
@@ -213,10 +213,10 @@
 <script src="filters.js?v=b34cdd1986"></script>
 <script>
 const BUILD_VERSION="b34cdd1986";   // ビルド時に置換（キャッシュバスティング）
-const PAGE_SIZE = 50;
+const PAGE_SIZE = 30;    // 初期表示件数・「さらに表示」1回あたりの追加件数
 let INDEX = [];          // 軽量索引
 let filtered = [];       // 絞り込み結果
-let page = 0;
+let shown = PAGE_SIZE;   // 現在の表示件数（絞り込み変更でリセット）
 const prefCache = {};    // 都道府県別詳細のキャッシュ
 let MEDIANS = {};        // セグメント中央値 {ikey:{year:{nat,pref,biz,size}}}
 let DEFS = [];           // 指標定義（順序保持）
@@ -303,7 +303,7 @@ function apply(){
     return pred(r);
   });
   sortFiltered();
-  page = 0;
+  shown = PAGE_SIZE;   // 絞り込み・検索・並び替えの変更で表示件数をリセット
   render();
 }
 
@@ -325,17 +325,23 @@ function sortFiltered(){
   });
 }
 
-function render(){
+// append=true のときは既存の行を残して不足分だけ追記（「さらに表示」で開いた詳細を保持する）。
+// それ以外（絞り込み・比較状態の更新など）は0件目から作り直す。
+function render(append){
   const list = document.getElementById('list');
-  document.getElementById('cnt').textContent = filtered.length.toLocaleString('ja-JP');
   const total = filtered.length;
-  const start = page*PAGE_SIZE;
-  const slice = filtered.slice(start, start+PAGE_SIZE);
-  document.getElementById('range').textContent =
-    total ? `${(start+1).toLocaleString('ja-JP')}〜${(start+slice.length).toLocaleString('ja-JP')} 件目を表示` : '';
-  if(!total){ list.innerHTML = '<div class="loading">該当する法人はありません。</div>'; document.getElementById('pager').innerHTML=''; return; }
-  list.innerHTML = '';
-  slice.forEach(r=>{
+  document.getElementById('cnt').textContent = total.toLocaleString('ja-JP');
+  if(!total){
+    list.innerHTML = '<div class="loading">該当する法人はありません。</div>';
+    document.getElementById('range').textContent='';
+    document.getElementById('pager').innerHTML='';
+    return;
+  }
+  if(shown>total) shown = total;
+  const startIdx = append ? list.querySelectorAll('.row').length : 0;
+  if(!append) list.innerHTML = '';
+  document.getElementById('range').textContent = `・${shown.toLocaleString('ja-JP')}件表示中`;
+  filtered.slice(startIdx, shown).forEach(r=>{
     const row = document.createElement('div');
     row.className='row';
     const inCmp = compare.some(x=>x.no===r.no);
@@ -355,20 +361,19 @@ function render(){
     row.querySelector('.rowmain').addEventListener('click', ()=>toggle(row, r));
     list.appendChild(row);
   });
-  renderPager(total);
+  renderMore(total);
 }
 
-function renderPager(total){
-  const pages = Math.ceil(total/PAGE_SIZE);
+// 「さらに表示」ボタン（前へ/次へのページ送りは廃止。残りがあるときだけ表示）
+function renderMore(total){
   const p = document.getElementById('pager');
-  if(pages<=1){ p.innerHTML=''; return; }
+  if(shown>=total){ p.innerHTML=''; return; }
   p.innerHTML='';
-  const prev = document.createElement('button'); prev.textContent='← 前へ'; prev.disabled=(page===0);
-  prev.onclick=()=>{ page--; render(); window.scrollTo(0,0); };
-  const next = document.createElement('button'); next.textContent='次へ →'; next.disabled=(page>=pages-1);
-  next.onclick=()=>{ page++; render(); window.scrollTo(0,0); };
-  const info = document.createElement('span'); info.textContent=`${page+1} / ${pages} ページ`;
-  p.append(prev, info, next);
+  const btn = document.createElement('button');
+  btn.className='list-more-btn';
+  btn.textContent = `さらに${Math.min(PAGE_SIZE, total-shown).toLocaleString('ja-JP')}件表示`;
+  btn.onclick=()=>{ shown += PAGE_SIZE; render(true); };
+  p.appendChild(btn);
 }
 
 async function toggle(row, r){

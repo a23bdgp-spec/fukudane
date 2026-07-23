@@ -184,6 +184,7 @@
     <div id="map-results" class="card-grid"></div>
     <div id="map-table" class="table-scroll" hidden></div>
     <div id="map-empty" class="notice" hidden></div>
+    <div id="map-more" class="list-more" hidden></div>
 
     <!-- この一覧の考え方（旧・導入4段落を一覧の後へ移設）。build_map.py が MAP_INTRO から段落を描画 -->
     <section class="intro-section" id="intro-section" hidden>
@@ -1768,8 +1769,12 @@ const MAP_INTRO = {
   var resultsEl = document.getElementById("map-results");
   var tableEl = document.getElementById("map-table");
   var emptyEl = document.getElementById("map-empty");
+  var moreEl = document.getElementById("map-more");
   var viewCardBtn = document.getElementById("view-card");
   var viewTableBtn = document.getElementById("view-table");
+  var PAGE_SIZE = 20;        // 初期表示件数・「さらに表示」1回あたりの追加件数
+  var shownCount = PAGE_SIZE; // 現在の表示件数（絞り込み・検索・入口操作でリセット）
+  var currentList = [];      // 現在の絞り込み結果（さらに表示で再フィルタせず使う）
   var domains = (SERVICES_MAP && SERVICES_MAP.domains) || [];
   var currentView = "card";
 
@@ -1900,6 +1905,11 @@ const MAP_INTRO = {
       var present = vals.filter(function (v) { return kind === "domain" ? domainSet[v] : formSet[v]; });
       if (present.length === 0) { btn.hidden = true; return; }
       anyBtn = true;
+      // 分野入口ボタンに実測の件数バッジを付ける（例「高齢者の支援（32）」）
+      if (kind === "domain") {
+        var cnt = items.filter(function (it) { return present.indexOf(it.domain) !== -1; }).length;
+        btn.insertAdjacentHTML("beforeend", '<span class="finder-badge">（' + cnt + "）</span>");
+      }
       btn.addEventListener("click", function () {
         clearFinderActive();
         btn.classList.add("is-active");
@@ -1971,14 +1981,21 @@ const MAP_INTRO = {
     render(list);
   }
 
-  // 絞り込み結果をカード・表の両方に描画し、現在のビューだけ表示する
+  // 新しい絞り込み結果を受け取り、表示件数を初期化して描画する（絞り込み・検索・入口操作で呼ぶ）
   function render(list) {
-    countEl.innerHTML = "該当 <strong>" + list.length + "</strong> 件 / 全 " + items.length + " 件";
-    if (list.length === 0) {
-      resultsEl.innerHTML = "";
-      tableEl.innerHTML = "";
-      resultsEl.hidden = true;
-      tableEl.hidden = true;
+    currentList = list;
+    shownCount = PAGE_SIZE;
+    renderList();
+  }
+
+  // 現在の絞り込み結果を、初期20件＋「さらに表示」で段階表示する（カード・表の両方）
+  function renderList() {
+    var total = currentList.length;
+    if (total === 0) {
+      countEl.innerHTML = "<strong>0</strong> 件見つかりました";
+      resultsEl.innerHTML = ""; tableEl.innerHTML = "";
+      resultsEl.hidden = true; tableEl.hidden = true;
+      moreEl.hidden = true; moreEl.innerHTML = "";
       emptyEl.hidden = false;
       emptyEl.innerHTML =
         '<p class="notice-title">該当するサービスが見つかりませんでした。</p>' +
@@ -1987,10 +2004,29 @@ const MAP_INTRO = {
     }
     emptyEl.hidden = true;
     emptyEl.innerHTML = "";
-    resultsEl.innerHTML = list.map(buildCard).join("");
-    tableEl.innerHTML = buildTable(list);
+    if (shownCount > total) shownCount = total;
+    var view = currentList.slice(0, shownCount);
+    countEl.innerHTML = "<strong>" + total + "</strong> 件見つかりました・" + shownCount + " 件表示中";
+    resultsEl.innerHTML = view.map(buildCard).join("");
+    tableEl.innerHTML = buildTable(view);
+    if (total > shownCount) {
+      moreEl.hidden = false;
+      moreEl.innerHTML = '<button type="button" class="list-more-btn" id="map-more-btn">さらに' +
+        Math.min(PAGE_SIZE, total - shownCount) + "件表示</button>";
+    } else {
+      moreEl.hidden = true;
+      moreEl.innerHTML = "";
+    }
     applyView();
   }
+
+  // 「さらに表示」で表示件数を増やす（絞り込みはそのまま・リセットしない）
+  moreEl.addEventListener("click", function (e) {
+    if (e.target.closest && e.target.closest("#map-more-btn")) {
+      shownCount += PAGE_SIZE;
+      renderList();
+    }
+  });
 
   // 現在のビューに合わせてカード／表の表示を切り替える
   function applyView() {

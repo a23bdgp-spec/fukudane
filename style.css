@@ -988,6 +988,12 @@ section p:last-child { margin-bottom: 0; }
 .finder-btn:hover { border-color: var(--primary); }
 .finder-btn.is-active { background: var(--primary); color: #fff; border-color: var(--primary-dark); }
 .finder-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.finder-badge { font-weight: 400; font-size: .88em; opacity: .8; }
+
+/* 一覧の段階表示「さらに表示」（サービス一覧・DB共通の見た目） */
+.list-more { text-align: center; margin: 20px 0 4px; }
+.list-more-btn { font-family: inherit; font-size: 14px; font-weight: 700; color: var(--primary); background: #fff; border: 1px solid var(--primary); border-radius: 22px; padding: 9px 26px; cursor: pointer; }
+.list-more-btn:hover { background: var(--primary); color: #fff; }
 .finder-all { font-family: inherit; font-size: 13px; color: var(--primary); background: none; border: none; cursor: pointer; padding: 4px 2px; text-decoration: underline; }
 .finder-all:hover { color: var(--primary-dark); }
 

@@ -128,7 +128,7 @@
   <p class="filternote">サービス活動収益（事業の規模）の大きい順です。収益の大小や経常増減差額のプラス・マイナスは客観的な事実であり、経営の良し悪しを示すものではありません。</p>
 
   <div class="countbar">
-    <span>該当：<strong id="cnt">—</strong> 法人</span>
+    <span><strong id="cnt">—</strong> 法人 見つかりました</span>
     <span id="range"></span>
   </div>
 
@@ -171,8 +171,8 @@
 <script src="filters.js?v=b34cdd1986"></script>
 <script>
 const BUILD_VERSION="b34cdd1986";   // ビルド時に置換（キャッシュバスティング）
-const PAGE_SIZE = 50;
-let INDEX = [], filtered = [], page = 0;
+const PAGE_SIZE = 30;    // 初期表示件数・「さらに表示」1回あたりの追加件数
+let INDEX = [], filtered = [], shown = PAGE_SIZE;
 function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
 // 金額表示：1億円未満は「9,800万円」、1億円以上は「3億6,800万円」（端数0なら「3億円」）。単位は関数内で1回だけ付ける。
 function manNum(v){ return (v==null) ? '' : Math.round(v/1e4).toLocaleString('ja-JP'); }
@@ -220,21 +220,20 @@ function apply(){
     return pred(r);
   });
   filtered.sort((a,b)=> b.sv - a.sv);   // サービス活動収益の大きい順（集合内順位）
-  page = 0;
+  shown = PAGE_SIZE;   // 絞り込み・並び替えの変更で表示件数をリセット
   render();
 }
 
 function render(){
   const list = document.getElementById('rank-list');
-  document.getElementById('cnt').textContent = filtered.length.toLocaleString('ja-JP');
   const total = filtered.length;
-  const start = page*PAGE_SIZE;
-  const slice = filtered.slice(start, start+PAGE_SIZE);
-  document.getElementById('range').textContent =
-    total ? `${(start+1).toLocaleString('ja-JP')}〜${(start+slice.length).toLocaleString('ja-JP')} 位を表示` : '';
-  if(!total){ list.innerHTML='<div class="loading">該当する法人はありません。</div>'; document.getElementById('pager').innerHTML=''; return; }
+  document.getElementById('cnt').textContent = total.toLocaleString('ja-JP');
+  if(!total){ list.innerHTML='<div class="loading">該当する法人はありません。</div>'; document.getElementById('range').textContent=''; document.getElementById('pager').innerHTML=''; return; }
+  if(shown>total) shown = total;
+  const slice = filtered.slice(0, shown);   // 上位から shown 件（順位は1位から連番）
+  document.getElementById('range').textContent = `・上位${shown.toLocaleString('ja-JP')}件表示中`;
   const body = slice.map((r,i)=>`<tr>
-      <td>${(start+i+1).toLocaleString('ja-JP')}位</td>
+      <td>${(i+1).toLocaleString('ja-JP')}位</td>
       <td class="nm"><a href="db.html?no=${encodeURIComponent(r.no)}">${esc(r.name)}</a></td>
       <td>${esc(r.pref)}</td>
       <td>${esc(r.biz||'')}</td>
@@ -245,20 +244,19 @@ function render(){
   list.innerHTML = `<div class="tblwrap"><table class="ranktbl"><thead><tr>
       <th>順位</th><th class="nm">法人名</th><th>都道府県</th><th>主な事業</th><th>サービス活動収益</th><th>職員数</th><th>全国順位</th>
     </tr></thead><tbody>${body}</tbody></table></div>`;
-  renderPager(total);
+  renderMore(total);
 }
 
-function renderPager(total){
-  const pages = Math.ceil(total/PAGE_SIZE);
+// 「さらに表示」ボタン（前へ/次へのページ送りは廃止）
+function renderMore(total){
   const p = document.getElementById('pager');
-  if(pages<=1){ p.innerHTML=''; return; }
+  if(shown>=total){ p.innerHTML=''; return; }
   p.innerHTML='';
-  const prev=document.createElement('button'); prev.textContent='← 前へ'; prev.disabled=(page===0);
-  prev.onclick=()=>{ page--; render(); window.scrollTo(0,0); };
-  const next=document.createElement('button'); next.textContent='次へ →'; next.disabled=(page>=pages-1);
-  next.onclick=()=>{ page++; render(); window.scrollTo(0,0); };
-  const info=document.createElement('span'); info.textContent=`${page+1} / ${pages} ページ`;
-  p.append(prev, info, next);
+  const btn=document.createElement('button');
+  btn.className='list-more-btn';
+  btn.textContent=`さらに${Math.min(PAGE_SIZE, total-shown).toLocaleString('ja-JP')}件表示`;
+  btn.onclick=()=>{ shown += PAGE_SIZE; render(); };
+  p.appendChild(btn);
 }
 
 init();
