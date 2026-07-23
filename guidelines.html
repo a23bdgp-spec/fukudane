@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ガイドライン集｜フクダネ</title>
+<meta name="description" content="虐待防止・身体拘束の適正化・感染症対策・事故防止など、厚生労働省・こども家庭庁等が公表する福祉現場の運営ガイドラインを分野別に整理し、公式の原文へリンクした一覧です。">
+<link rel="canonical" href="https://fukudane.com/guidelines.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="ガイドライン集｜フクダネ">
+<meta property="og:description" content="虐待防止・身体拘束の適正化・感染症対策・事故防止など、厚生労働省・こども家庭庁等が公表する福祉現場の運営ガイドラインを分野別に整理し、公式の原文へリンクした一覧です。">
+<meta property="og:url" content="https://fukudane.com/guidelines.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="フクダネ">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html" class="logo">
+        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+          <g stroke="currentColor" stroke-width="1.3">
+            <line x1="13" y1="13" x2="6" y2="7"/>
+            <line x1="13" y1="13" x2="20" y2="7"/>
+            <line x1="13" y1="13" x2="7" y2="20"/>
+            <line x1="13" y1="13" x2="20" y2="19"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="13" cy="13" r="2.7"/>
+            <circle cx="6" cy="7" r="2"/>
+            <circle cx="20" cy="7" r="2"/>
+            <circle cx="7" cy="20" r="2"/>
+            <circle cx="20" cy="19" r="2"/>
+          </g>
+        </svg>
+        <span class="logo-text">フクダネ</span>
+      </a>
+      <span class="tagline">社会福祉法人の総合情報サイト</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <nav class="site-nav" id="primary-nav">
+      <a href="index.html" class="nav-home">ホーム</a>
+      <a href="map.html">福祉サービス一覧</a>
+      <a href="history.html">制度の歴史</a>
+      <a href="jobs.html">福祉の仕事</a>
+      <a href="organizations.html">福祉業界団体</a>
+      <a href="db/db.html">社会福祉法人データベース</a>
+      <a href="about.html">フクダネについて</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1 class="catch">ガイドライン集</h1>
+    <p class="lead" id="guidelines-desc"></p>
+  </div>
+</div>
+
+<section class="list-page">
+  <div class="wrap">
+    <!-- 分野へのページ内ジャンプ（目次）。JSで生成 -->
+    <nav class="gl-toc" id="guidelines-toc" aria-label="分野の目次"></nav>
+    <!-- 分野別のガイドライン一覧。build_map.py が GUIDELINES に注入したデータからJSで描画 -->
+    <div id="guidelines-root"></div>
+    <p class="guidelines-note">各ガイドラインは改定されることがあります。最新の内容は必ずリンク先（原本）をご確認ください。</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">フクダネ</span>
+        <span class="footer-tagline">社会福祉法人の総合情報サイト</span>
+      </div>
+      <nav class="footer-nav" aria-label="フッターナビゲーション">
+        <a href="index.html">ホーム</a>
+        <a href="map.html">福祉サービス一覧</a>
+        <a href="history.html">制度の歴史</a>
+        <a href="jobs.html">福祉の仕事</a>
+        <a href="organizations.html">福祉業界団体</a>
+        <a href="guidelines.html">ガイドライン集</a>
+        <a href="db/db.html">社会福祉法人データベース</a>
+        <a href="about.html">フクダネについて</a>
+        <a href="terms.html">利用規約</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="disclaimer">
+        掲載情報は公的機関の公表物に基づきます。最新・正確な内容は、必ず出典（原本）をご確認ください。
+      </p>
+      <p class="copy">© フクダネ</p>
+    </div>
+  </div>
+</footer>
+
+<!--
+  データ埋め込み枠。content/guidelines.json の内容を build_map.py が下の GUIDELINES に注入する。
+  データ形式：{ title, description, categories:[ { category, items:[ { 名称, 発行, 年, 概要, URL } ] } ] }
+-->
+<script>
+/* __GUIDELINES_INJECT_START__ ここから下を build_map.py が content/guidelines.json で置き換える（未注入時は空） */
+const GUIDELINES = {
+  "title": "ガイドライン集",
+  "description": "厚生労働省・こども家庭庁・内閣府などが公表している、福祉の現場運営に関わるガイドライン・指針・手引きを分野別に整理し、公式の原文ページへリンクした一覧です。名称・発行元・年は公式ページで確認したものを掲載しています。",
+  "confirmed_date": "2026-07-23",
+  "source_policy": "各項目の名称・発行元・年・URLは、発行機関の公式ページまたは公式PDFをWebFetch/WebSearchで実際に確認して収録した。恒常的な掲載ページを優先し、直リンクPDFの場合は発行年を確認した。",
+  "note": "掲載URLは確認時点（2026-07-23）のもの。ガイドライン等は改訂されることがあるため、利用時は各ページで最新版を確認してください。",
+  "fields": [
+    "名称",
+    "発行",
+    "年",
+    "概要",
+    "URL"
+  ],
+  "categories": [
+    {
+      "category": "虐待防止",
+      "items": [
+        {
+          "名称": "市町村・都道府県における高齢者虐待への対応と養護者支援について（国マニュアル）",
+          "発行": "厚生労働省 老健局",
+          "年": "令和7年3月（最新改訂）",
+          "概要": "高齢者虐待防止法に基づき、市町村・都道府県が行う高齢者虐待への対応と養護者支援の手順・留意点をまとめた国のマニュアル。",
+          "URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000200478_00003.html"
+        },
+        {
+          "名称": "障害者福祉施設等における障害者虐待の防止と対応の手引き",
+          "発行": "厚生労働省 社会・援護局 障害保健福祉部",
+          "年": "令和6年7月",
+          "概要": "障害者福祉施設・事業所の従事者向けに、障害者虐待の防止と発生時の対応の考え方・手順を示した手引き。",
+          "URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/gyakutaiboushi/tsuuchi.html"
+        },
+        {
+          "名称": "子ども虐待対応の手引き",
+          "発行": "こども家庭庁 支援局 虐待防止対策課",
+          "年": "令和6年4月改正版",
+          "概要": "児童相談所等における子ども虐待への対応（通告受理・調査・一時保護・在宅援助・関係機関連携等）の実務を示した手引き。",
+          "URL": "https://www.cfa.go.jp/policies/jidougyakutai/hourei-tsuuchi/taiou_tebiki"
+        },
+        {
+          "名称": "保育所や幼稚園等における虐待の防止及び発生時の対応等に関するガイドライン",
+          "発行": "こども家庭庁・文部科学省",
+          "年": "令和7年8月改訂",
+          "概要": "保育所・幼稚園・認定こども園等における虐待の防止と、発生した場合の対応の手順をまとめたガイドライン。",
+          "URL": "https://www.cfa.go.jp/policies/hoiku/hoiku-gyakutaiboushi"
+        }
+      ]
+    },
+    {
+      "category": "身体拘束の適正化",
+      "items": [
+        {
+          "名称": "身体拘束廃止・防止の手引き",
+          "発行": "厚生労働省 老健局",
+          "年": "令和7年3月",
+          "概要": "介護施設・事業所等における身体拘束の廃止・防止に向けた考え方や具体的な取組事例を示した手引き。従来の「身体拘束ゼロへの手引き」を補足・拡充したもの。",
+          "URL": "https://www.mhlw.go.jp/content/12304250/001643323.pdf"
+        }
+      ]
+    },
+    {
+      "category": "感染症対策・業務継続（BCP）",
+      "items": [
+        {
+          "名称": "介護現場における感染対策の手引き（第3版）",
+          "発行": "厚生労働省 老健局",
+          "年": "令和5年9月",
+          "概要": "施設系・通所系・訪問系など介護サービスの現場における感染対策の基本と実務をまとめた手引き。",
+          "URL": "https://www.mhlw.go.jp/content/12300000/001149870.pdf"
+        },
+        {
+          "名称": "保育所における感染症対策ガイドライン（2018年改訂版）",
+          "発行": "こども家庭庁",
+          "年": "平成30年3月（令和5年一部改訂）",
+          "概要": "乳幼児と保育所の特性を踏まえた、保育所における感染症対策の基本と対応方法を示したガイドライン。",
+          "URL": "https://www.cfa.go.jp/policies/hoiku"
+        },
+        {
+          "名称": "介護施設・事業所における自然災害発生時の業務継続ガイドライン",
+          "発行": "厚生労働省 老健局",
+          "年": "令和2年12月（自然災害編）",
+          "概要": "地震・水害等の自然災害時にも介護サービスを継続するための業務継続計画（BCP）の作成方法を示したガイドライン。感染症編とあわせて公表されている。",
+          "URL": "https://www.mhlw.go.jp/stf/newpage_15758.html"
+        },
+        {
+          "名称": "障害福祉サービス事業所等における自然災害発生時の業務継続ガイドライン",
+          "発行": "厚生労働省 社会・援護局 障害保健福祉部",
+          "年": "令和3年3月",
+          "概要": "自然災害時にも障害福祉サービスを継続するための業務継続計画（BCP）の作成方法を、サービス類型ごとに示したガイドライン。",
+          "URL": "https://www.mhlw.go.jp/content/12200000/000756659.pdf"
+        }
+      ]
+    },
+    {
+      "category": "事故防止・安全",
+      "items": [
+        {
+          "名称": "教育・保育施設等における事故防止及び事故発生時の対応のためのガイドライン",
+          "発行": "こども家庭庁（策定時 内閣府）",
+          "年": "平成28年3月",
+          "概要": "認定こども園・幼稚園・保育所・地域型保育等における重大事故の防止と、事故発生時の対応方法を施設・自治体向けに示したガイドライン。",
+          "URL": "https://www.cfa.go.jp/policies/child-safety/effort/guideline"
+        },
+        {
+          "名称": "保育所におけるアレルギー対応ガイドライン（2019年改訂版）",
+          "発行": "こども家庭庁",
+          "年": "平成31年4月（2019年改訂）",
+          "概要": "保育所における食物アレルギー等への対応の基本と、生活管理指導表を用いた組織的対応の進め方を示したガイドライン。",
+          "URL": "https://www.cfa.go.jp/policies/hoiku"
+        }
+      ]
+    },
+    {
+      "category": "個人情報・情報管理",
+      "items": [
+        {
+          "名称": "医療・介護関係事業者における個人情報の適切な取扱いのためのガイダンス",
+          "発行": "個人情報保護委員会・厚生労働省",
+          "年": "平成29年4月制定（令和8年4月一部改正）",
+          "概要": "医療・介護関係事業者が個人情報保護法に基づき個人情報を適切に取り扱うための、具体的な留意点をまとめたガイダンス。",
+          "URL": "https://www.ppc.go.jp/personalinfo/legal/iryoukaigo_guidance/"
+        }
+      ]
+    },
+    {
+      "category": "施設運営（指導）",
+      "items": [
+        {
+          "名称": "介護保険施設等運営指導マニュアル",
+          "発行": "厚生労働省 老健局",
+          "年": "令和4年3月策定（令和6年7月改訂）",
+          "概要": "自治体が介護保険施設・事業所に対して行う運営指導の標準的な考え方と実施方法を示したマニュアル。",
+          "URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/shidou/index.html"
+        },
+        {
+          "名称": "指定障害福祉サービス事業者等に対する集団指導・運営指導マニュアル",
+          "発行": "厚生労働省 社会・援護局 障害保健福祉部",
+          "年": "令和8年6月",
+          "概要": "自治体が指定障害福祉サービス事業者等に対して行う集団指導・運営指導の考え方と実施方法を示したマニュアル。",
+          "URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/kanriseibi/index.html"
+        }
+      ]
+    },
+    {
+      "category": "保育・社会的養護",
+      "items": [
+        {
+          "名称": "保育所保育指針",
+          "発行": "厚生労働省告示（現在の所管はこども家庭庁）",
+          "年": "平成29年告示（平成30年度施行）",
+          "概要": "保育所における保育の内容・ねらい・方法等の基本を定めた大臣告示。全国の保育所が従う基準となる。",
+          "URL": "https://www.cfa.go.jp/policies/hoiku/shishin-h30-bunkatsu"
+        },
+        {
+          "名称": "幼保連携型認定こども園教育・保育要領",
+          "発行": "内閣府・文部科学省・厚生労働省告示（現在の所管はこども家庭庁）",
+          "年": "平成29年告示（平成30年度施行）",
+          "概要": "幼保連携型認定こども園における教育・保育の内容の基本を定めた告示。教育と保育を一体的に行うための基準となる。",
+          "URL": "https://www.cfa.go.jp/policies/kokoseido/kodomoen/kokuji/"
+        },
+        {
+          "名称": "児童養護施設等 社会的養護関係施設の運営指針",
+          "発行": "こども家庭庁（策定時 厚生労働省）",
+          "年": "平成24年3月",
+          "概要": "児童養護施設・乳児院・母子生活支援施設等の社会的養護関係施設について、運営の理念や方法の基本を示した指針。",
+          "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo"
+        },
+        {
+          "名称": "里親委託ガイドライン",
+          "発行": "こども家庭庁（策定時 厚生労働省）",
+          "年": "平成23年策定（平成30年改正）",
+          "概要": "家庭養護を優先する原則のもと、里親への子どもの委託を進めるための考え方や手順を示したガイドライン。",
+          "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo"
+        }
+      ]
+    },
+    {
+      "category": "障害児支援",
+      "items": [
+        {
+          "名称": "児童発達支援ガイドライン",
+          "発行": "こども家庭庁 支援局 障害児支援課",
+          "年": "令和6年7月",
+          "概要": "児童発達支援の提供にあたっての基本的な考え方や支援内容、事業運営の考え方を示したガイドライン。",
+          "URL": "https://www.cfa.go.jp/policies/shougaijishien/shisaku/guideline_tebiki"
+        },
+        {
+          "名称": "放課後等デイサービスガイドライン",
+          "発行": "こども家庭庁 支援局 障害児支援課",
+          "年": "令和6年7月",
+          "概要": "放課後等デイサービスの提供にあたっての基本的な考え方や支援内容、事業運営の考え方を示したガイドライン。",
+          "URL": "https://www.cfa.go.jp/policies/shougaijishien/shisaku/guideline_tebiki"
+        }
+      ]
+    },
+    {
+      "category": "災害対応",
+      "items": [
+        {
+          "名称": "福祉避難所の確保・運営ガイドライン",
+          "発行": "内閣府（防災担当）",
+          "年": "平成28年4月（令和3年5月改定）",
+          "概要": "高齢者・障害者等の要配慮者を対象とする福祉避難所について、平時からの確保と災害時の運営の考え方を示したガイドライン。",
+          "URL": "https://www.bousai.go.jp/taisaku/hinanjo/r3_guideline.html"
+        }
+      ]
+    }
+  ]
+};
+/* __GUIDELINES_INJECT_END__ ここまで */
+
+/* ===== 描画処理（ガイドライン集） ===== */
+(function () {
+  var descEl = document.getElementById("guidelines-desc");
+  var tocEl = document.getElementById("guidelines-toc");
+  var rootEl = document.getElementById("guidelines-root");
+  var cats = (GUIDELINES && GUIDELINES.categories) || [];
+
+  if (descEl && GUIDELINES && GUIDELINES.description) descEl.textContent = GUIDELINES.description;
+
+  if (cats.length === 0) {
+    rootEl.innerHTML =
+      '<div class="notice"><p class="notice-title">このページは現在準備中です。</p>' +
+      "<p>福祉の現場運営に関わるガイドラインを、公表情報に基づいて分野別に整理しています。</p></div>";
+    return;
+  }
+
+  // 分野の目次（ページ内ジャンプ）
+  var toc = "";
+  cats.forEach(function (c, i) {
+    toc += '<a class="gl-toc-link" href="#gl-cat-' + i + '">' + esc(c.category) + "</a>";
+  });
+  if (tocEl) tocEl.innerHTML = toc;
+
+  // 分野別一覧
+  var html = "";
+  cats.forEach(function (c, i) {
+    html += '<section class="gl-cat" id="gl-cat-' + i + '">';
+    html += '<h2 class="section-title">' + esc(c.category) + "</h2>";
+    html += '<div class="gl-grid">';
+    (c.items || []).forEach(function (it) {
+      html += '<article class="gl-card">';
+      html += '<h3 class="gl-name">' + esc(it["名称"]) + "</h3>";
+      html += '<dl class="gl-dl">';
+      if (it["発行"]) html += "<dt>発行</dt><dd>" + esc(it["発行"]) + "</dd>";
+      if (it["年"]) html += "<dt>年</dt><dd>" + esc(it["年"]) + "</dd>";
+      if (it["概要"]) html += "<dt>概要</dt><dd>" + esc(it["概要"]) + "</dd>";
+      html += "</dl>";
+      var url = safeUrl(it["URL"]);
+      if (url) html += '<p class="gl-links"><a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">原文を見る↗</a></p>';
+      html += "</article>";
+    });
+    html += "</div></section>";
+  });
+  rootEl.innerHTML = html;
+
+  // HTML特殊文字を無害化
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  // リンク先URLは http/https のみ許可
+  function safeUrl(u) {
+    var s = String(u == null ? "" : u).trim();
+    return /^https?:\/\//i.test(s) ? s : "";
+  }
+})();
+</script>
+
+<script src="nav.js" defer></script>
+</body>
+</html>
