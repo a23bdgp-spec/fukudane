@@ -627,17 +627,10 @@ const JOBS = {
     html += "</section>";
   }
 
-  // ことば集（essayの直後・動画の前）。初期6件のみ表示し、残りは開閉ボタンで展開
+  // ことば集（essayの直後・動画の前）。初期6件のみ表示し、残りは開閉ボタンで展開。並び順はデータ（voices）順のまま。
   if (voices.length > 0) {
-    // 初期表示の並び順（名前で照合。データ側は変更しない）
-    var INITIAL_ORDER = ["岸田奈美", "三好春樹", "加藤忠相", "熊谷晋一郎", "村瀨孝生", "飯田大輔"];
-    var byName = {};
-    voices.forEach(function (v) { if (v && v.name) byName[v.name] = v; });
-    var initial = [];
-    INITIAL_ORDER.forEach(function (n) { if (byName[n]) initial.push(byName[n]); });
-    var initialSet = {};
-    initial.forEach(function (v) { initialSet[v.name] = true; });
-    var rest = voices.filter(function (v) { return !(v && v.name && initialSet[v.name]); });
+    var initial = voices.slice(0, 6);   // 先頭6件
+    var rest = voices.slice(6);          // 残り
 
     html += '<section class="voices-sec"><h2 class="section-title">福祉の仕事をめぐることば</h2>';
     html += '<div class="voices-grid">';
