@@ -758,6 +758,14 @@ section p:last-child { margin-bottom: 0; }
   .card-grid { grid-template-columns: 1fr; }
 }
 
+/* 本文の行長制御（PC時の可読性）。section 直下 .wrap の一般段落と .map-intro のみ対象。
+   カード・グリッド・表・JS注入コンテンツ内の段落は .wrap 直下ではないため影響しない。
+   スマホは元々幅が狭いので min-width で限定し、影響を出さない。 */
+@media (min-width: 720px) {
+  section .wrap > p,
+  .map-intro p { max-width: 44em; }
+}
+
 /* スマホ幅：ヘッダーナビをハンバーガーに集約 */
 @media (max-width: 768px) {
   .site-header .wrap { flex-wrap: wrap; }
@@ -873,6 +881,20 @@ section p:last-child { margin-bottom: 0; }
 .sr-empty { font-size: 14px; color: var(--ink); line-height: 1.9; }
 .sr-empty-links { font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
 .sr-empty-links a { color: var(--primary); }
+
+/* 「さらに表示」（検索結果の追加読み込み） */
+.sr-more { text-align: center; margin: 20px 0 8px; }
+.sr-more-count { font-size: 13px; color: var(--ink-soft); margin: 0 0 10px; }
+.sr-more-btn { font-family: inherit; font-size: 14px; font-weight: 700; color: var(--primary); background: #fff; border: 1px solid var(--primary); border-radius: 22px; padding: 9px 26px; cursor: pointer; }
+.sr-more-btn:hover { background: var(--primary); color: #fff; }
+
+/* ホームのヒーロー検索窓（GET送信で search.html?q= へ遷移） */
+.hero-search { display: flex; gap: 8px; margin: 22px 0 0; max-width: 520px; }
+.hero-search-input { flex: 1; min-width: 0; font-family: inherit; font-size: 15px; padding: 11px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); }
+.hero-search-input:focus { outline: 2px solid var(--primary); outline-offset: 1px; }
+.hero-search-btn { font-family: inherit; font-size: 15px; font-weight: 700; color: #fff; background: var(--primary); border: 1px solid var(--primary-dark); border-radius: 8px; padding: 11px 22px; cursor: pointer; white-space: nowrap; }
+.hero-search-btn:hover { background: var(--primary-dark); }
+@media (max-width: 480px) { .hero-search { flex-wrap: wrap; } .hero-search-input, .hero-search-btn { width: 100%; } }
 
 /* サービスカード面の経営指標リンク（詳細を開かなくても分かる小さな導線） */
 .s-keiei { margin: 8px 0 0; font-size: 13px; }

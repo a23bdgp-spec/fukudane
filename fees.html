@@ -109,6 +109,13 @@
   </div>
 </header>
 
+<noscript>
+  <div style="max-width:1080px;margin:0 auto;padding:16px 20px;background:#fff8e1;border:1px solid #e0c76b;color:#5a4a1a;font-size:14px;line-height:1.8">
+    <p style="margin:0 0 6px;font-weight:700">このページの表示にはJavaScriptが必要です。</p>
+    <p style="margin:0">お使いのブラウザでJavaScriptを有効にしてご覧ください。主要なページ：<a href="index.html">ホーム</a>・<a href="service.html">福祉サービス一覧</a>・<a href="history.html">制度の歴史</a>・<a href="about.html">フクダネについて</a></p>
+  </div>
+</noscript>
+
 <div class="hero">
   <div class="wrap">
     <h1 class="catch">報酬・公定価格関連</h1>
@@ -184,6 +191,7 @@ const FEES = {
   "categories": [
     {
       "category": "介護報酬（令和6年度改定）",
+      "改定周期": "介護報酬は原則3年ごとに改定され（介護保険事業計画の3年を1期とする期間と連動）、直近は2024年度（令和6年度）改定です。次回は2027年度（令和9年度）改定が予定され、社会保障審議会介護給付費分科会で令和9年度改定に向けた検討が始まっています。",
       "items": [
         {
           "名称": "令和6年度介護報酬改定について",
@@ -217,6 +225,7 @@ const FEES = {
     },
     {
       "category": "障害福祉サービス等報酬（令和6年度改定）",
+      "改定周期": "障害福祉サービス等報酬も原則3年ごとに改定され（障害福祉計画の期間と連動）、直近は2024年度（令和6年度）改定です。次回は2027年度（令和9年度）改定が予定され、社会保障審議会障害者部会・報酬改定検討チームで令和9年度改定に向けた検討が進められています。",
       "items": [
         {
           "名称": "令和6年度障害福祉サービス等報酬改定について",
@@ -264,6 +273,7 @@ const FEES = {
     },
     {
       "category": "子ども・子育て支援（公定価格）",
+      "改定周期": "公定価格は毎年度、単価表や基準が設定・見直しされます（現行は2026年度＝令和8年度の単価表・見直し事項）。",
       "items": [
         {
           "名称": "公定価格に関する情報",
@@ -283,6 +293,7 @@ const FEES = {
     },
     {
       "category": "措置費・保護施設事務費",
+      "改定周期": "措置費（児童入所施設措置費等国庫負担金）の交付基準は毎年度通知されます（現行は2024年度＝令和6年5月改正の交付基準）。",
       "items": [
         {
           "名称": "児童入所施設措置費等国庫負担金",
@@ -371,6 +382,7 @@ const FEES = {
 </script>
 
 <script src="deeplink.js" defer></script>
+<script src="to-top.js" defer></script>
 <script src="nav.js" defer></script>
 </body>
 </html>

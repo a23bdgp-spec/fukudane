@@ -104,6 +104,12 @@
     <p class="lead">
       社会福祉法人や福祉制度に関する公的情報を整理し、必要な情報とその根拠へたどり着きやすくします。
     </p>
+    <!-- ホームの検索窓。GET送信で search.html?q=<入力> へ遷移する（ホーム自体では検索しない＝索引を読み込まない） -->
+    <form class="hero-search" role="search" action="search.html" method="get">
+      <label for="hero-q" class="visually-hidden">サイト内をキーワードで検索</label>
+      <input type="search" id="hero-q" name="q" class="hero-search-input" placeholder="例：特養、デイサービス、虐待防止" autocomplete="off">
+      <button type="submit" class="hero-search-btn">検索</button>
+    </form>
   </div>
 </div>
 
