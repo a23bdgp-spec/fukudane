@@ -257,3 +257,22 @@ table.ind td.med{color:var(--sub);background:#fafcfb}
 .src .ind-link { margin: 0 0 10px; }
 .src .ind-link a { color: var(--primary); font-weight: 700; text-decoration: none; }
 .src .ind-link a:hover { text-decoration: underline; }
+
+/* 統計情報ページ */
+.stats-intro { background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:0 0 20px }
+.stats-neutral { margin:0 0 10px;font-weight:600;color:var(--primary-d) }
+.stats-meta { margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13px }
+.stats-meta dt { color:var(--sub);font-weight:600;white-space:nowrap }
+.stats-meta dd { margin:0;color:var(--ink) }
+.stats-sec { margin:0 0 34px }
+.stats-h { font-size:18px;color:var(--primary-d);margin:0 0 8px;border-left:4px solid var(--primary);padding-left:10px }
+.stats-purpose,.stats-reading { font-size:13.5px;line-height:1.8;margin:4px 0 }
+.stats-purpose b,.stats-reading b { color:var(--primary-d) }
+.stats-sentence { font-size:14px;line-height:1.9;margin:8px 0 }
+.stats-note-inline { font-size:12px;color:var(--sub);margin:6px 0 0 }
+.stats-foot { font-size:12px;color:var(--sub);margin:8px 0 0;line-height:1.7 }
+.stats-canvas { width:100%;display:block;margin:8px 0 12px }
+.stats-table { border-collapse:collapse;width:100%;min-width:420px;font-size:13px;background:#fff }
+.stats-table th,.stats-table td { border:1px solid var(--line);padding:6px 10px;text-align:left }
+.stats-table thead th { background:var(--primary);color:#fff;font-weight:600 }
+.stats-table th.r,.stats-table td.r { text-align:right;white-space:nowrap }
