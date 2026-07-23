@@ -164,6 +164,7 @@ section p:last-child { margin-bottom: 0; }
 
 .operator-name { font-size: 16px; }
 .operator-name strong { color: var(--primary-dark); }
+.contact-mail { font-size: 16px; font-weight: 700; margin: 6px 0 0; }
 
 /* ===== 情報の原則リスト ===== */
 .principles { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
@@ -741,7 +742,13 @@ section p:last-child { margin-bottom: 0; }
   .site-nav .nav-home { display: block; }
 }
 
-/* ===== クリエイティブな仕事（動画・読みもの・一般情報） ===== */
+/* ===== 福祉の仕事（エッセイ・動画・読みもの・一般情報） ===== */
+/* エッセイ（落ち着いた読みもの調・装飾控えめ） */
+.essay-sec { max-width: 44em; margin: 0 0 48px; }
+.essay-title { font-size: 20px; font-weight: 700; color: var(--primary-dark); margin: 0 0 16px; line-height: 1.5; }
+.essay-p { font-size: 16px; line-height: 1.95; margin: 0 0 16px; }
+.essay-cite { font-size: 13px; color: var(--ink-soft); margin: 20px 0 0; padding-top: 12px; border-top: 1px solid var(--line); line-height: 1.7; }
+
 .creative-sec { margin: 0 0 44px; }
 .creative-sec:last-child { margin-bottom: 0; }
 
