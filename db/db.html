@@ -16,6 +16,7 @@
       <a href="../index.html">ホーム</a>
       <a href="../map.html">福祉サービス一覧</a>
       <a href="../history.html">制度の歴史</a>
+      <a href="../jobs.html">福祉の仕事</a>
       <a href="db.html" aria-current="page">社会福祉法人データベース</a>
       <a href="../principles.html">編集・情報掲載方針</a>
       <a href="../about.html">フクダネとは？</a>
@@ -101,6 +102,7 @@
       <a href="../index.html">ホーム</a>
       <a href="../map.html">福祉サービス一覧</a>
       <a href="../history.html">制度の歴史</a>
+      <a href="../jobs.html">福祉の仕事</a>
       <a href="db.html">社会福祉法人データベース</a>
       <a href="../principles.html">編集・情報掲載方針</a>
       <a href="../about.html">フクダネとは？</a>
@@ -141,13 +143,27 @@ const FIN = [            // 表示順とラベル（評価語を含めない）
 function yen(v){ return (v===null||v===undefined) ? null : v.toLocaleString('ja-JP')+'円'; }
 function num(v,unit){ return (v===null||v===undefined) ? null : v.toLocaleString('ja-JP')+unit; }
 
+async function fetchJson(url){
+  const res = await fetch(url);
+  if(!res.ok) throw new Error('HTTP '+res.status);
+  return res.json();
+}
+
 async function init(){
   const v = '?v=' + BUILD_VERSION;
-  const [idx, med, defs] = await Promise.all([
-    fetch('data/index.json'+v).then(r=>r.json()),
-    fetch('data/medians.json'+v).then(r=>r.json()).catch(()=>({})),
-    fetch('data/indicator_defs.json'+v).then(r=>r.json()).catch(()=>[]),
-  ]);
+  let idx, med, defs;
+  try{
+    [idx, med, defs] = await Promise.all([
+      fetchJson('data/index.json'+v),
+      fetchJson('data/medians.json'+v).catch(()=>({})),
+      fetchJson('data/indicator_defs.json'+v).catch(()=>[]),
+    ]);
+    if(!Array.isArray(idx)) throw new Error('索引の形式が不正です');
+  }catch(e){
+    document.getElementById('list').innerHTML =
+      '<div class="loading">データを読み込めませんでした。時間をおいて再度お試しください。</div>';
+    return;
+  }
   INDEX = idx; MEDIANS = med; DEFS = defs;
   DEFS.forEach(d => { DEFBYKEY[d.key] = d; });
   INDEX.forEach(r => { r._n = normName(r.name); });  // 正規化名を事前計算
@@ -218,16 +234,18 @@ function render(){
     const inCmp = compare.some(x=>x.no===r.no);
     const revStr = (r.sv!=null) ? oku(r.sv)+'億円' : '−';
     const staffStr = (r.ss!=null) ? r.ss.toLocaleString('ja-JP')+'人' : '−';
-    row.innerHTML = `<div>
-        <div class="name">${esc(r.name)}</div>
-        <div class="meta">${esc(r.pref)}　収益 ${revStr}　職員 ${staffStr}</div>
-      </div>
-      <span class="tag">${esc(r.biz)}</span>
-      <button class="cmpbtn${inCmp?' on':''}" type="button">${inCmp?'比較中✓':'＋比較'}</button>
-      <span class="arrow">詳細 ＋</span>`;
-    const btn = row.querySelector('.cmpbtn');
-    btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggleCompare(r); });
-    row.addEventListener('click', ()=>toggle(row, r));
+    // 詳細開閉はbutton要素（キーボード操作可・aria-expanded）。比較ボタンは独立させる。
+    row.innerHTML = `<button class="rowmain" type="button" aria-expanded="false">
+        <span class="rowinfo">
+          <span class="name">${esc(r.name)}</span>
+          <span class="meta">${esc(r.pref)}　収益 ${revStr}　職員 ${staffStr}</span>
+        </span>
+        <span class="tag">${esc(r.biz)}</span>
+        <span class="arrow">詳細 ＋</span>
+      </button>
+      <button class="cmpbtn${inCmp?' on':''}" type="button">${inCmp?'比較中✓':'＋比較'}</button>`;
+    row.querySelector('.cmpbtn').addEventListener('click', ()=>toggleCompare(r));
+    row.querySelector('.rowmain').addEventListener('click', ()=>toggle(row, r));
     list.appendChild(row);
   });
   renderPager(total);
@@ -247,29 +265,43 @@ function renderPager(total){
 }
 
 async function toggle(row, r){
+  const main = row.querySelector('.rowmain');
+  const arrow = row.querySelector('.arrow');
   // 既に開いていれば閉じる
   if(row.nextElementSibling && row.nextElementSibling.classList.contains('detail')){
     row.nextElementSibling.remove();
-    row.querySelector('.arrow').textContent='詳細 ＋';
+    arrow.textContent='詳細 ＋';
+    main.setAttribute('aria-expanded','false');
     return;
   }
-  row.querySelector('.arrow').textContent='詳細 −';
+  arrow.textContent='詳細 −';
+  main.setAttribute('aria-expanded','true');
   const det = document.createElement('div');
   det.className='detail';
   det.innerHTML='<div class="loading">読み込み中…</div>';
   row.after(det);
   const corp = await loadCorp(r.pcode, r.no);
-  if(!corp){ det.innerHTML='<div class="loading">データを取得できませんでした。</div>'; return; }
+  if(!corp){
+    det.innerHTML='<div class="loading">データを取得できませんでした。時間をおいて再度お試しください。</div>';
+    return;
+  }
   det.innerHTML = detailHtml(corp);
   bindDetail(det, corp);
 }
 
 async function loadCorp(pcode, no){
   if(!prefCache[pcode]){
-    const res = await fetch(`data/pref_${pcode}.json?v=${BUILD_VERSION}`);
-    prefCache[pcode] = await res.json();
+    try{
+      const res = await fetch(`data/pref_${pcode}.json?v=${BUILD_VERSION}`);
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const data = await res.json();
+      if(!data || !Array.isArray(data.corps)) throw new Error('形式が不正です');
+      prefCache[pcode] = data;
+    }catch(e){
+      return null;   // 失敗はキャッシュしない（次回再試行できる）
+    }
   }
-  return prefCache[pcode].corps.find(c=>c.no===no);
+  return prefCache[pcode].corps.find(c=>c.no===no) || null;
 }
 
 function detailHtml(c){
@@ -283,14 +315,14 @@ function detailHtml(c){
     ['法人本部拠点', c.hq===1 ? 'あり' : (c.hq===0 ? 'なし' : '—')],
     ['本部の職員数（常勤換算）', c.hq_staff!=null ? c.hq_staff.toLocaleString('ja-JP')+'人' : '—'],
   ].map(([k,v])=>`<span><b>${esc(k)}：</b>${esc(String(v))}</span>`).join('');
-  // 収益規模順位（事実。優劣ではない旨を明記。上位%も併記）
+  // 収益規模順位（事実。順位と母数のみ・優劣ではない旨を明記）
   let rankHtml = '';
   if(c.rank){
     const parts = [];
-    if(c.rank.nat){ const p=((c.rank.nat-1)/c.rank.nat_n*100).toFixed(1);
-      parts.push(`全国 <b>${c.rank.nat.toLocaleString('ja-JP')}位</b> / ${c.rank.nat_n.toLocaleString('ja-JP')}法人中 <small>（上位${p}%）</small>`); }
-    if(c.rank.pref){ const p=((c.rank.pref-1)/c.rank.pref_n*100).toFixed(1);
-      parts.push(`${esc(c.pref)}内 <b>${c.rank.pref.toLocaleString('ja-JP')}位</b> / ${c.rank.pref_n.toLocaleString('ja-JP')}法人中 <small>（上位${p}%）</small>`); }
+    if(c.rank.nat)
+      parts.push(`全国 ${c.rank.nat_n.toLocaleString('ja-JP')}法人中 <b>${c.rank.nat.toLocaleString('ja-JP')}位</b>`);
+    if(c.rank.pref)
+      parts.push(`${esc(c.pref)}内 ${c.rank.pref_n.toLocaleString('ja-JP')}法人中 <b>${c.rank.pref.toLocaleString('ja-JP')}位</b>`);
     if(parts.length) rankHtml = `<div class="rankrow"><span>サービス活動収益の規模順位（${c.rank.year}年度）：</span>${parts.map(p=>`<span>${p}</span>`).join('')}</div>`;
   }
   // 5か年テーブル（行＝項目、列＝年度）

@@ -587,6 +587,31 @@ section p:last-child { margin-bottom: 0; }
   .tl-seireki, .tl-wareki { display: inline; }
 }
 
+/* ===== 福祉の仕事 ===== */
+.job-cat { margin: 0 0 40px; scroll-margin-top: 64px; }
+.job-cat-note { font-size: 14px; color: var(--ink-soft); margin: 0 0 16px; }
+.job-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.job-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.job-name { font-size: 17px; font-weight: 700; color: var(--primary-dark); margin: 0 0 4px; line-height: 1.45; }
+.job-basis { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 10px; }
+.job-dl { margin: 0; }
+.job-dl dt { font-size: 12.5px; color: var(--ink-soft); margin-top: 8px; }
+.job-dl dt:first-child { margin-top: 0; }
+.job-dl dd { margin: 2px 0 0; font-size: 14px; }
+.job-source { margin: 12px 0 0; font-size: 13px; }
+
+/* 仕事を知る（外部リンク） */
+.jobs-links { margin: 40px 0 0; padding-top: 28px; border-top: 1px solid var(--line); }
+.job-links-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+.job-links-list li { font-size: 14px; }
+.job-link-desc { display: block; font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+
 /* 上部へ戻るボタン */
 .to-top {
   position: fixed;
