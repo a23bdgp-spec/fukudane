@@ -199,9 +199,13 @@ section p:last-child { margin-bottom: 0; }
   margin-bottom: 3px;
 }
 
-/* ===== 中立性ポリシーリスト ===== */
+/* ===== ポリシーリスト ===== */
 .policy-list { margin: 10px 0 0; padding-left: 1.3em; }
 .policy-list li { margin: 8px 0; font-size: 15px; }
+/* 番号付き（編集独立性・利益相反ポリシー） */
+.policy-numbered { margin: 16px 0 0; display: grid; gap: 16px; }
+.policy-numbered li { margin: 0; line-height: 1.8; }
+.policy-label { display: block; font-weight: 700; color: var(--primary-dark); margin-bottom: 3px; }
 
 /* ===== 利用規約 ===== */
 .terms-body { max-width: 48em; }
