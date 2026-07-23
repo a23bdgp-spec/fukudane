@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>福祉の仕事｜フクダネ</title>
-<meta name="description" content="福祉分野の主な仕事と資格を、国家資格／公的な任用資格・研修等／資格がなくても就ける仕事の3分類で、根拠と出典つきで整理しています。">
+<title>クリエイティブな仕事｜フクダネ</title>
+<meta name="description" content="福祉の仕事の現場や創造性が伝わる動画・読みものを紹介しています。あわせて資格・職種の一般的な情報の入口をまとめています。">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -34,32 +34,29 @@
     </div>
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <nav class="site-nav" id="primary-nav">
-      <a href="index.html">ホーム</a>
+      <a href="index.html" class="nav-home">ホーム</a>
       <a href="map.html">福祉サービス一覧</a>
       <a href="history.html">制度の歴史</a>
-      <a href="jobs.html" aria-current="page">福祉の仕事</a>
+      <a href="jobs.html" aria-current="page">クリエイティブな仕事</a>
       <a href="db/db.html">社会福祉法人データベース</a>
-      <a href="principles.html">編集・情報掲載方針</a>
-      <a href="about.html">フクダネとは？</a>
+      <a href="about.html">フクダネについて</a>
     </nav>
   </div>
 </header>
 
 <div class="hero">
   <div class="wrap">
-    <h1 class="catch">福祉の仕事</h1>
-    <p class="lead" id="jobs-desc"></p>
+    <h1 class="catch">クリエイティブな仕事</h1>
+    <p class="lead">
+      福祉の仕事の現場や創造性が伝わる動画・読みものを紹介しています。
+    </p>
   </div>
 </div>
 
 <section class="list-page">
   <div class="wrap">
-    <!-- 3分類のページ内ナビ。JSで生成 -->
-    <nav class="period-nav" id="cat-nav" aria-label="分類の切り替え"></nav>
-    <!-- 職種本体。JSで生成 -->
-    <div id="jobs-root"></div>
-    <!-- 仕事を知る（外部リンク）。jobs.jsonにリンク集がある場合のみJSで表示。無ければ非表示 -->
-    <section id="jobs-links" class="jobs-links" hidden></section>
+    <!-- 動画・読みもの・一般情報。build_map.py が JOBS に注入したデータからJSで描画 -->
+    <div id="creative-root"></div>
   </div>
 </section>
 
@@ -74,10 +71,9 @@
         <a href="index.html">ホーム</a>
         <a href="map.html">福祉サービス一覧</a>
         <a href="history.html">制度の歴史</a>
-        <a href="jobs.html">福祉の仕事</a>
+        <a href="jobs.html">クリエイティブな仕事</a>
         <a href="db/db.html">社会福祉法人データベース</a>
-        <a href="principles.html">編集・情報掲載方針</a>
-        <a href="about.html">フクダネとは？</a>
+        <a href="about.html">フクダネについて</a>
         <a href="terms.html">利用規約</a>
       </nav>
     </div>
@@ -92,9 +88,11 @@
 
 <!--
   データ埋め込み枠。content/jobs.json の内容を build_map.py が下の JOBS に注入する。
-  データを更新したら build_map.py を再実行するだけで反映される。file:// でも動作。
-  データ形式：{ title, description, confirmed_date, note, categories:[ { category, note,
-              jobs:[ { 名称, 位置づけ, 仕事の内容, なり方, 出典URL, 参考URL? } ] } ], リンク集? }
+  データ形式：{ title, description, confirmed_date, note,
+              categories:[…]（16職種。現在は非表示・将来復活用に温存）,
+              videos:[ { title, youtube_id, channel? } ],
+              creative_links:[ { name, url, 説明, 運営 } ],
+              general_links:[ { name, url, 説明, 運営 } ] }
 -->
 <script>
 /* __JOBS_INJECT_START__ ここから下を build_map.py が content/jobs.json で置き換える（未注入時は空） */
@@ -239,89 +237,129 @@ const JOBS = {
         }
       ]
     }
+  ],
+  "videos": [
+    {
+      "title": "ハリー杉山の介護を考える “生きる”を支えるプロの仕事",
+      "youtube_id": "MtHwcHn2GIY"
+    },
+    {
+      "title": "介護とは何か。－生活を整えていく実践－",
+      "youtube_id": "wWzTyurBmes",
+      "channel": "一般社団法人FUKUSHI FOR CONVIVIALITY"
+    }
+  ],
+  "creative_links": [
+    {
+      "name": "介護男子スタディーズ",
+      "url": "http://www.kaigodanshi.jp/",
+      "説明": "介護の現場で働く男性たちの姿と識者の論考から、介護という仕事の創造性・専門性を伝える読みもの。書籍とウェブで展開。",
+      "運営": "全国の社会福祉法人による共同プロジェクト（事務局は社会福祉法人福祉楽団）"
+    },
+    {
+      "name": "こここ",
+      "url": "https://co-coco.jp/",
+      "説明": "福祉をたずねるクリエイティブマガジン。人物インタビューや現場訪問記などを掲載。",
+      "運営": "株式会社マガジンハウス"
+    }
+  ],
+  "general_links": [
+    {
+      "name": "福祉のお仕事",
+      "url": "https://www.fukushi-work.jp/",
+      "説明": "福祉・介護分野の求人情報と、資格・職種に関する情報を提供する人材センターの総合サイト。都道府県の福祉人材センターと連携。",
+      "運営": "中央福祉人材センター（社会福祉法人 全国社会福祉協議会）"
+    },
+    {
+      "name": "介護職員・介護支援専門員（厚生労働省）",
+      "url": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000054119.html",
+      "説明": "介護員養成研修や介護支援専門員など、介護分野の資格・研修制度の公式情報を集約したページ。",
+      "運営": "厚生労働省"
+    },
+    {
+      "name": "保育士になるには（こども家庭庁）",
+      "url": "https://www.cfa.go.jp/policies/hoiku/hello_mirai/naruniha",
+      "説明": "保育士資格の取得方法（指定養成施設の卒業・保育士試験）を案内する公式ページ。",
+      "運営": "こども家庭庁"
+    }
   ]
 };
 /* __JOBS_INJECT_END__ ここまで */
 
-/* ===== 描画処理（福祉の仕事） ===== */
+/* ===== 描画処理（クリエイティブな仕事：動画・読みもの・一般情報） ===== */
 (function () {
-  var descEl = document.getElementById("jobs-desc");
-  var navEl = document.getElementById("cat-nav");
-  var rootEl = document.getElementById("jobs-root");
-  var linksEl = document.getElementById("jobs-links");
-  var categories = (JOBS && JOBS.categories) || [];
+  var rootEl = document.getElementById("creative-root");
+  var videos = (JOBS && JOBS.videos) || [];
+  var creativeLinks = (JOBS && JOBS["creative_links"]) || [];
+  var generalLinks = (JOBS && JOBS["general_links"]) || [];
 
-  // 導入（説明文はJSONのまま）
-  if (descEl && JOBS && JOBS.description) descEl.textContent = JOBS.description;
+  var html = "";
 
-  if (categories.length === 0) {
-    rootEl.innerHTML =
-      '<div class="notice"><p class="notice-title">このページは現在準備中です。</p>' +
-      "<p>福祉分野の主な仕事と資格を、一次情報・公的資料で確認しながら整理しています。</p></div>";
-    return;
-  }
-
-  // 3分類のページ内ナビ
-  navEl.innerHTML = categories
-    .map(function (c, i) {
-      return '<a class="period-link" href="#cat-' + i + '">' + esc(c.category) + "</a>";
-    })
-    .join("");
-
-  // 各分類のセクションと職種カード
-  rootEl.innerHTML = categories
-    .map(function (c, i) {
-      var h = '<section class="job-cat" id="cat-' + i + '">';
-      h += '<h2 class="period-title">' + esc(c.category) + "</h2>";
-      if (c.note) h += '<p class="job-cat-note">' + esc(c.note) + "</p>";
-      h += '<div class="job-grid">';
-      (c.jobs || []).forEach(function (j) {
-        h += '<article class="job-card">';
-        h += '<h3 class="job-name">' + esc(j["名称"]) + "</h3>";
-        if (j["位置づけ"]) h += '<p class="job-basis">' + esc(j["位置づけ"]) + "</p>";
-        h += "<dl class=\"job-dl\">";
-        if (j["仕事の内容"]) h += "<dt>仕事の内容</dt><dd>" + esc(j["仕事の内容"]) + "</dd>";
-        if (j["なり方"]) h += "<dt>なり方</dt><dd>" + esc(j["なり方"]) + "</dd>";
-        h += "</dl>";
-        var links = [];
-        var url = safeUrl(j["出典URL"]);
-        if (url) {
-          links.push('<a href="' + esc(url) +
-            '" target="_blank" rel="noopener noreferrer">出典を見る↗</a>');
-        }
-        var ref = safeUrl(j["参考URL"]);
-        if (ref) {
-          links.push('<a href="' + esc(ref) +
-            '" target="_blank" rel="noopener noreferrer">試験・資格の案内↗</a>');
-        }
-        if (links.length) h += '<p class="job-source">' + links.join("　") + "</p>";
-        h += "</article>";
-      });
-      h += "</div></section>";
-      return h;
-    })
-    .join("");
-
-  // 仕事を知る（外部リンク）：jobs.jsonにリンク集がある場合のみ表示
-  renderJobLinks();
-
-  function renderJobLinks() {
-    var links = JOBS["リンク集"] || JOBS.links || [];
-    if (!linksEl || !links || links.length === 0) return;
-    var h = '<h2 class="section-title">仕事を知る</h2>';
-    h += '<ul class="job-links-list">';
-    links.forEach(function (lk) {
-      var url = safeUrl(lk.url || lk.URL || lk["URL"]);
-      var name = lk.name || lk["名称"] || lk.title || url;
-      if (!url) return;
-      h += '<li><a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(name) + "↗</a>";
-      if (lk.desc || lk["説明"]) h += '<span class="job-link-desc">' + esc(lk.desc || lk["説明"]) + "</span>";
-      h += "</li>";
+  // 動画セクション（YouTube埋め込み＝外部依存ゼロ原則の唯一の例外・明示許可）
+  if (videos.length > 0) {
+    html += '<section class="creative-sec"><h2 class="section-title">動画で見る</h2>';
+    html += '<div class="video-grid">';
+    videos.forEach(function (v) {
+      var id = String(v.youtube_id || "").replace(/[^A-Za-z0-9_-]/g, "");
+      if (!id) return;
+      html += '<div class="video-card">';
+      html += '<div class="video-frame"><iframe src="https://www.youtube-nocookie.com/embed/' + id +
+        '" title="' + esc(v.title) +
+        '" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+      html += '<p class="video-title">' + esc(v.title) + "</p>";
+      if (v.channel) html += '<p class="video-channel">' + esc(v.channel) + "</p>";
+      html += "</div>";
     });
-    h += "</ul>";
-    linksEl.innerHTML = h;
-    linksEl.hidden = false;
+    html += "</div></section>";
   }
+
+  // 読むセクション（creative_links）
+  if (creativeLinks.length > 0) {
+    html += '<section class="creative-sec"><h2 class="section-title">読む</h2>';
+    html += '<div class="creative-grid">';
+    creativeLinks.forEach(function (lk) {
+      var url = safeUrl(lk.url);
+      html += '<article class="creative-card">';
+      if (url) {
+        html += '<h3 class="creative-name"><a href="' + esc(url) +
+          '" target="_blank" rel="noopener noreferrer">' + esc(lk.name) + "↗</a></h3>";
+      } else {
+        html += '<h3 class="creative-name">' + esc(lk.name) + "</h3>";
+      }
+      if (lk["説明"]) html += '<p class="creative-desc">' + esc(lk["説明"]) + "</p>";
+      if (lk["運営"]) html += '<p class="creative-by">運営：' + esc(lk["運営"]) + "</p>";
+      html += "</article>";
+    });
+    html += "</div></section>";
+  }
+
+  // 資格・職種の一般的な情報（general_links）
+  if (generalLinks.length > 0) {
+    html += '<section class="creative-sec"><h2 class="section-title">資格・職種の一般的な情報</h2>';
+    html += '<p class="section-note">資格や職種の詳しい情報は、各サイトでご確認ください。</p>';
+    html += '<ul class="general-links">';
+    generalLinks.forEach(function (lk) {
+      var url = safeUrl(lk.url);
+      if (!url) return;
+      html += '<li><a href="' + esc(url) +
+        '" target="_blank" rel="noopener noreferrer">' + esc(lk.name) + "↗</a>";
+      if (lk["説明"]) html += '<span class="general-desc">' + esc(lk["説明"]) + "</span>";
+      if (lk["運営"]) html += '<span class="general-by">運営：' + esc(lk["運営"]) + "</span>";
+      html += "</li>";
+    });
+    html += "</ul></section>";
+  }
+
+  if (html === "") {
+    html = '<div class="notice"><p class="notice-title">このページは現在準備中です。</p>' +
+      "<p>福祉の仕事の現場や創造性が伝わるコンテンツを準備しています。</p></div>";
+  }
+  rootEl.innerHTML = html;
+
+  /*
+    ※16職種カード（JOBS.categories）は現在非表示です。
+    データとビルド機構（build_map.py の JOBS 注入）は温存しており、将来この描画を復活できます。
+  */
 
   // HTML特殊文字を無害化
   function esc(s) {

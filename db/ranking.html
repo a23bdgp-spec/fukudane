@@ -14,13 +14,12 @@
     <a class="sitenav-logo" href="../index.html">フクダネ</a>
     <button class="nav-toggle" type="button" aria-controls="db-nav-links" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <div class="sitenav-links" id="db-nav-links">
-      <a href="../index.html">ホーム</a>
+      <a href="../index.html" class="nav-home">ホーム</a>
       <a href="../map.html">福祉サービス一覧</a>
       <a href="../history.html">制度の歴史</a>
-      <a href="../jobs.html">福祉の仕事</a>
+      <a href="../jobs.html">クリエイティブな仕事</a>
       <a href="db.html" aria-current="page">社会福祉法人データベース</a>
-      <a href="../principles.html">編集・情報掲載方針</a>
-      <a href="../about.html">フクダネとは？</a>
+      <a href="../about.html">フクダネについて</a>
     </div>
   </div>
 </nav>
@@ -76,19 +75,18 @@
       <a href="../index.html">ホーム</a>
       <a href="../map.html">福祉サービス一覧</a>
       <a href="../history.html">制度の歴史</a>
-      <a href="../jobs.html">福祉の仕事</a>
+      <a href="../jobs.html">クリエイティブな仕事</a>
       <a href="db.html">社会福祉法人データベース</a>
-      <a href="../principles.html">編集・情報掲載方針</a>
-      <a href="../about.html">フクダネとは？</a>
+      <a href="../about.html">フクダネについて</a>
       <a href="../terms.html">利用規約</a>
     </nav>
     <p class="sitefoot-copy">© フクダネ</p>
   </div>
 </footer>
 
-<script src="filters.js?v=ce8830ea09"></script>
+<script src="filters.js?v=84ac7a2806"></script>
 <script>
-const BUILD_VERSION="ce8830ea09";   // ビルド時に置換（キャッシュバスティング）
+const BUILD_VERSION="84ac7a2806";   // ビルド時に置換（キャッシュバスティング）
 const PAGE_SIZE = 50;
 let INDEX = [], filtered = [], page = 0;
 function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
@@ -98,8 +96,9 @@ async function init(){
   try{
     const res = await fetch('data/index.json?v='+BUILD_VERSION);
     if(!res.ok) throw new Error('HTTP '+res.status);
-    INDEX = await res.json();
-    if(!Array.isArray(INDEX)) throw new Error('形式が不正です');
+    const raw = await res.json();
+    if(!raw || !Array.isArray(raw.rows)) throw new Error('形式が不正です');
+    INDEX = restoreIndex(raw);
   }catch(e){
     document.getElementById('rank-list').innerHTML='<div class="loading">データを読み込めませんでした。時間をおいて再度お試しください。</div>'; return;
   }

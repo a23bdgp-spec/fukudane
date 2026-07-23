@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>フクダネ｜社会福祉法人の総合情報サイト</title>
-<meta name="description" content="フクダネは、バラバラに散らばった福祉分野の一次情報を一つに集約する、社会福祉法人の総合情報サイトです。">
+<title>フクダネ｜福祉の情報を、探しやすく、確かめやすく</title>
+<meta name="description" content="社会福祉法人や福祉制度に関する公的情報を整理。福祉サービス、制度の歴史、福祉の仕事、社会福祉法人の財務情報を検索・確認できます。">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -34,99 +34,66 @@
     </div>
     <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <nav class="site-nav" id="primary-nav">
-      <a href="index.html" aria-current="page">ホーム</a>
+      <a href="index.html" class="nav-home">ホーム</a>
       <a href="map.html">福祉サービス一覧</a>
       <a href="history.html">制度の歴史</a>
-      <a href="jobs.html">福祉の仕事</a>
+      <a href="jobs.html">クリエイティブな仕事</a>
       <a href="db/db.html">社会福祉法人データベース</a>
-      <a href="principles.html">編集・情報掲載方針</a>
-      <a href="about.html">フクダネとは？</a>
+      <a href="about.html">フクダネについて</a>
     </nav>
   </div>
 </header>
 
-<!-- ヒーロー -->
 <div class="hero">
   <div class="wrap">
-    <h1 class="catch">フクダネは一次情報を提供します</h1>
+    <h1 class="catch">福祉の情報を、探しやすく、確かめやすく。</h1>
     <p class="lead">
-      バラバラに散らばった福祉分野の一次情報公開サイトを一つに集約し、社会福祉法人の実務家が「探す時間」を奪われずに必要な情報へ辿り着けるようにする、社会福祉法人の総合情報サイトです。
+      社会福祉法人や福祉制度に関する公的情報を整理し、必要な情報とその根拠へたどり着きやすくします。
     </p>
   </div>
 </div>
 
-<!-- フクダネとは -->
-<section id="about-fukudane">
-  <div class="wrap">
-    <h2 class="section-title">フクダネとは</h2>
-    <p class="section-note">情報を作り変えず、原本への入口を一箇所にまとめます。</p>
-    <p>
-      福祉分野の情報は、厚生労働省・こども家庭庁・WAM（福祉医療機構）・各自治体・業界団体など、多数の発信元にバラバラに散在しています。フクダネは「情報の交差点」に徹し、公的に開示された一次情報への入口を一箇所にまとめ、原本へ最短で送り届けます。
-    </p>
-  </div>
-</section>
-
-<!-- 理念 -->
-<section id="philosophy" class="band">
-  <div class="wrap">
-    <h2 class="section-title">理念</h2>
-    <p class="section-note">フクダネが何のために存在するのか。</p>
-    <p>
-      AIによって誰もが手軽に情報を得られる時代だからこそ、一次情報で裏の取れた「確かな情報」に価値が集中します。フクダネは、その確かさそのものを提供します。
-    </p>
-    <p>
-      なお、本サイトは情報の中立性の観点から、営利を目的に運営いたしません。扱う情報は、公的に開示された一次情報のみ。要約や評価で歪めず、出典を示して原本へ導きます。詳しくは<a href="principles.html">編集・情報掲載方針</a>をご覧ください。
-    </p>
-    <p>
-      フクダネは、日々の実務に向き合う福祉事業者の一助になることを目指しています。
-    </p>
-  </div>
-</section>
-
-<!-- コンテンツ導線：公開済み -->
+<!-- 公開中のコンテンツ -->
 <section id="contents">
   <div class="wrap">
-    <h2 class="section-title">いま見られるコンテンツ</h2>
-    <p class="section-note">業界の土台となる情報から公開しています。</p>
+    <h2 class="section-title">公開中のコンテンツ</h2>
     <div class="guide-grid">
       <a class="guide-card" href="map.html">
         <p class="g-title">福祉サービス一覧</p>
-        <p class="g-desc">同じ支援でも法律で名称・枠組みが違う点を解きほぐします。</p>
-        <span class="g-arrow">一覧を見る →</span>
+        <p class="g-desc">正式名称、通称、対象、支援内容、根拠法から探せます。</p>
+        <span class="g-arrow">サービスを探す →</span>
       </a>
       <a class="guide-card" href="history.html">
         <p class="g-title">制度の歴史</p>
-        <p class="g-desc">日本の社会福祉制度の歩みを、法律・制度の成立と施行を骨格に年表としてまとめています。</p>
+        <p class="g-desc">福祉制度の成立と変化を、年表で確認できます。</p>
         <span class="g-arrow">年表を見る →</span>
       </a>
       <a class="guide-card" href="jobs.html">
-        <p class="g-title">福祉の仕事</p>
-        <p class="g-desc">福祉分野の主な仕事と資格を、国家資格・任用資格・資格がなくても就ける仕事の3分類で、根拠と出典つきに整理しています。</p>
-        <span class="g-arrow">仕事を見る →</span>
+        <p class="g-title">クリエイティブな仕事</p>
+        <p class="g-desc">福祉の仕事の現場や創造性が伝わる動画・読みものを紹介しています。</p>
+        <span class="g-arrow">仕事を知る →</span>
       </a>
       <a class="guide-card" href="db/db.html">
         <p class="g-title">社会福祉法人データベース</p>
-        <p class="g-desc">全国の社会福祉法人21,301法人の財務情報を、公的な開示データに基づいて検索できます（2020〜2024年度）。</p>
-        <span class="g-arrow">データベースを見る →</span>
+        <p class="g-desc">全国の法人情報と2020〜2024年度の財務情報を検索・比較できます。</p>
+        <span class="g-arrow">法人を検索する →</span>
+      </a>
+      <a class="guide-card" href="about.html">
+        <p class="g-title">フクダネについて</p>
+        <p class="g-desc">フクダネが解決したい課題、情報の扱い方、編集の独立性、運営方針について公開しています。</p>
+        <span class="g-arrow">フクダネについて見る →</span>
       </a>
     </div>
   </div>
 </section>
 
-<!-- 今後の予定：予告のみ。空リンクは作らない。 -->
+<!-- 今後の予定 -->
 <section id="roadmap" class="band">
   <div class="wrap">
     <h2 class="section-title">今後の予定</h2>
-    <p class="section-note">次の情報を順次追加していく予定です。</p>
     <ul class="plan-list">
-      <li>
-        <span class="plan-label">新着情報の集約</span>
-        補助金・助成金の公募、制度改正・通知、報酬・加算改定などの新着を、分野・地域・種類・締切/施行日で絞り込み、原文へ最短で到達できるようにします。
-      </li>
-      <li>
-        <span class="plan-label">業界団体マップ</span>
-        7系統に分かれて併存する業界団体の一覧と関係図を整理します。
-      </li>
+      <li>制度改正、通知、補助金・助成金、報酬・加算改定などの新着情報を、分野、地域、種類、期限から探せる機能を検討しています。</li>
+      <li>福祉業界の団体についても、分野や役割、団体間の関係が分かる形で整理する予定です。</li>
     </ul>
   </div>
 </section>
@@ -142,10 +109,9 @@
         <a href="index.html">ホーム</a>
         <a href="map.html">福祉サービス一覧</a>
         <a href="history.html">制度の歴史</a>
-        <a href="jobs.html">福祉の仕事</a>
+        <a href="jobs.html">クリエイティブな仕事</a>
         <a href="db/db.html">社会福祉法人データベース</a>
-        <a href="principles.html">編集・情報掲載方針</a>
-        <a href="about.html">フクダネとは？</a>
+        <a href="about.html">フクダネについて</a>
         <a href="terms.html">利用規約</a>
       </nav>
     </div>

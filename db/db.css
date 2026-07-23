@@ -23,6 +23,8 @@ body{
 .sitenav-links a{color:var(--ink);text-decoration:none;font-size:14px;padding:3px 0;border-bottom:2px solid transparent}
 .sitenav-links a:hover{color:var(--primary);border-bottom-color:var(--line)}
 .sitenav-links a[aria-current="page"]{color:var(--primary);font-weight:700;border-bottom-color:var(--primary)}
+/* PC横並びでは「ホーム」を出さない（ロゴがホームリンク）。スマホのハンバーガー内では表示 */
+.sitenav-links .nav-home{display:none}
 /* ハンバーガーボタン（スマホのみ表示） */
 .nav-toggle{display:none;appearance:none;border:1px solid var(--line);background:#fff;color:var(--primary-d);width:44px;height:44px;border-radius:8px;cursor:pointer;align-items:center;justify-content:center}
 .nav-toggle:hover{border-color:var(--primary)}
@@ -32,6 +34,7 @@ body{
   .sitenav-links.nav-open{display:flex}
   .sitenav-links a{padding:12px 4px;border-bottom:1px solid var(--line);font-size:15px}
   .sitenav-links a[aria-current="page"]{border-bottom-color:var(--primary)}
+  .sitenav-links .nav-home{display:block}
 }
 
 /* 共通フッター（深緑背景・サイト他ページと統一） */
