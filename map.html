@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>根拠法別・福祉サービスの地図｜フクダネ</title>
+<meta name="description" content="同じ支援でも根拠法によって名称や枠組みが異なる福祉サービスを、分野・根拠法ごとに整理した地図です。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html" class="logo">フクダネ</a>
+      <span class="tagline">社会福祉法人の総合情報サイト</span>
+    </div>
+    <nav class="site-nav">
+      <a href="index.html">ホーム</a>
+      <a href="map.html" aria-current="page">根拠法別・福祉サービスの地図</a>
+      <a href="principles.html">情報の原則</a>
+      <a href="about.html">フクダネとは？</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1 class="catch">根拠法別・福祉サービスの地図</h1>
+    <p class="lead">
+      同じ支援でも、根拠となる法律によって名称も枠組みも異なります。たとえば「デイサービス」は、高齢者では介護保険法上の「通所介護」、障害児では児童福祉法上の「放課後等デイサービス」を指します。分野と根拠法から、正式名称と出典（原本）へ辿り着けるように整理しています。
+    </p>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <!-- データの出所・確定日・対応注記（データがあるときJSで埋める。準備中は空のまま） -->
+    <div id="map-info"></div>
+    <ul class="map-tabs" id="map-tabs" role="tablist" aria-label="分野の切り替え"></ul>
+    <div id="map-content"></div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="disclaimer">
+      掲載情報は公的機関の公表物に基づきます。最新・正確な内容は、必ず出典（原本）をご確認ください。
+    </p>
+    <p class="footer-links"><a href="terms.html">利用規約</a></p>
+    <p class="copy">© フクダネ</p>
+  </div>
+</footer>
+
+<!--
+  データ埋め込み枠。
+  content/services_map.json の内容を build_map.py が下の SERVICES_MAP に注入する。
+  データを更新したら build_map.py を再実行するだけで反映される。
+  外部fetchは行わず、静的に埋め込むため file:// でもそのまま動作する。
+  データ形式：{ title, description, confirmed_date, source_policy, note_on_correspondence,
+              domains: [ { domain, laws: [ { law, law_id, category,
+              services: [ { 正式名称, 根拠法, 対象者, 概要, 類似サービスとの対応?, 出典URL } ] } ] } ] }
+-->
+<script>
+/* __SERVICES_MAP_INJECT_START__ ここから下を build_map.py が置き換える（未注入時は空データ＝準備中表示） */
+const SERVICES_MAP = {
+  "domains": []
+};
+/* __SERVICES_MAP_INJECT_END__ ここまで */
+
+/* ===== 描画処理（データ形式が変わらなければ差し替え不要） ===== */
+(function () {
+  var infoEl = document.getElementById("map-info");
+  var tabsEl = document.getElementById("map-tabs");
+  var contentEl = document.getElementById("map-content");
+  var domains = (SERVICES_MAP && SERVICES_MAP.domains) || [];
+
+  // データ未確定のあいだは準備中表示（本番データが入ると自動で地図表示へ切り替わる）
+  if (domains.length === 0) {
+    contentEl.innerHTML =
+      '<div class="notice">' +
+      '<p class="notice-title">このページは現在準備中です。</p>' +
+      '<p>根拠法別・福祉サービスの地図を、一次情報（法令・公的機関の公表物）で裏取りしながら作成しています。公開まで今しばらくお待ちください。</p>' +
+      "</div>";
+    return;
+  }
+
+  // 簡易エスケープ（データ内テキストをそのまま挿入せず、HTML特殊文字を無害化）
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // リンク先URLは http/https のみ許可（javascript: 等を弾く安全策）
+  function safeUrl(u) {
+    var s = String(u == null ? "" : u).trim();
+    return /^https?:\/\//i.test(s) ? s : "";
+  }
+
+  // 日付文字列 2026-07-23 を「2026年7月23日」に整形（整形できなければ原文のまま）
+  function formatDate(d) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(d || ""));
+    if (!m) return String(d || "");
+    return m[1] + "年" + parseInt(m[2], 10) + "月" + parseInt(m[3], 10) + "日";
+  }
+
+  // データの出所・確定日・対応注記を上部に表示（文言はJSONのまま）
+  function renderInfo() {
+    var html = '<div class="map-meta">';
+    if (SERVICES_MAP.confirmed_date) {
+      html += "<p><strong>データ確定日：</strong>" + esc(formatDate(SERVICES_MAP.confirmed_date)) + "</p>";
+    }
+    html += "<p><strong>出典：</strong>e-Gov法令検索の条文等の一次情報です。各サービスのリンクから原本をご確認いただけます。</p>";
+    if (SERVICES_MAP.source_policy) {
+      html += "<p>" + esc(SERVICES_MAP.source_policy) + "</p>";
+    }
+    if (SERVICES_MAP.note_on_correspondence) {
+      html += '<p class="map-note">' + esc(SERVICES_MAP.note_on_correspondence) + "</p>";
+    }
+    html += "</div>";
+    infoEl.innerHTML = html;
+  }
+
+  // 1分野分のHTMLを組み立てる（法律→category区分ごとのブロック→サービスカード）
+  function renderDomain(domain) {
+    var html = '<div class="map-field"><h3>' + esc(domain.domain) + "</h3>";
+    (domain.laws || []).forEach(function (law) {
+      html += '<div class="law-block">';
+      html += '<p class="law-name">' + esc(law.law) + "</p>";
+      if (law.category) {
+        html += '<p class="law-category">区分：' + esc(law.category) + "</p>";
+      }
+      html += '<div class="service-cards">';
+      (law.services || []).forEach(function (sv) {
+        html += '<div class="service-card">';
+        html += '<p class="s-name">' + esc(sv["正式名称"]) + "</p>";
+        html += "<dl>";
+        html += "<dt>根拠法</dt><dd>" + esc(sv["根拠法"]) + "</dd>";
+        html += "<dt>対象者</dt><dd>" + esc(sv["対象者"]) + "</dd>";
+        html += "<dt>概要</dt><dd>" + esc(sv["概要"]) + "</dd>";
+        if (sv["類似サービスとの対応"]) {
+          html += "<dt>類似サービスとの対応</dt><dd>" + esc(sv["類似サービスとの対応"]) + "</dd>";
+        }
+        html += "</dl>";
+        var url = safeUrl(sv["出典URL"]);
+        if (url) {
+          html +=
+            '<p class="s-source">出典：<a href="' +
+            esc(url) +
+            '" target="_blank" rel="noopener noreferrer">原本を確認する（e-Gov法令検索）</a></p>';
+        }
+        html += "</div>";
+      });
+      html += "</div></div>";
+    });
+    html += "</div>";
+    return html;
+  }
+
+  // 上部情報を描画
+  renderInfo();
+
+  // タブを生成
+  domains.forEach(function (domain, i) {
+    var tab = document.createElement("button");
+    tab.className = "map-tab";
+    tab.type = "button";
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", i === 0 ? "true" : "false");
+    tab.textContent = domain.domain;
+    tab.addEventListener("click", function () {
+      show(i);
+    });
+    tabsEl.appendChild(tab);
+  });
+
+  function show(index) {
+    var tabs = tabsEl.querySelectorAll(".map-tab");
+    tabs.forEach(function (t, i) {
+      t.setAttribute("aria-selected", i === index ? "true" : "false");
+    });
+    contentEl.innerHTML = renderDomain(domains[index]);
+  }
+
+  show(0);
+})();
+</script>
+
+</body>
+</html>

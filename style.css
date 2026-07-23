@@ -1,0 +1,323 @@
+/* フクダネ 共通スタイル
+   外部依存なし・自己完結。公的情報サイトらしい落ち着いた配色と可読性を優先。 */
+
+/* ===== カラーとトークン ===== */
+:root {
+  --ink: #1a2733;          /* 本文の濃紺グレー */
+  --ink-soft: #48586a;     /* 補助テキスト */
+  --brand: #1f4e5f;        /* 深い青緑（信頼感） */
+  --brand-dark: #163b48;
+  --accent: #2f6f7e;
+  --line: #d9e1e6;         /* 罫線 */
+  --bg: #ffffff;
+  --bg-soft: #f4f7f8;      /* 薄い背景ブロック */
+  --bg-band: #eef3f4;
+  --card: #ffffff;
+  --shadow: 0 1px 3px rgba(22, 59, 72, .08);
+  --radius: 8px;
+  --maxw: 960px;
+}
+
+/* ===== リセット最小限 ===== */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", "Meiryo", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.8;
+  font-size: 16px;
+}
+img { max-width: 100%; height: auto; }
+a { color: var(--accent); }
+a:hover { color: var(--brand-dark); }
+
+/* ===== レイアウト ===== */
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+/* ===== ヘッダー ===== */
+.site-header {
+  background: var(--brand);
+  color: #fff;
+  border-bottom: 3px solid var(--brand-dark);
+}
+.site-header .wrap {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+.brand { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.brand .logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: #fff;
+  text-decoration: none;
+}
+.brand .tagline { font-size: 13px; color: #cfe0e4; }
+.site-nav a {
+  color: #eaf2f4;
+  text-decoration: none;
+  font-size: 14px;
+  margin-left: 18px;
+}
+.site-nav a:first-child { margin-left: 0; }
+.site-nav a:hover { color: #fff; text-decoration: underline; }
+.site-nav a[aria-current="page"] { color: #fff; text-decoration: underline; font-weight: 700; }
+
+/* ===== ヒーロー ===== */
+.hero {
+  background: linear-gradient(180deg, var(--bg-band), var(--bg));
+  border-bottom: 1px solid var(--line);
+}
+.hero .wrap { padding-top: 48px; padding-bottom: 40px; }
+.hero .catch {
+  font-size: clamp(22px, 4.2vw, 32px);
+  font-weight: 700;
+  line-height: 1.55;
+  margin: 0 0 14px;
+  color: var(--brand-dark);
+}
+.hero .lead {
+  font-size: 16px;
+  color: var(--ink-soft);
+  max-width: 42em;
+  margin: 0;
+}
+
+/* ===== 一般セクション ===== */
+section { padding: 40px 0; }
+section + section { border-top: 1px solid var(--line); }
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin: 0 0 6px;
+  padding-left: 12px;
+  border-left: 5px solid var(--brand);
+}
+.section-note { font-size: 14px; color: var(--ink-soft); margin: 0 0 22px; }
+.sub-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin: 24px 0 6px;
+}
+
+/* ===== 情報の原則リスト ===== */
+.principles { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.principle {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+}
+.principle .name {
+  font-weight: 700;
+  color: var(--brand-dark);
+  font-size: 16px;
+  margin: 0 0 4px;
+}
+.principle .desc { margin: 0; font-size: 15px; color: var(--ink); }
+
+/* ===== 導線カード ===== */
+.guide-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+.guide-card {
+  display: block;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color .15s, box-shadow .15s;
+}
+.guide-card:hover { border-color: var(--accent); box-shadow: 0 3px 10px rgba(22,59,72,.14); }
+.guide-card .g-title { font-weight: 700; color: var(--brand-dark); font-size: 17px; margin: 0 0 6px; }
+.guide-card .g-desc { margin: 0; font-size: 14px; color: var(--ink-soft); }
+.guide-card .g-arrow { color: var(--accent); font-size: 14px; margin-top: 10px; display: inline-block; }
+
+/* ===== 今後の予定リスト ===== */
+.plan-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.plan-list li {
+  border-left: 3px solid var(--accent);
+  padding: 2px 0 2px 14px;
+  font-size: 15px;
+}
+.plan-label {
+  display: block;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin-bottom: 2px;
+}
+
+/* ===== 中立性ポリシーリスト ===== */
+.policy-list { margin: 8px 0 0; padding-left: 1.2em; }
+.policy-list li { margin: 6px 0; font-size: 15px; }
+
+/* ===== 二層構造・対象者リスト（フクダネとは？） ===== */
+.layer-list, .audience-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 14px; }
+.layer-list li, .audience-list li {
+  border-left: 3px solid var(--accent);
+  padding: 2px 0 2px 14px;
+  font-size: 15px;
+}
+.layer-label, .audience-label {
+  display: block;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin-bottom: 2px;
+}
+
+/* ===== 利用規約 ===== */
+.terms-body { max-width: 46em; }
+.article-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin: 26px 0 6px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+}
+.terms-body > .article-title:first-child { margin-top: 0; }
+.terms-body p { font-size: 15px; margin: 0 0 6px; }
+.terms-list { margin: 6px 0 0; padding-left: 1.2em; }
+.terms-list li { margin: 5px 0; font-size: 15px; }
+.terms-date { margin-top: 28px; color: var(--ink-soft); font-size: 14px; }
+
+/* ===== 準備中の告知（地図ページ等） ===== */
+.notice {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--brand);
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+  box-shadow: var(--shadow);
+  padding: 22px 24px;
+}
+.notice-title {
+  font-weight: 700;
+  color: var(--brand-dark);
+  font-size: 17px;
+  margin: 0 0 8px;
+}
+.notice p { margin: 0; font-size: 15px; }
+
+/* ===== フッターリンク ===== */
+.footer-links { margin: 0 0 8px; }
+.footer-links a { color: #cfe6ec; }
+
+/* ===== 汎用の薄背景ブロック ===== */
+.band { background: var(--bg-soft); }
+
+/* ===== プレースホルダ枠 ===== */
+.placeholder {
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  background: var(--bg-soft);
+}
+
+/* ===== フッター ===== */
+.site-footer {
+  background: var(--brand-dark);
+  color: #d5e2e6;
+  font-size: 13px;
+  padding: 28px 0;
+  margin-top: 8px;
+}
+.site-footer .disclaimer { margin: 0 0 10px; line-height: 1.7; }
+.site-footer .copy { color: #9fb8bf; margin: 0; }
+.site-footer a { color: #cfe6ec; }
+
+/* ===== 地図ページ ===== */
+.map-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--line);
+}
+.map-tab {
+  appearance: none;
+  border: 1px solid var(--line);
+  border-bottom: none;
+  background: var(--bg-soft);
+  color: var(--ink-soft);
+  font-size: 14px;
+  font-family: inherit;
+  padding: 9px 16px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  margin-bottom: -1px;
+}
+.map-tab[aria-selected="true"] {
+  background: var(--bg);
+  color: var(--brand-dark);
+  font-weight: 700;
+  border-color: var(--line);
+  border-bottom: 2px solid var(--bg);
+}
+.map-field { margin-bottom: 32px; }
+.map-field > h3 {
+  font-size: 18px;
+  color: var(--brand-dark);
+  margin: 0 0 4px;
+}
+/* データの出所・確定日・対応注記 */
+.map-meta {
+  border: 1px solid var(--line);
+  border-left: 5px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--bg-soft);
+  padding: 16px 18px;
+  margin: 0 0 24px;
+  font-size: 14px;
+}
+.map-meta p { margin: 0 0 6px; }
+.map-meta p:last-child { margin-bottom: 0; }
+.map-meta .map-note { color: var(--ink-soft); }
+
+.law-block { margin: 18px 0 0; }
+.law-category { font-size: 13px; color: var(--ink-soft); margin: 0 0 10px; }
+.law-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--brand);
+  margin: 0 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--line);
+}
+.service-cards { display: grid; gap: 14px; grid-template-columns: 1fr; }
+.service-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 16px 18px;
+  background: var(--card);
+}
+.service-card .s-name { font-weight: 700; font-size: 16px; color: var(--brand-dark); margin: 0 0 8px; }
+.service-card dl { margin: 0; display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; }
+.service-card dt { color: var(--ink-soft); font-size: 13px; }
+.service-card dd { margin: 0; font-size: 14px; }
+.service-card .s-source { margin-top: 10px; font-size: 13px; }
+
+/* ===== レスポンシブ ===== */
+@media (min-width: 640px) {
+  .guide-grid { grid-template-columns: 1fr 1fr; }
+  .service-cards { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .service-card dl { grid-template-columns: 1fr; }
+  .service-card dt { margin-top: 6px; }
+}
