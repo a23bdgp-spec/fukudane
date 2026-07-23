@@ -640,6 +640,8 @@ const MANAGEMENT = {
   cats.forEach(function (c, i) {
     html += '<section class="gl-cat" id="mg-cat-' + i + '">';
     html += '<h2 class="section-title">' + esc(c.category) + "</h2>";
+    // 分類の説明（1文）を見出し直下に表示。本文中の「福祉サービス一覧（service.html）」は実リンク化
+    if (c["説明"]) html += '<p class="mg-cat-desc">' + linkify(esc(c["説明"])) + "</p>";
     html += '<div class="gl-grid">';
     (c.items || []).forEach(function (it) {
       html += '<article class="gl-card">';
@@ -657,9 +659,29 @@ const MANAGEMENT = {
       html += "</dl>";
       html += "</article>";
     });
-    html += "</div></section>";
+    html += "</div>";
+    // 関連の公式ページ（個別資料と視覚的に区別。収録件数には数えない）
+    var rel = c["関連ページ"] || [];
+    if (rel.length > 0) {
+      html += '<div class="mg-related-block"><h3 class="mg-related-title">関連の公式ページ</h3><ul class="mg-related-list">';
+      rel.forEach(function (rp) {
+        var u = safeUrl(rp["URL"]);
+        html += "<li>";
+        if (u) html += '<a href="' + esc(u) + '" target="_blank" rel="noopener noreferrer">' + esc(rp["名称"]) + "↗</a>";
+        else html += esc(rp["名称"]);
+        if (rp["概要"]) html += '<span class="mg-related-desc">' + esc(rp["概要"]) + "</span>";
+        html += "</li>";
+      });
+      html += "</ul></div>";
+    }
+    html += "</section>";
   });
   rootEl.innerHTML = html;
+
+  // 説明文中の「福祉サービス一覧（service.html）」を実リンクにする
+  function linkify(s) {
+    return String(s).replace(/福祉サービス一覧（service\.html）/g, '<a href="service.html">福祉サービス一覧</a>');
+  }
 
   // HTML特殊文字を無害化
   function esc(s) {

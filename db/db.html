@@ -95,7 +95,7 @@
 
 <header class="site">
   <h1>社会福祉法人データベース</h1>
-  <p>全国の社会福祉法人の基本情報と主要な財務値（2020〜2024年度）を検索できます。金額の単位は円です。</p>
+  <p>全国の社会福祉法人の基本情報と主要な財務値（2020〜2024年度）を検索できます。金額は万円単位（3桁区切り）で表示しています。</p>
 </header>
 
 <div class="wrap">
@@ -160,7 +160,7 @@
 
 <footer class="src">
   <p class="ind-link"><a href="../indicators.html">財務指標の定義・計算式の解説はこちら ↗</a></p>
-  <p class="unit">金額の単位：円（社会福祉法人会計基準に基づく計算書類の金額をそのまま表示しています）。</p>
+  <p class="unit">金額は万円単位（3桁区切り）で表示しています。元データは社会福祉法人会計基準に基づく計算書類の円単位の金額です。</p>
   <p id="src-text">出典：独立行政法人福祉医療機構「財務諸表等電子開示システム」および厚生労働省への行政文書開示請求により取得したデータを基に、フクダネが独自に再構成。政府標準利用規約（PDL1.0）に基づく利用。</p>
   <p>本データベースは法人の基本情報と計算書類上の数値のみを掲載しています。役員等の個人名・連絡先・番地は掲載していません。数値は各法人が提出した計算書類に基づくもので、内容の正確性を保証するものではありません。市区町村が空欄の法人は所在地情報が取得できなかったものです。</p>
 </footer>
@@ -316,7 +316,7 @@ function render(){
     const row = document.createElement('div');
     row.className='row';
     const inCmp = compare.some(x=>x.no===r.no);
-    const revStr = (r.sv!=null) ? oku(r.sv)+'億円' : '−';
+    const revStr = manYen(r.sv);
     const staffStr = (r.ss!=null) ? r.ss.toLocaleString('ja-JP')+'人' : '−';
     // 詳細開閉はbutton要素（キーボード操作可・aria-expanded）。比較ボタンは独立させる。
     row.innerHTML = `<button class="rowmain" type="button" aria-expanded="false">
@@ -440,8 +440,10 @@ function extLinks(c){
 }
 
 const PIE_COLORS = ['#176B5B','#3a8f7d','#6bb3a2','#c98a1a','#b5651d','#7a6f9c','#5a8fbf','#9aa05a','#a0a0a0'];
-// 億円換算（表示用。/1e8 のみで丸め誤差を持ち込まない）
-function oku(v){ return (v/1e8).toLocaleString('ja-JP',{maximumFractionDigits:2})+'億円'; }
+// 金額表示は万円単位・3桁区切りに統一。単位（万円）はこの関数内で1回だけ付ける＝二重付与を構造的に防ぐ。
+// 元データは円単位（svは百万円丸め済み）。円→万円は /1e4。
+function manNum(v){ return (v==null) ? '' : Math.round(v/1e4).toLocaleString('ja-JP'); }
+function manYen(v){ return (v==null) ? '−' : manNum(v)+'万円'; }
 
 // 財務サマリー（最新年度）：3指標＋事業区分別収益の円グラフ
 function summaryHtml(c){
@@ -454,8 +456,8 @@ function summaryHtml(c){
     : (rate>=0 ? rate.toFixed(2)+'%' : '▲'+Math.abs(rate).toFixed(2)+'%');
   const card = (k,big,sub)=>`<div class="sumcard"><div class="k">${k}</div><div class="v">${big}</div>${sub?`<div class="sub">${sub}</div>`:''}</div>`;
   const cards = `<div class="sumcards">
-      ${card('サービス活動収益（最新年度）', rev!=null?oku(rev):'—', rev!=null?rev.toLocaleString('ja-JP')+'円':'')}
-      ${card('資産合計', asset!=null?oku(asset):'—', asset!=null?asset.toLocaleString('ja-JP')+'円':'')}
+      ${card('サービス活動収益（最新年度）', rev!=null?manYen(rev):'—', rev!=null?rev.toLocaleString('ja-JP')+'円':'')}
+      ${card('資産合計', asset!=null?manYen(asset):'—', asset!=null?asset.toLocaleString('ja-JP')+'円':'')}
       ${card('経常増減差額率', rateStr, '経常増減差額 ÷ サービス活動収益')}
     </div>`;
   return `<h4>財務サマリー（${ly||'—'}年度）</h4>
@@ -479,7 +481,7 @@ function pieHtml(seg){
       arcs+=`<path d="M${cx},${cy} L${x1.toFixed(2)},${y1.toFixed(2)} A${r},${r} 0 ${large} 1 ${x2.toFixed(2)},${y2.toFixed(2)} Z" fill="${col}"/>`;
       ang+=sweep;
     }
-    legend+=`<span><i style="background:${col}"></i>${esc(k)} <small>${oku(v)}（${(frac*100).toFixed(1)}%）</small></span>`;
+    legend+=`<span><i style="background:${col}"></i>${esc(k)} <small>${manYen(v)}（${(frac*100).toFixed(1)}%）</small></span>`;
   });
   return `<div class="pieblock">
       <svg viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="事業区分別のサービス活動収益内訳">${arcs}</svg>
@@ -527,7 +529,7 @@ function indHtml(c){
   const chart = `<div class="chartbox">
       <div class="chart-svg">${svgOverview(c)}</div>
       <div class="chart-legend">
-        <span><i style="background:#8fc7b8;height:10px;width:12px"></i>サービス活動収益（億円・左軸）</span>
+        <span><i style="background:#8fc7b8;height:10px;width:12px"></i>サービス活動収益（万円・左軸）</span>
         <span><i style="background:#176B5B"></i>経常増減差額率（%・右軸）</span>
         <span><i style="background:#c98a1a"></i>経常増減差額率の全国中央値</span>
       </div>
@@ -555,7 +557,7 @@ function svgOverview(c){
   const rateAll = ratePts.concat(medPts).filter(v=>v!=null&&v!==undefined);
   if(!revVals.length && !rateAll.length) return '<p class="note">表示できるデータがありません。</p>';
   const W=620,H=260,L=64,R=54,T=20,B=36, PH=H-T-B, PW=W-L-R;
-  // 左軸（収益・億円換算）
+  // 左軸（収益・万円換算）
   const maxRev = Math.max(1, ...revVals);
   // 右軸（率・0を含める）
   let rmin=Math.min(0,...(rateAll.length?rateAll:[0])), rmax=Math.max(0,...(rateAll.length?rateAll:[0]));
@@ -567,9 +569,9 @@ function svgOverview(c){
   // 横グリッド5本＋左右軸ラベル
   let grid='';
   for(let p=0;p<=4;p++){ const frac=p/4, yy=T+PH*frac;
-    const lv=maxRev*(1-frac)/1e8, rv=rmax-(rmax-rmin)*frac;
+    const lv=Math.round(maxRev*(1-frac)/1e4), rv=rmax-(rmax-rmin)*frac;
     grid+=`<line x1="${L}" y1="${yy}" x2="${W-R}" y2="${yy}" stroke="#eee"/>`
-       + `<text x="${L-6}" y="${yy+4}" text-anchor="end" font-size="9" fill="#889">${lv.toLocaleString('ja-JP',{maximumFractionDigits:1})}</text>`
+       + `<text x="${L-6}" y="${yy+4}" text-anchor="end" font-size="9" fill="#889">${lv.toLocaleString('ja-JP')}</text>`
        + `<text x="${W-R+6}" y="${yy+4}" text-anchor="start" font-size="9" fill="#889">${rv.toLocaleString('ja-JP',{maximumFractionDigits:1})}</text>`;
   }
   const xlab=YEARS.map((yr,i)=>`<text x="${cx(i)}" y="${H-12}" text-anchor="middle" font-size="10" fill="#889">${yr}</text>`).join('');
@@ -584,7 +586,7 @@ function svgOverview(c){
   const zero = (0>=rmin&&0<=rmax)? `<line x1="${L}" y1="${zeroY}" x2="${W-R}" y2="${zeroY}" stroke="#cfd8d5" stroke-width="1"/>`:'';
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="収益と経常増減差額率の推移">
     ${grid}${zero}${bars}${medLine}${rateLine}${xlab}
-    <text x="${L-58}" y="${T-6}" font-size="9" fill="#5a6b67">億円</text>
+    <text x="${L-58}" y="${T-6}" font-size="9" fill="#5a6b67">万円</text>
     <text x="${W-R+2}" y="${T-6}" font-size="9" fill="#5a6b67">%</text>
   </svg>`;
 }
