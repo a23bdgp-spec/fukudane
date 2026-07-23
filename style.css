@@ -135,11 +135,23 @@ summary:focus-visible {
   .nav-menu a:hover { background: var(--primary-tint); border: none; }
 }
 @media (max-width: 768px) {
+  /* ハンバーガー展開時：グループ見出し（背景ティントで階層を明示）＋項目は縦1列ブロック */
   .nav-group { display: block; }
-  .nav-group-btn { display: block; width: 100%; text-align: left; font-weight: 700; color: var(--primary); padding: 12px 4px; border-bottom: 1px solid var(--line); }
+  .nav-group-btn {
+    display: block; width: 100%; text-align: left; box-sizing: border-box;
+    font-weight: 700; color: var(--primary-dark); background: var(--primary-tint);
+    padding: 13px 12px; min-height: 44px; border: none;
+    font-size: 15px;
+  }
   .nav-caret { display: none; }
-  .nav-menu { display: block; padding: 0 0 8px 14px; }
-  .nav-menu a { padding: 9px 4px; font-size: 14px; border-bottom: none; }
+  .nav-menu { display: block; padding: 0; }
+  /* 項目＝ブロック・折返しなしで下線が文字に被らない・インデントで見出しとの階層を示す・タップ領域44px */
+  .nav-menu a {
+    display: block; box-sizing: border-box;
+    padding: 12px 12px 12px 28px; font-size: 14.5px; line-height: 1.4;
+    min-height: 44px; border: none; border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
 }
 
 /* ===== ヒーロー（淡い深緑ティント） ===== */
@@ -803,13 +815,15 @@ section p:last-child { margin-bottom: 0; }
     border-top: 1px solid var(--line);
   }
   .site-nav.nav-open { display: flex; }
-  .site-nav a {
-    padding: 12px 4px;
-    border-bottom: 1px solid var(--line);
-    border-top: none;
-    font-size: 15px;
+  /* トップレベルの直接リンク（ホーム／フクダネについて／サイト内検索）＝縦1列ブロック・区切り線・枠線なし */
+  .site-nav > a {
+    display: block; width: 100%; box-sizing: border-box;
+    padding: 13px 12px; min-height: 44px; font-size: 15px;
+    border: none; border-bottom: 1px solid var(--line);
   }
-  .site-nav a[aria-current="page"] { border-bottom-color: var(--primary); }
+  .site-nav > a[aria-current="page"] {
+    color: var(--primary); font-weight: 700; background: var(--primary-tint); border-bottom-color: var(--line);
+  }
   /* スマホのハンバーガー内では「ホーム」を表示 */
   .site-nav .nav-home { display: block; }
 }
