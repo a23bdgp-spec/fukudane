@@ -1,23 +1,23 @@
 /* フクダネ 社会福祉法人データベース 専用スタイル
    深緑ブランド・白基調。WAM NET 的な実直な一覧の趣。派手な装飾はしない。 */
 :root{
-  --primary:#176B5B;      /* ブランド深緑 */
-  --primary-d:#0f4f43;    /* 濃い深緑（ヘッダ等） */
-  --primary-l:#e6f1ee;    /* 淡い深緑（帯・ホバー） */
-  --ink:#1c2b28;          /* 本文色 */
-  --sub:#5a6b67;          /* 補助テキスト */
-  --line:#d5ddda;         /* 罫線 */
+  --primary:#176b5b;      /* ブランド深緑（本体style.cssと同値） */
+  --primary-d:#0f4d42;    /* 濃い深緑（本体 --primary-dark と同値） */
+  --primary-l:#e8f0ed;    /* 淡い深緑ティント（本体 --primary-tint と同値） */
+  --ink:#263238;          /* 本文色（本体 --ink と同値） */
+  --sub:#64748b;          /* 補助テキスト（本体 --ink-soft と同値） */
+  --line:#e3e8e5;         /* 罫線（本体 --line と同値） */
   --bg:#ffffff;
   --bg2:#f6f8f7;
 }
 *{box-sizing:border-box}
 body{
   margin:0;font-family:"Hiragino Kaku Gothic ProN","Meiryo",system-ui,sans-serif;
-  color:var(--ink);background:var(--bg2);line-height:1.6;font-size:15px;
+  color:var(--ink);background:var(--bg2);line-height:1.8;font-size:16px;
 }
 /* 共通ナビ（白背景＋下線・サイト他ページと統一） */
 .sitenav{background:#fff;border-bottom:1px solid var(--line)}
-.sitenav-in{max-width:960px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 20px}
+.sitenav-in{max-width:1080px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 20px}
 .sitenav-logo{font-size:20px;font-weight:700;letter-spacing:.06em;color:var(--primary);text-decoration:none}
 .sitenav-links{display:flex;flex-wrap:wrap;gap:6px 18px}
 .sitenav-links a{color:var(--ink);text-decoration:none;font-size:14px;padding:3px 0;border-bottom:2px solid transparent}
@@ -39,18 +39,18 @@ body{
 
 /* 共通フッター（深緑背景・サイト他ページと統一） */
 .sitefoot{background:var(--primary-d);color:rgba(255,255,255,.85);margin-top:8px}
-.sitefoot-in{max-width:960px;margin:0 auto;padding:24px 20px}
+.sitefoot-in{max-width:1080px;margin:0 auto;padding:24px 20px}
 .sitefoot-links{display:flex;flex-wrap:wrap;gap:10px 20px;margin-bottom:14px}
 .sitefoot-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:13px}
 .sitefoot-links a:hover{color:#fff;text-decoration:underline}
 .sitefoot-copy{margin:0;font-size:12px;color:rgba(255,255,255,.55)}
 
 header.site{
-  background:var(--primary-d);color:#fff;padding:18px 20px;
+  background:var(--primary-l);color:var(--ink);padding:18px 20px;border-bottom:1px solid var(--line);
 }
-header.site h1{margin:0;font-size:20px;font-weight:700}
-header.site p{margin:4px 0 0;font-size:13px;color:#cfe4de}
-.wrap{max-width:960px;margin:0 auto;padding:20px}
+header.site h1{margin:0;font-size:22px;font-weight:700;color:var(--primary-d)}
+header.site p{margin:4px 0 0;font-size:14px;color:var(--sub)}
+.wrap{max-width:1080px;margin:0 auto;padding:20px}
 
 /* 検索パネル */
 .search{
@@ -150,7 +150,7 @@ table.fin td.na{color:#aab4b1;text-align:center}
 
 /* 出典・注記フッター */
 footer.src{
-  max-width:960px;margin:24px auto 40px;padding:14px 20px;font-size:12px;
+  max-width:1080px;margin:24px auto 40px;padding:14px 20px;font-size:12px;
   color:var(--sub);border-top:1px solid var(--line);line-height:1.7;
 }
 footer.src .unit{color:var(--primary-d);font-weight:600}
