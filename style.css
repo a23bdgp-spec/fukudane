@@ -1187,3 +1187,16 @@ section p:last-child { margin-bottom: 0; }
 .gl-related-label { font-size: 12.5px; color: var(--ink-soft); font-weight: 700; }
 .gl-svc-chip { display: inline-block; font-size: 12.5px; color: var(--primary-dark); background: var(--primary-tint); border: 1px solid var(--line); border-radius: 999px; padding: 3px 11px; text-decoration: none; }
 .gl-svc-chip:hover { border-color: var(--primary); color: var(--primary); }
+
+/* service.html：事業所を探す公式システム（一覧末尾の枠） */
+.oss-section { margin: 40px 0 0; }
+.oss-desc { margin: 0 0 16px; font-size: 15px; color: var(--ink-soft); line-height: 1.7; }
+.oss-grid { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 700px) { .oss-grid { grid-template-columns: repeat(3, 1fr); } }
+.oss-card { border: 1px solid var(--line); border-radius: 12px; padding: 18px; background: var(--card); }
+.oss-name { margin: 0 0 10px; font-size: 16px; font-weight: 700; color: var(--primary-dark); }
+.oss-name a { color: var(--primary); text-decoration: none; }
+.oss-name a:hover { text-decoration: underline; }
+.oss-dl { margin: 0; }
+.oss-dl dt { color: var(--ink-soft); font-size: 12.5px; margin-top: 6px; }
+.oss-dl dd { margin: 2px 0 0; font-size: 14px; line-height: 1.6; }

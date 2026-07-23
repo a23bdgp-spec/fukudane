@@ -175,6 +175,13 @@
     <div id="map-empty" class="notice" hidden></div>
     <div id="map-more" class="list-more" hidden></div>
 
+    <!-- 事業所を探す公式システム（国・公的機関の情報公表システム。全サービスカードの直下。MAP_INTRO.official_search_systems からJSで描画。個別カードへの重複付与はしない） -->
+    <section class="oss-section" id="oss-section" hidden>
+      <h2 class="section-title" id="oss-title"></h2>
+      <p class="oss-desc" id="oss-desc"></p>
+      <div class="oss-grid" id="oss-grid"></div>
+    </section>
+
     <!-- この一覧の考え方（旧・導入4段落を一覧の後へ移設）。build_map.py が MAP_INTRO から段落を描画 -->
     <section class="intro-section" id="intro-section" hidden>
       <h2 class="section-title">この一覧の考え方</h2>
@@ -2380,6 +2387,7 @@ const MAP_INTRO = {
 
   // 導入文（この一覧の考え方）は準備中でも常に描画する
   renderIntro();
+  renderOfficialSearch();
   renderHeroDate();
   setupBackToTop();
 
@@ -2757,6 +2765,36 @@ const MAP_INTRO = {
     }).join("");
     var sec = document.getElementById("intro-section");
     if (sec) sec.hidden = false;
+  }
+
+  // 事業所を探す公式システム（MAP_INTRO.official_search_systems）。一覧末尾に名称・対象分野・概要・運営を描画
+  function renderOfficialSearch() {
+    var oss = MAP_INTRO && MAP_INTRO.official_search_systems;
+    var sec = document.getElementById("oss-section");
+    if (!sec || !oss || !oss.items || !oss.items.length) return;
+    var titleEl = document.getElementById("oss-title");
+    var descEl = document.getElementById("oss-desc");
+    var gridEl = document.getElementById("oss-grid");
+    if (titleEl && oss.title) titleEl.textContent = oss.title;
+    if (descEl && oss.description) descEl.textContent = oss.description;
+    var html = "";
+    oss.items.forEach(function (it) {
+      html += '<article class="oss-card">';
+      var url = safeUrl(it["URL"]);
+      if (url) {
+        html += '<h3 class="oss-name"><a href="' + esc(url) +
+          '" target="_blank" rel="noopener noreferrer">' + esc(it["名称"]) + "↗</a></h3>";
+      } else {
+        html += '<h3 class="oss-name">' + esc(it["名称"]) + "</h3>";
+      }
+      html += '<dl class="oss-dl">';
+      if (it["対象分野"]) html += "<dt>対象分野</dt><dd>" + esc(it["対象分野"]) + "</dd>";
+      if (it["概要"]) html += "<dt>概要</dt><dd>" + esc(it["概要"]) + "</dd>";
+      if (it["運営"]) html += "<dt>運営</dt><dd>" + esc(it["運営"]) + "</dd>";
+      html += "</dl></article>";
+    });
+    if (gridEl) gridEl.innerHTML = html;
+    sec.hidden = false;
   }
 
   // ヒーローの最終確認日を表示（confirmed_date から）
