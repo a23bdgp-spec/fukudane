@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated": "2026-07-23 14:20 JST",
+    "generated": "2026-07-23 14:28 JST",
     "years": [
       2020,
       2021,
@@ -23,7 +23,20 @@
     "city_fail": 216,
     "no_addr": 216,
     "pref_unknown": 0,
-    "name_from_cleaned": 41
+    "name_from_cleaned": 41,
+    "name_prefix_removed": 17641,
+    "name_no_prefix": 3612,
+    "name_abnormal": 48,
+    "name_no_prefix_examples": [
+      "福島幸愛会",
+      "釧路市社会福祉協議会",
+      "アシリカ",
+      "釧路百葉福祉会",
+      "夕秀会",
+      "音別憩いの郷",
+      "釧路丹頂協会",
+      "釧路愛育協会"
+    ]
   },
   "gate": {
     "gate1_no_forbidden_columns": true,
@@ -41,6 +54,9 @@
     "gate2_defs_found": [],
     "gate2_no_eval_words_in_indicators_html": true,
     "gate2_indicators_found": [],
-    "gate3_indicator_source_in_html": true
+    "gate3_indicator_source_in_html": true,
+    "gate2_no_eval_words_in_ranking_html": true,
+    "gate2_ranking_found": [],
+    "gate3_source_in_ranking_html": true
   }
 }

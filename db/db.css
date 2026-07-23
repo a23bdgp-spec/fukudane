@@ -125,7 +125,13 @@ footer.src{
 footer.src .unit{color:var(--primary-d);font-weight:600}
 .loading{padding:40px;text-align:center;color:var(--sub)}
 
-/* ───── 収益規模ランキング ───── */
+/* 関連ページへのリンク */
+.pagelinks{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.pagelinks a{font-size:14px;color:var(--primary-d);font-weight:600;text-decoration:none;
+  border:1px solid var(--line);border-radius:6px;padding:8px 14px;background:var(--bg)}
+.pagelinks a:hover{background:var(--primary-l)}
+
+/* ───── 収益規模ランキング（ranking.html用） ───── */
 .rankbox{background:var(--bg);border:1px solid var(--line);border-radius:8px;margin-bottom:16px}
 .rankbox summary{cursor:pointer;padding:12px 16px;font-weight:600;color:var(--primary-d);font-size:14px}
 .rankbody{padding:0 16px 14px}
