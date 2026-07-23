@@ -19,6 +19,7 @@
       <a href="../history.html">制度の歴史</a>
       <a href="../jobs.html">クリエイティブな仕事</a>
       <a href="db.html" aria-current="page">社会福祉法人データベース</a>
+      <a href="../organizations.html">福祉業界団体</a>
       <a href="../about.html">フクダネについて</a>
     </div>
   </div>
@@ -84,9 +85,9 @@
   </div>
 </footer>
 
-<script src="filters.js?v=84ac7a2806"></script>
+<script src="filters.js?v=8850325844"></script>
 <script>
-const BUILD_VERSION="84ac7a2806";   // ビルド時に置換（キャッシュバスティング）
+const BUILD_VERSION="8850325844";   // ビルド時に置換（キャッシュバスティング）
 const PAGE_SIZE = 50;
 let INDEX = [], filtered = [], page = 0;
 function esc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
@@ -103,6 +104,11 @@ async function init(){
     document.getElementById('rank-list').innerHTML='<div class="loading">データを読み込めませんでした。時間をおいて再度お試しください。</div>'; return;
   }
   INDEX.forEach(r=>{ r._n = normName(r.name); });
+  // 全国収益順位（円精度・正確）を index と同じ行順の配列から割り当てる
+  try{
+    const rnArr = await fetch('data/rank_nat.json?v='+BUILD_VERSION).then(r=>r.ok?r.json():[]);
+    INDEX.forEach((r,i)=>{ r.rn = (rnArr[i]!=null)?rnArr[i]:null; });
+  }catch(e){ /* 取得失敗時は全国順位を空欄表示 */ }
   buildFilters('filters', INDEX, apply);
   ['q-name','q-no'].forEach(id=>document.getElementById(id).addEventListener('input', apply));
   document.getElementById('q-clear').addEventListener('click', ()=>{

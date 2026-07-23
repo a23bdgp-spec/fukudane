@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>福祉業界団体｜フクダネ</title>
+<meta name="description" content="日本の福祉分野の主要な業界団体を、系統別に設立年・会員規模などの公表情報で整理しています。">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html" class="logo">
+        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+          <g stroke="currentColor" stroke-width="1.3">
+            <line x1="13" y1="13" x2="6" y2="7"/>
+            <line x1="13" y1="13" x2="20" y2="7"/>
+            <line x1="13" y1="13" x2="7" y2="20"/>
+            <line x1="13" y1="13" x2="20" y2="19"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="13" cy="13" r="2.7"/>
+            <circle cx="6" cy="7" r="2"/>
+            <circle cx="20" cy="7" r="2"/>
+            <circle cx="7" cy="20" r="2"/>
+            <circle cx="20" cy="19" r="2"/>
+          </g>
+        </svg>
+        <span class="logo-text">フクダネ</span>
+      </a>
+      <span class="tagline">社会福祉法人の総合情報サイト</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <nav class="site-nav" id="primary-nav">
+      <a href="index.html" class="nav-home">ホーム</a>
+      <a href="map.html">福祉サービス一覧</a>
+      <a href="history.html">制度の歴史</a>
+      <a href="jobs.html">クリエイティブな仕事</a>
+      <a href="db/db.html">社会福祉法人データベース</a>
+      <a href="about.html">フクダネについて</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1 class="catch">福祉業界団体</h1>
+    <p class="lead" id="orgs-desc"></p>
+  </div>
+</div>
+
+<section class="list-page">
+  <div class="wrap">
+    <!-- 系統別の団体一覧・政策決定の流れ・団体の歩み。build_map.py が ORGANIZATIONS に注入したデータからJSで描画 -->
+    <div id="orgs-root"></div>
+    <p class="orgs-note">掲載内容は各団体の公式サイト・公表資料に基づきます。会員数等は出典に記載の時点のものです。</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">フクダネ</span>
+        <span class="footer-tagline">社会福祉法人の総合情報サイト</span>
+      </div>
+      <nav class="footer-nav" aria-label="フッターナビゲーション">
+        <a href="index.html">ホーム</a>
+        <a href="map.html">福祉サービス一覧</a>
+        <a href="history.html">制度の歴史</a>
+        <a href="jobs.html">クリエイティブな仕事</a>
+        <a href="db/db.html">社会福祉法人データベース</a>
+        <a href="organizations.html" aria-current="page">福祉業界団体</a>
+        <a href="about.html">フクダネについて</a>
+        <a href="terms.html">利用規約</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="disclaimer">
+        掲載情報は公的機関の公表物に基づきます。最新・正確な内容は、必ず出典（原本）をご確認ください。
+      </p>
+      <p class="copy">© フクダネ</p>
+    </div>
+  </div>
+</footer>
+
+<!--
+  データ埋め込み枠。content/organizations.json の内容を build_map.py が下の ORGANIZATIONS に注入する。
+  データ形式：{ title, description,
+              systems:[ { system, orgs:[ { 名称, 略称, 設立年, 目的, 会員規模, 公式URL, 出典URL, 主な活動 } ] } ],
+              policy_process:[ { stage, 説明, 出典URL } ],
+              timeline:[ { year_西暦, year_和暦, event, 出典URL } ] }
+-->
+<script>
+/* __ORGANIZATIONS_INJECT_START__ ここから下を build_map.py が content/organizations.json で置き換える（未注入時は空） */
+const ORGANIZATIONS = {
+  "title": "福祉業界団体",
+  "description": "日本の福祉分野の主要な業界団体（事業者団体・経営者団体・職能団体・共同募金・政治連盟など）を系統別に整理したものです。各団体の情報は公式サイト・公表資料で確認し、設立年・会員規模（出典年併記）・目的など事実のみを記載しています。会員数などで確認できなかった項目は空欄とし、organizations_sources.md に記録しています。影響力や力関係の評価は行いません。",
+  "systems": [
+    {
+      "system": "社会福祉協議会系",
+      "orgs": [
+        {
+          "名称": "社会福祉法人全国社会福祉協議会",
+          "略称": "全社協",
+          "設立年": 1951,
+          "目的": "全国各地の社会福祉協議会をはじめ、さまざまな福祉組織とのネットワークにより、福祉サービス利用者や社会福祉関係者の連絡・調整や活動支援を行い、社会福祉の増進に努める。",
+          "会員規模": "全国の都道府県・指定都市社会福祉協議会や各種別協議会等で構成される連合体（単一の会員数は非公表）",
+          "公式URL": "https://www.shakyo.or.jp/",
+          "出典URL": "https://www.shakyo.or.jp/tsuite/gaiyo/index.html",
+          "主な活動": "社会福祉協議会や種別協議会等のネットワークによる連絡調整、福祉サービス・福祉人材に関する事業、社会福祉に関する調査研究・提言など。1951年に財団法人中央社会福祉協議会として設立され、1955年に現名称へ改称。"
+        }
+      ]
+    },
+    {
+      "system": "経営者団体系",
+      "orgs": [
+        {
+          "名称": "全国社会福祉法人経営者協議会",
+          "略称": "全国経営協",
+          "設立年": 1981,
+          "目的": "社会福祉法人の経営基盤の強化や福祉サービスの充実、健全な施設運営を目指し、会員法人を支援する。全国社会福祉協議会の組織内の種別協議会。",
+          "会員規模": "約7,800法人（2018年6月時点）",
+          "公式URL": "https://www.keieikyo.com/",
+          "出典URL": "https://www.keieikyo.com/about/",
+          "主な活動": "会員法人を対象とした研修、社会福祉法人に関する調査研究・広報啓発などを「経営」「支援」「地域」「福祉人材」の4つの柱で行う。"
+        }
+      ]
+    },
+    {
+      "system": "種別事業者団体系（高齢）",
+      "orgs": [
+        {
+          "名称": "公益社団法人全国老人福祉施設協議会",
+          "略称": "全国老施協",
+          "設立年": 1962,
+          "目的": "特別養護老人ホーム・養護老人ホーム・軽費老人ホームなど高齢者福祉・介護の施設・事業所を会員とし、経営支援や研修などを通じて高齢者福祉の向上に取り組む。",
+          "会員規模": "約11,000施設・事業所（時点は公表資料に明記なし）",
+          "公式URL": "https://www.roushikyo.or.jp/",
+          "出典URL": "https://www.roushikyo.or.jp/",
+          "主な活動": "会員施設への経営支援・研修、高齢者福祉に関する調査研究や広報啓発など。1962年に全国社会福祉協議会内の老人福祉施設協議会として設置され、2009年に公益社団法人となった。"
+        },
+        {
+          "名称": "公益社団法人全国老人保健施設協会",
+          "略称": "全老健",
+          "設立年": 1989,
+          "目的": "高齢者等が自立して生活できるよう支援するとともに、サービスの質の向上に関する調査研究等を行い、高齢者等の保健医療の向上および福祉の増進に寄与する。",
+          "会員規模": "約3,600施設（時点は公表資料に明記なし）",
+          "公式URL": "https://www.roken.or.jp/",
+          "出典URL": "https://www.roken.or.jp/kyokai/soshiki",
+          "主な活動": "介護老人保健施設（老健）を会員とし、調査研究・研修などを行う。1989年に社団法人として設立され、2011年に公益社団法人へ移行。"
+        }
+      ]
+    },
+    {
+      "system": "種別事業者団体系（障害）",
+      "orgs": [
+        {
+          "名称": "公益財団法人日本知的障害者福祉協会",
+          "略称": "",
+          "設立年": 1934,
+          "目的": "知的障害者の福祉の増進を図るため、知的障害施設・事業所の職員の養成・研修、知的障害福祉に関する調査研究、福祉思想の普及などを行う。",
+          "会員規模": "6,550施設・事業所（2026年4月現在）",
+          "公式URL": "http://www.aigo.or.jp/",
+          "出典URL": "http://www.aigo.or.jp/menu07/",
+          "主な活動": "職員の養成・研修、調査研究、広報啓発など。1934年に任意団体（日本精神薄弱児愛護協会）として設立、1967年に財団法人、2013年に公益財団法人へ移行。"
+        },
+        {
+          "名称": "社会福祉法人全国社会福祉協議会 全国身体障害者施設協議会",
+          "略称": "身障協",
+          "設立年": 1976,
+          "目的": "重度の身体障害者への支援を中心に行う障害者支援施設等を会員とし、障害者福祉制度・施策の充実に向けた活動を行う。全国社会福祉協議会の種別協議会。",
+          "会員規模": "約510施設（時点は公表資料に明記なし）",
+          "公式URL": "https://www.shinsyokyo.com/",
+          "出典URL": "https://www.shinsyokyo.com/tuite/enkaku/",
+          "主な活動": "会員施設への支援や制度・施策に関する活動など。1976年に全国身体障害者療護施設協議会として発足、1986年に全国社会福祉協議会の種別協議会となり、1992年に現名称へ改称。"
+        }
+      ]
+    },
+    {
+      "system": "種別事業者団体系（児童・保育）",
+      "orgs": [
+        {
+          "名称": "社会福祉法人日本保育協会",
+          "略称": "日保協",
+          "設立年": 1962,
+          "目的": "民間保育園の発展と充実を目指し、保育内容の充実、職員の資質向上、研修などを通じて子どもの心身の発達に寄与する。",
+          "会員規模": "",
+          "公式URL": "https://www.nippo.or.jp/",
+          "出典URL": "https://www.nippo.or.jp/about/",
+          "主な活動": "保育所職員の研修、保育に関する調査研究・普及、出版などを行う。1962年に社団法人として設立、1973年に社会福祉法人へ改組。"
+        },
+        {
+          "名称": "公益社団法人全国私立保育連盟",
+          "略称": "全私保連",
+          "設立年": null,
+          "目的": "子どもの最善の利益の実現を目指し、私立保育所等を会員として保育の充実に向けた活動を展開する。",
+          "会員規模": "",
+          "公式URL": "https://www.zenshihoren.or.jp/",
+          "出典URL": "https://www.zenshihoren.or.jp/aboutus/index.html",
+          "主な活動": "研修や調査研究、保育に関する情報提供など。旧名称は全国私立保育園連盟（設立年は公表資料で確認できず未記載）。"
+        },
+        {
+          "名称": "社会福祉法人全国社会福祉協議会 全国保育協議会",
+          "略称": "全保協",
+          "設立年": 1952,
+          "目的": "全国の認可保育所等を会員とし、保育の充実と連絡調整を図る。全国社会福祉協議会の組織内組織で、独立した法人格は持たない。",
+          "会員規模": "認可保育所の約9割・約21,000か所（公表値）",
+          "公式URL": "https://www.zenhokyo.gr.jp/",
+          "出典URL": "https://www.zenhokyo.gr.jp/",
+          "主な活動": "保育に関する連絡調整、調査研究、研修など。1952年に全国社会福祉協議会の保育部会として設立され、1962年に保育協議会へ改称。"
+        },
+        {
+          "名称": "社会福祉法人全国社会福祉協議会 全国児童養護施設協議会",
+          "略称": "全養協",
+          "設立年": 1950,
+          "目的": "児童養護事業の発展と向上を目指し、全国的な連絡調整と、事業に関する調査・研究・協議を行う。全国社会福祉協議会に属する種別協議会。",
+          "会員規模": "児童養護施設 全国約600施設",
+          "公式URL": "https://www.zenyokyo.gr.jp/",
+          "出典URL": "https://www.zenyokyo.gr.jp/outline/",
+          "主な活動": "連絡調整、調査研究、研修など。1950年に全国養護施設協議会として創立、1998年の児童福祉法改正で施設名称が「児童養護施設」に変更されたことに伴い現名称へ改称。"
+        }
+      ]
+    },
+    {
+      "system": "職能団体系",
+      "orgs": [
+        {
+          "名称": "公益社団法人日本社会福祉士会",
+          "略称": "",
+          "設立年": 1993,
+          "目的": "社会福祉士の職能団体として、社会福祉に関する啓発、社会福祉士の資質向上、都道府県社会福祉士会の支援などを行う。",
+          "会員規模": "43,267人（2023年3月末、都道府県社会福祉士会の会員合計）",
+          "公式URL": "https://www.jacsw.or.jp/",
+          "出典URL": "https://www.jacsw.or.jp/introduction/activity.html",
+          "主な活動": "研修・調査研究、社会福祉に関する提言など。1993年に任意団体として設立、1996年に社団法人、2014年に公益社団法人へ移行。全国47都道府県に社会福祉士会がある。"
+        },
+        {
+          "名称": "公益社団法人日本介護福祉士会",
+          "略称": "",
+          "設立年": 1994,
+          "目的": "介護福祉士の職業倫理の向上や専門的教育・研究を通じて専門性を高め、介護に関する知識・技術の普及を図り、国民の福祉の増進に寄与する。",
+          "会員規模": "",
+          "公式URL": "https://www.jaccw.or.jp/",
+          "出典URL": "https://www.jaccw.or.jp/about/gaiyo",
+          "主な活動": "介護福祉士を対象とした研修や調査研究、普及啓発など。1994年設立。全国47都道府県に支部を置く。"
+        },
+        {
+          "名称": "公益社団法人日本精神保健福祉士協会",
+          "略称": "",
+          "設立年": 1964,
+          "目的": "精神保健福祉に関する知識の普及啓発と実践的研究を行い、精神保健福祉士の職能と水準の向上を図り、精神保健福祉の向上に資する。",
+          "会員規模": "",
+          "公式URL": "https://www.jamhsw.or.jp/",
+          "出典URL": "https://www.jamhsw.or.jp/syokai/gaiyo.htm",
+          "主な活動": "研修・調査研究、普及啓発など。1964年に前身の日本精神医学ソーシャル・ワーカー協会として設立、1999年に日本精神保健福祉士協会へ改称、2004年に社団法人、2020年に公益社団法人へ移行。"
+        }
+      ]
+    },
+    {
+      "system": "共同募金系",
+      "orgs": [
+        {
+          "名称": "社会福祉法人中央共同募金会",
+          "略称": "",
+          "設立年": 1952,
+          "目的": "赤い羽根共同募金の全国的な企画・広報・調査研究や、都道府県共同募金会の連絡・調整、民間福祉活動への助成、災害時の被災者支援などを行う。",
+          "会員規模": "47都道府県共同募金会の連合会",
+          "公式URL": "https://www.akaihane.or.jp/",
+          "出典URL": "https://www.akaihane.or.jp/chuo/",
+          "主な活動": "共同募金運動の全国的な企画・広報、都道府県共同募金会の連絡調整、助成事業、災害時支援など。共同募金運動は1947年に始まり、1952年に社会福祉法人中央共同募金会として認可された。"
+        }
+      ]
+    },
+    {
+      "system": "政治連盟系（存在の事実のみ）",
+      "orgs": [
+        {
+          "名称": "全国介護福祉政治連盟",
+          "略称": "",
+          "設立年": 2000,
+          "目的": "高齢者福祉・介護サービス事業所の現場の声を国政に届けることを目的として設立された政治団体。全国老人福祉施設協議会の目的実現に向けた政治活動を行うと自ら位置づけている。",
+          "会員規模": "",
+          "公式URL": "https://kaigo-fukushi.jp/",
+          "出典URL": "https://kaigo-fukushi.jp/about/",
+          "主な活動": "会が公表する範囲では、高齢者福祉・介護保険制度に関する要望活動などを行う政治団体。2000年の介護保険制度開始に合わせて設置された（本項目は存在と公表情報の事実のみを記載）。"
+        }
+      ]
+    }
+  ],
+  "policy_process": [
+    {
+      "stage": "現場・事業者",
+      "説明": "社会福祉施設や事業所などの現場が、制度運用上の課題やニーズを把握する。個々の法人・施設は、加入する業界団体（種別協議会・経営者団体・職能団体など）を通じて意見を集約する。",
+      "出典URL": ""
+    },
+    {
+      "stage": "業界団体",
+      "説明": "業界団体が会員から意見を集約し、要望書の提出や意見表明、調査結果の公表などの形で制度への意見を示す。審議会の委員として関係団体の代表が参加することもある。",
+      "出典URL": ""
+    },
+    {
+      "stage": "審議会",
+      "説明": "厚生労働省の社会保障審議会や、こども家庭庁のこども家庭審議会などで、学識経験者・関係団体・自治体の代表などが制度改正の方向性を議論する。会議資料や議事録は公開される。",
+      "出典URL": "https://www.mhlw.go.jp/stf/shingi/"
+    },
+    {
+      "stage": "所管省庁（厚生労働省・こども家庭庁）",
+      "説明": "所管省庁が審議会の議論やパブリックコメント（意見公募）を踏まえて制度案・法律案・報酬改定案などをまとめる。省令・通知など下位の規定も所管省庁が定める。",
+      "出典URL": "https://www.mhlw.go.jp/"
+    },
+    {
+      "stage": "予算編成",
+      "説明": "社会保障関係の施策は、財務省の査定を経て政府予算案に計上され、国会での議決を経て予算として確定する。介護報酬・障害福祉サービス等報酬・保育の公定価格などの改定もこの過程と関わる。",
+      "出典URL": ""
+    },
+    {
+      "stage": "法改正・施行",
+      "説明": "法律の制定・改正は国会での審議・議決を経て成立・公布され、定められた期日に施行される。施行後は運用状況を踏まえて、再び現場・業界団体・審議会での議論につながる。",
+      "出典URL": "https://laws.e-gov.go.jp/"
+    }
+  ],
+  "timeline": [
+    {
+      "year_西暦": 1908,
+      "year_和暦": "明治41年",
+      "event": "中央慈善協会が設立された（のちの全国社会福祉協議会の源流の一つ）。",
+      "出典URL": "https://www.shakyo.or.jp/tsuite/gaiyo/index.html"
+    },
+    {
+      "year_西暦": 1925,
+      "year_和暦": "大正14年",
+      "event": "第1回全国養老事業大会が開かれた（のちの全国老人福祉施設協議会の起源とされる）。",
+      "出典URL": "https://www.fdma.go.jp/singi_kento/kento/items/wg6-shiryo1.pdf"
+    },
+    {
+      "year_西暦": 1934,
+      "year_和暦": "昭和9年",
+      "event": "日本精神薄弱児愛護協会が設立された（のちの日本知的障害者福祉協会）。",
+      "出典URL": "http://www.aigo.or.jp/menu07/"
+    },
+    {
+      "year_西暦": 1947,
+      "year_和暦": "昭和22年",
+      "event": "赤い羽根をシンボルとする共同募金運動が始まった。",
+      "出典URL": "https://www.akaihane.or.jp/chuo/"
+    },
+    {
+      "year_西暦": 1950,
+      "year_和暦": "昭和25年",
+      "event": "全国養護施設協議会が創立された（のちの全国児童養護施設協議会）。",
+      "出典URL": "https://www.zenyokyo.gr.jp/outline/"
+    },
+    {
+      "year_西暦": 1951,
+      "year_和暦": "昭和26年",
+      "event": "財団法人中央社会福祉協議会が設立された（のちの全国社会福祉協議会）。",
+      "出典URL": "https://www.shakyo.or.jp/tsuite/gaiyo/index.html"
+    },
+    {
+      "year_西暦": 1952,
+      "year_和暦": "昭和27年",
+      "event": "社会福祉法人中央共同募金会が認可された。全国社会福祉協議会に保育部会（のちの全国保育協議会）が設けられた。",
+      "出典URL": "https://www.akaihane.or.jp/chuo/"
+    },
+    {
+      "year_西暦": 1955,
+      "year_和暦": "昭和30年",
+      "event": "社会福祉法人全国社会福祉協議会に改称された。",
+      "出典URL": "https://www.shakyo.or.jp/tsuite/gaiyo/index.html"
+    },
+    {
+      "year_西暦": 1962,
+      "year_和暦": "昭和37年",
+      "event": "全国社会福祉協議会内に老人福祉施設協議会が設置された（のちの全国老人福祉施設協議会）。日本保育協会が設立された。",
+      "出典URL": "https://www.nippo.or.jp/about/"
+    },
+    {
+      "year_西暦": 1964,
+      "year_和暦": "昭和39年",
+      "event": "日本精神医学ソーシャル・ワーカー協会が設立された（のちの日本精神保健福祉士協会）。",
+      "出典URL": "https://www.jamhsw.or.jp/syokai/gaiyo.htm"
+    },
+    {
+      "year_西暦": 1976,
+      "year_和暦": "昭和51年",
+      "event": "全国身体障害者療護施設協議会が発足した（のちの全国身体障害者施設協議会）。",
+      "出典URL": "https://www.shinsyokyo.com/tuite/enkaku/"
+    },
+    {
+      "year_西暦": 1981,
+      "year_和暦": "昭和56年",
+      "event": "全国社会福祉法人経営者協議会が設立された。",
+      "出典URL": "https://www.keieikyo.com/about/"
+    },
+    {
+      "year_西暦": 1989,
+      "year_和暦": "平成元年",
+      "event": "全国老人保健施設協会が社団法人として設立された。",
+      "出典URL": "https://www.roken.or.jp/kyokai/soshiki"
+    },
+    {
+      "year_西暦": 1993,
+      "year_和暦": "平成5年",
+      "event": "日本社会福祉士会が任意団体として設立された。",
+      "出典URL": "https://www.jacsw.or.jp/introduction/activity.html"
+    },
+    {
+      "year_西暦": 1994,
+      "year_和暦": "平成6年",
+      "event": "日本介護福祉士会が設立された。",
+      "出典URL": "https://www.jaccw.or.jp/about/gaiyo"
+    },
+    {
+      "year_西暦": 2000,
+      "year_和暦": "平成12年",
+      "event": "全国介護福祉政治連盟が設置された。",
+      "出典URL": "https://kaigo-fukushi.jp/about/"
+    },
+    {
+      "year_西暦": 2009,
+      "year_和暦": "平成21年",
+      "event": "全国老人福祉施設協議会が公益社団法人となった。",
+      "出典URL": "https://www.roushikyo.or.jp/"
+    },
+    {
+      "year_西暦": 2013,
+      "year_和暦": "平成25年",
+      "event": "日本知的障害者福祉協会が公益財団法人へ移行した。",
+      "出典URL": "http://www.aigo.or.jp/menu07/"
+    },
+    {
+      "year_西暦": 2020,
+      "year_和暦": "令和2年",
+      "event": "日本精神保健福祉士協会が公益社団法人へ移行した。",
+      "出典URL": "https://www.jamhsw.or.jp/syokai/gaiyo.htm"
+    }
+  ]
+};
+/* __ORGANIZATIONS_INJECT_END__ ここまで */
+
+/* ===== 描画処理（福祉業界団体） ===== */
+(function () {
+  var descEl = document.getElementById("orgs-desc");
+  var rootEl = document.getElementById("orgs-root");
+  var systems = (ORGANIZATIONS && ORGANIZATIONS.systems) || [];
+  var policy = (ORGANIZATIONS && ORGANIZATIONS.policy_process) || [];
+  var timeline = (ORGANIZATIONS && ORGANIZATIONS.timeline) || [];
+
+  if (descEl && ORGANIZATIONS && ORGANIZATIONS.description) descEl.textContent = ORGANIZATIONS.description;
+
+  if (systems.length === 0) {
+    rootEl.innerHTML =
+      '<div class="notice"><p class="notice-title">このページは現在準備中です。</p>' +
+      "<p>福祉分野の主要な業界団体を、公表情報に基づいて整理しています。</p></div>";
+    return;
+  }
+
+  var html = "";
+
+  // 系統別の団体一覧
+  systems.forEach(function (sys) {
+    html += '<section class="org-sys">';
+    html += '<h2 class="section-title">' + esc(sys.system) + "</h2>";
+    html += '<div class="org-grid">';
+    (sys.orgs || []).forEach(function (o) {
+      html += '<article class="org-card">';
+      html += '<h3 class="org-name">' + esc(o["名称"]);
+      if (o["略称"]) html += '<span class="org-abbr">（' + esc(o["略称"]) + "）</span>";
+      html += "</h3>";
+      html += "<dl class=\"org-dl\">";
+      if (o["設立年"]) html += "<dt>設立年</dt><dd>" + esc(o["設立年"]) + "年</dd>";
+      if (o["目的"]) html += "<dt>目的</dt><dd>" + esc(o["目的"]) + "</dd>";
+      if (o["会員規模"]) html += "<dt>会員規模</dt><dd>" + esc(o["会員規模"]) + "</dd>";
+      if (o["主な活動"]) html += "<dt>主な活動</dt><dd>" + esc(o["主な活動"]) + "</dd>";
+      html += "</dl>";
+      var links = [];
+      var site = safeUrl(o["公式URL"]);
+      if (site) links.push('<a href="' + esc(site) + '" target="_blank" rel="noopener noreferrer">公式サイト↗</a>');
+      var src = safeUrl(o["出典URL"]);
+      if (src) links.push('<a href="' + esc(src) + '" target="_blank" rel="noopener noreferrer">出典↗</a>');
+      if (links.length) html += '<p class="org-links">' + links.join("　") + "</p>";
+      html += "</article>";
+    });
+    html += "</div></section>";
+  });
+
+  // 政策決定の流れ（policy_process）
+  if (policy.length > 0) {
+    html += '<section class="org-policy"><h2 class="section-title">政策決定の流れ</h2>';
+    html += '<p class="section-note">団体の意見が制度・政策に反映されるまでの一般的な流れです。</p>';
+    html += '<ol class="policy-steps">';
+    policy.forEach(function (p) {
+      html += '<li class="policy-step">';
+      html += '<span class="policy-stage">' + esc(p.stage) + "</span>";
+      if (p["説明"]) html += '<p class="policy-text">' + esc(p["説明"]) + "</p>";
+      var src = safeUrl(p["出典URL"]);
+      if (src) html += '<p class="policy-source"><a href="' + esc(src) + '" target="_blank" rel="noopener noreferrer">出典↗</a></p>';
+      html += "</li>";
+    });
+    html += "</ol></section>";
+  }
+
+  // 団体の歩み（timeline）
+  if (timeline.length > 0) {
+    html += '<section class="org-timeline"><h2 class="section-title">団体の歩み</h2>';
+    html += '<ol class="timeline">';
+    timeline.forEach(function (ev) {
+      html += '<li class="tl-item">';
+      html += '<div class="tl-year"><span class="tl-seireki">' + esc(ev["year_西暦"]) + "</span>";
+      if (ev["year_和暦"]) html += '<span class="tl-wareki">' + esc(ev["year_和暦"]) + "</span>";
+      html += "</div><div class=\"tl-body\">";
+      html += '<p class="tl-event">' + esc(ev.event) + "</p>";
+      var src = safeUrl(ev["出典URL"]);
+      if (src) html += '<p class="tl-source"><a href="' + esc(src) + '" target="_blank" rel="noopener noreferrer">出典を見る↗</a></p>';
+      html += "</div></li>";
+    });
+    html += "</ol></section>";
+  }
+
+  rootEl.innerHTML = html;
+
+  // HTML特殊文字を無害化
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  // リンク先URLは http/https のみ許可
+  function safeUrl(u) {
+    var s = String(u == null ? "" : u).trim();
+    return /^https?:\/\//i.test(s) ? s : "";
+  }
+})();
+</script>
+
+<script src="nav.js" defer></script>
+</body>
+</html>

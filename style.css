@@ -630,6 +630,60 @@ section p:last-child { margin-bottom: 0; }
 .job-links-list li { font-size: 14px; }
 .job-link-desc { display: block; font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
 
+/* ===== 福祉業界団体 ===== */
+.org-sys { margin: 0 0 40px; }
+.org-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
+.org-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--primary);
+  border-radius: 8px;
+  padding: 16px 18px;
+}
+.org-name { font-size: 16px; font-weight: 700; color: var(--primary-dark); margin: 0 0 8px; line-height: 1.5; }
+.org-abbr { font-size: 13px; color: var(--ink-soft); font-weight: 700; }
+.org-dl { margin: 0; }
+.org-dl dt { font-size: 12.5px; color: var(--ink-soft); margin-top: 8px; }
+.org-dl dt:first-child { margin-top: 0; }
+.org-dl dd { margin: 2px 0 0; font-size: 14px; }
+.org-links { margin: 12px 0 0; font-size: 13.5px; }
+
+/* 政策決定の流れ（縦のステップ） */
+.org-policy { margin: 44px 0 0; }
+.policy-steps { list-style: none; margin: 12px 0 0; padding: 0; counter-reset: step; }
+.policy-step {
+  position: relative;
+  border-left: 2px solid var(--line);
+  padding: 0 0 24px 20px;
+  counter-increment: step;
+}
+.policy-step::before {
+  content: counter(step);
+  position: absolute;
+  left: -13px;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.policy-step:last-child { padding-bottom: 0; }
+.policy-stage { display: block; font-weight: 700; color: var(--primary-dark); font-size: 15px; margin-bottom: 4px; }
+.policy-text { margin: 0; font-size: 14px; }
+.policy-source { margin: 6px 0 0; font-size: 13px; }
+
+/* 団体の歩み（timelineはhistoryの.timeline系を流用） */
+.org-timeline { margin: 44px 0 0; }
+
+/* 注記 */
+.orgs-note { margin: 32px 0 0; padding-top: 20px; border-top: 1px solid var(--line); font-size: 13px; color: var(--ink-soft); }
+
 /* 上部へ戻るボタン */
 .to-top {
   position: fixed;

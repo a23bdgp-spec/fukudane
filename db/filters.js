@@ -6,15 +6,32 @@ function fesc(s){ return String(s).replace(/[&<>"]/g, m=>({'&':'&amp;','<':'&lt;
 // 都道府県→JISコード（索引の pcode 復元・都道府県の並び順に使用）
 const PREF_CODE = {"北海道":"01","青森県":"02","岩手県":"03","宮城県":"04","秋田県":"05","山形県":"06","福島県":"07","茨城県":"08","栃木県":"09","群馬県":"10","埼玉県":"11","千葉県":"12","東京都":"13","神奈川県":"14","新潟県":"15","富山県":"16","石川県":"17","福井県":"18","山梨県":"19","長野県":"20","岐阜県":"21","静岡県":"22","愛知県":"23","三重県":"24","滋賀県":"25","京都府":"26","大阪府":"27","兵庫県":"28","奈良県":"29","和歌山県":"30","鳥取県":"31","島根県":"32","岡山県":"33","広島県":"34","山口県":"35","徳島県":"36","香川県":"37","愛媛県":"38","高知県":"39","福岡県":"40","佐賀県":"41","長崎県":"42","熊本県":"43","大分県":"44","宮崎県":"45","鹿児島県":"46","沖縄県":"47"};
 
-// 行配列形式の索引（{cols,rows}）をオブジェクト配列に復元し、pcode を補う
+// コード→ラベルの復元表（build 側のコード化と一致させること）
+const CODE_PREF = Object.fromEntries(Object.entries(PREF_CODE).map(([k,v])=>[v,k]));
+const IDX_BIZ_LABELS = ['高齢','障害','児童','その他'];
+const IDX_SZ_LABELS = ['1億未満','1-3億','3-5億','5-10億','10-30億','30億以上'];
+const IDX_KB_LABELS = ['一般法人','社会福祉協議会','共同募金会','社会福祉事業団','その他'];
+
+// 圧縮索引（{cols,rows}・コード化・百万円）をオブジェクト配列に復元する。
+// 復元後は従来どおり r.pref / r.biz / r.sv（円）… でアクセスできる。
 function restoreIndex(raw){
   if(Array.isArray(raw)) return raw;   // 旧形式（配列）への後方互換
-  const cols = raw.cols;
+  const cols = raw.cols, idx = {};
+  cols.forEach((c,i)=>{ idx[c]=i; });
   return raw.rows.map(row=>{
-    const o = {};
-    for(let i=0;i<cols.length;i++) o[cols[i]] = row[i];
-    o.pcode = PREF_CODE[o.pref] || null;
-    return o;
+    const pc = row[idx.pref];
+    const bz = row[idx.biz], sz = row[idx.sz], kb = row[idx.kb];
+    const sv = row[idx.sv], sn = row[idx.sn];
+    return {
+      no: row[idx.no], name: row[idx.name],
+      pref: CODE_PREF[pc] || null, pcode: pc || null,
+      biz: (bz==null?null:IDX_BIZ_LABELS[bz]),
+      sz: (sz==null?null:IDX_SZ_LABELS[sz]),
+      sy: row[idx.sy], hq: row[idx.hq],
+      kb: (kb==null?null:IDX_KB_LABELS[kb]),
+      sv: (sv==null?null:sv*1e6), sr: row[idx.sr],
+      sn: (sn==null?null:sn*1e6), ss: row[idx.ss],
+    };
   });
 }
 

@@ -19,6 +19,7 @@
       <a href="../history.html">制度の歴史</a>
       <a href="../jobs.html">クリエイティブな仕事</a>
       <a href="db.html" aria-current="page">社会福祉法人データベース</a>
+      <a href="../organizations.html">福祉業界団体</a>
       <a href="../about.html">フクダネについて</a>
     </div>
   </div>
@@ -111,9 +112,9 @@
   </div>
 </footer>
 
-<script src="filters.js?v=84ac7a2806"></script>
+<script src="filters.js?v=8850325844"></script>
 <script>
-const BUILD_VERSION="84ac7a2806";   // ビルド時に置換（キャッシュバスティング）
+const BUILD_VERSION="8850325844";   // ビルド時に置換（キャッシュバスティング）
 const PAGE_SIZE = 50;
 let INDEX = [];          // 軽量索引
 let filtered = [];       // 絞り込み結果
@@ -148,24 +149,33 @@ async function fetchJson(url){
   return res.json();
 }
 
-async function init(){
-  const v = '?v=' + BUILD_VERSION;
-  let idx, med, defs;
+let metaReady = null;   // 中央値・指標定義の遅延ロード（詳細表示までに解決）
+
+async function loadMeta(v){
   try{
-    [idx, med, defs] = await Promise.all([
-      fetchJson('data/index.json'+v),
+    const [med, defs] = await Promise.all([
       fetchJson('data/medians.json'+v).catch(()=>({})),
       fetchJson('data/indicator_defs.json'+v).catch(()=>[]),
     ]);
+    MEDIANS = med; DEFS = defs;
+    DEFS.forEach(d => { DEFBYKEY[d.key] = d; });
+  }catch(e){ /* 取得できなくても詳細は基本情報のみで表示 */ }
+}
+
+async function init(){
+  const v = '?v=' + BUILD_VERSION;
+  let idx;
+  try{
+    idx = await fetchJson('data/index.json'+v);   // 一覧表示に必要なのは索引のみ
     if(!idx || !Array.isArray(idx.rows)) throw new Error('索引の形式が不正です');
   }catch(e){
     document.getElementById('list').innerHTML =
       '<div class="loading">データを読み込めませんでした。時間をおいて再度お試しください。</div>';
     return;
   }
-  INDEX = restoreIndex(idx); MEDIANS = med; DEFS = defs;
-  DEFS.forEach(d => { DEFBYKEY[d.key] = d; });
+  INDEX = restoreIndex(idx);
   INDEX.forEach(r => { r._n = normName(r.name); });  // 正規化名を事前計算
+  metaReady = loadMeta(v);   // 中央値・指標定義は詳細まで不要なので裏で読み込む
   buildFilters('filters', INDEX, apply);
   ['q-name','q-no'].forEach(id=>document.getElementById(id).addEventListener('input', apply));
   ['q-sort','q-dir'].forEach(id=>document.getElementById(id).addEventListener('change', apply));
@@ -280,6 +290,7 @@ async function toggle(row, r){
   det.innerHTML='<div class="loading">読み込み中…</div>';
   row.after(det);
   const corp = await loadCorp(r.pcode, r.no);
+  if(metaReady) await metaReady;   // 指標表・中央値・グラフに必要
   if(!corp){
     det.innerHTML='<div class="loading">データを取得できませんでした。時間をおいて再度お試しください。</div>';
     return;
