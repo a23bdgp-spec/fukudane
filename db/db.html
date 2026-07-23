@@ -7,6 +7,22 @@
 <link rel="stylesheet" href="db.css">
 </head>
 <body>
+
+<!-- 共通ナビ（サイト他ページと統一。db/内からは ../ で親ディレクトリを参照） -->
+<nav class="sitenav" aria-label="サイトナビゲーション">
+  <div class="sitenav-in">
+    <a class="sitenav-logo" href="../index.html">フクダネ</a>
+    <div class="sitenav-links">
+      <a href="../index.html">ホーム</a>
+      <a href="../map.html">福祉サービス一覧</a>
+      <a href="../history.html">制度の歴史</a>
+      <a href="db.html" aria-current="page">社会福祉法人データベース</a>
+      <a href="../principles.html">情報の原則</a>
+      <a href="../about.html">フクダネとは？</a>
+    </div>
+  </div>
+</nav>
+
 <header class="site">
   <h1>社会福祉法人データベース</h1>
   <p>全国の社会福祉法人の基本情報と主要な財務値（2020〜2024年度）を検索できます。金額の単位は円です。</p>
@@ -58,6 +74,22 @@
   <p class="unit">金額の単位：円（社会福祉法人会計基準に基づく計算書類の金額をそのまま表示しています）。</p>
   <p id="src-text">出典：独立行政法人福祉医療機構「財務諸表等電子開示システム」および厚生労働省への行政文書開示請求により取得したデータを基に、フクダネが独自に再構成。政府標準利用規約（PDL1.0）に基づく利用。</p>
   <p>本データベースは法人の基本情報と計算書類上の数値のみを掲載しています。役員等の個人名・連絡先・番地は掲載していません。数値は各法人が提出した計算書類に基づくもので、内容の正確性を保証するものではありません。市区町村が空欄の法人は所在地情報が取得できなかったものです。</p>
+</footer>
+
+<!-- 共通フッターナビ（サイト他ページと統一） -->
+<footer class="sitefoot">
+  <div class="sitefoot-in">
+    <nav class="sitefoot-links" aria-label="フッターナビゲーション">
+      <a href="../index.html">ホーム</a>
+      <a href="../map.html">福祉サービス一覧</a>
+      <a href="../history.html">制度の歴史</a>
+      <a href="db.html">社会福祉法人データベース</a>
+      <a href="../principles.html">情報の原則</a>
+      <a href="../about.html">フクダネとは？</a>
+      <a href="../terms.html">利用規約</a>
+    </nav>
+    <p class="sitefoot-copy">© フクダネ</p>
+  </div>
 </footer>
 
 <script>

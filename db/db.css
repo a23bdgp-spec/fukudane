@@ -15,6 +15,23 @@ body{
   margin:0;font-family:"Hiragino Kaku Gothic ProN","Meiryo",system-ui,sans-serif;
   color:var(--ink);background:var(--bg2);line-height:1.6;font-size:15px;
 }
+/* 共通ナビ（白背景＋下線・サイト他ページと統一） */
+.sitenav{background:#fff;border-bottom:1px solid var(--line)}
+.sitenav-in{max-width:960px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 20px}
+.sitenav-logo{font-size:20px;font-weight:700;letter-spacing:.06em;color:var(--primary);text-decoration:none}
+.sitenav-links{display:flex;flex-wrap:wrap;gap:6px 18px}
+.sitenav-links a{color:var(--ink);text-decoration:none;font-size:14px;padding:3px 0;border-bottom:2px solid transparent}
+.sitenav-links a:hover{color:var(--primary);border-bottom-color:var(--line)}
+.sitenav-links a[aria-current="page"]{color:var(--primary);font-weight:700;border-bottom-color:var(--primary)}
+
+/* 共通フッター（深緑背景・サイト他ページと統一） */
+.sitefoot{background:var(--primary-d);color:rgba(255,255,255,.85);margin-top:8px}
+.sitefoot-in{max-width:960px;margin:0 auto;padding:24px 20px}
+.sitefoot-links{display:flex;flex-wrap:wrap;gap:10px 20px;margin-bottom:14px}
+.sitefoot-links a{color:rgba(255,255,255,.85);text-decoration:none;font-size:13px}
+.sitefoot-links a:hover{color:#fff;text-decoration:underline}
+.sitefoot-copy{margin:0;font-size:12px;color:rgba(255,255,255,.55)}
+
 header.site{
   background:var(--primary-d);color:#fff;padding:18px 20px;
 }
