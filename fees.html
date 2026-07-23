@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>報酬・公定価格関連｜フクダネ</title>
+<meta name="description" content="介護報酬・障害福祉サービス等報酬・子ども子育て支援の公定価格・処遇改善など、報酬・公定価格に関する国の公式ページを分野別に整理し原文へリンクした一覧です。">
+<link rel="canonical" href="https://fukudane.com/fees.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="報酬・公定価格関連｜フクダネ">
+<meta property="og:description" content="介護報酬・障害福祉サービス等報酬・子ども子育て支援の公定価格・処遇改善など、報酬・公定価格に関する国の公式ページを分野別に整理し原文へリンクした一覧です。">
+<meta property="og:url" content="https://fukudane.com/fees.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="フクダネ">
+<meta property="og:image" content="https://fukudane.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://fukudane.com/og-image.png">
+<link rel="stylesheet" href="style.css">
+<!-- JSONLD_START -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "ホーム",
+          "item": "https://fukudane.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "報酬・公定価格関連",
+          "item": "https://fukudane.com/fees.html"
+        }
+      ]
+    },
+    {
+      "@type": "Article",
+      "headline": "報酬・公定価格関連",
+      "description": "介護報酬・障害福祉サービス等報酬・子ども子育て支援の公定価格・処遇改善など、報酬・公定価格に関する国の公式ページを分野別に整理し原文へリンクした一覧です。",
+      "url": "https://fukudane.com/fees.html",
+      "inLanguage": "ja",
+      "publisher": {
+        "@type": "Organization",
+        "name": "フクダネ",
+        "url": "https://fukudane.com/"
+      }
+    }
+  ]
+}
+</script>
+<!-- JSONLD_END -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html" class="logo">
+        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+          <g stroke="currentColor" stroke-width="1.3">
+            <line x1="13" y1="13" x2="6" y2="7"/>
+            <line x1="13" y1="13" x2="20" y2="7"/>
+            <line x1="13" y1="13" x2="7" y2="20"/>
+            <line x1="13" y1="13" x2="20" y2="19"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="13" cy="13" r="2.7"/>
+            <circle cx="6" cy="7" r="2"/>
+            <circle cx="20" cy="7" r="2"/>
+            <circle cx="7" cy="20" r="2"/>
+            <circle cx="20" cy="19" r="2"/>
+          </g>
+        </svg>
+        <span class="logo-text">フクダネ</span>
+      </a>
+      <span class="tagline">社会福祉法人の総合情報サイト</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <nav class="site-nav" id="primary-nav">
+      <a href="index.html" class="nav-home">ホーム</a>
+      <a href="service.html">福祉サービス一覧</a>
+      <a href="history.html">制度の歴史</a>
+      <a href="jobs.html">福祉の仕事</a>
+      <a href="organizations.html">福祉業界団体</a>
+      <a href="guidelines.html">ガイドライン集</a>
+      <a href="management.html">経営関連資料</a>
+      <a href="fees.html" aria-current="page">報酬関連</a>
+      <a href="kitei.html">モデル規程</a>
+      <a href="foreign-workers.html">外国人材</a>
+      <a href="grants.html">助成団体</a>
+      <a href="db/db.html">社会福祉法人データベース</a>
+      <a href="stats.html">統計情報</a>
+      <a href="about.html">フクダネについて</a>
+      <a href="search.html">サイト内検索</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1 class="catch">報酬・公定価格関連</h1>
+    <p class="lead" id="fees-desc"></p>
+  </div>
+</div>
+
+<section class="list-page">
+  <div class="wrap">
+    <!-- 分野へのページ内ジャンプ（目次）。JSで生成 -->
+    <nav class="gl-toc" id="fees-toc" aria-label="分野の目次"></nav>
+    <!-- 分野別のガイドライン一覧。build_map.py が FEES に注入したデータからJSで描画 -->
+    <div id="fees-root"></div>
+    <p class="guidelines-note">報酬・公定価格は改定で変わります。最新の単価表・算定基準は各公式ページ（原本）でご確認ください。</p>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">フクダネ</span>
+        <span class="footer-tagline">社会福祉法人の総合情報サイト</span>
+      </div>
+      <nav class="footer-nav" aria-label="フッターナビゲーション">
+        <a href="index.html">ホーム</a>
+        <a href="service.html">福祉サービス一覧</a>
+        <a href="history.html">制度の歴史</a>
+        <a href="jobs.html">福祉の仕事</a>
+        <a href="organizations.html">福祉業界団体</a>
+        <a href="guidelines.html">ガイドライン集</a>
+        <a href="management.html">経営関連資料</a>
+        <a href="fees.html">報酬関連</a>
+        <a href="kitei.html">モデル規程</a>
+        <a href="foreign-workers.html">外国人材</a>
+        <a href="grants.html">助成団体</a>
+        <a href="db/db.html">社会福祉法人データベース</a>
+        <a href="stats.html">統計情報</a>
+        <a href="about.html">フクダネについて</a>
+        <a href="search.html">サイト内検索</a>
+        <a href="terms.html">利用規約</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="disclaimer">
+        掲載情報は公的機関の公表物に基づきます。最新・正確な内容は、必ず出典（原本）をご確認ください。
+      </p>
+      <p class="copy">© 2026 フクダネ</p>
+    </div>
+  </div>
+</footer>
+
+<!--
+  データ埋め込み枠。content/fees.json の内容を build_map.py が下の FEES に注入する。
+  データ形式：{ title, description, categories:[ { category, items:[ { 名称, 発行, 年, 概要, URL } ] } ] }
+-->
+<script>
+/* __FEES_INJECT_START__ ここから下を build_map.py が content/fees.json で置き換える（未注入時は空） */
+const FEES = {
+  "title": "報酬・公定価格関連",
+  "description": "介護報酬・障害福祉サービス等報酬・公定価格（子ども・子育て支援）・措置費など、福祉事業の報酬や公定価格に関する国の公式資料（告示・通知・Q&A・改定説明資料）を分野別に整理し、発行機関の公式ページへリンクした一覧です。報酬改定は介護・障害とも3年周期のため、現行である令和6年度（2024年度）改定の資料を軸に、各資料が「どの年度の改定・年度のものか」を名称・年に明記しています。診療報酬は医療分野のため対象外です。",
+  "confirmed_date": "2026-07-23",
+  "source_policy": "各項目の名称・発行元・年・URLは、発行機関（厚生労働省・こども家庭庁）の公式ページまたは公式PDFで実際に確認して収録した。恒常的な掲載ページを優先し、直リンクPDFは実在（掲載ページ・資料名との一致）を確認したうえで採録した。",
+  "note": "掲載URLは確認時点（2026-07-23）のもの。報酬改定は3年周期（介護・障害）、公定価格・措置費は年度更新のため、単価表・告示本体・交付基準本文などは版・年度で差し替えられる。利用時は各公式ページで最新版をご確認ください。介護医療院など介護分野の一部は診療報酬と関係する場合があるが、診療報酬本体は本ページの対象外です。",
+  "fields": [
+    "名称",
+    "発行",
+    "年",
+    "概要",
+    "URL"
+  ],
+  "categories": [
+    {
+      "category": "介護報酬（令和6年度改定）",
+      "items": [
+        {
+          "名称": "令和6年度介護報酬改定について",
+          "発行": "厚生労働省 老健局",
+          "年": "2024年度（令和6年度）改定",
+          "概要": "令和6年度介護報酬改定の改定事項の概要、省令・告示、留意事項通知、Q&A、処遇改善加算などをまとめた厚生労働省の公式ページ。個別資料はこのページから参照できる。",
+          "URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/kaigo_koureisha/housyu/index.html"
+        },
+        {
+          "名称": "令和6年度介護報酬改定における改定事項について",
+          "発行": "厚生労働省 老健局",
+          "年": "2024年（令和6年）",
+          "概要": "令和6年度改定で見直された各介護サービスの報酬・基準の改定事項を、サービス類型ごとにまとめた資料。",
+          "URL": "https://www.mhlw.go.jp/content/12300000/001230329.pdf"
+        },
+        {
+          "名称": "介護報酬の算定構造のイメージ",
+          "発行": "厚生労働省 老健局",
+          "年": "2026年6月1日時点",
+          "概要": "各介護サービスの基本報酬と加算・減算の組み合わせを一覧で示した資料で、介護給付費単位数表がどのような構造で費用の額を定めているかがわかる。",
+          "URL": "https://www.mhlw.go.jp/content/001675193.pdf"
+        },
+        {
+          "名称": "令和6年度介護報酬改定に関するQ&A（Vol.1）",
+          "発行": "厚生労働省 老健局（介護保険最新情報）",
+          "年": "2024年3月（令和6年3月）",
+          "概要": "令和6年度改定の報酬算定や加算の取扱いに関する疑問点をまとめたQ&A（介護保険最新情報）。以降Vol.が追加され、ページにVol.1以降が掲載される。",
+          "URL": "https://www.mhlw.go.jp/content/001227740.pdf"
+        }
+      ]
+    },
+    {
+      "category": "障害福祉サービス等報酬（令和6年度改定）",
+      "items": [
+        {
+          "名称": "令和6年度障害福祉サービス等報酬改定について",
+          "発行": "厚生労働省 社会・援護局 障害保健福祉部",
+          "年": "2024年度（令和6年度）改定",
+          "概要": "令和6年度障害福祉サービス等報酬改定の概要、報酬告示、留意事項通知、Q&A、検討チーム資料などをまとめた厚生労働省の公式ページ。",
+          "URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/0000202214_00009.html"
+        },
+        {
+          "名称": "令和6年度障害福祉サービス等報酬改定における主な改定内容",
+          "発行": "厚生労働省 社会・援護局 障害保健福祉部",
+          "年": "2024年（令和6年）",
+          "概要": "令和6年度改定の主な改定内容を、サービス類型ごとに整理して示した資料。",
+          "URL": "https://www.mhlw.go.jp/content/001216034.pdf"
+        },
+        {
+          "名称": "令和6年度障害福祉サービス等報酬改定の概要",
+          "発行": "厚生労働省 社会・援護局 障害保健福祉部",
+          "年": "2024年（令和6年）",
+          "概要": "令和6年度改定の全体像と基本的な考え方、各サービスの報酬・加算の見直し内容をまとめた概要資料。",
+          "URL": "https://www.mhlw.go.jp/content/001216035.pdf"
+        },
+        {
+          "名称": "指定障害福祉サービス等の費用の額の算定に関する基準の改正告示（令和6年こども家庭庁・厚生労働省告示第3号）",
+          "発行": "こども家庭庁・厚生労働省（告示）",
+          "年": "2024年（令和6年）",
+          "概要": "障害福祉サービス等の報酬（費用の額の算定基準）を定める告示の改正で、令和6年度改定後の単位数等を規定する報酬告示。",
+          "URL": "https://www.mhlw.go.jp/content/001239565.pdf"
+        },
+        {
+          "名称": "指定障害福祉サービス等及び基準該当障害福祉サービスに要する費用の額の算定に関する基準等の制定に伴う実施上の留意事項について",
+          "発行": "厚生労働省 社会・援護局 障害保健福祉部（留意事項通知）",
+          "年": "2024年（令和6年）",
+          "概要": "報酬告示の各報酬・加算の算定要件や解釈を具体的に示した留意事項通知（解釈通知）。",
+          "URL": "https://www.mhlw.go.jp/content/001494356.pdf"
+        },
+        {
+          "名称": "障害福祉サービス等報酬改定検討チーム 資料",
+          "発行": "厚生労働省 社会・援護局 障害保健福祉部",
+          "年": "2024年度（令和6年度）改定に向けた検討",
+          "概要": "令和6年度報酬改定の検討過程で公表された、報酬改定検討チームの会議資料・議事をまとめた公式ページ。",
+          "URL": "https://www.mhlw.go.jp/stf/shingi/other-syougai_446935_00001.html"
+        }
+      ]
+    },
+    {
+      "category": "子ども・子育て支援（公定価格）",
+      "items": [
+        {
+          "名称": "公定価格に関する情報",
+          "発行": "こども家庭庁",
+          "年": "恒常ページ（現行：2026年度／令和8年度）",
+          "概要": "子ども・子育て支援法に基づく施設型給付・地域型保育給付の公定価格について、施設種別ごとの単価表（Excel）、公定価格・基準等の見直し事項、関連通知、FAQをまとめたこども家庭庁の公式ページ。",
+          "URL": "https://www.cfa.go.jp/policies/kokoseido#kouteikakaku"
+        },
+        {
+          "名称": "公定価格に関するFAQ（よくある質問）（第31版）",
+          "発行": "こども家庭庁",
+          "年": "2026年5月（令和8年5月／第31版）",
+          "概要": "公定価格の算定・加算・請求に関する実務上の疑問点をまとめたよくある質問集。版を重ねて更新される。",
+          "URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/3a1576c7-071d-4325-8be8-edced6d12ee1/b8cd6638/02.260522_policies_kokoseido_200.pdf"
+        }
+      ]
+    },
+    {
+      "category": "措置費・保護施設事務費",
+      "items": [
+        {
+          "名称": "児童入所施設措置費等国庫負担金",
+          "発行": "こども家庭庁 支援局",
+          "年": "恒常ページ（現行交付基準：2024年5月／令和6年5月改正）",
+          "概要": "児童養護施設・乳児院・母子生活支援施設等の運営に要する措置費（児童入所施設措置費等国庫負担金）の交付基準や関係通知をまとめたこども家庭庁の公式ページ。",
+          "URL": "https://www.cfa.go.jp/policies/shakaiteki-yougo/jidonyushoshisetsu-kokkofutankin"
+        },
+        {
+          "名称": "児童福祉法による児童入所施設措置費等国庫負担金について（交付基準・改正後全文）",
+          "発行": "こども家庭庁 支援局（こ支家第47号）",
+          "年": "2024年5月10日（令和6年5月10日）",
+          "概要": "児童入所施設等の措置費の交付対象・単価・算定方法を定めた交付基準の通知（改正後の全文）。事務費・事業費等の額の算定の基礎となる。",
+          "URL": "https://www.cfa.go.jp/assets/contents/node/basic_page/field_ref_resources/0457e2a2-61a9-4c92-9bbd-da2846dbc95b/f438c1ef/20250807_policies_shakaiteki-yougo_jidonyushoshisetsu-kokkofutankin_17.pdf"
+        },
+        {
+          "名称": "生活保護法による保護施設事務費及び委託事務費の支弁基準について",
+          "発行": "厚生労働省 社会・援護局（発社援0328第19号）",
+          "年": "2023年3月28日（令和5年3月28日）",
+          "概要": "救護施設・更生施設等の保護施設について、その運営に要する事務費・委託事務費の支弁（支払い）の基準を定めた通知。",
+          "URL": "https://www.mhlw.go.jp/web/t_doc?dataId=00tc7589&dataType=1"
+        }
+      ]
+    }
+  ]
+};
+/* __FEES_INJECT_END__ ここまで */
+
+/* ===== 描画処理（ガイドライン集） ===== */
+(function () {
+  var descEl = document.getElementById("fees-desc");
+  var tocEl = document.getElementById("fees-toc");
+  var rootEl = document.getElementById("fees-root");
+  var cats = (FEES && FEES.categories) || [];
+
+  if (descEl && FEES && FEES.description) descEl.textContent = FEES.description;
+
+  if (cats.length === 0) {
+    rootEl.innerHTML =
+      '<div class="notice"><p class="notice-title">このページは現在準備中です。</p>' +
+      "<p>福祉の現場運営に関わるガイドラインを、公表情報に基づいて分野別に整理しています。</p></div>";
+    return;
+  }
+
+  // 分野の目次（ページ内ジャンプ）
+  var toc = "";
+  cats.forEach(function (c, i) {
+    toc += '<a class="gl-toc-link" href="#fees-cat-' + i + '">' + esc(c.category) + "</a>";
+  });
+  if (tocEl) tocEl.innerHTML = toc;
+
+  // 分野別一覧
+  var html = "";
+  cats.forEach(function (c, i) {
+    html += '<section class="gl-cat" id="fees-cat-' + i + '">';
+    html += '<h2 class="section-title">' + esc(c.category) + "</h2>";
+    html += '<div class="gl-grid">';
+    (c.items || []).forEach(function (it) {
+      html += '<article class="gl-card">';
+      html += '<h3 class="gl-name">' + esc(it["名称"]) + "</h3>";
+      html += '<dl class="gl-dl">';
+      if (it["発行"]) html += "<dt>発行</dt><dd>" + esc(it["発行"]) + "</dd>";
+      if (it["年"]) html += "<dt>年</dt><dd>" + esc(it["年"]) + "</dd>";
+      if (it["概要"]) html += "<dt>概要</dt><dd>" + esc(it["概要"]) + "</dd>";
+      html += "</dl>";
+      var url = safeUrl(it["URL"]);
+      if (url) html += '<p class="gl-links"><a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">原文を見る↗</a></p>';
+      html += "</article>";
+    });
+    html += "</div></section>";
+  });
+  rootEl.innerHTML = html;
+
+  // HTML特殊文字を無害化
+  function esc(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  // リンク先URLは http/https のみ許可
+  function safeUrl(u) {
+    var s = String(u == null ? "" : u).trim();
+    return /^https?:\/\//i.test(s) ? s : "";
+  }
+})();
+</script>
+
+<script src="deeplink.js" defer></script>
+<script src="nav.js" defer></script>
+</body>
+</html>

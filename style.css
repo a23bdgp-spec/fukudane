@@ -987,3 +987,13 @@ section p:last-child { margin-bottom: 0; }
 .stats-table th.r, .stats-table td.r { text-align: right; white-space: nowrap; }
 .stats-src { margin: 28px 0 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 12.5px; color: var(--ink-soft); line-height: 1.8; }
 .stats-src p { margin: 0 0 8px; }
+
+/* 外国人材：比較表セルの短文表示＋全文展開 */
+.fw-tap-hint { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 8px; }
+.fw-cell { font-size: 13.5px; }
+.fw-cell > summary { cursor: pointer; list-style: none; line-height: 1.6; }
+.fw-cell > summary::-webkit-details-marker { display: none; }
+.fw-cell > summary::after { content: " ＋"; color: var(--primary); font-weight: 700; }
+.fw-cell[open] > summary::after { content: " －"; }
+.fw-cell > summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.fw-cell-full { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); color: var(--ink); line-height: 1.7; }

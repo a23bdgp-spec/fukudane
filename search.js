@@ -11,6 +11,8 @@
     { key: "organization", label: "福祉業界団体" },
     { key: "guideline", label: "ガイドライン" },
     { key: "management", label: "経営資料" },
+    { key: "fee", label: "報酬" },
+    { key: "kitei", label: "モデル規程" },
     { key: "foreign", label: "外国人材" },
     { key: "grant", label: "助成団体" },
     { key: "term", label: "用語" }

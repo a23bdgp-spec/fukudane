@@ -75,6 +75,8 @@
       <a href="organizations.html">福祉業界団体</a>
       <a href="guidelines.html">ガイドライン集</a>
       <a href="management.html">経営関連資料</a>
+      <a href="fees.html">報酬関連</a>
+      <a href="kitei.html">モデル規程</a>
       <a href="foreign-workers.html" aria-current="page">外国人材</a>
       <a href="grants.html">助成団体</a>
       <a href="db/db.html">社会福祉法人データベース</a>
@@ -115,6 +117,8 @@
         <a href="organizations.html">福祉業界団体</a>
         <a href="guidelines.html">ガイドライン集</a>
         <a href="management.html">経営関連資料</a>
+        <a href="fees.html">報酬関連</a>
+        <a href="kitei.html">モデル規程</a>
         <a href="foreign-workers.html">外国人材</a>
         <a href="grants.html">助成団体</a>
         <a href="db/db.html">社会福祉法人データベース</a>
@@ -610,13 +614,24 @@ const FOREIGN_WORKERS = {
     if (cmp.heading) html += '<h2 class="section-title">' + esc(cmp.heading) + "</h2>";
     if (cmp.description) html += '<p class="section-note">' + esc(cmp.description) + "</p>";
     var rowFields = (cmp.fields || []).filter(function (f) { return f !== "制度名" && f !== "出典URL"; });
+    // 短文キー（field＋"_短文"）が1つでもあれば、セルは短文を既定表示し全文はタップで展開
+    var hasShort = routes.some(function (r) { return rowFields.some(function (f) { return r[f + "_短文"]; }); });
+    if (hasShort) html += '<p class="fw-tap-hint">各セルはタップ（クリック）で全文が開きます。</p>';
     html += '<div class="fw-tablewrap"><table class="fw-table">';
     html += "<thead><tr><th scope=\"col\" class=\"fw-corner\">項目</th>";
     routes.forEach(function (r) { html += '<th scope="col">' + esc(r["制度名"]) + "</th>"; });
     html += "</tr></thead><tbody>";
     rowFields.forEach(function (f) {
       html += '<tr><th scope="row">' + esc(f) + "</th>";
-      routes.forEach(function (r) { html += "<td>" + esc(r[f] || "") + "</td>"; });
+      routes.forEach(function (r) {
+        var full = r[f] || "";
+        var short = r[f + "_短文"] || "";
+        if (short && short !== full) {
+          html += '<td><details class="fw-cell"><summary>' + esc(short) + '</summary><div class="fw-cell-full">' + esc(full) + "</div></details></td>";
+        } else {
+          html += "<td>" + esc(full) + "</td>";
+        }
+      });
       html += "</tr>";
     });
     html += '<tr><th scope="row">出典</th>';
