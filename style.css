@@ -294,7 +294,17 @@ section p:last-child { margin-bottom: 0; }
 .footer-links { margin: 0 0 10px; }
 .footer-links a { color: #cfe0ee; }
 
-/* ===== 地図ページ ===== */
+/* ===== 福祉サービス一覧ページ ===== */
+/* 導入文（前提＝社会福祉法の3段落） */
+.map-intro { margin: 0 0 32px; }
+.map-intro p {
+  font-size: 16px;
+  line-height: 1.9;
+  margin: 0 0 14px;
+  color: var(--ink);
+}
+.map-intro p:last-child { margin-bottom: 0; }
+
 /* データの出所・確定日・対応注記 */
 .map-meta {
   border: 1px solid var(--line);

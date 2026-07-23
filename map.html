@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>根拠法別・福祉サービスの地図｜フクダネ</title>
-<meta name="description" content="同じ支援でも根拠法によって名称や枠組みが異なる福祉サービスを、分野・根拠法ごとに整理した地図です。">
+<title>福祉サービス一覧｜フクダネ</title>
+<meta name="description" content="同じ支援でも根拠法によって名称や枠組みが異なる福祉サービスを、分野・根拠法ごとに整理した一覧です。">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -25,7 +25,7 @@
     </div>
     <nav class="site-nav">
       <a href="index.html">ホーム</a>
-      <a href="map.html" aria-current="page">根拠法別・福祉サービスの地図</a>
+      <a href="map.html" aria-current="page">福祉サービス一覧</a>
       <a href="principles.html">情報の原則</a>
       <a href="about.html">フクダネとは？</a>
     </nav>
@@ -34,15 +34,14 @@
 
 <div class="hero">
   <div class="wrap">
-    <h1 class="catch">根拠法別・福祉サービスの地図</h1>
-    <p class="lead">
-      同じ支援でも、根拠となる法律によって名称も枠組みも異なります。たとえば「デイサービス」は、高齢者では介護保険法上の「通所介護」、障害児では児童福祉法上の「放課後等デイサービス」を指します。分野と根拠法から、正式名称と出典（原本）へ辿り着けるように整理しています。
-    </p>
+    <h1 class="catch">福祉サービス一覧</h1>
   </div>
 </div>
 
 <section>
   <div class="wrap">
+    <!-- 導入文（前提＝社会福祉法）。build_map.py が MAP_INTRO から3段落を描画。準備中でも表示 -->
+    <div id="map-intro" class="map-intro"></div>
     <!-- データの出所・確定日・対応注記（データがあるときJSで埋める。準備中は空のまま） -->
     <div id="map-info"></div>
     <ul class="map-tabs" id="map-tabs" role="tablist" aria-label="分野の切り替え"></ul>
@@ -59,7 +58,7 @@
       </div>
       <nav class="footer-nav" aria-label="フッターナビゲーション">
         <a href="index.html">ホーム</a>
-        <a href="map.html">根拠法別・福祉サービスの地図</a>
+        <a href="map.html">福祉サービス一覧</a>
         <a href="principles.html">情報の原則</a>
         <a href="about.html">フクダネとは？</a>
         <a href="terms.html">利用規約</a>
@@ -910,19 +909,58 @@ const SERVICES_MAP = {
 };
 /* __SERVICES_MAP_INJECT_END__ ここまで */
 
+/* __MAP_INTRO_INJECT_START__ ここから下を build_map.py が content/map_intro.json で置き換える（未注入時は空＝導入文なし） */
+const MAP_INTRO = {
+  "intro": [
+    "この福祉サービス一覧は、社会福祉法を前提としています。社会福祉法は、社会福祉を目的とする事業の全分野に共通する基本的な事項を定める法律で、福祉サービス全体に共通する土台となっています。",
+    "一方で、実際の一つひとつのサービスは、分野ごとの個別の法律が定めています。高齢分野なら介護保険法や老人福祉法、障害分野なら障害者総合支援法、児童・子育て分野なら児童福祉法などです。そのため、似たような支援でも、根拠となる法律によって名称や枠組みが異なります。たとえば日中通う形の支援は、高齢者では介護保険法の通所介護、障害者では障害者総合支援法の生活介護、障害児では児童福祉法の放課後等デイサービスと呼び名が変わります。",
+    "この一覧は、そうした福祉サービスを根拠法ごとに整理し、法律によって呼び方や仕組みが違うことを見渡せるようにまとめたものです。"
+  ],
+  "sources": [
+    {
+      "law": "社会福祉法（昭和26年法律第45号）",
+      "article": "第1条（目的）",
+      "url": "https://laws.e-gov.go.jp/law/326AC0000000045",
+      "確認内容": "「この法律は、社会福祉を目的とする事業の全分野における共通的基本事項を定め」と規定し、福祉サービス利用者の利益保護、地域福祉の推進、社会福祉事業の公正な実施の確保および健全な発達を図り、社会福祉の増進に資することを目的とすることを確認。導入文の『全分野に共通する基本的な事項を定める』はこの目的規定の文言に沿う。確認日2026-07-23、e-Gov法令API（articles;lawId=326AC0000000045;article=1）で本文照合。"
+    },
+    {
+      "law": "社会福祉法（昭和26年法律第45号）",
+      "article": "第2条（定義）",
+      "url": "https://laws.e-gov.go.jp/law/326AC0000000045",
+      "確認内容": "第1項で「社会福祉事業」を第一種社会福祉事業（第2項）および第二種社会福祉事業（第3項）の総称と定義。各号に、生活保護法・児童福祉法・老人福祉法・障害者総合支援法など個別法に基づく施設・事業が列挙されており、社会福祉法が各分野のサービスを『社会福祉事業』として横断的に束ねる枠組みであることを確認。確認日2026-07-23、e-Gov法令API（articles;lawId=326AC0000000045;article=2）で本文照合。"
+    }
+  ]
+};
+/* __MAP_INTRO_INJECT_END__ ここまで */
+
 /* ===== 描画処理（データ形式が変わらなければ差し替え不要） ===== */
 (function () {
+  var introEl = document.getElementById("map-intro");
   var infoEl = document.getElementById("map-info");
   var tabsEl = document.getElementById("map-tabs");
   var contentEl = document.getElementById("map-content");
   var domains = (SERVICES_MAP && SERVICES_MAP.domains) || [];
 
-  // データ未確定のあいだは準備中表示（本番データが入ると自動で地図表示へ切り替わる）
+  // 導入文（前提＝社会福祉法）は準備中でも常に描画する
+  renderIntro();
+
+  // 導入文の3段落を一字一句そのまま描画（MAP_INTRO.intro の各要素を1段落＝1<p>に）
+  function renderIntro() {
+    var intro = (MAP_INTRO && MAP_INTRO.intro) || [];
+    if (!introEl || intro.length === 0) return;
+    var html = "";
+    intro.forEach(function (para) {
+      html += "<p>" + esc(para) + "</p>";
+    });
+    introEl.innerHTML = html;
+  }
+
+  // データ未確定のあいだは準備中表示（本番データが入ると自動で一覧表示へ切り替わる）
   if (domains.length === 0) {
     contentEl.innerHTML =
       '<div class="notice">' +
       '<p class="notice-title">このページは現在準備中です。</p>' +
-      '<p>根拠法別・福祉サービスの地図を、一次情報（法令・公的機関の公表物）で裏取りしながら作成しています。公開まで今しばらくお待ちください。</p>' +
+      '<p>福祉サービス一覧を、一次情報（法令・公的機関の公表物）で裏取りしながら作成しています。公開まで今しばらくお待ちください。</p>' +
       "</div>";
     return;
   }
