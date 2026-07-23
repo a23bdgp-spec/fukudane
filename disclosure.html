@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>寄附関連｜社会福祉法人の寄附税制・受配者指定寄付金・遺贈寄附｜フクダネ</title>
-<meta name="description" content="社会福祉法人が寄附を受ける際に関わる税制、共同募金を経由した受配者指定寄付金、遺贈・相続財産の寄附を、公式の一次情報へリンクして整理した一覧です。">
-<link rel="canonical" href="https://fukudane.com/donation.html">
+<title>情報開示サイト｜社会福祉法人の情報公表・電子開示システム・公表義務｜フクダネ</title>
+<meta name="description" content="社会福祉法人の開示・公表情報を閲覧できる公式サイト（財務諸表等電子開示システム等）と、法人の情報公表・備置き閲覧の義務・様式を、公式の一次情報へリンクして整理した一覧です。">
+<link rel="canonical" href="https://fukudane.com/disclosure.html">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
-<meta property="og:title" content="寄附関連｜社会福祉法人の寄附税制・受配者指定寄付金・遺贈寄附｜フクダネ">
-<meta property="og:description" content="社会福祉法人が寄附を受ける際に関わる税制、共同募金を経由した受配者指定寄付金、遺贈・相続財産の寄附を、公式の一次情報へリンクして整理した一覧です。">
-<meta property="og:url" content="https://fukudane.com/donation.html">
+<meta property="og:title" content="情報開示サイト｜社会福祉法人の情報公表・電子開示システム・公表義務｜フクダネ">
+<meta property="og:description" content="社会福祉法人の開示・公表情報を閲覧できる公式サイト（財務諸表等電子開示システム等）と、法人の情報公表・備置き閲覧の義務・様式を、公式の一次情報へリンクして整理した一覧です。">
+<meta property="og:url" content="https://fukudane.com/disclosure.html">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="フクダネ">
 <meta property="og:image" content="https://fukudane.com/og-image.png">
@@ -27,14 +27,14 @@
       "@type": "BreadcrumbList",
       "itemListElement": [
         { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://fukudane.com/" },
-        { "@type": "ListItem", "position": 2, "name": "寄附関連", "item": "https://fukudane.com/donation.html" }
+        { "@type": "ListItem", "position": 2, "name": "情報開示サイト", "item": "https://fukudane.com/disclosure.html" }
       ]
     },
     {
       "@type": "Article",
-      "headline": "寄附関連",
-      "description": "社会福祉法人が寄附を受ける際に関わる税制、共同募金を経由した受配者指定寄付金、遺贈・相続財産の寄附を、公式の一次情報へリンクして整理した一覧です。",
-      "url": "https://fukudane.com/donation.html",
+      "headline": "情報開示サイト",
+      "description": "社会福祉法人の開示・公表情報を閲覧できる公式サイト（財務諸表等電子開示システム等）と、法人の情報公表・備置き閲覧の義務・様式を、公式の一次情報へリンクして整理した一覧です。",
+      "url": "https://fukudane.com/disclosure.html",
       "inLanguage": "ja",
       "publisher": { "@type": "Organization", "name": "フクダネ", "url": "https://fukudane.com/" }
     }
@@ -120,18 +120,18 @@
 
 <div class="hero">
   <div class="wrap">
-    <h1 class="catch">寄附関連</h1>
-    <p class="lead" id="donation-desc"></p>
+    <h1 class="catch">情報開示サイト</h1>
+    <p class="lead" id="disclosure-desc"></p>
   </div>
 </div>
 
 <section class="list-page">
   <div class="wrap">
     <!-- 分類へのページ内ジャンプ（目次）。JSで生成 -->
-    <nav class="gl-toc" id="donation-toc" aria-label="分類の目次"></nav>
-    <!-- 分類別の一覧。build_map.py が DONATION に注入したデータからJSで描画 -->
-    <div id="donation-root"></div>
-    <p class="guidelines-note" id="donation-note"></p>
+    <nav class="gl-toc" id="disclosure-toc" aria-label="分類の目次"></nav>
+    <!-- 分類別の一覧。build_map.py が DISCLOSURE に注入したデータからJSで描画 -->
+    <div id="disclosure-root"></div>
+    <p class="guidelines-note" id="disclosure-note"></p>
   </div>
 </section>
 
@@ -176,110 +176,115 @@
 </footer>
 
 <!--
-  データ埋め込み枠。content/kifu.json の内容を build_map.py が下の DONATION に注入する。
-  データ形式：{ title, description, note, categories:[ { category, items:[ { 名称, 種別, 発行・主体, 概要, URL } ] } ] }
+  データ埋め込み枠。content/disclosure.json の内容を build_map.py が下の DISCLOSURE に注入する。
+  データ形式：{ title, description, note, categories:[ { category, items:[ { 名称, 発行, 年, 概要, URL } ] } ] }
 -->
 <script>
-/* __DONATION_INJECT_START__ ここから下を build_map.py が content/kifu.json で置き換える（未注入時は空） */
-const DONATION = {
-  "title": "寄附関連",
-  "description": "社会福祉法人が寄附を受ける際に関わる税制、共同募金経由の寄附の仕組み、遺贈・相続財産の寄附、非営利団体向けのソフトウェア寄贈等の民間サービスを、公式の一次情報にもとづいて整理した一覧です。名称・主体・URLは、府省庁・国税庁・中央共同募金会・各運営者の公式ページで確認したものを掲載しています。",
+/* __DISCLOSURE_INJECT_START__ ここから下を build_map.py が content/disclosure.json で置き換える（未注入時は空） */
+const DISCLOSURE = {
+  "title": "情報開示サイト",
+  "description": "社会福祉法人をはじめとする福祉サービスの開示・公表情報を閲覧できる公式サイトと、法人の情報公表・備置き閲覧の義務・様式を整理し、原文へリンクした一覧です。名称・運営・年・URLは公式ページで確認したものを掲載しています。",
   "confirmed_date": "2026-07-24",
-  "source_policy": "各項目は、厚生労働省・国税庁・中央共同募金会・各サービス運営者の公式ページをWebFetchで実際に確認して収録した。制度の事実のみを記載し、寄附額・控除額の具体的数値などの変動しやすい情報や勧奨表現は掲載しない。",
-  "note": "掲載URLは確認時点（2026-07-24）のもの。税制・制度は改正されることがあるため、利用時は各公式ページで最新の要件・手続を確認してください。控除額の計算方法など具体的な取扱いは、必ず国税庁の該当ページや所轄の税務署で確認してください。",
+  "source_policy": "各項目の名称・運営・年・URLは、運営機関の公式ページ・公式システム・e-Gov法令で確認したもの。閲覧側の公表システムは、フクダネの他ページ（サービス一覧）で検証済みの値を流用した。",
+  "note": "掲載URLは確認時点（2026-07-24）のもの。制度・様式・システムは改正・更新されることがあるため、利用時は各ページで最新を確認してください。",
   "fields": [
     "名称",
-    "種別",
-    "発行・主体",
+    "発行",
+    "年",
     "概要",
     "URL"
   ],
   "categories": [
     {
-      "category": "寄附を受けるための税制（社会福祉法人側）",
+      "category": "開示・公表を閲覧できるサイト",
       "items": [
         {
-          "名称": "税額控除対象法人（社会福祉法人）に係る証明",
-          "種別": "税制（寄附者の税額控除）",
-          "発行・主体": "厚生労働省",
-          "概要": "社会福祉法人が所轄庁の証明を受けて税額控除対象法人となると、その法人へ寄附した個人は所得税の申告で所得控除に代えて税額控除を選択できる。証明に関する厚生労働省の案内ページ。",
-          "URL": "https://www.mhlw.go.jp/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/shakai-fukushi-houjin-seido/09.html"
+          "名称": "財務諸表等電子開示システム（現況報告書等情報検索・公表）",
+          "発行": "独立行政法人福祉医療機構（WAM）",
+          "年": "（恒常ページ）",
+          "概要": "全国の社会福祉法人が所轄庁に届け出た現況報告書・計算書類・社会福祉充実計画等を、誰でも検索・閲覧できる公表・検索ページ。",
+          "URL": "https://www.wam.go.jp/wamnet/zaihyoukaiji/pub/PUB0200000E00.do"
         },
         {
-          "名称": "特定公益増進法人に対する寄附金（国税庁タックスアンサー No.5283）",
-          "種別": "税制（法人の損金算入）",
-          "発行・主体": "国税庁",
-          "概要": "法人が社会福祉法人などの特定公益増進法人に対し、その主たる目的である業務に関連する寄附をした場合、一般の寄附金とは別枠の特別損金算入限度額まで損金に算入できることを説明する国税庁のタックスアンサー。",
-          "URL": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/hojin/5283.htm"
+          "名称": "介護サービス情報公表システム",
+          "発行": "厚生労働省",
+          "年": "（恒常ページ）",
+          "概要": "介護保険サービスの事業所・施設の運営情報やサービス内容を、都道府県ごとに検索・閲覧できる公表システム。",
+          "URL": "https://www.kaigokensaku.mhlw.go.jp/"
         },
         {
-          "名称": "一定の寄附金を支払ったとき（寄附金控除）（国税庁タックスアンサー No.1150）",
-          "種別": "税制（個人の所得控除）",
-          "発行・主体": "国税庁",
-          "概要": "個人が社会福祉法人などの特定公益増進法人等に寄附した場合、確定申告により所得税の寄附金控除（所得控除）を受けられることを説明する国税庁のタックスアンサー。",
-          "URL": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1150.htm"
+          "名称": "障害福祉サービス等情報公表システム",
+          "発行": "独立行政法人福祉医療機構（WAM）",
+          "年": "（恒常ページ）",
+          "概要": "障害福祉サービス等の事業所の情報を、地域・法人名・事業所名・事業所番号等で検索・閲覧できる公表システム。",
+          "URL": "https://www.wam.go.jp/sfkohyoout/COP000100E0000.do"
+        },
+        {
+          "名称": "子ども・子育て支援情報公表システム（ここdeサーチ）",
+          "発行": "こども家庭庁（システム運営：独立行政法人福祉医療機構）",
+          "年": "（恒常ページ）",
+          "概要": "認定こども園・保育所・幼稚園等の教育・保育施設等の情報を、施設名・住所・最寄り駅等で検索・閲覧できる公表システム。",
+          "URL": "https://www.wam.go.jp/kokodesearch/ANN010100E00.do"
         }
       ]
     },
     {
-      "category": "共同募金経由の寄附",
+      "category": "法人の公表義務・様式（制度側）",
       "items": [
         {
-          "名称": "受配者指定寄付金制度（中央共同募金会）",
-          "種別": "共同募金・寄付制度（税制優遇）",
-          "発行・主体": "中央共同募金会",
-          "概要": "企業等が共同募金会を経由して特定の社会福祉法人等（受配者）を指定して寄付できる制度で、共同募金会の審査を経た寄付金は寄付法人において全額損金算入の対象となる。",
-          "URL": "https://www.akaihane.or.jp/find/tax/"
-        }
-      ]
-    },
-    {
-      "category": "遺贈・相続財産の寄附",
-      "items": [
+          "名称": "社会福祉法（情報の公表・計算書類等の備置き及び閲覧等）",
+          "発行": "e-Gov法令（社会福祉法・昭和二十六年法律第四十五号）",
+          "年": "（現行法令）",
+          "概要": "社会福祉法人に対し、定款・計算書類・現況報告書・役員報酬基準等の情報の公表（第59条の2）と、計算書類等の主たる事務所への備置き・利害関係人の閲覧等（第45条の32）を義務づける根拠条文を収録した法令。",
+          "URL": "https://laws.e-gov.go.jp/law/326AC0000000045"
+        },
         {
-          "名称": "相続財産を公益法人などに寄附したとき（国税庁タックスアンサー No.4141）",
-          "種別": "税制（相続税の非課税特例）",
-          "発行・主体": "国税庁",
-          "概要": "相続や遺贈で取得した財産を、相続税の申告期限までに社会福祉法人などの公益法人等に寄附した場合、その財産を相続税の課税対象としない特例があることを説明する国税庁のタックスアンサー。",
-          "URL": "https://www.nta.go.jp/taxes/shiraberu/taxanswer/sozoku/4141.htm"
+          "名称": "現況報告書等（様式・記載要領）",
+          "発行": "厚生労働省",
+          "年": "（恒常ページ）",
+          "概要": "社会福祉法人が毎年度届け出る現況報告書・計算書類等の様式や記載要領、関係通知・Q&Aを掲載する公式ページ。",
+          "URL": "https://www.mhlw.go.jp/stf/newpage_13320.html"
+        },
+        {
+          "名称": "財務諸表等電子開示システム（届出）",
+          "発行": "独立行政法人福祉医療機構（WAM）",
+          "年": "（恒常ページ）",
+          "概要": "社会福祉法人が現況報告書・計算書類等を所轄庁に届け出るための財務諸表等電子開示システムについて、ログイン・運用スケジュール・操作マニュアル等を案内する公式ページ。",
+          "URL": "https://www.wam.go.jp/content/wamnet/pcpub/top/zaihyou/houjin/"
         }
       ]
     }
   ]
 };
-/* __DONATION_INJECT_END__ ここまで */
+/* __DISCLOSURE_INJECT_END__ ここまで */
 
-/* ===== 描画処理（寄附関連） ===== */
+/* ===== 描画処理（情報開示サイト） ===== */
 (function () {
-  var descEl = document.getElementById("donation-desc");
-  var tocEl = document.getElementById("donation-toc");
-  var rootEl = document.getElementById("donation-root");
-  var noteEl = document.getElementById("donation-note");
-  var cats = (DONATION && DONATION.categories) || [];
+  var descEl = document.getElementById("disclosure-desc");
+  var tocEl = document.getElementById("disclosure-toc");
+  var rootEl = document.getElementById("disclosure-root");
+  var noteEl = document.getElementById("disclosure-note");
+  var cats = (DISCLOSURE && DISCLOSURE.categories) || [];
 
-  if (descEl && DONATION && DONATION.description) descEl.textContent = DONATION.description;
+  if (descEl && DISCLOSURE && DISCLOSURE.description) descEl.textContent = DISCLOSURE.description;
 
   if (cats.length === 0) {
     rootEl.innerHTML =
       '<div class="notice"><p class="notice-title">このページは現在準備中です。</p>' +
-      "<p>社会福祉法人が寄附を受ける際に関わる税制・仕組み・支援サービスを、公表情報に基づいて分類別に整理しています。</p></div>";
+      "<p>社会福祉法人の開示・公表情報を閲覧できる公式サイトと、情報公表の義務・様式を、公表情報に基づいて分類別に整理しています。</p></div>";
     return;
   }
 
   var toc = "";
   cats.forEach(function (c, i) {
-    toc += '<a class="gl-toc-link" href="#do-cat-' + i + '">' + esc(c.category) + "</a>";
+    toc += '<a class="gl-toc-link" href="#di-cat-' + i + '">' + esc(c.category) + "</a>";
   });
   if (tocEl) tocEl.innerHTML = toc;
 
   var html = "";
   cats.forEach(function (c, i) {
-    html += '<section class="gl-cat" id="do-cat-' + i + '">';
+    html += '<section class="gl-cat" id="di-cat-' + i + '">';
     html += '<h2 class="section-title">' + esc(c.category) + "</h2>";
-    // 民間サービスの分類には利用条件の確認を促す注記を添える
-    if (String(c.category).indexOf("民間") !== -1) {
-      html += '<p class="guidelines-note">民間サービスであり、利用条件は各サイトでご確認ください。</p>';
-    }
     html += '<div class="gl-grid">';
     (c.items || []).forEach(function (it) {
       html += '<article class="gl-card">';
@@ -291,8 +296,8 @@ const DONATION = {
         html += '<h3 class="gl-name">' + esc(it["名称"]) + "</h3>";
       }
       html += '<dl class="gl-dl">';
-      if (it["種別"]) html += "<dt>種別</dt><dd>" + esc(it["種別"]) + "</dd>";
-      if (it["発行・主体"]) html += "<dt>発行・主体</dt><dd>" + esc(it["発行・主体"]) + "</dd>";
+      if (it["発行"]) html += "<dt>発行</dt><dd>" + esc(it["発行"]) + "</dd>";
+      if (it["年"]) html += "<dt>年</dt><dd>" + esc(it["年"]) + "</dd>";
       if (it["概要"]) html += "<dt>概要</dt><dd>" + esc(it["概要"]) + "</dd>";
       html += "</dl></article>";
     });
@@ -300,7 +305,7 @@ const DONATION = {
   });
   rootEl.innerHTML = html;
 
-  if (noteEl && DONATION && DONATION.note) noteEl.textContent = DONATION.note;
+  if (noteEl && DISCLOSURE && DISCLOSURE.note) noteEl.textContent = DISCLOSURE.note;
 
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {

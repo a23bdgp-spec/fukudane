@@ -1212,3 +1212,24 @@ section p:last-child { margin-bottom: 0; }
 .ind-badge { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 1px 8px; border-radius: 999px; line-height: 1.7; }
 .ind-badge-main { background: var(--primary); color: #fff; }
 .ind-badge-ref { background: var(--primary-tint); color: var(--primary-dark); border: 1px solid var(--line); }
+
+/* guidelines：補足資料（Q&A・留意事項・様式等の小リンク行・種別ラベル付き） */
+.gl-sup { margin: 8px 0 0; font-size: 13px; color: var(--ink-soft); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.gl-sup-label { font-weight: 700; }
+.gl-sup-link { color: var(--primary-dark); text-decoration: none; border-bottom: 1px solid var(--line-strong); font-weight: 700; }
+.gl-sup-link:hover { border-bottom-color: var(--primary); color: var(--primary); }
+.gl-sup-sep { color: var(--line-strong); }
+
+/* トップ：掲載件数バー（ビルド時算出の実数） */
+.stat-counts { display: flex; flex-wrap: wrap; gap: 8px 10px; margin: 14px 0 4px; }
+.stat-count { display: inline-flex; align-items: baseline; gap: 3px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--primary-tint); color: var(--ink); text-decoration: none; font-size: 13px; }
+.stat-count b { color: var(--primary-dark); font-size: 16px; font-weight: 700; }
+.stat-count-lb { color: var(--ink-soft); margin-left: 4px; }
+.stat-count:hover { border-color: var(--primary); }
+
+/* トップ：スマホ（600px以下）でカードセクションを折りたたみ（JSでdetails化。PCは常時展開） */
+.cat-fold { margin: 0; }
+.cat-fold > summary.cat-h { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; }
+.cat-fold > summary.cat-h::-webkit-details-marker { display: none; }
+.cat-fold > summary.cat-h::after { content: "▾"; font-size: 12px; color: var(--primary); margin-left: 8px; }
+.cat-fold[open] > summary.cat-h::after { content: "▴"; }
