@@ -95,13 +95,20 @@ details.fgroup.pref-group[open] > summary{margin-bottom:4px}
 /* 結果一覧 */
 .list{background:var(--bg);border:1px solid var(--line);border-radius:8px;overflow:hidden}
 .row{
-  border-bottom:1px solid var(--line);padding:12px 16px;cursor:pointer;
-  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:12px;padding-right:16px;
 }
 .row:last-child{border-bottom:none}
-.row:hover{background:var(--primary-l)}
-.row .name{font-weight:600;color:var(--primary-d)}
-.row .meta{font-size:12px;color:var(--sub);margin-top:2px}
+.rowmain{
+  flex:1;display:flex;justify-content:space-between;align-items:center;gap:12px;
+  border:none;background:none;cursor:pointer;text-align:left;font:inherit;color:inherit;
+  padding:12px 4px 12px 16px;width:100%;
+}
+.rowmain:hover{background:var(--primary-l)}
+.rowmain:focus-visible{outline:2px solid var(--primary);outline-offset:-2px}
+.rowinfo{flex:1;min-width:0}
+.row .name{font-weight:600;color:var(--primary-d);display:block}
+.row .meta{font-size:12px;color:var(--sub);margin-top:2px;display:block}
 .row .tag{
   flex:0 0 auto;font-size:11px;background:var(--primary-l);color:var(--primary-d);
   border-radius:10px;padding:2px 9px;white-space:nowrap;

@@ -551,36 +551,83 @@ function renderCmpBar(){
   bar.querySelector('.clr').addEventListener('click', ()=>{ compare=[]; render(); renderCmpBar(); });
 }
 
+// その年度に財務データが存在するか（いずれかの値が非null）
+function hasYearData(c, y){
+  const yr = (c.years||{})[y];
+  return !!yr && Object.values(yr).some(v=>v!==null && v!==undefined);
+}
+
+// 比較財務行（単位を行名に付ける）
+const CMP_FIN = [
+  ['rev','サービス活動収益（円）'],['keijo','経常増減差額（円）'],['touki','当期活動増減差額（円）'],
+  ['asset','資産合計（円）'],['net','純資産合計（円）'],['staff','職員数（人）'],
+];
+
 async function openCompare(){
   if(compare.length<2) return;
   const corps = [];
   for(const x of compare){ const c = await loadCorp(x.pcode, x.no); if(c) corps.push(c); }
   if(corps.length<2) return;
-  const ly = String(Math.max(...corps.map(c=>c.latest||YEARS[YEARS.length-1])));
-  // 財務（最新年度）＋指標（最新年度）を並列。優劣判定・色分けはしない。
-  const fmtY = (c,key)=>{ const yr=(c.years||{})[ly]; const v=yr?yr[key]:null;
-    return (v===null||v===undefined)?'—':(key==='staff'?v.toLocaleString('ja-JP')+'人':v.toLocaleString('ja-JP')+'円'); };
-  const head = `<th>項目</th>` + corps.map(c=>`<th>${esc(c.name)}<br><small>${esc(c.pref)}${c.city?' '+esc(c.city):''}</small></th>`).join('') + `<th>全国中央値</th>`;
-  let rows = `<tr class="sec"><td colspan="${corps.length+2}">財務（${ly}年度・単位 円）</td></tr>`;
-  rows += FIN.map(([k,lab])=>`<tr><th>${lab}</th>${corps.map(c=>`<td>${fmtY(c,k)}</td>`).join('')}<td class="med">—</td></tr>`).join('');
-  rows += `<tr class="sec"><td colspan="${corps.length+2}">財務指標（${ly}年度）</td></tr>`;
-  rows += DEFS.map(d=>{
-    const cells = corps.map(c=>{ const yr=(c.ind||{})[ly]; const v=yr?yr[d.key]:null;
-      const s=fmtInd(v!==undefined?v:null,d.unit); return `<td>${s===null?'—':s}</td>`; }).join('');
-    const mn = fmtInd(medOf(d.key,'nat','',ly), d.unit);
-    return `<tr><th>${esc(d.name)}</th>${cells}<td class="med">${mn===null?'—':mn}</td></tr>`;
-  }).join('');
+  // 選択した全法人にデータがある最新の共通年度を選ぶ
+  let ly = null;
+  for(let i=YEARS.length-1; i>=0; i--){
+    const y = String(YEARS[i]);
+    if(corps.every(c=>hasYearData(c,y))){ ly = y; break; }
+  }
+  let inner;
+  if(!ly){
+    inner = `<p class="note">選択した法人には、共通して比較できる年度がありません。</p>`;
+  }else{
+    const numFmt = v=>(v===null||v===undefined)?'—':v.toLocaleString('ja-JP');
+    const indFmt = v=>(v===null||v===undefined)?'—':v.toLocaleString('ja-JP',{maximumFractionDigits:2});
+    const head = `<th>項目</th>` + corps.map(c=>`<th>${esc(c.name)}<br><small>${esc(c.pref)}${c.city?' '+esc(c.city):''}</small></th>`).join('') + `<th>全国中央値</th>`;
+    let rows = `<tr class="sec"><td colspan="${corps.length+2}">基本情報・財務（${ly}年度）</td></tr>`;
+    rows += `<tr><th>主な事業</th>${corps.map(c=>`<td>${esc(c.biz||'—')}</td>`).join('')}<td class="med">—</td></tr>`;
+    rows += CMP_FIN.map(([k,lab])=>`<tr><th>${lab}</th>${corps.map(c=>{ const yr=(c.years||{})[ly]; return `<td>${numFmt(yr?yr[k]:null)}</td>`; }).join('')}<td class="med">—</td></tr>`).join('');
+    rows += `<tr class="sec"><td colspan="${corps.length+2}">財務指標（${ly}年度）</td></tr>`;
+    rows += DEFS.map(d=>{
+      const cells = corps.map(c=>{ const yr=(c.ind||{})[ly]; const v=yr?yr[d.key]:null; return `<td>${indFmt(v===undefined?null:v)}</td>`; }).join('');
+      const mn = medOf(d.key,'nat','',ly);
+      return `<tr><th>${esc(d.name)}（${esc(d.unit)}）</th>${cells}<td class="med">${indFmt(mn)}</td></tr>`;
+    }).join('');
+    inner = `<p class="note">数値と全国中央値をそのまま並べています。順位付け・優劣の判定はしていません。単位は各行名に記載。${esc(IND_SOURCE_NOTE)}</p>
+      <div style="overflow-x:auto"><table class="cmptbl"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  }
+  openModal(`法人の比較（${corps.length}法人）`, inner);
+}
+
+// アクセシブルなモーダル（Escで閉じる・初期フォーカス・フォーカストラップ・復帰）
+function openModal(title, innerHtml){
+  const prevFocus = document.activeElement;
   const modal = document.createElement('div');
   modal.className='cmpmodal';
+  modal.setAttribute('role','dialog');
+  modal.setAttribute('aria-modal','true');
   modal.innerHTML = `<div class="inner">
-      <button class="close">閉じる ×</button>
-      <h3>法人の比較（${corps.length}法人）</h3>
-      <p class="note">数値と全国中央値をそのまま並べています。順位付け・優劣の判定はしていません。単位は各行に記載。${esc(IND_SOURCE_NOTE)}</p>
-      <div style="overflow-x:auto"><table class="cmptbl"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+      <button class="close" type="button">閉じる ×</button>
+      <h3>${esc(title)}</h3>
+      ${innerHtml}
     </div>`;
-  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
-  modal.querySelector('.close').addEventListener('click', ()=>modal.remove());
+  function close(){
+    modal.remove();
+    document.removeEventListener('keydown', onKey, true);
+    if(prevFocus && prevFocus.focus) prevFocus.focus();
+  }
+  function focusables(){ return modal.querySelectorAll('button, a[href], input, select, [tabindex]:not([tabindex="-1"])'); }
+  function onKey(e){
+    if(e.key==='Escape'){ e.preventDefault(); close(); return; }
+    if(e.key==='Tab'){
+      const f = focusables(); if(!f.length) return;
+      const first=f[0], last=f[f.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    }
+  }
+  modal.addEventListener('click', e=>{ if(e.target===modal) close(); });
+  modal.querySelector('.close').addEventListener('click', close);
+  document.addEventListener('keydown', onKey, true);
   document.body.appendChild(modal);
+  modal.querySelector('.close').focus();   // 初期フォーカス
 }
 
 init();

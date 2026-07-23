@@ -95,9 +95,12 @@ function oku(v){ return (v/1e8).toLocaleString('ja-JP',{maximumFractionDigits:2}
 
 async function init(){
   try{
-    INDEX = await fetch('data/index.json?v='+BUILD_VERSION).then(r=>r.json());
+    const res = await fetch('data/index.json?v='+BUILD_VERSION);
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    INDEX = await res.json();
+    if(!Array.isArray(INDEX)) throw new Error('形式が不正です');
   }catch(e){
-    document.getElementById('rank-list').innerHTML='<div class="loading">データを読み込めませんでした。</div>'; return;
+    document.getElementById('rank-list').innerHTML='<div class="loading">データを読み込めませんでした。時間をおいて再度お試しください。</div>'; return;
   }
   INDEX.forEach(r=>{ r._n = normName(r.name); });
   buildFilters('filters', INDEX, apply);
