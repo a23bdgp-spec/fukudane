@@ -650,12 +650,12 @@ section p:last-child { margin-bottom: 0; }
 .diagram-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 4px 0 8px; }
 .diagram { min-width: 260px; display: flex; flex-direction: column; align-items: center; gap: 22px; }
 .dg-center-wrap { display: flex; flex-direction: column; align-items: center; width: 100%; }
-.dg-node { font-family: inherit; font-size: 13px; font-weight: 700; color: var(--primary-dark); background: #fff; border: 1.5px solid var(--primary); border-radius: 8px; padding: 8px 14px; cursor: pointer; line-height: 1.4; text-align: center; }
+.dg-node { font-family: inherit; font-size: 12px; font-weight: 700; color: var(--primary-dark); background: #fff; border: 1.5px solid var(--primary); border-radius: 8px; padding: 8px 12px; cursor: pointer; line-height: 1.45; text-align: center; max-width: 240px; white-space: normal; word-break: break-word; }
 .dg-node:hover, .dg-node:focus-visible { background: var(--primary-tint); outline: none; }
-.dg-node-center { font-size: 15px; color: #fff; background: var(--primary); border-color: var(--primary-dark); padding: 10px 20px; }
+.dg-node-center { font-size: 13px; color: #fff; background: var(--primary); border-color: var(--primary-dark); padding: 10px 18px; max-width: 320px; }
 .dg-node-center:hover, .dg-node-center:focus-visible { background: var(--primary-dark); }
 .dg-trunk { width: 0; height: 22px; border-left: 2px solid var(--primary); }
-.dg-children { border: 2px solid var(--primary); border-radius: 12px; background: rgba(23, 107, 91, .04); padding: 10px 14px 14px; max-width: 760px; }
+.dg-children { border: 2px solid var(--primary); border-radius: 12px; background: rgba(23, 107, 91, .04); padding: 10px 14px 14px; max-width: 900px; }
 .dg-children-label { font-size: 12px; color: var(--primary-dark); font-weight: 700; margin-bottom: 10px; text-align: center; }
 .dg-children-row, .dg-group-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 .dg-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; width: 100%; }

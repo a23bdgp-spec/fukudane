@@ -669,7 +669,7 @@ const ORGANIZATIONS = {
     return null;
   }
   function rel(o) { return o["関係"] || {}; }
-  function label(o) { return o["略称"] || o["名称"]; }
+  function label(o) { return o["名称"]; }
 
   // 中心団体（位置づけに「中心」を含む。無ければ親団体として最多参照の団体）
   var center = null;
