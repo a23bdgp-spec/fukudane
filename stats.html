@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>統計情報｜社会福祉法人の財務・分布の集計｜フクダネ</title>
+<meta name="description" content="全国の社会福祉法人について、財務諸表等電子開示システムのデータをフクダネが集計した統計です。収益規模別・赤字割合の推移・事業分類別・設立年代・都道府県別などを事実として掲載します。">
+<link rel="canonical" href="https://fukudane.com/stats.html">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:title" content="統計情報｜社会福祉法人の財務・分布の集計｜フクダネ">
+<meta property="og:description" content="全国の社会福祉法人について、財務諸表等電子開示システムのデータをフクダネが集計した統計です。収益規模別・赤字割合の推移・事業分類別・設立年代・都道府県別などを事実として掲載します。">
+<meta property="og:url" content="https://fukudane.com/stats.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="フクダネ">
+<meta property="og:image" content="https://fukudane.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://fukudane.com/og-image.png">
+<link rel="stylesheet" href="style.css">
+<!-- JSONLD_START -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "ホーム", "item": "https://fukudane.com/" },
+        { "@type": "ListItem", "position": 2, "name": "社会福祉法人データベース", "item": "https://fukudane.com/db/db.html" },
+        { "@type": "ListItem", "position": 3, "name": "統計情報", "item": "https://fukudane.com/stats.html" }
+      ]
+    },
+    {
+      "@type": "WebPage",
+      "name": "統計情報",
+      "description": "全国の社会福祉法人について、財務諸表等電子開示システムのデータをフクダネが集計した統計です。収益規模別・赤字割合の推移・事業分類別・設立年代・都道府県別などを事実として掲載します。",
+      "url": "https://fukudane.com/stats.html",
+      "inLanguage": "ja",
+      "isPartOf": { "@type": "WebSite", "name": "フクダネ", "url": "https://fukudane.com/" }
+    }
+  ]
+}
+</script>
+<!-- JSONLD_END -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <div class="brand">
+      <a href="index.html" class="logo">
+        <svg class="logo-mark" width="26" height="26" viewBox="0 0 26 26" aria-hidden="true" focusable="false">
+          <g stroke="currentColor" stroke-width="1.3">
+            <line x1="13" y1="13" x2="6" y2="7"/>
+            <line x1="13" y1="13" x2="20" y2="7"/>
+            <line x1="13" y1="13" x2="7" y2="20"/>
+            <line x1="13" y1="13" x2="20" y2="19"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="13" cy="13" r="2.7"/>
+            <circle cx="6" cy="7" r="2"/>
+            <circle cx="20" cy="7" r="2"/>
+            <circle cx="7" cy="20" r="2"/>
+            <circle cx="20" cy="19" r="2"/>
+          </g>
+        </svg>
+        <span class="logo-text">フクダネ</span>
+      </a>
+      <span class="tagline">社会福祉法人の総合情報サイト</span>
+    </div>
+    <button class="nav-toggle" type="button" aria-controls="primary-nav" aria-expanded="false" aria-label="メニュー"><svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+    <nav class="site-nav" id="primary-nav">
+      <a href="index.html" class="nav-home">ホーム</a>
+      <a href="service.html">福祉サービス一覧</a>
+      <a href="history.html">制度の歴史</a>
+      <a href="jobs.html">福祉の仕事</a>
+      <a href="organizations.html">福祉業界団体</a>
+      <a href="guidelines.html">ガイドライン集</a>
+      <a href="management.html">経営関連資料</a>
+      <a href="foreign-workers.html">外国人材</a>
+      <a href="grants.html">助成団体</a>
+      <a href="db/db.html">社会福祉法人データベース</a>
+      <a href="stats.html" aria-current="page">統計情報</a>
+      <a href="about.html">フクダネについて</a>
+      <a href="search.html">サイト内検索</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1 class="catch">統計情報</h1>
+    <p class="lead">
+      全国の社会福祉法人について、財務諸表等電子開示システムのデータをフクダネが集計した統計です。数値は事実の集計であり、経営の良し悪しを示すものではありません。
+    </p>
+  </div>
+</div>
+
+<section class="list-page">
+  <div class="wrap">
+    <p class="ind-back"><a href="db/db.html">社会福祉法人データベースへ戻る</a></p>
+    <div id="stats-intro"></div>
+    <div id="stats-root"><p class="ind-loading">読み込み中…</p></div>
+    <div class="stats-src">
+      <p id="stats-src"></p>
+      <p>数値は各法人が提出した計算書類に基づく事実の集計です。母集団・期間・集計方法は各集計の「集計ベース」に記載しています。経営の良し悪しの判定や評価は行っていません。</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="footer-logo">フクダネ</span>
+        <span class="footer-tagline">社会福祉法人の総合情報サイト</span>
+      </div>
+      <nav class="footer-nav" aria-label="フッターナビゲーション">
+        <a href="index.html">ホーム</a>
+        <a href="service.html">福祉サービス一覧</a>
+        <a href="history.html">制度の歴史</a>
+        <a href="jobs.html">福祉の仕事</a>
+        <a href="organizations.html">福祉業界団体</a>
+        <a href="guidelines.html">ガイドライン集</a>
+        <a href="management.html">経営関連資料</a>
+        <a href="foreign-workers.html">外国人材</a>
+        <a href="grants.html">助成団体</a>
+        <a href="db/db.html">社会福祉法人データベース</a>
+        <a href="stats.html">統計情報</a>
+        <a href="about.html">フクダネについて</a>
+        <a href="search.html">サイト内検索</a>
+        <a href="terms.html">利用規約</a>
+      </nav>
+    </div>
+    <div class="footer-bottom">
+      <p class="disclaimer">
+        掲載情報は公的機関の公表物に基づきます。最新・正確な内容は、必ず出典（原本）をご確認ください。
+      </p>
+      <p class="copy">© 2026 フクダネ</p>
+    </div>
+  </div>
+</footer>
+
+<!--
+  データ埋め込み枠。content/stats.json の内容を build_map.py が下の STATS に注入する。
+-->
+<script>
+/* __STATS_INJECT_START__ ここから下を build_map.py が content/stats.json で置き換える（未注入時は空） */
+const STATS = {
+  "meta": {
+    "generated": "2026-07-23 20:32 JST",
+    "source_text": "出典：独立行政法人福祉医療機構「財務諸表等電子開示システム」および厚生労働省への行政文書開示請求により取得したデータを基に、フクダネが独自に再構成。政府標準利用規約（PDL1.0）に基づく利用。",
+    "years": [
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "target_year_main": 2024,
+    "total_corps_2024": 21086,
+    "unit_note": "財務値の単位は円。割合は%（小数1桁）。",
+    "sample_note": "サンプル数＝法人数、データ数＝法人年度数。本ページの単年度集計は法人数、5年推移は各年度の法人数を年度ごとに集計。",
+    "neutrality_note": "数値は事実の集計であり経営の良し悪しを示すものではありません。"
+  },
+  "size_distribution": {
+    "purpose": "収益規模ごとに法人数と赤字法人の割合がどう異なるかを事実として示す。",
+    "reading": "収益規模が小さい階級ほど法人数が多く、赤字（経常増減差額がマイナス）の割合も高い傾向が読み取れる。",
+    "base": "2024年度・当年度全数（サービス活動収益計で階級化）",
+    "unit": "法人数＝法人、赤字割合＝%",
+    "note": "赤字＝経常増減差額<0の事実。赤字割合の分母は各階級で経常増減差額が存在する法人数。",
+    "excluded_missing": 63,
+    "excluded_negative": 8,
+    "labels": [
+      "1億円未満",
+      "1〜3億円",
+      "3〜10億円",
+      "10〜30億円",
+      "30億円以上"
+    ],
+    "counts": [
+      2471,
+      8009,
+      7673,
+      2391,
+      471
+    ],
+    "deficit_rate": [
+      53.6,
+      33.7,
+      37.4,
+      28.9,
+      26.8
+    ],
+    "deficit_n": [
+      1324,
+      2701,
+      2869,
+      690,
+      126
+    ],
+    "base_n": [
+      2471,
+      8009,
+      7673,
+      2391,
+      471
+    ]
+  },
+  "deficit_trend": {
+    "purpose": "赤字法人の割合が5年間でどう推移したかを示す。",
+    "reading": "各年度の全法人に占める赤字法人の割合の推移が読み取れる。",
+    "base": "2020〜2024年度・各年度全数（経常増減差額が存在する全法人）",
+    "unit": "%",
+    "note": "赤字＝経常増減差額<0の事実。",
+    "labels": [
+      "2020年度",
+      "2021年度",
+      "2022年度",
+      "2023年度",
+      "2024年度"
+    ],
+    "deficit_rate": [
+      31.5,
+      37.1,
+      41.4,
+      38.9,
+      36.7
+    ],
+    "deficit_n": [
+      6584,
+      7782,
+      8697,
+      8183,
+      7713
+    ],
+    "base_n": [
+      20922,
+      20984,
+      21010,
+      21018,
+      21023
+    ]
+  },
+  "biz_class": {
+    "purpose": "主な事業分類ごとに法人数・収益規模（中央値）・赤字割合の違いを事実として示す。",
+    "reading": "事業分類により法人数と収益中央値、赤字割合に差があることが読み取れる。",
+    "base": "2024年度・当年度全数（収益構成の最大セグメントで5分類）",
+    "unit": "法人数＝法人、収益中央値＝円、赤字割合＝%",
+    "note": "分類はサービス活動収益の構成が最も大きい事業分野で判定（高齢/障害/児童/医療/その他）。",
+    "labels": [
+      "高齢",
+      "障害",
+      "児童",
+      "医療",
+      "その他"
+    ],
+    "counts": [
+      7082,
+      3675,
+      8940,
+      113,
+      1276
+    ],
+    "rev_median": [
+      553700984,
+      321445193,
+      199659927,
+      3256634675,
+      132168201
+    ],
+    "deficit_rate": [
+      52.3,
+      33.4,
+      22.7,
+      51.3,
+      57.1
+    ],
+    "deficit_n": [
+      3706,
+      1227,
+      2029,
+      58,
+      693
+    ],
+    "base_n": [
+      7082,
+      3675,
+      8940,
+      113,
+      1213
+    ]
+  },
+  "founding_era": {
+    "purpose": "法人が設立された年代の分布を示す。",
+    "reading": "どの年代に設立された法人が多いかが読み取れる。",
+    "base": "2024年度・当年度全数（設立年で年代区分）",
+    "unit": "法人数＝法人",
+    "note": "設立年欠損36法人・未来値0法人を除外。",
+    "excluded_missing": 36,
+    "excluded_future": 0,
+    "labels": [
+      "1945年以前",
+      "1946〜1970年",
+      "1971〜1990年",
+      "1991〜2000年",
+      "2001〜2016年",
+      "2017年以降"
+    ],
+    "counts": [
+      33,
+      3059,
+      7961,
+      3418,
+      5761,
+      818
+    ]
+  },
+  "revenue_concentration": {
+    "purpose": "全法人のサービス活動収益合計が、収益の大きい少数の法人にどの程度集まっているかを示す。",
+    "reading": "収益上位の少数法人が全体の収益合計に占める割合が読み取れる。",
+    "base": "2024年度・当年度全数（サービス活動収益計）",
+    "unit": "%（法人数・収益合計は補足）",
+    "note": "事実の集計。上位法人数は端数を四捨五入。",
+    "labels": [
+      "収益上位1%",
+      "収益上位10%"
+    ],
+    "share_pct": [
+      19.4,
+      49.1
+    ],
+    "corp_n": [
+      210,
+      2102
+    ],
+    "total_corps": 21023,
+    "total_rev_yen": 13149909972352
+  },
+  "prefecture": {
+    "purpose": "都道府県ごとの法人数と収益規模（中央値）の分布を示す。",
+    "reading": "都道府県により法人数と収益中央値に差があることが読み取れる。",
+    "base": "2024年度・当年度全数（都道府県区分別）",
+    "unit": "法人数＝法人、収益中央値＝円",
+    "note": "都道府県区分による集計。",
+    "labels": [
+      "北海道",
+      "青森県",
+      "岩手県",
+      "宮城県",
+      "秋田県",
+      "山形県",
+      "福島県",
+      "茨城県",
+      "栃木県",
+      "群馬県",
+      "埼玉県",
+      "千葉県",
+      "東京都",
+      "神奈川県",
+      "新潟県",
+      "富山県",
+      "石川県",
+      "福井県",
+      "山梨県",
+      "長野県",
+      "岐阜県",
+      "静岡県",
+      "愛知県",
+      "三重県",
+      "滋賀県",
+      "京都府",
+      "大阪府",
+      "兵庫県",
+      "奈良県",
+      "和歌山県",
+      "鳥取県",
+      "島根県",
+      "岡山県",
+      "広島県",
+      "山口県",
+      "徳島県",
+      "香川県",
+      "愛媛県",
+      "高知県",
+      "福岡県",
+      "佐賀県",
+      "長崎県",
+      "熊本県",
+      "大分県",
+      "宮崎県",
+      "鹿児島県",
+      "沖縄県"
+    ],
+    "counts": [
+      902,
+      520,
+      329,
+      269,
+      225,
+      250,
+      300,
+      522,
+      352,
+      498,
+      895,
+      693,
+      1086,
+      785,
+      439,
+      204,
+      311,
+      227,
+      250,
+      351,
+      294,
+      474,
+      684,
+      323,
+      268,
+      478,
+      1194,
+      802,
+      235,
+      220,
+      109,
+      265,
+      368,
+      449,
+      302,
+      175,
+      195,
+      217,
+      192,
+      1159,
+      254,
+      541,
+      669,
+      342,
+      382,
+      598,
+      489
+    ],
+    "rev_median": [
+      313809468,
+      186433568,
+      278371616,
+      426472946,
+      383528390,
+      284701642,
+      349558178,
+      325835283,
+      312495016,
+      264924770,
+      359949056,
+      391432789,
+      520918726,
+      493335125,
+      271302936,
+      340887953,
+      234323171,
+      274015113,
+      205193894,
+      317497864,
+      372856292,
+      318412742,
+      375708501,
+      348660133,
+      301370067,
+      306234535,
+      356976967,
+      339423077,
+      346349804,
+      277469328,
+      247178941,
+      231761014,
+      337179028,
+      345890703,
+      286427128,
+      241267353,
+      297646668,
+      306545980,
+      197584970,
+      255822155,
+      176006536,
+      200626310,
+      206885146,
+      207432450,
+      222911429,
+      207048383,
+      198034213
+    ]
+  },
+  "submission_trend": {
+    "purpose": "財務諸表等電子開示システムへの掲載法人数と、その年ごとの出入りを示す。",
+    "reading": "各年度の掲載法人数と、前年度から新たに掲載された法人数・掲載がなくなった法人数が読み取れる。",
+    "base": "2020〜2024年度・各年度全数（法人番号の集合比較）",
+    "unit": "法人数＝法人",
+    "note": "掲載有無の事実であり、廃止・倒産等の解釈は含まない。",
+    "labels": [
+      "2020年度",
+      "2021年度",
+      "2022年度",
+      "2023年度",
+      "2024年度"
+    ],
+    "listed": [
+      21002,
+      21053,
+      21082,
+      21086,
+      21086
+    ],
+    "newly_listed": [
+      null,
+      100,
+      79,
+      64,
+      57
+    ],
+    "no_longer_listed": [
+      null,
+      49,
+      50,
+      60,
+      57
+    ]
+  }
+};
+/* __STATS_INJECT_END__ ここまで */
+
+/* ===== 描画処理（統計情報）。表は常に描画し、グラフはtry/catchで独立させる（グラフ不可環境でも表は出る） ===== */
+(function () {
+  var S = STATS || {};
+  var meta = S.meta || {};
+  var GREEN = "#176b5b";
+
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (m) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[m]; }); }
+  function num(n) { return (n == null) ? "" : Number(n).toLocaleString("en-US"); }
+  function pct(n) { return (n == null) ? "" : String(n); }
+
+  var introEl = document.getElementById("stats-intro");
+  var root = document.getElementById("stats-root");
+  var srcEl = document.getElementById("stats-src");
+
+  try {
+    if (introEl) {
+      var yrs = meta.years || [];
+      var ih = '<div class="stats-intro">';
+      if (meta.neutrality_note) ih += '<p class="stats-neutral">' + esc(meta.neutrality_note) + "</p>";
+      ih += "<dl class=\"stats-meta\">";
+      if (yrs.length) ih += "<dt>対象年度</dt><dd>" + esc(yrs[0]) + "〜" + esc(yrs[yrs.length - 1]) + "年度（主たる単年度集計は" + esc(meta.target_year_main) + "年度）</dd>";
+      if (meta.total_corps_2024) ih += "<dt>掲載法人数（2024年度）</dt><dd>" + num(meta.total_corps_2024) + " 法人</dd>";
+      if (meta.unit_note) ih += "<dt>単位</dt><dd>" + esc(meta.unit_note) + "</dd>";
+      if (meta.sample_note) ih += "<dt>集計の単位</dt><dd>" + esc(meta.sample_note) + "</dd>";
+      ih += "</dl></div>";
+      introEl.innerHTML = ih;
+    }
+    if (srcEl && meta.source_text) srcEl.textContent = meta.source_text;
+  } catch (e) { /* 導入部の失敗は本体表示を妨げない */ }
+
+  if (!root) return;
+
+  function section(id, title, agg, bodyHtml) {
+    var h = '<section class="stats-sec" id="' + id + '"><h2 class="stats-h">' + esc(title) + "</h2>";
+    if (agg.purpose) h += '<p class="stats-purpose"><b>目的：</b>' + esc(agg.purpose) + "</p>";
+    if (agg.reading) h += '<p class="stats-reading"><b>読み取れること：</b>' + esc(agg.reading) + "</p>";
+    h += bodyHtml;
+    var foot = [];
+    if (agg.base) foot.push("集計ベース：" + esc(agg.base));
+    if (agg.note) foot.push(esc(agg.note));
+    if (agg.excluded_missing != null) foot.push("欠損除外：" + num(agg.excluded_missing) + "法人");
+    if (agg.excluded_negative != null) foot.push("負値除外：" + num(agg.excluded_negative) + "法人");
+    if (agg.excluded_future != null && agg.excluded_future) foot.push("未来値除外：" + num(agg.excluded_future) + "法人");
+    if (foot.length) h += '<p class="stats-foot">' + foot.join("　/　") + "</p>";
+    h += "</section>";
+    return h;
+  }
+  function table(headers, rows, aligns) {
+    var h = '<div class="stats-tablewrap"><table class="stats-table"><thead><tr>';
+    headers.forEach(function (hd, i) { h += '<th scope="col"' + (aligns && aligns[i] === "r" ? ' class="r"' : "") + ">" + esc(hd) + "</th>"; });
+    h += "</tr></thead><tbody>";
+    rows.forEach(function (r) {
+      h += "<tr>";
+      r.forEach(function (c, i) { h += "<td" + (aligns && aligns[i] === "r" ? ' class="r"' : "") + ">" + c + "</td>"; });
+      h += "</tr>";
+    });
+    h += "</tbody></table></div>";
+    return h;
+  }
+
+  var html = "";
+  var sz = S.size_distribution;
+  if (sz) {
+    var b = '<canvas class="stats-canvas" data-chart="bars-outline" data-id="c-size" height="220"></canvas>';
+    b += table(["収益規模", "法人数", "赤字割合", "赤字法人数", "母数"],
+      sz.labels.map(function (lb, i) { return [esc(lb), num(sz.counts[i]), pct(sz.deficit_rate[i]) + "%", num(sz.deficit_n[i]), num(sz.base_n[i])]; }),
+      [null, "r", "r", "r", "r"]);
+    html += section("stats-size", "収益規模別の法人数と赤字割合", sz, b);
+  }
+  var dt = S.deficit_trend;
+  if (dt) {
+    var b2 = '<canvas class="stats-canvas" data-chart="line" data-id="c-deficit" height="220"></canvas>';
+    b2 += table(["年度", "赤字割合", "赤字法人数", "母数"],
+      dt.labels.map(function (lb, i) { return [esc(lb), pct(dt.deficit_rate[i]) + "%", num(dt.deficit_n[i]), num(dt.base_n[i])]; }),
+      [null, "r", "r", "r"]);
+    html += section("stats-deficit", "赤字法人割合の推移", dt, b2);
+  }
+  var bc = S.biz_class;
+  if (bc) {
+    var b3 = table(["事業分類", "法人数", "収益中央値", "赤字割合", "赤字法人数", "母数"],
+      bc.labels.map(function (lb, i) { return [esc(lb), num(bc.counts[i]), num(bc.rev_median[i]) + " 円", pct(bc.deficit_rate[i]) + "%", num(bc.deficit_n[i]), num(bc.base_n[i])]; }),
+      [null, "r", "r", "r", "r", "r"]);
+    html += section("stats-biz", "主な事業分類別の法人数・収益・赤字割合", bc, b3);
+  }
+  var fe = S.founding_era;
+  if (fe) {
+    var b4 = '<canvas class="stats-canvas" data-chart="bars-outline" data-id="c-era" height="220"></canvas>';
+    b4 += table(["設立年代", "法人数"], fe.labels.map(function (lb, i) { return [esc(lb), num(fe.counts[i])]; }), [null, "r"]);
+    html += section("stats-era", "設立年代別の法人数", fe, b4);
+  }
+  var rc = S.revenue_concentration;
+  if (rc) {
+    var b5 = "";
+    if (rc.share_pct && rc.share_pct.length >= 2) {
+      b5 += '<p class="stats-sentence">' + esc("収益上位1%（" + num(rc.corp_n[0]) + "法人）が全体のサービス活動収益合計の " + pct(rc.share_pct[0]) +
+        "%、上位10%（" + num(rc.corp_n[1]) + "法人）が " + pct(rc.share_pct[1]) + "% を占めています。") + "</p>";
+    }
+    b5 += table(["区分", "法人数", "収益合計に占める割合"],
+      rc.labels.map(function (lb, i) { return [esc(lb), num(rc.corp_n[i]), pct(rc.share_pct[i]) + "%"]; }), [null, "r", "r"]);
+    b5 += '<p class="stats-note-inline">対象法人数：' + num(rc.total_corps) + " 法人／サービス活動収益合計：" + num(rc.total_rev_yen) + " 円</p>";
+    html += section("stats-conc", "収益の集中度", rc, b5);
+  }
+  var pf = S.prefecture;
+  if (pf) {
+    var b6 = table(["都道府県", "法人数", "収益中央値"],
+      pf.labels.map(function (lb, i) { return [esc(lb), num(pf.counts[i]), num(pf.rev_median[i]) + " 円"]; }), [null, "r", "r"]);
+    html += section("stats-pref", "都道府県別の法人数・収益中央値", pf, b6);
+  }
+  var st = S.submission_trend;
+  if (st) {
+    var b7 = table(["年度", "掲載法人数", "新規掲載", "掲載終了"],
+      st.labels.map(function (lb, i) { return [esc(lb), num(st.listed[i]), st.newly_listed[i] == null ? "—" : num(st.newly_listed[i]), st.no_longer_listed[i] == null ? "—" : num(st.no_longer_listed[i])]; }),
+      [null, "r", "r", "r"]);
+    html += section("stats-sub", "掲載法人数の推移", st, b7);
+  }
+
+  root.innerHTML = html || '<p class="ind-loading">統計データを読み込めませんでした。</p>';
+
+  // ---- グラフ（canvas）。失敗しても表は上で表示済み。各描画をtry/catchで独立させる。----
+  function drawBarsOutline(cv, labels, values) {
+    var dpr = window.devicePixelRatio || 1;
+    var W = cv.clientWidth || (cv.parentNode && cv.parentNode.clientWidth) || 640, H = cv.height || 220;
+    if (!W) return;
+    cv.width = W * dpr; cv.style.width = "100%"; cv.height = H * dpr;
+    var ctx = cv.getContext("2d"); if (!ctx) return; ctx.scale(dpr, dpr);
+    var padL = 8, padR = 8, padT = 20, padB = 42, plotW = W - padL - padR, plotH = H - padT - padB;
+    var max = Math.max.apply(null, values) || 1, n = values.length, gap = plotW / n * 0.24, bw = plotW / n - gap;
+    ctx.font = "11px sans-serif"; ctx.textAlign = "center";
+    for (var i = 0; i < n; i++) {
+      var x = padL + i * (plotW / n) + gap / 2, bh = plotH * (values[i] / max), y = padT + plotH - bh;
+      ctx.strokeStyle = GREEN; ctx.lineWidth = 1.5; ctx.strokeRect(x, y, bw, bh);
+      ctx.fillStyle = "#0f4d42"; ctx.fillText(Number(values[i]).toLocaleString("en-US"), x + bw / 2, y - 5);
+      ctx.fillStyle = "#5a6b67"; ctx.fillText(labels[i], x + bw / 2, H - 24);
+    }
+  }
+  function drawLine(cv, labels, values, suffix) {
+    var dpr = window.devicePixelRatio || 1;
+    var W = cv.clientWidth || (cv.parentNode && cv.parentNode.clientWidth) || 640, H = cv.height || 220;
+    if (!W) return;
+    cv.width = W * dpr; cv.style.width = "100%"; cv.height = H * dpr;
+    var ctx = cv.getContext("2d"); if (!ctx) return; ctx.scale(dpr, dpr);
+    var padL = 34, padR = 12, padT = 20, padB = 34, plotW = W - padL - padR, plotH = H - padT - padB;
+    var max = Math.max.apply(null, values) * 1.1 || 1, min = Math.min.apply(null, values) * 0.9, n = values.length;
+    function X(i) { return padL + plotW * (n === 1 ? 0.5 : i / (n - 1)); }
+    function Y(v) { return padT + plotH * (1 - (v - min) / (max - min || 1)); }
+    ctx.strokeStyle = "#d5ddda"; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(padL + plotW, padT + plotH); ctx.stroke();
+    ctx.strokeStyle = GREEN; ctx.lineWidth = 2; ctx.beginPath();
+    values.forEach(function (v, i) { if (i === 0) ctx.moveTo(X(i), Y(v)); else ctx.lineTo(X(i), Y(v)); });
+    ctx.stroke();
+    ctx.font = "11px sans-serif"; ctx.textAlign = "center";
+    values.forEach(function (v, i) {
+      ctx.fillStyle = GREEN; ctx.beginPath(); ctx.arc(X(i), Y(v), 3, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#0f4d42"; ctx.fillText(v + (suffix || ""), X(i), Y(v) - 8);
+      ctx.fillStyle = "#5a6b67"; ctx.fillText(labels[i], X(i), H - 16);
+    });
+  }
+  function safeDraw(fn) { try { fn(); } catch (e) { /* 個々のグラフ失敗は無視。表は表示済み。 */ } }
+  function renderCharts() {
+    try {
+      if (sz) { var c1 = document.querySelector('[data-id="c-size"]'); if (c1) safeDraw(function () { drawBarsOutline(c1, sz.labels, sz.counts); }); }
+      if (fe) { var c2 = document.querySelector('[data-id="c-era"]'); if (c2) safeDraw(function () { drawBarsOutline(c2, fe.labels, fe.counts); }); }
+      if (dt) { var c3 = document.querySelector('[data-id="c-deficit"]'); if (c3) safeDraw(function () { drawLine(c3, dt.labels, dt.deficit_rate, "%"); }); }
+    } catch (e) { /* グラフ全体が失敗しても表は表示済み */ }
+  }
+  if (typeof window !== "undefined" && window.requestAnimationFrame) {
+    window.requestAnimationFrame(renderCharts);
+    var t; window.addEventListener("resize", function () { clearTimeout(t); t = setTimeout(renderCharts, 200); });
+  } else { renderCharts(); }
+})();
+</script>
+<script src="nav.js" defer></script>
+</body>
+</html>
