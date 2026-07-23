@@ -782,6 +782,7 @@ section p:last-child { margin-bottom: 0; }
 .voices-toggle:hover { background: var(--primary-tint); }
 .voice-card { margin: 0; padding: 22px 22px 20px; background: #fff; border: 1px solid var(--line); border-radius: 10px; display: flex; flex-direction: column; }
 .voice-quote { position: relative; margin: 0 0 14px; padding: 0 0 0 20px; border-left: 3px solid var(--primary); font-size: 16px; line-height: 1.85; color: var(--ink); }
+.voice-note { font-size: 12.5px; line-height: 1.7; color: var(--ink-soft); background: var(--primary-tint); border-radius: 6px; padding: 8px 10px; margin: 0 0 14px; }
 .voice-meta { display: flex; flex-direction: column; gap: 2px; margin-top: auto; }
 .voice-name { font-size: 14px; font-weight: 700; color: var(--primary-dark); }
 .voice-title { font-size: 12.5px; color: var(--ink-soft); line-height: 1.6; }
