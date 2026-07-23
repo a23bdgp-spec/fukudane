@@ -2292,7 +2292,34 @@ const MAP_INTRO = {
       "url": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/seikatsuhogo/fukusijimusyo/index.html",
       "確認内容": "「福祉六法」の語と6法（生活保護法・児童福祉法・母子及び父子並びに寡婦福祉法・老人福祉法・身体障害者福祉法及び知的障害者福祉法）の列挙、福祉事務所が社会福祉法第14条に規定される「福祉に関する事務所」であり、福祉六法に定める援護・育成・更生の措置に関する事務を司る第一線の社会福祉行政機関であることを確認。確認日2026-07-23。"
     }
-  ]
+  ],
+  "official_search_systems": {
+    "title": "事業所を探す公式システム",
+    "description": "福祉サービスの事業所・施設を探すための、国・公的機関が運営する公式の情報公表システム。分野ごとに検索できます。",
+    "items": [
+      {
+        "名称": "障害福祉サービス等情報公表システム",
+        "対象分野": "障害福祉",
+        "概要": "全国の障害福祉サービス事業所を、地域・法人名・事業所名・事業所番号などから検索し、公表情報を確認できる。",
+        "URL": "https://www.wam.go.jp/sfkohyoout/COP000100E0000.do",
+        "運営": "独立行政法人福祉医療機構（WAM）"
+      },
+      {
+        "名称": "介護サービス情報公表システム",
+        "対象分野": "高齢・介護",
+        "概要": "全国の介護事業所・生活関連情報を都道府県ごとに検索し、事業所の公表情報を確認できる。",
+        "URL": "https://www.kaigokensaku.mhlw.go.jp/",
+        "運営": "厚生労働省"
+      },
+      {
+        "名称": "子ども・子育て支援情報公表システム（ここdeサーチ）",
+        "対象分野": "子ども・子育て（教育・保育施設等）",
+        "概要": "全国の教育・保育施設等（保育所・認定こども園等）の所在地・教育保育内容・利用定員などを検索できる。",
+        "URL": "https://www.wam.go.jp/kokodesearch/ANN010100E00.do",
+        "運営": "こども家庭庁（システム運営：独立行政法人福祉医療機構）"
+      }
+    ]
+  }
 };
 /* __MAP_INTRO_INJECT_END__ ここまで */
 
@@ -2387,8 +2414,6 @@ const MAP_INTRO = {
           similar: sv["類似サービス"] || [],               // 似た役割のサービス（名称の配列。箇条書き表示）
           url: sv["出典URL"] || "",
           wam: sv["WAMNET_URL"] || "",
-          notice: sv["通知URL"] || "",
-          noticeLabel: sv["通知リンク名"] || "",
           keiei: sv["経営指標URL"] || "",
           keieiLabel: sv["経営指標リンク名"] || "",
           guidelines: sv["関連ガイドライン"] || [],   // 関連ガイドライン（名称＋URLの配列。無ければ空）
@@ -2649,13 +2674,6 @@ const MAP_INTRO = {
         h += '<p class="s-wam"><a class="wam-btn" href="' + esc(wam) +
           '" target="_blank" rel="noopener noreferrer">WAM NETで解説を見る↗</a></p>';
       }
-    }
-    // 運営に関わる通知・基準リンク（通知URL＋通知リンク名がある場合のみ。WAM NETボタンと並ぶ位置）
-    var notice = safeUrl(it.notice);
-    if (notice) {
-      var noticeText = it.noticeLabel ? (it.noticeLabel + "↗") : "運営に関わる通知・基準を見る↗";
-      h += '<p class="s-wam"><a class="wam-btn" href="' + esc(notice) +
-        '" target="_blank" rel="noopener noreferrer">' + esc(noticeText) + "</a></p>";
     }
     // 経営指標リンク（経営指標URLがある場合のみ。他リンクと同じ並び・流儀）
     var keiei = safeUrl(it.keiei);
