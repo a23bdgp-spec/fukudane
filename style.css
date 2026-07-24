@@ -1328,3 +1328,43 @@ section p:last-child { margin-bottom: 0; }
 .chiiki-calc-fold .chiiki-calc { margin-top: 6px; }
 /* 単価を主役として強調（最左列） */
 .chiiki-tanka-main { font-weight: 700; color: var(--primary-dark); white-space: nowrap; }
+
+/* ===== 介護報酬 概算シミュレーター（hoshu-sim.html） ===== */
+.sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 20px; }
+.sim-block { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0; }
+.sim-block-wide, .sim-result { grid-column: 1 / -1; }
+.sim-h { font-size: 15px; font-weight: 700; color: var(--primary-d, var(--primary-dark)); margin: 0 0 12px; }
+.sim-lb { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 700; color: var(--ink-soft); min-width: 0; max-width: 100%; }
+.sim-lb select, .sim-lb input { font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 8px; background: #fff; color: var(--ink); max-width: 100%; }
+.sim-area { margin: 10px 0 0; font-size: 14px; line-height: 1.7; }
+.sim-area-hint, .sim-area-more { color: var(--ink-soft); font-size: 12.5px; }
+.sim-note { margin: 8px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+.sim-care { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.sim-care-lb { min-width: 0; }
+.sim-care-lb input, .sim-cn { width: 100%; min-width: 0; box-sizing: border-box; }
+.sim-daysrow { display: flex; flex-wrap: wrap; align-items: end; gap: 12px 20px; margin-top: 12px; }
+.sim-days, #sim-days { max-width: 110px; }
+.sim-total { font-size: 14px; font-weight: 700; color: var(--primary-dark); }
+.sim-kasan-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.sim-kasan-check { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; min-width: 220px; cursor: pointer; }
+.sim-kasan-check input { width: 18px; height: 18px; }
+.sim-kasan-ctrl { display: flex; flex-wrap: wrap; align-items: end; gap: 8px 12px; min-width: 0; max-width: 100%; }
+.sk-lb { display: flex; flex-direction: column; gap: 3px; font-size: 12px; font-weight: 700; color: var(--ink-soft); min-width: 0; max-width: 100%; }
+.sk-lb select, .sk-lb input { font: inherit; font-size: 13.5px; padding: 6px 8px; border: 1px solid var(--line-strong); border-radius: 7px; background: #fff; color: var(--ink); max-width: 100%; }
+.sk-n, .sk-cnt, .sk-days { max-width: 90px; }
+.sk-lb select { max-width: 240px; }
+.sk-lb-wide select { width: 240px; max-width: 100%; }
+.sim-kasan-meta { font-size: 11.5px; color: var(--ink-soft); line-height: 1.5; }
+.sim-shori { margin-top: 14px; padding-top: 12px; border-top: 2px solid var(--line-strong); display: flex; flex-wrap: wrap; align-items: end; gap: 8px 14px; }
+.sim-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.sim-table th, .sim-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.sim-table td { text-align: right; white-space: nowrap; }
+.sim-table thead th { font-size: 12.5px; color: var(--ink-soft); background: var(--page); }
+.sim-row-base th, .sim-row-base td { font-weight: 700; }
+.sim-row-total th, .sim-row-total td { font-weight: 700; font-size: 15px; color: var(--primary-dark); border-top: 2px solid var(--line-strong); border-bottom: none; background: var(--page); }
+.sim-calcnote { margin: 10px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+@media (max-width: 768px) {
+  .sim-grid { grid-template-columns: 1fr; }
+  .sim-care { grid-template-columns: repeat(3, 1fr); }
+  .sim-kasan-check { min-width: 100%; }
+}
