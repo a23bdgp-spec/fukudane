@@ -555,15 +555,20 @@ const JINKENHI = {
   // ---- 各種テーブル ----
   function tblShoteinai(rows) {
     var h = '<div class="table-scroll"><table class="sg-table"><thead><tr>' +
-      '<th scope="col">職種（調査分類名）</th><th scope="col">所定内給与額（月）</th><th scope="col">きまって支給する現金給与額（月）</th><th scope="col">年間賞与その他特別給与額（年）</th><th scope="col">平均年齢</th></tr></thead><tbody>';
+      '<th scope="col">職種（調査分類名）</th><th scope="col">所定内給与額（月）</th><th scope="col">きまって支給する現金給与額（月）</th><th scope="col">年間賞与その他特別給与額（年）</th><th scope="col">年収概算</th><th scope="col">平均年齢</th></tr></thead><tbody>';
     rows.forEach(function (r) {
+      // 年収概算＝きまって支給する現金給与額×12＋年間賞与その他特別給与額（いずれも千円→円）
+      var kimatte = r["きまって支給する現金給与額_千円_月"], shoyo = r["年間賞与その他特別給与額_千円_年"];
+      var nenshu = (kimatte != null && shoyo != null) ? Math.round(kimatte * 12 * 1000 + shoyo * 1000) : null;
       h += '<tr><th scope="row" class="sg-svc">' + esc(r["職種_調査分類名"]) + "</th>" +
-        '<td class="chiiki-tanka-main">' + yen1000(r["所定内給与額_千円_月"]) + "</td>" +
-        "<td>" + yen1000(r["きまって支給する現金給与額_千円_月"]) + "</td>" +
-        "<td>" + yen1000(r["年間賞与その他特別給与額_千円_年"]) + "</td>" +
+        "<td>" + yen1000(r["所定内給与額_千円_月"]) + "</td>" +
+        "<td>" + yen1000(kimatte) + "</td>" +
+        "<td>" + yen1000(shoyo) + "</td>" +
+        '<td class="chiiki-tanka-main">' + (nenshu != null ? Number(nenshu).toLocaleString("ja-JP") + "円" : "—") + "</td>" +
         "<td>" + (r["平均年齢_歳"] != null ? Number(r["平均年齢_歳"]).toFixed(1) + "歳" : "—") + "</td></tr>";
     });
-    return h + "</tbody></table></div>";
+    return h + "</tbody></table></div>" +
+      '<p class="jk-item-meta">年収概算＝きまって支給する現金給与額×12か月＋年間賞与その他特別給与額（賃金構造基本統計の公表値から算出した概算）。</p>';
   }
   function tblKyujin(rows) {
     var h = '<div class="table-scroll"><table class="sg-table"><thead><tr><th scope="col">職業（公表分類名）</th><th scope="col">有効求人倍率（令和6年度平均）</th></tr></thead><tbody>';
@@ -626,7 +631,7 @@ const JINKENHI = {
       // 賃金相場：月額所定内給与を主表に、他の賃金統計は折りたたみへ
       var mainItem = null, subs = [];
       items.forEach(function (it) { if (it["職種別データ_所定内給与額"]) mainItem = it; else subs.push(it); });
-      if (mainItem) h += '<div class="jk-item">' + itemHead(mainItem) + itemTable(mainItem) + "</div>";
+      if (mainItem) h += '<div class="jk-item" id="jk-wage-main">' + itemHead(mainItem) + itemTable(mainItem) + "</div>";
       if (subs.length) {
         h += '<details class="sg-fold"><summary>参考：他の賃金統計（時給換算の基準値・職業別の求人平均賃金・介護労働実態調査）</summary>';
         subs.forEach(function (it) { h += '<div class="jk-item">' + itemHead(it) + itemTable(it) + "</div>"; });
@@ -641,6 +646,31 @@ const JINKENHI = {
 
   var footEl = document.getElementById("jk-foot");
   if (footEl) footEl.textContent = "最低賃金・保険料率・各種統計は改定・更新されます。最新・正確な額は必ずリンク先（原本）をご確認ください。数値は事実の掲載であり、良否の評価ではありません。";
+})();
+</script>
+
+<script>
+/* ===== 「表をコピー」部品（text/html＋text/plain TSV）。外部送信なし・ブラウザ内処理のみ ===== */
+(function () {
+  function addCopy(containerId, label) {
+    var box = document.getElementById(containerId); if (!box) return;
+    var table = box.querySelector("table"); if (!table || box.querySelector(".fd-copybtn")) return;
+    var bar = document.createElement("div"); bar.className = "fd-copybar";
+    var btn = document.createElement("button"); btn.type = "button"; btn.className = "fd-copybtn"; btn.textContent = (label || "表") + "をコピー";
+    var msg = document.createElement("span"); msg.className = "fd-copymsg"; msg.setAttribute("aria-live", "polite");
+    bar.appendChild(btn); bar.appendChild(msg); box.insertBefore(bar, box.firstChild);
+    function tsv() { var rows = []; table.querySelectorAll("tr").forEach(function (tr) { var c = []; tr.querySelectorAll("th,td").forEach(function (x) { c.push(String(x.textContent).replace(/\s+/g, " ").trim()); }); rows.push(c.join("\t")); }); return rows.join("\n"); }
+    function htmlT() { var cl = table.cloneNode(true); cl.querySelectorAll("[style],[class]").forEach(function (e) { e.removeAttribute("style"); e.removeAttribute("class"); }); cl.removeAttribute("class"); return '<meta charset="utf-8">' + cl.outerHTML; }
+    function flash(t) { msg.textContent = t; setTimeout(function () { msg.textContent = ""; }, 2000); }
+    btn.addEventListener("click", function () {
+      var text = tsv();
+      if (navigator.clipboard && window.ClipboardItem) {
+        navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([htmlT()], { type: "text/html" }), "text/plain": new Blob([text], { type: "text/plain" }) })]).then(function () { flash("コピーしました"); }, function () { navigator.clipboard.writeText(text).then(function () { flash("コピーしました"); }, function () { flash("コピーできませんでした"); }); });
+      } else if (navigator.clipboard) { navigator.clipboard.writeText(text).then(function () { flash("コピーしました"); }, function () { flash("コピーできませんでした"); }); }
+      else { flash("コピーに対応していません"); }
+    });
+  }
+  addCopy("jk-wage-main", "賃金相場の表");
 })();
 </script>
 

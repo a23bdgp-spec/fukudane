@@ -387,18 +387,41 @@ const KIJUN = {
       (unrec ? '<p class="sg-tl-rate kj-unrec">金額は本マスタの出典資料に記載がなく未収録（別途、当時の告示原典で要確認）。</p>' : "") +
       (src ? '<p class="sg-tl-src">' + src + "</p>" : "") + "</div></li>";
   }
+  // 居住費の入れ子を「類型（施設）：額」に平坦化
+  function flatRoom(room) {
+    var o = {};
+    Object.keys(room || {}).forEach(function (rt) {
+      var v = room[rt];
+      if (v && typeof v === "object") Object.keys(v).forEach(function (f) { o[rt + "（" + f + "）"] = v[f]; });
+      else o[rt] = v;
+    });
+    return o;
+  }
+  // 直前の版との前後差分（食費・居住費）を「◯円 → ◯円（±差）」で列挙。JSONの実数のみ使用
+  function diffRows(prev, curr) {
+    var out = [];
+    if (prev["食費"] !== curr["食費"]) { var d = curr["食費"] - prev["食費"]; out.push("食費 " + yen(prev["食費"]) + " → " + yen(curr["食費"]) + "（" + (d >= 0 ? "+" : "") + yen(d) + "）"); }
+    var pf = flatRoom(prev["居住費"]), cf = flatRoom(curr["居住費"]);
+    Object.keys(cf).forEach(function (k) {
+      if (pf[k] == null) out.push("居住費 " + k + " " + yen(cf[k]) + "（新設）");
+      else if (pf[k] !== cf[k]) { var d2 = cf[k] - pf[k]; out.push("居住費 " + k + " " + yen(pf[k]) + " → " + yen(cf[k]) + "（" + (d2 >= 0 ? "+" : "") + yen(d2) + "）"); }
+    });
+    return out;
+  }
   var items = "";
-  // 制度沿革（2005・2015＝金額未収録）
-  enkaku.forEach(function (e) {
+  // 改正履歴（金額あり）を新しい順に。各版は直前の版との前後差分を明示
+  for (var i = hist.length - 1; i >= 1; i--) {
+    var e = hist[i];
+    if (String(e["適用開始年月"]).indexOf("改定前") >= 0) continue;
+    var diffs = diffRows(hist[i - 1], e);
+    var amountHtml = diffs.length ? '<ul class="kj-difflist">' + diffs.map(function (x) { return "<li>" + esc(x) + "</li>"; }).join("") + "</ul>" : "";
+    items += '<li class="sg-tl-item"><div class="sg-tl-when">' + esc(e["適用開始年月"]) + '</div><div class="sg-tl-body"><p class="sg-tl-name">基準費用額の改定</p>' +
+      '<p class="sg-tl-point">' + esc(e["改定の根拠"] || "") + "</p>" + amountHtml +
+      (srcLink(e["出典URL"], "出典") ? '<p class="sg-tl-src">' + srcLink(e["出典URL"], "出典") + "</p>" : "") + "</div></li>";
+  }
+  // 制度の沿革（2015・2005＝金額未収録）を新しい順に
+  enkaku.slice().reverse().forEach(function (e) {
     items += histItem(e["時期"], "制度の動き", e["事実"], "", "", true);
-  });
-  // 改正履歴（金額のわかる改定）。改定前ベースライン以外を掲載
-  hist.forEach(function (e) {
-    // 「改定前」ベースライン行（食費は改定前）はスキップして、実際の改定回のみ表示
-    if (String(e["適用開始年月"]).indexOf("改定前") >= 0) return;
-    var konkyo = e["改定の根拠"] || "";
-    var amount = "食費 " + yen(e["食費"]) + "／日";
-    items += histItem(e["適用開始年月"], "基準費用額の改定", konkyo, amount, srcLink(e["出典URL"], "出典"), false);
   });
   var histEl = document.getElementById("kj-hist");
   if (histEl) histEl.innerHTML = items;

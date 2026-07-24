@@ -138,39 +138,46 @@
       <p class="chiiki-warn" id="sg-series"></p>
     </div>
 
-    <!-- (1) 現行の加算率 -->
-    <section class="sg-sec">
-      <h2 class="section-title">現行の加算率（令和8年度）</h2>
-      <p id="sg-cur-note" class="sg-note"></p>
-      <div id="sg-cur-table"></div>
-      <div id="sg-cur-new"></div>
-      <p id="sg-cur-src" class="chiiki-src"></p>
-    </section>
+    <!-- 分野タブ（介護保険｜障害福祉） -->
+    <div id="sg-domain-tabs" class="chiiki-domain-tabs" role="tablist" aria-label="分野の切替（介護・障害）">
+      <button type="button" class="chiiki-domtab" role="tab" data-sgdomain="kaigo" aria-selected="true" aria-pressed="true">介護保険</button>
+      <button type="button" class="chiiki-domtab" role="tab" data-sgdomain="shogai" aria-selected="false" aria-pressed="false">障害福祉</button>
+    </div>
 
-    <!-- (2) 介護系列の改正の歴史 -->
-    <section class="sg-sec">
-      <h2 class="section-title">改正の歴史（介護）</h2>
-      <ol id="sg-hist-kaigo" class="sg-timeline"></ol>
-    </section>
+    <div id="sg-kaigo">
+      <!-- (1) 介護の現行加算率 -->
+      <section class="sg-sec">
+        <h2 class="section-title">現行の加算率（介護・令和8年度）</h2>
+        <p id="sg-cur-note" class="sg-note"></p>
+        <div id="sg-cur-table"></div>
+        <div id="sg-cur-new"></div>
+        <p id="sg-cur-src" class="chiiki-src"></p>
+      </section>
+      <!-- (2) 介護系列の改正の歴史 -->
+      <section class="sg-sec">
+        <h2 class="section-title">改正の歴史（介護）</h2>
+        <ol id="sg-hist-kaigo" class="sg-timeline"></ol>
+      </section>
+      <!-- (4) 令和6年6月一本化時の加算率（参考・折りたたみ） -->
+      <section class="sg-sec">
+        <div id="sg-2024-fold"></div>
+      </section>
+    </div>
 
-    <!-- (4) 令和6年6月一本化時の加算率（参考・折りたたみ） -->
-    <section class="sg-sec">
-      <div id="sg-2024-fold"></div>
-    </section>
-
-    <!-- (3a) 障害福祉の現行加算率 -->
-    <section class="sg-sec">
-      <h2 class="section-title">現行の加算率（障害福祉・令和8年度）</h2>
-      <p id="sg-cur-shogai-note" class="sg-note"></p>
-      <div id="sg-cur-shogai-table"></div>
-      <div id="sg-cur-shogai-new"></div>
-    </section>
-
-    <!-- (3) 障害福祉系列の改正の歴史 -->
-    <section class="sg-sec">
-      <h2 class="section-title">改正の歴史（障害福祉）</h2>
-      <ol id="sg-hist-shogai" class="sg-timeline"></ol>
-    </section>
+    <div id="sg-shogai" hidden>
+      <!-- (3a) 障害福祉の現行加算率 -->
+      <section class="sg-sec">
+        <h2 class="section-title">現行の加算率（障害福祉・令和8年度）</h2>
+        <p id="sg-cur-shogai-note" class="sg-note"></p>
+        <div id="sg-cur-shogai-table"></div>
+        <div id="sg-cur-shogai-new"></div>
+      </section>
+      <!-- (3) 障害福祉系列の改正の歴史 -->
+      <section class="sg-sec">
+        <h2 class="section-title">改正の歴史（障害福祉）</h2>
+        <ol id="sg-hist-shogai" class="sg-timeline"></ol>
+      </section>
+    </div>
 
     <p class="chiiki-foot" id="sg-foot"></p>
   </div>
@@ -1195,8 +1202,9 @@ const SHOGUU = {
         "</div></li>";
     }).join("");
   }
-  renderTimeline(document.getElementById("sg-hist-kaigo"), histKaigo);
-  renderTimeline(document.getElementById("sg-hist-shogai"), histShogai);
+  // 改正の歴史は新しいものから順に表示
+  renderTimeline(document.getElementById("sg-hist-kaigo"), histKaigo.slice().reverse());
+  renderTimeline(document.getElementById("sg-hist-shogai"), histShogai.slice().reverse());
 
   // (4) 令和6年6月一本化時の加算率（参考・折りたたみ）
   var e2024 = null;
@@ -1226,6 +1234,85 @@ const SHOGUU = {
   // 脚注
   var footEl = document.getElementById("sg-foot");
   if (footEl) footEl.textContent = "介護（介護職員等処遇改善加算）と障害福祉（福祉・介護職員等処遇改善加算）は別系列です。数値は事実の掲載であり、良否の評価ではありません。";
+})();
+</script>
+
+<script>
+/* ===== 汎用「表をコピー」部品（text/html＋text/plain TSV）。外部送信なし・ブラウザ内処理のみ ===== */
+(function () {
+  window.fdTableCopy = function (containerId, label) {
+    var box = document.getElementById(containerId);
+    if (!box) return;
+    var table = box.querySelector("table");
+    if (!table) return;
+    if (box.querySelector(".fd-copybtn")) return; // 二重付与を防ぐ
+    var bar = document.createElement("div");
+    bar.className = "fd-copybar";
+    var btn = document.createElement("button");
+    btn.type = "button"; btn.className = "fd-copybtn";
+    btn.textContent = (label || "表") + "をコピー";
+    var msg = document.createElement("span"); msg.className = "fd-copymsg"; msg.setAttribute("aria-live", "polite");
+    bar.appendChild(btn); bar.appendChild(msg);
+    box.insertBefore(bar, box.firstChild);
+    function tsv() {
+      var rows = [];
+      table.querySelectorAll("tr").forEach(function (tr) {
+        var cells = [];
+        tr.querySelectorAll("th,td").forEach(function (c) { cells.push(String(c.textContent).replace(/\s+/g, " ").trim()); });
+        rows.push(cells.join("\t"));
+      });
+      return rows.join("\n");
+    }
+    function htmlTable() {
+      // スタイル属性を除いた素の<table>（貼り付け先で表として認識される）
+      var clone = table.cloneNode(true);
+      clone.removeAttribute("class"); clone.removeAttribute("style");
+      clone.querySelectorAll("[style]").forEach(function (e) { e.removeAttribute("style"); });
+      clone.querySelectorAll("[class]").forEach(function (e) { e.removeAttribute("class"); });
+      return '<meta charset="utf-8">' + clone.outerHTML;
+    }
+    function flash(t) { msg.textContent = t; setTimeout(function () { msg.textContent = ""; }, 2000); }
+    btn.addEventListener("click", function () {
+      var html = htmlTable(), text = tsv();
+      if (navigator.clipboard && window.ClipboardItem) {
+        var item = new ClipboardItem({ "text/html": new Blob([html], { type: "text/html" }), "text/plain": new Blob([text], { type: "text/plain" }) });
+        navigator.clipboard.write([item]).then(function () { flash("コピーしました"); }, function () {
+          navigator.clipboard.writeText(text).then(function () { flash("コピーしました"); }, function () { flash("コピーできませんでした"); });
+        });
+      } else if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(function () { flash("コピーしました"); }, function () { flash("コピーできませんでした"); });
+      } else { flash("コピーに対応していません"); }
+    });
+  };
+  // 加算率表にコピーボタンを付与
+  fdTableCopy("sg-cur-table", "介護の加算率表");
+  fdTableCopy("sg-cur-shogai-table", "障害の加算率表");
+})();
+</script>
+
+<script>
+/* ===== 分野タブ（介護保険｜障害福祉）の切替 ===== */
+(function () {
+  var tabs = document.getElementById("sg-domain-tabs");
+  var kaigo = document.getElementById("sg-kaigo");
+  var shogai = document.getElementById("sg-shogai");
+  if (!tabs || !kaigo || !shogai) return;
+  var D = "kaigo";
+  try { var d = new URLSearchParams(location.search).get("d"); if (d === "shogai") D = "shogai"; } catch (e) { /* 無視 */ }
+  function apply() {
+    kaigo.hidden = (D !== "kaigo"); shogai.hidden = (D !== "shogai");
+    tabs.querySelectorAll(".chiiki-domtab").forEach(function (b) {
+      var on = b.getAttribute("data-sgdomain") === D;
+      b.setAttribute("aria-selected", on ? "true" : "false"); b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+  tabs.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("[data-sgdomain]") : null; if (!b) return;
+    var d = b.getAttribute("data-sgdomain"); if (d === D) return;
+    D = d; try { var u = new URL(location.href); u.searchParams.set("d", d); history.replaceState(null, "", u.toString()); } catch (e2) { /* 無視 */ }
+    apply();
+  });
+  apply();
 })();
 </script>
 

@@ -1372,6 +1372,12 @@ section p:last-child { margin-bottom: 0; }
 .sg-tl-rate { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 2px; }
 .sg-tl-src { font-size: 12px; color: var(--ink-soft); margin: 2px 0 0; }
 .sg-fold > summary { cursor: pointer; font-size: 14px; font-weight: 700; color: var(--primary-dark); padding: 8px 0; }
+/* 汎用「表をコピー」ボタン */
+.fd-copybar { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; }
+.fd-copybtn { font-family: inherit; font-size: 12.5px; font-weight: 700; color: var(--primary-dark); background: #fff; border: 1px solid var(--line-strong); border-radius: 999px; padding: 5px 14px; cursor: pointer; }
+.fd-copybtn:hover { border-color: var(--primary); }
+.fd-copybtn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.fd-copymsg { font-size: 12px; font-weight: 700; color: var(--primary); }
 @media (max-width: 768px) { .sg-tl-when { flex-basis: 100%; } }
 /* 基準費用額（kijun-hiyou.html）固有 */
 .kj-desc { font-size: 14px; line-height: 1.9; }
@@ -1379,6 +1385,8 @@ section p:last-child { margin-bottom: 0; }
 .kj-unrec { color: var(--ink-soft); font-style: italic; }
 .kj-srclist { margin: 8px 0 0; padding-left: 20px; font-size: 13.5px; line-height: 1.9; }
 .kj-src-desc { display: block; font-size: 12px; color: var(--ink-soft); margin: 2px 0 4px; }
+.kj-difflist { margin: 4px 0 0; padding-left: 18px; font-size: 12.5px; line-height: 1.8; color: var(--ink); }
+.kj-difflist li { margin: 1px 0; }
 
 /* ===== 介護報酬 概算シミュレーター（hoshu-sim.html） ===== */
 .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 20px; }
