@@ -1098,6 +1098,23 @@ section p:last-child { margin-bottom: 0; }
 /* 本部の有無マトリクスは列が2つだけなので、行ラベル列を詰めて全体幅も緩める */
 #stats-matrix-size-hq .heat-matrix, #stats-matrix-era-hq .heat-matrix { min-width: 0; }
 .metric-subtoggle { margin-top: 6px; }
+
+/* ===== 外国人材 受入れ費用の目安（foreign-workers.html） ===== */
+.fc-legend { font-size: 12.5px; color: var(--ink-soft); line-height: 1.7; margin: 4px 0 16px; }
+.fc-route { margin: 20px 0; }
+.fc-route-name { font-size: 15px; font-weight: 700; color: var(--primary-dark); margin: 0 0 4px; }
+.fc-route-note { font-size: 13px; color: var(--ink-soft); line-height: 1.7; margin: 0 0 8px; }
+.fc-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 620px; }
+.fc-table th, .fc-table td { border-bottom: 1px solid var(--line); padding: 7px 9px; text-align: left; vertical-align: top; }
+.fc-table thead th { font-size: 12px; color: var(--ink-soft); background: var(--page); white-space: nowrap; }
+.fc-table .fc-hi { font-weight: 700; min-width: 180px; }
+.fc-table .fc-amt { font-weight: 700; color: var(--primary-dark); white-space: nowrap; }
+.fc-tanto { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--primary-tint); color: var(--ink); white-space: nowrap; }
+.fc-tanto-honnin { background: #fdeede; color: #8a4b12; }
+.fc-tanto-uke { background: var(--primary-tint); color: var(--primary-dark); }
+.fc-remark { font-size: 12px; color: var(--ink-soft); line-height: 1.7; margin: 6px 0 0; }
+.fc-srclist { margin: 20px 0 0; }
+.fc-srclist ul { margin: 6px 0 0; padding-left: 20px; font-size: 12.5px; line-height: 1.9; }
 .heat-cell { line-height: 1.3; }
 .heat-cell .heat-val { font-size: 13.5px; }
 .heat-cell .heat-n { font-size: 10px; }
