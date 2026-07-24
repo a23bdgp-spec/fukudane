@@ -147,11 +147,24 @@
 
     <!-- 分野タブ（介護保険（特養）／障害福祉） -->
     <div id="sim-domain-tabs" class="chiiki-domain-tabs" role="tablist" aria-label="分野の切替（介護・障害）">
-      <button type="button" class="chiiki-domtab" role="tab" data-sdomain="kaigo" aria-selected="true" aria-pressed="true">介護保険（特養）</button>
+      <button type="button" class="chiiki-domtab" role="tab" data-sdomain="kaigo" aria-selected="true" aria-pressed="true">介護保険</button>
       <button type="button" class="chiiki-domtab" role="tab" data-sdomain="shogai" aria-selected="false" aria-pressed="false">障害福祉</button>
     </div>
 
     <div id="sim-app">
+      <!-- 介護サービスの選択（特養｜通所介護｜老健｜認知症GH） -->
+      <div class="sim-svc-pick">
+        <label class="sim-lb sim-lb-svc">サービス
+          <select id="sim-svc-pick">
+            <option value="tokuyo">介護老人福祉施設（特別養護老人ホーム）</option>
+            <option value="tsusho">通所介護（デイサービス）</option>
+            <option value="roken">介護老人保健施設（老健）</option>
+            <option value="gh">認知症対応型共同生活介護（認知症GH）</option>
+          </select>
+        </label>
+      </div>
+
+      <div id="sim-tokuyo">
       <!-- 入力フォーム（JSで描画） -->
       <div class="sim-grid">
         <!-- 1. 市町村 -->
@@ -208,6 +221,58 @@
         </div>
         <p class="sim-calcnote" id="sim-calcnote"></p>
       </section>
+      </div><!-- /#sim-tokuyo -->
+
+      <div id="sim-other" hidden>
+        <div class="sim-grid">
+          <section class="sim-block">
+            <h2 class="sim-h">1. 市町村（地域区分）</h2>
+            <label for="sim3-q" class="search-label">市町村名で検索（部分一致・介護保険の級地）</label>
+            <input type="search" id="sim3-q" class="search-input" placeholder="例：調布、亀山、その他" autocomplete="off">
+            <p id="sim3-area" class="sim-area"></p>
+          </section>
+          <section class="sim-block sim-block-wide">
+            <h2 class="sim-h">2. 区分（基本報酬）</h2>
+            <div id="sim3-cascade"></div>
+          </section>
+          <section class="sim-block">
+            <h2 class="sim-h">3. 利用者数</h2>
+            <div class="metric-toggle sim-mode3" role="group" aria-label="入力モードの切替">
+              <button type="button" class="metric-btn" data-mode3="easy" aria-pressed="true">かんたん（定員×稼働率）</button>
+              <button type="button" class="metric-btn" data-mode3="detail" aria-pressed="false">詳細（人数直接）</button>
+            </div>
+            <div id="sim3-mode-easy">
+              <div class="sim-easyrow">
+                <label class="sim-lb">定員（人）<input type="text" inputmode="numeric" id="sim3-capacity" placeholder="例：30"></label>
+                <label class="sim-lb">稼働率（%）<input type="number" step="0.01" min="0" max="100" inputmode="decimal" id="sim3-occ" placeholder="例：90.00"></label>
+              </div>
+              <p class="sim-note" id="sim3-easy-note"></p>
+            </div>
+            <div id="sim3-mode-detail" hidden>
+              <label class="sim-lb">利用者数（人）<input type="text" inputmode="numeric" id="sim3-users" placeholder="例：27"></label>
+            </div>
+            <div class="sim-daysrow" id="sim3-daysrow">
+              <label class="sim-lb" id="sim3-days-lb">営業日数（月）<input type="text" inputmode="numeric" id="sim3-days" value="22" placeholder="22"></label>
+              <span class="sim-total" id="sim3-total"></span>
+            </div>
+          </section>
+          <section class="sim-block sim-block-wide">
+            <h2 class="sim-h">4. 加算（体制加算・処遇改善）</h2>
+            <div id="sim3-taisei"></div>
+            <div class="sim-shori" id="sim3-shori"></div>
+          </section>
+        </div>
+        <section class="sim-block sim-result">
+          <h2 class="sim-h">概算結果（月間）</h2>
+          <div class="table-scroll">
+            <table class="sim-table" id="sim3-breakdown">
+              <thead><tr><th scope="col">項目</th><th scope="col">単位数</th><th scope="col">月額</th><th scope="col">1日あたり</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="sim-calcnote" id="sim3-calcnote"></p>
+        </section>
+      </div><!-- /#sim-other -->
     </div>
 
     <div id="sim-shogai" hidden>
@@ -10837,6 +10902,433 @@ const SIM_SHOGUU = {
 };
 /* __SIM_SHOGUU_INJECT_END__ ここまで */
 </script>
+<script>
+/* __SIM_KASAN_TSUSHO_INJECT_START__ ここから下を build_map.py が content/kasan_tsusho.json で置き換える（未注入時は空） */
+const SIM_KASAN_TSUSHO = {
+  "メタ": {
+    "タイトル": "通所介護（デイサービス）加算・減算マスタ（令和6年度改定後／処遇改善は令和8年度現行）",
+    "対象": "指定通所介護。シミュレーター用に体制系加算（全利用者に付く）を優先収録し、該当者のみ系も属性で区別して収録（第1弾）。",
+    "確認日": "2026-07-24",
+    "出典": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+    "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1",
+    "シミュレーター用の属性説明": {
+      "算定単位": "1回＝利用延べ回数分、1月＝月1回。",
+      "算定対象": "全利用者＝利用者全員×利用回数（体制加算）／該当利用者＝要件該当者のみ／事業所全体（率）。",
+      "種別": "加算＝基本報酬に上乗せ／率＝総単位数に乗じる（処遇改善）。",
+      "計算式": "月間概算（加算分）＝Σ[加算単位数×利用延べ回数or該当回数]。処遇改善は総単位数×加算率。単位→円は地域区分の1単位単価（通所介護は人件費割合45%、chiiki_kubun.json）を乗じる。"
+    },
+    "収録加算数": 10,
+    "第2弾予定": "口腔機能向上加算・栄養改善加算・若年性認知症利用者受入加算・中重度者ケア体制以外の該当者系、および各種減算（定員超過・人員基準欠如・同一建物減算・送迎減算等）。"
+  },
+  "加算": [
+    {
+      "名称": "中重度者ケア体制加算",
+      "単位数": 45,
+      "算定単位": "1回（利用1回ごと）",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1",
+      "備考": "中重度の要介護者を受け入れる体制。"
+    },
+    {
+      "名称": "ADL維持等加算",
+      "単位数": {
+        "Ⅰ": 30,
+        "Ⅱ": 60
+      },
+      "算定単位": "1月",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "科学的介護推進体制加算",
+      "単位数": 40,
+      "算定単位": "1月",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1",
+      "備考": "LIFEへの情報提出・活用。"
+    },
+    {
+      "名称": "サービス提供体制強化加算",
+      "単位数": {
+        "Ⅰ": 22,
+        "Ⅱ": 18,
+        "Ⅲ": 6
+      },
+      "算定単位": "1回（利用1回ごと）",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "入浴介助加算",
+      "単位数": {
+        "Ⅰ": 40,
+        "Ⅱ": 55
+      },
+      "算定単位": "1回（入浴介助を行った利用1回ごと）",
+      "算定対象": "該当利用者",
+      "種別": "加算",
+      "根拠": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1",
+      "備考": "入浴介助を行った日に算定。"
+    },
+    {
+      "名称": "個別機能訓練加算",
+      "単位数": {
+        "Ⅰイ": 56,
+        "Ⅰロ": 76,
+        "Ⅱ": 20
+      },
+      "算定単位": "Ⅰは1回・Ⅱは1月",
+      "算定対象": "該当利用者",
+      "種別": "加算",
+      "根拠": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1",
+      "備考": "Ⅰイ/Ⅰロは1回、Ⅱ（LIFE活用）は1月。"
+    },
+    {
+      "名称": "認知症加算",
+      "単位数": 60,
+      "算定単位": "1回（利用1回ごと）",
+      "算定対象": "該当利用者",
+      "種別": "加算",
+      "根拠": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1",
+      "備考": "別に定める認知症の利用者に算定。"
+    },
+    {
+      "名称": "栄養アセスメント加算",
+      "単位数": 50,
+      "算定単位": "1月",
+      "算定対象": "該当利用者",
+      "種別": "加算",
+      "根拠": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "生活機能向上連携加算",
+      "単位数": {
+        "Ⅰ": 100,
+        "Ⅱ": 200
+      },
+      "算定単位": "1月",
+      "算定対象": "該当利用者",
+      "種別": "加算",
+      "根拠": "指定居宅サービスに要する費用の額の算定に関する基準（平成12年厚生省告示第19号・令和6年度改定後）通所介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0253&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "介護職員等処遇改善加算",
+      "種別": "率（処遇改善）",
+      "算定単位": "総報酬単位数に対する率",
+      "算定対象": "事業所全体（総単位数に乗じる）",
+      "加算率_令和8年度": {
+        "Ⅰイ": 11.1,
+        "Ⅰロ": 12.0,
+        "Ⅱイ": 10.9,
+        "Ⅱロ": 11.8,
+        "Ⅲ": 9.9,
+        "Ⅳ": 8.3
+      },
+      "根拠": "令和8年度介護報酬改定（処遇改善の拡充）。通所介護の区分。",
+      "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/download/5_R8_houshuu_kaitei.pdf",
+      "備考": "介護職員等処遇改善加算を除く加減算後の総報酬単位数に上記率を乗じる。"
+    }
+  ]
+};
+/* __SIM_KASAN_TSUSHO_INJECT_END__ ここまで */
+</script>
+<script>
+/* __SIM_KASAN_ROKEN_INJECT_START__ ここから下を build_map.py が content/kasan_roken.json で置き換える（未注入時は空） */
+const SIM_KASAN_ROKEN = {
+  "メタ": {
+    "タイトル": "介護老人保健施設（老健）加算・減算マスタ（令和6年度改定後／処遇改善は令和8年度現行）",
+    "対象": "介護老人保健施設。シミュレーター用に体制系加算を優先収録、該当者系も属性で区別（第1弾）。",
+    "確認日": "2026-07-24",
+    "出典": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+    "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1",
+    "シミュレーター用の属性説明": {
+      "算定単位": "1日＝入所日数分、1月＝月1回、1回＝該当事由1回、入所初日＝新規1回。",
+      "算定対象": "全入所者＝在籍全員×日数（体制加算）／該当入所者＝要件該当者のみ／新規入所者／施設全体（率）。",
+      "種別": "加算＝基本報酬に上乗せ／率＝総単位数に乗じる（処遇改善）。",
+      "計算式": "月間概算（加算分）＝Σ[加算単位数×該当日数or回数×対象人数]。処遇改善は総単位数×加算率。単位→円は地域区分の1単位単価（老健は人件費割合45%、chiiki_kubun.json）。"
+    },
+    "収録加算数": 11,
+    "第2弾予定": "リハビリテーションマネジメント計画書情報加算・かかりつけ医連携薬剤調整加算・経口移行/経口維持・口腔衛生管理・排せつ支援・自立支援促進・褥瘡マネジメント等、および各種減算。"
+  },
+  "加算": [
+    {
+      "名称": "在宅復帰・在宅療養支援機能加算",
+      "単位数": {
+        "Ⅰ": 51,
+        "Ⅱ": 51
+      },
+      "算定単位": "1日",
+      "算定対象": "全入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1",
+      "備考": "介護保健施設サービス費(Ⅰ)の(ii)(iv)等の基本型施設費に加算。Ⅰ・Ⅱは適合基準（施設類型）の別。"
+    },
+    {
+      "名称": "夜勤職員配置加算",
+      "単位数": 24,
+      "算定単位": "1日",
+      "算定対象": "全入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "サービス提供体制強化加算",
+      "単位数": {
+        "Ⅰ": 22,
+        "Ⅱ": 18,
+        "Ⅲ": 6
+      },
+      "算定単位": "1日",
+      "算定対象": "全入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "科学的介護推進体制加算",
+      "単位数": {
+        "Ⅰ": 40,
+        "Ⅱ": 60
+      },
+      "算定単位": "1月",
+      "算定対象": "全入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1",
+      "備考": "LIFEへの情報提出・活用。"
+    },
+    {
+      "名称": "認知症専門ケア加算",
+      "単位数": {
+        "Ⅰ": 3,
+        "Ⅱ": 4
+      },
+      "算定単位": "1日",
+      "算定対象": "全入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "安全対策体制加算",
+      "単位数": 20,
+      "算定単位": "入所初日（1回）",
+      "算定対象": "新規入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "初期加算",
+      "単位数": {
+        "Ⅰ": 60,
+        "Ⅱ": 30
+      },
+      "算定単位": "1日",
+      "算定対象": "新規入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1",
+      "備考": "Ⅰは急性期医療機関からの受入等、Ⅱはそれ以外。入所30日以内。"
+    },
+    {
+      "名称": "短期集中リハビリテーション実施加算",
+      "単位数": {
+        "Ⅰ": 258,
+        "Ⅱ": 200
+      },
+      "算定単位": "1日",
+      "算定対象": "該当入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1",
+      "備考": "入所日から3月以内。"
+    },
+    {
+      "名称": "栄養マネジメント強化加算",
+      "単位数": 11,
+      "算定単位": "1日",
+      "算定対象": "全入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1",
+      "備考": "管理栄養士配置等の体制要件。"
+    },
+    {
+      "名称": "再入所時栄養連携加算",
+      "単位数": 200,
+      "算定単位": "1回",
+      "算定対象": "該当入所者",
+      "種別": "加算",
+      "根拠": "指定施設サービス等に要する費用の額の算定に関する基準（平成12年厚生省告示第21号・令和6年度改定後）介護保健施設サービス",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa0255&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "介護職員等処遇改善加算",
+      "種別": "率（処遇改善）",
+      "算定単位": "総報酬単位数に対する率",
+      "算定対象": "施設全体（総単位数に乗じる）",
+      "加算率_令和8年度": {
+        "Ⅰイ": 9.0,
+        "Ⅰロ": 9.7,
+        "Ⅱイ": 8.6,
+        "Ⅱロ": 9.3,
+        "Ⅲ": 6.9,
+        "Ⅳ": 5.9
+      },
+      "根拠": "令和8年度介護報酬改定（処遇改善の拡充）。介護老人保健施設・短期入所療養介護（老健）の区分。",
+      "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/download/5_R8_houshuu_kaitei.pdf",
+      "備考": "介護職員等処遇改善加算を除く加減算後の総報酬単位数に上記率を乗じる。"
+    }
+  ]
+};
+/* __SIM_KASAN_ROKEN_INJECT_END__ ここまで */
+</script>
+<script>
+/* __SIM_KASAN_GH_INJECT_START__ ここから下を build_map.py が content/kasan_gh.json で置き換える（未注入時は空） */
+const SIM_KASAN_GH = {
+  "メタ": {
+    "タイトル": "認知症対応型共同生活介護（グループホーム）加算・減算マスタ（令和6年度改定後／処遇改善は令和8年度現行）",
+    "対象": "指定認知症対応型共同生活介護。シミュレーター用に体制系加算を優先収録、該当者系も属性で区別（第1弾）。",
+    "確認日": "2026-07-24",
+    "出典": "指定地域密着型サービスに要する費用の額の算定に関する基準（平成18年厚生労働省告示第126号・令和6年度改定後）認知症対応型共同生活介護費",
+    "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa7862&dataType=0&pageNo=1",
+    "シミュレーター用の属性説明": {
+      "算定単位": "1日＝入居日数分、1月＝月1回。",
+      "算定対象": "全利用者＝入居者全員×日数（体制加算）／新規利用者／事業所全体（率）。",
+      "種別": "加算＝基本報酬に上乗せ／率＝総単位数に乗じる（処遇改善）。",
+      "計算式": "月間概算（加算分）＝Σ[加算単位数×入居日数×対象人数]。処遇改善は総単位数×加算率。単位→円は地域区分の1単位単価（GHは人件費割合45%、chiiki_kubun.json）。"
+    },
+    "収録加算数": 9,
+    "第2弾予定": "看取り介護加算・若年性認知症利用者受入加算・生活機能向上連携加算・協力医療機関連携加算・認知症チームケア推進加算等の該当者系、および各種減算（夜勤職員未配置・人員基準欠如等）。"
+  },
+  "加算": [
+    {
+      "名称": "夜間支援体制加算",
+      "単位数": {
+        "Ⅰ": 50,
+        "Ⅱ": 25
+      },
+      "算定単位": "1日",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定地域密着型サービスに要する費用の額の算定に関する基準（平成18年厚生労働省告示第126号・令和6年度改定後）認知症対応型共同生活介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa7862&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "医療連携体制加算",
+      "単位数": {
+        "Ⅰイ": 57,
+        "Ⅰロ": 47,
+        "Ⅰハ": 37,
+        "Ⅱ": 5
+      },
+      "算定単位": "1日",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定地域密着型サービスに要する費用の額の算定に関する基準（平成18年厚生労働省告示第126号・令和6年度改定後）認知症対応型共同生活介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa7862&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "サービス提供体制強化加算",
+      "単位数": {
+        "Ⅰ": 22,
+        "Ⅱ": 18,
+        "Ⅲ": 6
+      },
+      "算定単位": "1日",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定地域密着型サービスに要する費用の額の算定に関する基準（平成18年厚生労働省告示第126号・令和6年度改定後）認知症対応型共同生活介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa7862&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "科学的介護推進体制加算",
+      "単位数": 40,
+      "算定単位": "1月",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定地域密着型サービスに要する費用の額の算定に関する基準（平成18年厚生労働省告示第126号・令和6年度改定後）認知症対応型共同生活介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa7862&dataType=0&pageNo=1",
+      "備考": "LIFEへの情報提出・活用。"
+    },
+    {
+      "名称": "認知症専門ケア加算",
+      "単位数": {
+        "Ⅰ": 3,
+        "Ⅱ": 4
+      },
+      "算定単位": "1日",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定地域密着型サービスに要する費用の額の算定に関する基準（平成18年厚生労働省告示第126号・令和6年度改定後）認知症対応型共同生活介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa7862&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "栄養管理体制加算",
+      "単位数": 30,
+      "算定単位": "1月",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定地域密着型サービスに要する費用の額の算定に関する基準（平成18年厚生労働省告示第126号・令和6年度改定後）認知症対応型共同生活介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa7862&dataType=0&pageNo=1",
+      "備考": "管理栄養士による技術的助言・指導 月1回以上。"
+    },
+    {
+      "名称": "口腔衛生管理体制加算",
+      "単位数": 30,
+      "算定単位": "1月",
+      "算定対象": "全利用者",
+      "種別": "加算",
+      "根拠": "指定地域密着型サービスに要する費用の額の算定に関する基準（平成18年厚生労働省告示第126号・令和6年度改定後）認知症対応型共同生活介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa7862&dataType=0&pageNo=1"
+    },
+    {
+      "名称": "初期加算",
+      "単位数": 30,
+      "算定単位": "1日",
+      "算定対象": "新規利用者",
+      "種別": "加算",
+      "根拠": "指定地域密着型サービスに要する費用の額の算定に関する基準（平成18年厚生労働省告示第126号・令和6年度改定後）認知症対応型共同生活介護費",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=82aa7862&dataType=0&pageNo=1",
+      "備考": "入居30日以内。"
+    },
+    {
+      "名称": "介護職員等処遇改善加算",
+      "種別": "率（処遇改善）",
+      "算定単位": "総報酬単位数に対する率",
+      "算定対象": "事業所全体（総単位数に乗じる）",
+      "加算率_令和8年度": {
+        "Ⅰイ": 21.0,
+        "Ⅰロ": 22.8,
+        "Ⅱイ": 20.2,
+        "Ⅱロ": 22.0,
+        "Ⅲ": 17.9,
+        "Ⅳ": 14.9
+      },
+      "根拠": "令和8年度介護報酬改定（処遇改善の拡充）。認知症対応型共同生活介護の区分。",
+      "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/download/5_R8_houshuu_kaitei.pdf",
+      "備考": "介護職員等処遇改善加算を除く加減算後の総報酬単位数に上記率を乗じる。"
+    }
+  ]
+};
+/* __SIM_KASAN_GH_INJECT_END__ ここまで */
+</script>
 
 <script>
 /* ===== 介護報酬 概算シミュレーター（第1弾＝特養）。入力はブラウザ内処理のみ・外部送信なし ===== */
@@ -11354,6 +11846,240 @@ const SIM_SHOGUU = {
     try { var u = new URL(location.href); u.searchParams.set("sd", d); history.replaceState(null, "", u.toString()); } catch (e2) { /* 無視 */ }
     apply();
   });
+  apply();
+})();
+</script>
+
+<script>
+/* ===== 介護シミュレーター第2弾（通所介護・老健・認知症GH）。ブラウザ内処理のみ ===== */
+(function () {
+  var KIHON = (typeof SIM_KIHON !== "undefined" && SIM_KIHON) || {};
+  var CHIIKI = (typeof SIM_CHIIKI !== "undefined" && SIM_CHIIKI) || {};
+  var KIJUN = (typeof SIM_KIJUN !== "undefined" && SIM_KIJUN) || {};
+  var svcList = KIHON["サービス"] || [];
+  var svcByName = {}; svcList.forEach(function (s) { svcByName[s["サービス名"]] = s; });
+  var tankaTable = (((CHIIKI["メタ"] || {})["1単位の単価"] || {})["単価表"] || {})["人件費割合45%"] || {};
+  var areas = CHIIKI["適用地域"] || [];
+  var kijunNow = (KIJUN["改正履歴"] || []).slice(-1)[0] || {};
+  var mealCost = kijunNow["食費"]; var roomTable = kijunNow["居住費"] || {};
+
+  var SVC_CFG = {
+    tsusho: { name: "通所介護", kasan: (typeof SIM_KASAN_TSUSHO !== "undefined" && SIM_KASAN_TSUSHO) || {}, attend: true, food: false },
+    roken: { name: "介護老人保健施設（老健）", kasan: (typeof SIM_KASAN_ROKEN !== "undefined" && SIM_KASAN_ROKEN) || {}, attend: false, food: true },
+    gh: { name: "認知症対応型共同生活介護（認知症GH）", kasan: (typeof SIM_KASAN_GH !== "undefined" && SIM_KASAN_GH) || {}, attend: false, food: false }
+  };
+  var MONTH_DAYS = 365 / 12;
+  var CUR_SVC = "tsusho"; // 選択中サービス（tokuyo以外のとき有効）
+
+  var app = document.getElementById("sim-other");
+  if (!app || !svcList.length || !areas.length) return;
+
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
+  function pnum(v) { var n = parseFloat(String(v == null ? "" : v).replace(/[^0-9.]/g, "")); return isNaN(n) ? null : n; }
+  function yen(n) { return Number(Math.round(n)).toLocaleString("ja-JP"); }
+  function fmtNum(v) { return Number(Math.abs(v) >= 1 ? Math.round(v) : v).toLocaleString("ja-JP"); }
+  function norm(s) { return String(s == null ? "" : s).normalize("NFKC").toLowerCase().replace(/\s+/g, "").replace(/ヶ/g, "ケ"); }
+
+  // ---- 1. 市町村 ----
+  var areaIdx = areas.map(function (a) { return { a: a, key: norm(a["市町村名"]) + "｜" + norm(a["都道府県"]) }; });
+  var CURRENT = { kubun: "その他", name: "" };
+  var qEl = document.getElementById("sim3-q");
+  var areaEl = document.getElementById("sim3-area");
+  function tankaFor(kubun) { var t = tankaTable[kubun]; return (t != null ? Number(t) : null); }
+  function renderArea() {
+    var q = norm(qEl.value);
+    if (!q) { CURRENT = { kubun: "その他", name: "" }; areaEl.innerHTML = '<span class="sim-area-hint">市町村を入れないときは「その他（1単位10.00円）」で計算します。</span>'; recalc(); return; }
+    var hits = areaIdx.filter(function (x) { return x.key.indexOf(q) >= 0; });
+    if (!hits.length) { CURRENT = { kubun: "その他", name: "その他（名簿にない市町村）" }; areaEl.innerHTML = '該当なし → <strong>その他</strong>で計算します。1単位 ' + Number(tankaFor("その他")).toFixed(2) + "円"; }
+    else { var a = hits[0].a; CURRENT = { kubun: a["級地区分"], name: a["市町村名"] }; areaEl.innerHTML = esc(a["市町村名"]) + '<span class="chiiki-pref">' + esc(a["都道府県"]) + "</span> ／ <span class=\"chiiki-badge\">" + esc(a["級地区分"]) + "</span> ／ 1単位 <strong>" + Number(tankaFor(a["級地区分"])).toFixed(2) + "円</strong>（人件費割合45%）"; }
+    recalc();
+  }
+  qEl.addEventListener("input", renderArea);
+
+  // ---- 2. 区分（段階セレクト） ----
+  var cascadeEl = document.getElementById("sim3-cascade");
+  cascadeEl.addEventListener("input", function (e) { if (e.target.classList && e.target.classList.contains("cc-step")) buildCascade(); recalc(); });
+  cascadeEl.addEventListener("change", function (e) { if (e.target.classList && e.target.classList.contains("cc-step")) buildCascade(); recalc(); });
+  function buildCascade() {
+    var svc = svcByName[SVC_CFG[CUR_SVC].name]; if (!svc) { cascadeEl.innerHTML = ""; return; }
+    var prev = [].slice.call(cascadeEl.querySelectorAll(".cc-step")).map(function (s) { return s.value; });
+    var node = svc["区分"], level = 0, units = null, html = "", path = [];
+    while (node && typeof node === "object") {
+      var keys = Object.keys(node);
+      var sel = prev[level]; if (keys.indexOf(sel) < 0) sel = "";
+      var opt = '<option value="">選択</option>' + keys.map(function (k) { var leaf = node[k]; var suf = (typeof leaf === "number") ? "（" + leaf + "単位）" : ""; return '<option value="' + esc(k) + '"' + (k === sel ? " selected" : "") + ">" + esc(k) + suf + "</option>"; }).join("");
+      html += '<label class="cc-lb cc-lb-wide">' + (level === 0 ? "区分" : "内訳") + '<select class="cc-step" data-level="' + level + '">' + opt + "</select></label>";
+      if (!sel) break;
+      path.push(sel); node = node[sel]; level++;
+      if (typeof node === "number") { units = node; break; }
+    }
+    var au = svc["算定単位"] || "";
+    var tanka = tankaFor(CURRENT.kubun);
+    var info = '<p class="cc-meta">算定単位：' + esc(au) + " ／ 1単位 " + (tanka != null ? Number(tanka).toFixed(2) + "円" : "—") + "（" + esc(CURRENT.kubun) + "・45%）</p>";
+    var unitDisp = (units != null) ? '<span class="cc-unitval">' + units + " 単位</span>" : '<span class="cc-unitval cc-unitval-empty">区分を選択してください</span>';
+    cascadeEl.innerHTML = info + '<div class="chiiki-calc-row cc-steps">' + html + "</div>" + '<div class="chiiki-calc-row"><span class="cc-lb">単位数（自動）' + unitDisp + "</span></div>";
+    cascadeEl.setAttribute("data-units", units != null ? units : "");
+    cascadeEl.setAttribute("data-path", path.join("｜"));
+  }
+
+  // ---- 3. 利用者数・営業日数 ----
+  var SIM3_MODE = "easy";
+  ["sim3-capacity", "sim3-occ", "sim3-users", "sim3-days"].forEach(function (id) { var el = document.getElementById(id); el.addEventListener("input", recalc); el.addEventListener("change", recalc); });
+  var modeT = document.querySelector(".sim-mode3");
+  if (modeT) {
+    modeT.addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest("[data-mode3]") : null; if (!b) return; var m = b.getAttribute("data-mode3"); if (m === SIM3_MODE) return;
+      SIM3_MODE = m; modeT.querySelectorAll(".metric-btn").forEach(function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      document.getElementById("sim3-mode-easy").hidden = (m !== "easy"); document.getElementById("sim3-mode-detail").hidden = (m !== "detail"); recalc();
+    });
+  }
+  function userCount() {
+    if (SIM3_MODE === "easy") { var cap = pnum(document.getElementById("sim3-capacity").value) || 0; var occ = pnum(document.getElementById("sim3-occ").value); var n = (occ != null) ? (cap * occ / 100) : 0; return { n: n, cap: cap, occ: occ }; }
+    return { n: pnum(document.getElementById("sim3-users").value) || 0 };
+  }
+  function bizDays() { var d = pnum(document.getElementById("sim3-days").value); return (d && d > 0) ? d : 22; }
+
+  // ---- 4. 体制加算＋処遇改善（サービスに応じたkasanマスタ） ----
+  var taiseiEl = document.getElementById("sim3-taisei");
+  var shoriEl = document.getElementById("sim3-shori");
+  function curKasanAll() { return (SVC_CFG[CUR_SVC].kasan["加算"]) || []; }
+  function curTaisei() { return curKasanAll().filter(function (k) { return k["種別"] === "加算" && (k["算定対象"] === "全利用者" || k["算定対象"] === "全入所者"); }); }
+  function curRate() { for (var i = 0, a = curKasanAll(); i < a.length; i++) { if (String(a[i]["種別"]).indexOf("率") >= 0) return a[i]; } return null; }
+  function buildKasanUI() {
+    var ts = curTaisei();
+    taiseiEl.innerHTML = '<p class="sim-note">体制加算（全利用者・全入所者に算定される体制系）を選べます。該当者のみ・回数ものは含みません。</p>' + ts.map(function (k, i) {
+      var u = k["単位数"], ctrl = "";
+      if (u && typeof u === "object") ctrl = '<label class="sk-lb">区分<select class="tk-kubun" data-i="' + i + '">' + Object.keys(u).map(function (kk) { return '<option value="' + esc(kk) + '">' + esc(kk) + "（" + u[kk] + "単位）</option>"; }).join("") + "</select></label>";
+      return '<div class="sim-kasan-row" data-i="' + i + '"><label class="sim-kasan-check"><input type="checkbox" class="tk-on" data-i="' + i + '"><span class="sim-kasan-name">' + esc(k["名称"]) + "</span></label>" + '<div class="sim-kasan-ctrl">' + ctrl + '<span class="sim-kasan-meta">算定単位：' + esc(k["算定単位"] || "") + "</span></div></div>";
+    }).join("");
+    var rate = curRate();
+    if (rate) {
+      var rates = rate["加算率_令和8年度"] || {};
+      var ropts = '<option value="0">適用しない</option>' + Object.keys(rates).map(function (r) { return '<option value="' + rates[r] + '">' + esc(rate["名称"] || "処遇改善加算") + "（" + esc(r) + "・" + rates[r] + "%）</option>"; }).join("");
+      shoriEl.innerHTML = '<label class="sk-lb sk-lb-wide">' + esc(rate["名称"] || "処遇改善加算") + '（率）<select id="sim3-shori-sel">' + ropts + "</select></label><span class=\"sim-kasan-meta\">総報酬単位数に率を乗じます。</span>";
+      shoriEl.querySelector("#sim3-shori-sel").addEventListener("change", recalc);
+    } else { shoriEl.innerHTML = ""; }
+  }
+  taiseiEl.addEventListener("input", recalc);
+  taiseiEl.addEventListener("change", recalc);
+  function taiseiRows(attendMult) {
+    var out = [], ts = curTaisei();
+    ts.forEach(function (k, i) {
+      var row = taiseiEl.querySelector('.sim-kasan-row[data-i="' + i + '"]'); if (!row || !row.querySelector(".tk-on").checked) return;
+      var u = k["単位数"], ksel = row.querySelector(".tk-kubun");
+      var unit = (u && typeof u === "object") ? pnum(u[ksel ? ksel.value : ""]) : pnum(u);
+      if (unit == null) return;
+      var monthly = String(k["算定単位"] || "").indexOf("月") >= 0;
+      out.push({ name: k["名称"], mult: monthly ? 1 : attendMult, unit: unit, monthly: monthly });
+    });
+    return out;
+  }
+
+  // 老健の居室類型を区分パスから判定（居住費用）
+  function roomForRoken() {
+    var p = cascadeEl.getAttribute("data-path") || "";
+    if (p.indexOf("ユニット型個室的多床室") >= 0) return "ユニット型個室的多床室";
+    if (p.indexOf("ユニット型個室") >= 0) return "ユニット型個室";
+    if (p.indexOf("従来型個室") >= 0) return "従来型個室";
+    if (p.indexOf("多床室") >= 0) return "多床室";
+    return "";
+  }
+  function rokenRoomCost() {
+    var lbl = roomForRoken(); if (!lbl) return null;
+    var v = roomTable[lbl];
+    return (v != null && typeof v === "object") ? v["老健・医療院等"] : v;
+  }
+
+  // ---- 計算 ----
+  var bdBody = document.querySelector("#sim3-breakdown tbody");
+  var DAYDIV = MONTH_DAYS; // 1日あたりの割り戻し日数（通所＝営業日数、施設系＝365/12）
+  function rowU(name, monthUnits, tanka, daily, cls) {
+    var monthYen = monthUnits * tanka; var dayCell = daily ? yen(monthYen / DAYDIV) + " 円" : "—";
+    return '<tr' + (cls ? ' class="' + cls + '"' : "") + '><th scope="row">' + esc(name) + "</th><td>" + fmtNum(monthUnits) + " 単位</td><td>" + yen(monthYen) + " 円</td><td>" + dayCell + "</td></tr>";
+  }
+  function rowM(name, monthYen, daily) { return '<tr><th scope="row">' + esc(name) + '</th><td>—</td><td>' + yen(monthYen) + " 円</td><td>" + (daily ? yen(monthYen / MONTH_DAYS) + " 円" : "—") + "</td></tr>"; }
+  function recalc() {
+    var cfg = SVC_CFG[CUR_SVC];
+    var uv = cascadeEl.getAttribute("data-units");
+    var units = (uv !== null && uv !== "") ? pnum(uv) : null;
+    var tanka = tankaFor(CURRENT.kubun); if (tanka == null) tanka = tankaFor("その他");
+    var uc = userCount();
+    var attend = cfg.attend;
+    var mult = attend ? bizDays() : MONTH_DAYS; // 通所＝営業日数、施設系＝365/12
+    DAYDIV = mult;
+    var dEl = document.getElementById("sim3-daysrow");
+    if (dEl) dEl.style.display = attend ? "" : "none";
+
+    if (units == null || tanka == null || !uc.n) {
+      bdBody.innerHTML = '<tr><td colspan="4" class="heat-na">市町村・区分・利用者数を入力すると概算額を表示します。</td></tr>';
+      document.getElementById("sim3-total").textContent = uc.n ? "利用者数 " + fmtNum(uc.n) + " 人" : "";
+      setEasyNote(uc); return;
+    }
+    var baseM = units * uc.n * mult;
+    var rows = rowU("基本報酬（" + esc(cfg.name.replace(/（.*/, "")) + "）", baseM, tanka, true, "sim-row-base");
+    var subtotal = baseM;
+    taiseiRows(mult).forEach(function (t) { var mu = t.unit * uc.n * t.mult; subtotal += mu; rows += rowU(t.name + (t.monthly ? "（月単位）" : ""), mu, tanka, !t.monthly); });
+    var shoriUnits = 0, rate = 0;
+    var ss = document.getElementById("sim3-shori-sel");
+    if (ss) { rate = pnum(ss.value) || 0; if (rate > 0) shoriUnits = subtotal * rate / 100; }
+    if (rate > 0) rows += rowU("処遇改善加算（" + rate + "%）", shoriUnits, tanka, true);
+    var kaigoUnits = subtotal + shoriUnits, kaigoYen = kaigoUnits * tanka;
+    rows += rowU("介護報酬 小計", kaigoUnits, tanka, true, "sim-row-sub");
+
+    var grand = kaigoYen;
+    // 食費・居住費（老健のみ＝特養と同じ基準費用額）
+    if (cfg.food && mealCost != null) {
+      var mealM = mealCost * uc.n * MONTH_DAYS;
+      rows += rowM("食費収入（基準費用額 " + yen(mealCost) + "円/日 × " + fmtNum(uc.n) + "人）", mealM, true);
+      grand += mealM;
+      var rc = rokenRoomCost();
+      var roomM = (rc != null) ? rc * uc.n * MONTH_DAYS : 0;
+      rows += rowM("居住費収入（" + (roomForRoken() || "居室類型は区分で選択") + " " + (rc != null ? yen(rc) + "円/日" : "—") + " × " + fmtNum(uc.n) + "人）", roomM, true);
+      grand += roomM;
+    }
+    rows += '<tr class="sim-row-total"><th scope="row">総合計（月間概算）</th><td>—</td><td>' + yen(grand) + " 円</td><td>" + yen(grand / DAYDIV) + " 円</td></tr>";
+    bdBody.innerHTML = rows;
+
+    document.getElementById("sim3-total").textContent = "利用者数 " + fmtNum(uc.n) + " 人";
+    setEasyNote(uc);
+    var foodNote = cfg.food ? "食費・居住費は基準費用額（老健等）による概算で、実際は契約額・負担限度額により異なります。" : (CUR_SVC === "gh" ? "認知症GHの家賃・食材料費は事業者が定める実費のため試算対象外です（本欄は介護報酬のみ）。" : "通所介護は食費・送迎等の実費が別にありますが体系が異なるため本欄は介護報酬のみです。");
+    document.getElementById("sim3-calcnote").textContent = "1単位 " + Number(tanka).toFixed(2) + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "・45%）で換算。" + (attend ? "通所系は営業日数×1日あたりで計算。" : "施設系は月額を365日÷12か月（約30.4日）で計算。") + "1日あたりは月額÷" + (attend ? "営業日数" : "(365/12)") + "。稼働率は四捨五入せず小数のまま計算。加算・減算等により実際の額は異なります。" + foodNote;
+  }
+  function setEasyNote(uc) {
+    var el = document.getElementById("sim3-easy-note"); if (!el) return;
+    if (SIM3_MODE === "easy" && uc.cap && uc.occ != null) el.textContent = "利用者数 " + fmtNum(uc.n) + "人として計算（定員 " + yen(uc.cap) + "人 × 稼働率 " + uc.occ + "%。四捨五入せず小数のまま計算）。";
+    else el.textContent = "定員と稼働率を入力すると、利用者数（定員×稼働率）で概算します。";
+  }
+
+  // サービス選択（tokuyo以外＝本フロー）に反応
+  window.__sim3SetService = function (key) {
+    if (!SVC_CFG[key]) return;
+    CUR_SVC = key;
+    cascadeEl.innerHTML = ""; cascadeEl.removeAttribute("data-units"); cascadeEl.removeAttribute("data-path");
+    buildCascade(); buildKasanUI(); recalc();
+  };
+  // 初期化
+  try { var _q = new URLSearchParams(location.search).get("q"); if (_q) qEl.value = _q; } catch (e) { /* 無視 */ }
+  buildKasanUI();
+  renderArea();
+})();
+</script>
+
+<script>
+/* ===== 介護サービス選択（特養｜通所｜老健｜GH）の切替 ===== */
+(function () {
+  var pick = document.getElementById("sim-svc-pick");
+  var tokuyo = document.getElementById("sim-tokuyo");
+  var other = document.getElementById("sim-other");
+  if (!pick || !tokuyo || !other) return;
+  function apply() {
+    var v = pick.value;
+    var isTokuyo = (v === "tokuyo");
+    tokuyo.hidden = !isTokuyo;
+    other.hidden = isTokuyo;
+    if (!isTokuyo && window.__sim3SetService) window.__sim3SetService(v);
+  }
+  pick.addEventListener("change", apply);
   apply();
 })();
 </script>

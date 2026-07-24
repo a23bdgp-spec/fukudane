@@ -1423,6 +1423,9 @@ section p:last-child { margin-bottom: 0; }
   .sim-care { grid-template-columns: repeat(3, 1fr); }
   .sim-kasan-check { min-width: 100%; }
 }
+/* 介護サービス選択（第2弾） */
+.sim-svc-pick { margin: 0 0 16px; }
+.sim-lb-svc select { min-width: 0; width: 100%; max-width: 420px; }
 /* 障害版シミュレーターの段階セレクト */
 .sim-mode2 { margin: 0 0 12px; }
 .cc-lb { display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; font-weight: 700; color: var(--ink-soft); min-width: 0; max-width: 100%; }
