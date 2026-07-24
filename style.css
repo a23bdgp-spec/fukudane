@@ -1423,3 +1423,14 @@ section p:last-child { margin-bottom: 0; }
   .sim-care { grid-template-columns: repeat(3, 1fr); }
   .sim-kasan-check { min-width: 100%; }
 }
+/* 障害版シミュレーターの段階セレクト */
+.sim-mode2 { margin: 0 0 12px; }
+.cc-lb { display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; font-weight: 700; color: var(--ink-soft); min-width: 0; max-width: 100%; }
+.cc-lb select, .cc-lb input { font: inherit; font-size: 14px; padding: 7px 9px; border: 1px solid var(--line-strong); border-radius: 8px; background: #fff; color: var(--ink); max-width: 100%; }
+.cc-lb-wide { width: 100%; }
+.cc-lb-wide select { min-width: 0; width: 100%; max-width: 360px; }
+.chiiki-calc-row { display: flex; flex-wrap: wrap; gap: 8px 12px; margin-top: 8px; }
+.cc-steps { flex-direction: column; align-items: stretch; }
+.cc-meta { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.6; }
+.cc-unitval { display: inline-block; font-size: 15px; font-weight: 700; color: var(--primary-dark); padding: 4px 0; }
+.cc-unitval-empty { font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
