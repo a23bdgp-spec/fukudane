@@ -1327,6 +1327,30 @@ section p:last-child { margin-bottom: 0; }
 /* 単価を主役として強調（最左列） */
 .chiiki-tanka-main { font-weight: 700; color: var(--primary-dark); white-space: nowrap; }
 
+/* ===== 処遇改善加算（shoguu.html） ===== */
+.sg-sec { margin: 26px 0; }
+.sg-note { font-size: 13px; color: var(--ink-soft); line-height: 1.7; margin: 6px 0 10px; }
+.sg-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.sg-table th, .sg-table td { padding: 7px 10px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.sg-table thead th { font-size: 12.5px; color: var(--ink-soft); background: var(--page); text-align: right; }
+.sg-table .sg-svc { text-align: left; font-weight: 700; white-space: normal; min-width: 180px; }
+.sg-timeline { list-style: none; margin: 8px 0 0; padding: 0; }
+.sg-tl-item { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+.sg-tl-when { flex: 0 0 150px; font-weight: 700; color: var(--primary-dark); font-size: 14px; }
+.sg-tl-body { flex: 1 1 300px; min-width: 0; }
+.sg-tl-name { font-weight: 700; font-size: 14.5px; margin: 0 0 4px; }
+.sg-tl-point { font-size: 13.5px; line-height: 1.7; margin: 0 0 4px; color: var(--ink); }
+.sg-tl-rate { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 2px; }
+.sg-tl-src { font-size: 12px; color: var(--ink-soft); margin: 2px 0 0; }
+.sg-fold > summary { cursor: pointer; font-size: 14px; font-weight: 700; color: var(--primary-dark); padding: 8px 0; }
+@media (max-width: 768px) { .sg-tl-when { flex-basis: 100%; } }
+/* 基準費用額（kijun-hiyou.html）固有 */
+.kj-desc { font-size: 14px; line-height: 1.9; }
+.sg-table .kj-common { text-align: left; color: var(--ink-soft); }
+.kj-unrec { color: var(--ink-soft); font-style: italic; }
+.kj-srclist { margin: 8px 0 0; padding-left: 20px; font-size: 13.5px; line-height: 1.9; }
+.kj-src-desc { display: block; font-size: 12px; color: var(--ink-soft); margin: 2px 0 4px; }
+
 /* ===== 介護報酬 概算シミュレーター（hoshu-sim.html） ===== */
 .sim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 20px; }
 .sim-block { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; min-width: 0; }
