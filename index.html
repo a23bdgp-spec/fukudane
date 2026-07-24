@@ -194,55 +194,64 @@
     <p class="lead">
       福祉事業者の制度確認、施設運営、法人経営に必要な公的情報を整理し、原典まで確認できるようにします。
     </p>
-    <!-- ホームの検索窓。GET送信で search.html?q=<入力> へ遷移する（ホーム自体では検索しない＝索引を読み込まない） -->
-    <form class="hero-search" role="search" action="search.html" method="get">
-      <label for="hero-q" class="visually-hidden">サイト内をキーワードで検索</label>
-      <input type="search" id="hero-q" name="q" class="hero-search-input" placeholder="例：処遇改善、BCP、モデル就業規則、特定技能" autocomplete="off">
-      <button type="submit" class="hero-search-btn"><svg class="btn-icon" aria-hidden="true"><use href="#i-search"/></svg>検索</button>
-    </form>
-    <p class="hero-search-note">報酬・制度・ガイドライン・規程・経営資料を横断して検索できます</p>
-    <p class="hero-chips">例：<a class="hero-chip" href="search.html?q=処遇改善">処遇改善</a><a class="hero-chip" href="search.html?q=BCP">BCP</a><a class="hero-chip" href="search.html?q=虐待防止">虐待防止</a><a class="hero-chip" href="search.html?q=モデル就業規則">モデル就業規則</a><a class="hero-chip" href="search.html?q=特定技能">特定技能</a></p>
   </div>
 </div>
 
-<!-- 事業運営に役立つ情報（福祉事業者向け：入口→実務→人材→データ→制度） -->
-<section id="contents">
+<!-- 目的別入口（5分類の代表ページへ。アイコンは既存スプライト流用） -->
+<section id="entry" aria-labelledby="entry-h">
   <div class="wrap">
-    <h2 class="section-title">事業運営に役立つ情報</h2>
-
-    <!-- 主要な入口3枚 -->
-    <div class="entry-grid">
+    <h2 class="section-title" id="entry-h">目的から探す</h2>
+    <div class="entry-grid entry-grid-5">
       <a class="entry-card" href="fees.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-keisan"/></svg>
-        <span class="e-title">報酬・制度を確認する</span>
-        <span class="e-desc">介護報酬・障害福祉サービス等報酬・公定価格・処遇改善など、国が定める報酬・制度の公式情報を整理しています。</span>
-        <span class="e-arrow">報酬情報を見る →</span>
+        <span class="e-title">制度・報酬を確認する</span>
+        <span class="e-desc">報酬・公定価格、処遇改善加算、地域区分、食費・居住費、人件費・賃金など、国が定める制度・報酬の公式情報を確認できます。</span>
+        <span class="e-arrow">制度・報酬を見る →</span>
       </a>
-      <a class="entry-card" href="#practical">
-        <svg class="card-icon" aria-hidden="true"><use href="#i-folder"/></svg>
-        <span class="e-title">運営に必要な資料を探す</span>
-        <span class="e-desc">ガイドライン・モデル規程・様式例・経営資料など、施設運営・法人運営に使う公式資料を整理しています。</span>
-        <span class="e-arrow">実務資料を見る ↓</span>
+      <a class="entry-card" href="guidelines.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-check-doc"/></svg>
+        <span class="e-title">運営・法令対応を整える</span>
+        <span class="e-desc">サービス運営ガイドライン、モデル規程・様式例、情報開示、助成金・寄附など、施設運営と法令対応の資料を整えられます。</span>
+        <span class="e-arrow">運営・法令対応を見る →</span>
+      </a>
+      <a class="entry-card" href="foreign-workers.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-people"/></svg>
+        <span class="e-title">人材・労務を調べる</span>
+        <span class="e-desc">外国人材の受入れ、法人運営・労務のガイドライン、人件費・賃金の統計など、人材確保と労務の情報を調べられます。</span>
+        <span class="e-arrow">人材・労務を見る →</span>
+      </a>
+      <a class="entry-card" href="management.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-line-chart"/></svg>
+        <span class="e-title">経営・法人運営を考える</span>
+        <span class="e-desc">経営関連資料、財務指標の解説、社会福祉法人データベースなど、法人経営と財務を考えるための情報を確認できます。</span>
+        <span class="e-arrow">経営・法人を見る →</span>
       </a>
       <a class="entry-card" href="db/db.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-database"/></svg>
-        <span class="e-title">法人・経営データを調べる</span>
-        <span class="e-desc">全国21,301法人の基本情報と2020〜2024年度の財務情報を検索・比較できます。</span>
-        <span class="e-arrow">法人を探す →</span>
+        <span class="e-title">データ・ツールを使う</span>
+        <span class="e-desc">社会福祉法人データベース、報酬シミュレーター、地域区分、統計、財務指標など、調べる・試算するツールを使えます。</span>
+        <span class="e-arrow">データ・ツールを使う →</span>
       </a>
     </div>
+  </div>
+</section>
 
-    <!-- 掲載件数（ビルド時に各content JSON・DBメタから実数を算出してJSで描画。ハードコードしない） -->
-    <p class="stat-counts" id="stat-counts" aria-label="掲載件数"></p>
-
-    <!-- よく使う実務情報 -->
-    <h3 class="cat-h" id="practical">よく使う実務情報</h3>
+<!-- よく使うツール（4枚）。並びは暫定＝GSC/GA4の実データが貯まったら利用実績にもとづき見直す前提。 -->
+<section id="tools" aria-labelledby="tools-h">
+  <div class="wrap">
+    <h2 class="section-title" id="tools-h">よく使うツール</h2>
     <div class="guide-grid">
-      <a class="guide-card" href="fees.html">
+      <a class="guide-card" href="db/db.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-database"/></svg>
+        <p class="g-title">社会福祉法人データベース</p>
+        <p class="g-desc">全国21,301法人の基本情報と2020〜2024年度の財務情報を検索・比較できます。</p>
+        <span class="g-arrow">法人を検索する →</span>
+      </a>
+      <a class="guide-card" href="hoshu-sim.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-keisan"/></svg>
-        <p class="g-title">報酬・公定価格</p>
-        <p class="g-desc">介護報酬・障害福祉サービス等報酬・公定価格・処遇改善など、報酬・公定価格の国の公式情報を整理しています。</p>
-        <span class="g-arrow">報酬情報を見る →</span>
+        <p class="g-title">報酬シミュレーター</p>
+        <p class="g-desc">介護・障害福祉サービスの月間報酬を、サービス・区分別の利用者数・加算から概算できます。</p>
+        <span class="g-arrow">報酬を試算する →</span>
       </a>
       <a class="guide-card" href="chiiki.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-search"/></svg>
@@ -250,12 +259,63 @@
         <p class="g-desc">市町村名から、介護・障害福祉サービス等の地域区分（級地）・上乗せ割合・1単位単価を分野別に検索できます。</p>
         <span class="g-arrow">地域区分を調べる →</span>
       </a>
-      <a class="guide-card" href="hoshu-sim.html">
-        <svg class="card-icon" aria-hidden="true"><use href="#i-keisan"/></svg>
-        <p class="g-title">報酬シミュレーター</p>
-        <p class="g-desc">特別養護老人ホームの月間介護報酬を、施設類型・要介護度別の入所者数・加算から概算できます（第1弾）。</p>
-        <span class="g-arrow">報酬を試算する →</span>
+      <a class="guide-card" href="kitei.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-doc-pen"/></svg>
+        <p class="g-title">モデル規程・様式例</p>
+        <p class="g-desc">公式に一般公開されているモデル規程・様式例を分野別に整理しています。</p>
+        <span class="g-arrow">規程・様式を見る →</span>
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- 主要コンテンツ（新IAの6分類の並びで整理） -->
+<section id="contents" aria-labelledby="contents-h">
+  <div class="wrap">
+    <h2 class="section-title" id="contents-h">主要コンテンツ</h2>
+
+    <h3 class="cat-h">制度・報酬</h3>
+    <div class="guide-grid">
+      <a class="guide-card" href="service.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-folder"/></svg>
+        <p class="g-title">福祉サービス一覧</p>
+        <p class="g-desc">正式名称・通称・対象・支援内容・根拠法から福祉サービスを検索・比較できます。</p>
+        <span class="g-arrow">サービスを探す →</span>
+      </a>
+      <a class="guide-card" href="fees.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-keisan"/></svg>
+        <p class="g-title">報酬・公定価格</p>
+        <p class="g-desc">介護報酬・障害福祉サービス等報酬・公定価格・処遇改善など、報酬・公定価格の国の公式情報を整理しています。</p>
+        <span class="g-arrow">報酬情報を見る →</span>
+      </a>
+      <a class="guide-card" href="shoguu.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-coin"/></svg>
+        <p class="g-title">処遇改善加算</p>
+        <p class="g-desc">介護・障害福祉サービスの福祉・介護職員等処遇改善加算の要件・加算率・様式などの公式情報を整理しています。</p>
+        <span class="g-arrow">加算情報を見る →</span>
+      </a>
+      <a class="guide-card" href="chiiki.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <p class="g-title">地域区分</p>
+        <p class="g-desc">市町村名から、介護・障害福祉サービス等の地域区分（級地）・上乗せ割合・1単位単価を分野別に検索できます。</p>
+        <span class="g-arrow">地域区分を調べる →</span>
+      </a>
+      <a class="guide-card" href="kijun-hiyou.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-keisan"/></svg>
+        <p class="g-title">食費・居住費の基準費用額</p>
+        <p class="g-desc">施設サービスの食費・居住費（滞在費）の基準費用額と負担限度額の改正履歴を整理しています。</p>
+        <span class="g-arrow">基準費用額を見る →</span>
+      </a>
+      <a class="guide-card" href="jinkenhi.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-people"/></svg>
+        <p class="g-title">人件費・賃金</p>
+        <p class="g-desc">最低賃金・社会保険料率・退職手当共済・求人倍率・職種別の賃金相場など、人件費に関わる公的統計を整理しています。</p>
+        <span class="g-arrow">人件費情報を見る →</span>
+      </a>
+    </div>
+
+    <h3 class="cat-h">運営・法令対応</h3>
+    <div class="guide-grid">
       <a class="guide-card" href="guidelines.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-check-doc"/></svg>
         <p class="g-title">サービス運営のガイドライン</p>
@@ -268,11 +328,11 @@
         <p class="g-desc">公式に一般公開されているモデル規程・様式例を分野別に整理しています。</p>
         <span class="g-arrow">規程・様式を見る →</span>
       </a>
-      <a class="guide-card" href="management.html">
-        <svg class="card-icon" aria-hidden="true"><use href="#i-line-chart"/></svg>
-        <p class="g-title">経営・財務資料</p>
-        <p class="g-desc">社会福祉法人・社会福祉事業の経営・財務に関する調査・報告・手引きを、発行機関別に整理しています。</p>
-        <span class="g-arrow">資料を見る →</span>
+      <a class="guide-card" href="disclosure.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-check-doc"/></svg>
+        <p class="g-title">情報開示サイト</p>
+        <p class="g-desc">財務諸表等電子開示システムなどの公式サイトと、法人の情報公表・備置き閲覧の義務・様式を整理しています。</p>
+        <span class="g-arrow">開示情報を見る →</span>
       </a>
       <a class="guide-card" href="grants.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-coin"/></svg>
@@ -288,8 +348,7 @@
       </a>
     </div>
 
-    <!-- 人材確保・組織運営 -->
-    <h3 class="cat-h">人材確保・組織運営</h3>
+    <h3 class="cat-h">人材・労務</h3>
     <div class="guide-grid">
       <a class="guide-card" href="foreign-workers.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-globe"/></svg>
@@ -299,26 +358,41 @@
       </a>
       <a class="guide-card" href="work-guidelines.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-people"/></svg>
-        <p class="g-title">法人運営に関するガイドライン等</p>
+        <p class="g-title">法人運営・労務のガイドライン</p>
         <p class="g-desc">法人ガバナンス・監査・会計・情報管理・労務など、法人本部が扱うガイドラインを分野別に整理しています。</p>
         <span class="g-arrow">ガイドラインを見る →</span>
       </a>
-      <a class="guide-card" href="jobs.html">
-        <svg class="card-icon" aria-hidden="true"><use href="#i-chat"/></svg>
-        <p class="g-title">福祉の仕事</p>
-        <p class="g-desc">福祉の仕事を考える言葉、実践者の言葉、動画・読みものを紹介します。</p>
-        <span class="g-arrow">仕事を知る →</span>
-      </a>
     </div>
 
-    <!-- 法人・業界データ -->
-    <h3 class="cat-h">法人・業界データ</h3>
+    <h3 class="cat-h">経営・法人</h3>
     <div class="guide-grid">
+      <a class="guide-card" href="management.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-line-chart"/></svg>
+        <p class="g-title">経営関連資料</p>
+        <p class="g-desc">社会福祉法人・社会福祉事業の経営・財務に関する調査・報告・手引きを、発行機関別に整理しています。</p>
+        <span class="g-arrow">資料を見る →</span>
+      </a>
+      <a class="guide-card" href="indicators.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-bar-chart"/></svg>
+        <p class="g-title">財務指標の解説</p>
+        <p class="g-desc">社会福祉法人の財務諸表から算出する主要な財務指標の定義と計算方法を解説しています。</p>
+        <span class="g-arrow">指標の解説を見る →</span>
+      </a>
       <a class="guide-card" href="db/db.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-database"/></svg>
         <p class="g-title">社会福祉法人データベース</p>
         <p class="g-desc">全国21,301法人の基本情報と2020〜2024年度の財務情報を検索・比較できます。</p>
         <span class="g-arrow">法人を検索する →</span>
+      </a>
+    </div>
+
+    <h3 class="cat-h">データ・ツール</h3>
+    <div class="guide-grid">
+      <a class="guide-card" href="hoshu-sim.html">
+        <svg class="card-icon" aria-hidden="true"><use href="#i-keisan"/></svg>
+        <p class="g-title">報酬シミュレーター</p>
+        <p class="g-desc">介護・障害福祉サービスの月間報酬を、サービス・区分別の利用者数・加算から概算できます。</p>
+        <span class="g-arrow">報酬を試算する →</span>
       </a>
       <a class="guide-card" href="stats.html">
         <svg class="card-icon" aria-hidden="true"><use href="#i-bar-chart"/></svg>
@@ -326,36 +400,29 @@
         <p class="g-desc">全国の社会福祉法人の収益規模・黒字割合・事業分類・設立年代・都道府県別などの集計を事実として掲載しています。</p>
         <span class="g-arrow">統計を見る →</span>
       </a>
-      <a class="guide-card" href="organizations.html">
-        <svg class="card-icon" aria-hidden="true"><use href="#i-org"/></svg>
-        <p class="g-title">福祉業界団体</p>
-        <p class="g-desc">全国の主要な業界団体を、系統・設立年・会員規模などの公表情報で整理しています。</p>
-        <span class="g-arrow">団体を見る →</span>
-      </a>
-      <a class="guide-card" href="disclosure.html">
-        <svg class="card-icon" aria-hidden="true"><use href="#i-check-doc"/></svg>
-        <p class="g-title">情報開示サイト</p>
-        <p class="g-desc">財務諸表等電子開示システムなどの公式サイトと、法人の情報公表・備置き閲覧の義務・様式を整理しています。</p>
-        <span class="g-arrow">開示情報を見る →</span>
-      </a>
     </div>
+  </div>
+</section>
 
-    <!-- 制度・サービス -->
-    <h3 class="cat-h">制度・サービス</h3>
-    <div class="guide-grid">
-      <a class="guide-card" href="service.html">
-        <svg class="card-icon" aria-hidden="true"><use href="#i-search"/></svg>
-        <p class="g-title">福祉サービス・制度を調べる</p>
-        <p class="g-desc">正式名称・通称・対象・支援内容・根拠法から福祉サービスを検索・比較できます。</p>
-        <span class="g-arrow">サービスを探す →</span>
-      </a>
-      <a class="guide-card" href="history.html">
-        <svg class="card-icon" aria-hidden="true"><use href="#i-clock"/></svg>
-        <p class="g-title">福祉制度の変遷</p>
-        <p class="g-desc">福祉制度の成立と変化を、年表で確認できます。</p>
-        <span class="g-arrow">年表を見る →</span>
-      </a>
+<!-- 福祉を知る（目的別入口より下の控えめな帯） -->
+<section class="know-band" aria-labelledby="know-h">
+  <div class="wrap">
+    <h2 class="know-title" id="know-h">福祉を知る</h2>
+    <div class="know-links">
+      <a class="know-link" href="history.html"><svg class="card-icon" aria-hidden="true"><use href="#i-clock"/></svg>制度の歴史</a>
+      <a class="know-link" href="jobs.html"><svg class="card-icon" aria-hidden="true"><use href="#i-chat"/></svg>福祉の仕事</a>
+      <a class="know-link" href="organizations.html"><svg class="card-icon" aria-hidden="true"><use href="#i-org"/></svg>福祉業界団体</a>
+      <a class="know-link" href="service.html"><svg class="card-icon" aria-hidden="true"><use href="#i-folder"/></svg>福祉サービス一覧</a>
     </div>
+  </div>
+</section>
+
+<!-- 更新情報（掲載件数の実数。build_map.py が各content JSON・DBメタから注入。ハードコードしない） -->
+<section id="updates" aria-labelledby="updates-h">
+  <div class="wrap">
+    <h2 class="section-title" id="updates-h">更新情報</h2>
+    <p class="updates-note">主要コンテンツの掲載件数（公表情報にもとづく実数）です。</p>
+    <p class="stat-counts" id="stat-counts" aria-label="掲載件数"></p>
   </div>
 </section>
 

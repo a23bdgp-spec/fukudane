@@ -964,6 +964,23 @@ section p:last-child { margin-bottom: 0; }
 
 @media (max-width: 700px) { .entry-grid { grid-template-columns: 1fr; } }
 
+/* ホーム：目的別入口（5枚）＝広い画面は5列・タブレット3列・モバイルは2列以下 */
+.entry-grid-5 { grid-template-columns: repeat(3, 1fr); }
+@media (min-width: 1000px) { .entry-grid-5 { grid-template-columns: repeat(5, 1fr); } }
+@media (max-width: 760px) { .entry-grid-5 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 460px) { .entry-grid-5 { grid-template-columns: 1fr; } }
+
+/* ホーム：福祉を知る（控えめな帯） */
+.know-band { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--primary-tint); padding: 22px 0; margin: 8px 0 0; }
+.know-title { font-size: 14px; font-weight: 700; color: var(--ink-soft); margin: 0 0 12px; }
+.know-links { display: flex; flex-wrap: wrap; gap: 10px 12px; }
+.know-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-decoration: none; color: var(--ink); font-size: 14px; font-weight: 700; }
+.know-link:hover { border-color: var(--primary); color: var(--primary); }
+.know-link .card-icon { width: 18px; height: 18px; flex: none; }
+
+/* ホーム：更新情報の説明文 */
+.updates-note { font-size: 13.5px; color: var(--ink-soft); margin: 0 0 10px; }
+
 /* サービスカード面の経営指標リンク（詳細を開かなくても分かる小さな導線） */
 .s-keiei { margin: 8px 0 0; font-size: 13px; }
 .s-keiei a { color: var(--primary); font-weight: 700; border-bottom: 1px solid var(--line-strong); padding-bottom: 1px; }
