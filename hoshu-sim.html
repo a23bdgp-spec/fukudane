@@ -168,9 +168,9 @@
           <label class="sim-lb">類型<select id="sim-facility"></select></label>
         </section>
 
-        <!-- 3. 入所者数（かんたん／詳細）と日数 -->
+        <!-- 3. 入所者数 -->
         <section class="sim-block">
-          <h2 class="sim-h">3. 入所者数と日数</h2>
+          <h2 class="sim-h">3. 入所者数</h2>
           <div class="metric-toggle sim-mode" role="group" aria-label="入力モードの切替">
             <button type="button" class="metric-btn" data-mode="easy" aria-pressed="true">かんたん（定員×稼働率）</button>
             <button type="button" class="metric-btn" data-mode="detail" aria-pressed="false">詳細（要介護度別）</button>
@@ -178,23 +178,21 @@
           <div id="sim-mode-easy">
             <div class="sim-easyrow">
               <label class="sim-lb">定員（人）<input type="text" inputmode="numeric" id="sim-capacity" placeholder="例：100"></label>
-              <label class="sim-lb">稼働率（%）<input type="text" inputmode="numeric" id="sim-occ" placeholder="例：95"></label>
-              <label class="sim-lb">要介護度（代表）<select id="sim-care-rep"></select></label>
+              <label class="sim-lb">稼働率（%）<input type="number" step="0.01" min="0" max="100" inputmode="decimal" id="sim-occ" placeholder="例：97.35"></label>
+              <label class="sim-lb">平均要介護度<input type="number" step="0.1" min="1" max="5" inputmode="decimal" id="sim-care-rep" placeholder="例：3.4"></label>
             </div>
             <p class="sim-note" id="sim-easy-note"></p>
           </div>
           <div id="sim-mode-detail" hidden>
             <div class="sim-care" id="sim-care"></div>
           </div>
-          <div class="sim-daysrow">
-            <label class="sim-lb">この月の日数<input type="text" inputmode="numeric" id="sim-days" value="30" placeholder="30"></label>
-            <span class="sim-total" id="sim-total"></span>
-          </div>
+          <p class="sim-total" id="sim-total"></p>
         </section>
 
-        <!-- 4. 処遇改善加算 -->
-        <section class="sim-block">
-          <h2 class="sim-h">4. 処遇改善加算</h2>
+        <!-- 4. 加算（体制加算＋処遇改善） -->
+        <section class="sim-block sim-block-wide">
+          <h2 class="sim-h">4. 加算（体制加算・処遇改善）</h2>
+          <div id="sim-taisei"></div>
           <div class="sim-shori" id="sim-shori"></div>
         </section>
       </div>
@@ -204,7 +202,7 @@
         <h2 class="sim-h">概算結果（月間）</h2>
         <div class="table-scroll">
           <table class="sim-table" id="sim-breakdown">
-            <thead><tr><th scope="col">項目</th><th scope="col">単位数</th><th scope="col">概算額</th></tr></thead>
+            <thead><tr><th scope="col">項目</th><th scope="col">単位数</th><th scope="col">月額</th><th scope="col">1日あたり</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -229,7 +227,7 @@
         </section>
 
         <section class="sim-block">
-          <h2 class="sim-h">3. 利用者数と日数</h2>
+          <h2 class="sim-h">3. 利用者数</h2>
           <div class="metric-toggle sim-mode2" role="group" aria-label="入力モードの切替">
             <button type="button" class="metric-btn" data-mode2="easy" aria-pressed="true">かんたん（定員×稼働率）</button>
             <button type="button" class="metric-btn" data-mode2="detail" aria-pressed="false">詳細（人数直接）</button>
@@ -237,17 +235,14 @@
           <div id="sim2-mode-easy">
             <div class="sim-easyrow">
               <label class="sim-lb">定員（人）<input type="text" inputmode="numeric" id="sim2-capacity" placeholder="例：20"></label>
-              <label class="sim-lb">稼働率（%）<input type="text" inputmode="numeric" id="sim2-occ" placeholder="例：90"></label>
+              <label class="sim-lb">稼働率（%）<input type="number" step="0.01" min="0" max="100" inputmode="decimal" id="sim2-occ" placeholder="例：90.00"></label>
             </div>
             <p class="sim-note" id="sim2-easy-note"></p>
           </div>
           <div id="sim2-mode-detail" hidden>
             <label class="sim-lb">利用者数（人）<input type="text" inputmode="numeric" id="sim2-users" placeholder="例：18"></label>
           </div>
-          <div class="sim-daysrow" id="sim2-daysrow">
-            <label class="sim-lb" id="sim2-days-lb">営業日数（月）<input type="text" inputmode="numeric" id="sim2-days" value="22" placeholder="22"></label>
-            <span class="sim-total" id="sim2-total"></span>
-          </div>
+          <p class="sim-total" id="sim2-total"></p>
         </section>
 
         <section class="sim-block">
@@ -260,7 +255,7 @@
         <h2 class="sim-h">概算結果（月間）</h2>
         <div class="table-scroll">
           <table class="sim-table" id="sim2-breakdown">
-            <thead><tr><th scope="col">項目</th><th scope="col">単位数</th><th scope="col">概算額</th></tr></thead>
+            <thead><tr><th scope="col">項目</th><th scope="col">単位数</th><th scope="col">月額</th><th scope="col">1日あたり</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -9967,6 +9962,881 @@ const SIM_SHOGAI_CHIIKI = {
 };
 /* __SIM_SHOGAI_CHIIKI_INJECT_END__ ここまで */
 </script>
+<script>
+/* __SIM_SHOGUU_INJECT_START__ ここから下を build_map.py が content/shoguu_kaizen_rireki.json で置き換える（未注入時は空） */
+const SIM_SHOGUU = {
+  "メタ": {
+    "タイトル": "介護・障害福祉の処遇改善加算 改正履歴",
+    "確認日": "2026-07-24",
+    "制度説明": "介護職員等の賃金改善のための報酬上の加算。事業所が算定した加算額を職員の賃金改善に充てることを要件とする。加算率は、加算を除く加減算後の総報酬単位数に乗じて算定する。2009年度の交付金に始まり、2012年度に報酬の加算化、以後の拡充を経て、2024年6月に3加算を一本化、2026年度（令和8年度）に対象拡大・加算率引上げ・対象サービス拡大を実施。",
+    "現行加算率_令和8年度": {
+      "区分": "加算Ⅰ（イ／ロ）・Ⅱ（イ／ロ）・Ⅲ・Ⅳ",
+      "サービス別": {
+        "訪問介護": {
+          "Ⅰイ": 27.0,
+          "Ⅰロ": 28.7,
+          "Ⅱイ": 24.9,
+          "Ⅱロ": 26.6,
+          "Ⅲ": 20.7,
+          "Ⅳ": 17.0
+        },
+        "夜間対応型訪問介護・定期巡回・随時対応型訪問介護看護": {
+          "Ⅰイ": 26.7,
+          "Ⅰロ": 27.8,
+          "Ⅱイ": 24.6,
+          "Ⅱロ": 25.7,
+          "Ⅲ": 20.4,
+          "Ⅳ": 16.7
+        },
+        "訪問入浴介護": {
+          "Ⅰイ": 12.2,
+          "Ⅰロ": 13.3,
+          "Ⅱイ": 11.6,
+          "Ⅱロ": 12.7,
+          "Ⅲ": 10.1,
+          "Ⅳ": 8.5
+        },
+        "通所介護": {
+          "Ⅰイ": 11.1,
+          "Ⅰロ": 12.0,
+          "Ⅱイ": 10.9,
+          "Ⅱロ": 11.8,
+          "Ⅲ": 9.9,
+          "Ⅳ": 8.3
+        },
+        "地域密着型通所介護": {
+          "Ⅰイ": 11.7,
+          "Ⅰロ": 12.7,
+          "Ⅱイ": 11.5,
+          "Ⅱロ": 12.5,
+          "Ⅲ": 10.5,
+          "Ⅳ": 8.9
+        },
+        "通所リハビリテーション": {
+          "Ⅰイ": 10.3,
+          "Ⅰロ": 11.1,
+          "Ⅱイ": 10.0,
+          "Ⅱロ": 10.8,
+          "Ⅲ": 8.3,
+          "Ⅳ": 7.0
+        },
+        "特定施設入居者生活介護・地域密着型特定施設入居者生活介護": {
+          "Ⅰイ": 14.8,
+          "Ⅰロ": 15.9,
+          "Ⅱイ": 14.2,
+          "Ⅱロ": 15.3,
+          "Ⅲ": 13.0,
+          "Ⅳ": 10.8
+        },
+        "認知症対応型通所介護": {
+          "Ⅰイ": 21.6,
+          "Ⅰロ": 23.6,
+          "Ⅱイ": 20.9,
+          "Ⅱロ": 22.9,
+          "Ⅲ": 18.5,
+          "Ⅳ": 15.7
+        },
+        "小規模多機能型居宅介護": {
+          "Ⅰイ": 17.1,
+          "Ⅰロ": 18.6,
+          "Ⅱイ": 16.8,
+          "Ⅱロ": 18.3,
+          "Ⅲ": 15.6,
+          "Ⅳ": 12.8
+        },
+        "看護小規模多機能型居宅介護": {
+          "Ⅰイ": 16.8,
+          "Ⅰロ": 17.7,
+          "Ⅱイ": 16.5,
+          "Ⅱロ": 17.4,
+          "Ⅲ": 15.3,
+          "Ⅳ": 12.5
+        },
+        "認知症対応型共同生活介護": {
+          "Ⅰイ": 21.0,
+          "Ⅰロ": 22.8,
+          "Ⅱイ": 20.2,
+          "Ⅱロ": 22.0,
+          "Ⅲ": 17.9,
+          "Ⅳ": 14.9
+        },
+        "介護老人福祉施設・地域密着型介護老人福祉施設・短期入所生活介護": {
+          "Ⅰイ": 16.3,
+          "Ⅰロ": 17.6,
+          "Ⅱイ": 15.9,
+          "Ⅱロ": 17.2,
+          "Ⅲ": 13.6,
+          "Ⅳ": 11.3
+        },
+        "介護老人保健施設・短期入所療養介護（老健）": {
+          "Ⅰイ": 9.0,
+          "Ⅰロ": 9.7,
+          "Ⅱイ": 8.6,
+          "Ⅱロ": 9.3,
+          "Ⅲ": 6.9,
+          "Ⅳ": 5.9
+        },
+        "介護医療院・短期入所療養介護（介護医療院）・短期入所療養介護（病院等）": {
+          "Ⅰイ": 6.2,
+          "Ⅰロ": 6.6,
+          "Ⅱイ": 5.8,
+          "Ⅱロ": 6.2,
+          "Ⅲ": 4.7,
+          "Ⅳ": 4.0
+        }
+      },
+      "新設サービス": {
+        "訪問看護": 1.8,
+        "訪問リハビリテーション": 1.5,
+        "居宅介護支援・介護予防支援": 2.1
+      },
+      "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/download/5_R8_houshuu_kaitei.pdf"
+    },
+    "系列": "介護（介護職員等処遇改善加算）と障害福祉（福祉・介護職員等処遇改善加算）は別系列。統合していない。",
+    "出典": [
+      {
+        "名称": "介護職員の処遇改善（厚生労働省・公式ハブ）",
+        "URL": "https://www.mhlw.go.jp/shogu-kaizen/index.html"
+      },
+      {
+        "名称": "『処遇改善加算』の制度が一本化され加算率が引き上がります（一本化リーフレット・令和6年6月）",
+        "URL": "https://www.mhlw.go.jp/shogu-kaizen/download/A1_leaflet.pdf"
+      },
+      {
+        "名称": "介護職員等処遇改善加算の拡充（令和8年度介護報酬改定の概要）",
+        "URL": "https://www.mhlw.go.jp/shogu-kaizen/download/5_R8_houshuu_kaitei.pdf"
+      },
+      {
+        "名称": "福祉・介護職員等処遇改善加算等（障害福祉・厚生労働省）",
+        "URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/minaoshi/index_00007.html"
+      }
+    ],
+    "障害福祉の現行加算率_令和8年度": {
+      "区分": "加算Ⅰ（イ／ロ）・Ⅱ（イ／ロ）・Ⅲ・Ⅳ",
+      "適用": "令和8年6月施行",
+      "サービス別": {
+        "居宅介護": {
+          "Ⅰイ": 44.6,
+          "Ⅰロ": 45.6,
+          "Ⅱイ": 43.1,
+          "Ⅱロ": 44.1,
+          "Ⅲ": 37.6,
+          "Ⅳ": 30.2
+        },
+        "重度訪問介護": {
+          "Ⅰイ": 37.2,
+          "Ⅰロ": 38.2,
+          "Ⅱイ": 35.7,
+          "Ⅱロ": 36.7,
+          "Ⅲ": 30.2,
+          "Ⅳ": 24.8
+        },
+        "同行援護": {
+          "Ⅰイ": 44.6,
+          "Ⅰロ": 45.6,
+          "Ⅱイ": 43.1,
+          "Ⅱロ": 44.1,
+          "Ⅲ": 37.6,
+          "Ⅳ": 30.2
+        },
+        "行動援護": {
+          "Ⅰイ": 41.1,
+          "Ⅰロ": 42.1,
+          "Ⅱイ": 39.6,
+          "Ⅱロ": 40.6,
+          "Ⅲ": 34.1,
+          "Ⅳ": 27.7
+        },
+        "重度障害者等包括支援": {
+          "Ⅰイ": 25.2,
+          "Ⅰロ": 26.2,
+          "Ⅲ": 19.1,
+          "Ⅳ": 16.7
+        },
+        "生活介護": {
+          "Ⅰイ": 9.3,
+          "Ⅰロ": 9.7,
+          "Ⅱイ": 9.2,
+          "Ⅱロ": 9.6,
+          "Ⅲ": 7.9,
+          "Ⅳ": 6.7
+        },
+        "施設入所支援": {
+          "Ⅰイ": 18.6,
+          "Ⅰロ": 19.3,
+          "Ⅲ": 16.5,
+          "Ⅳ": 14.2
+        },
+        "短期入所": {
+          "Ⅰイ": 18.6,
+          "Ⅰロ": 19.3,
+          "Ⅲ": 16.5,
+          "Ⅳ": 14.2
+        },
+        "療養介護": {
+          "Ⅰイ": 16.4,
+          "Ⅰロ": 17.1,
+          "Ⅱイ": 16.2,
+          "Ⅱロ": 16.9,
+          "Ⅲ": 14.3,
+          "Ⅳ": 12.6
+        },
+        "自立訓練（機能訓練）": {
+          "Ⅰイ": 16.4,
+          "Ⅰロ": 17.1,
+          "Ⅱイ": 16.0,
+          "Ⅱロ": 16.7,
+          "Ⅲ": 12.4,
+          "Ⅳ": 10.6
+        },
+        "自立訓練（生活訓練）": {
+          "Ⅰイ": 16.4,
+          "Ⅰロ": 17.1,
+          "Ⅱイ": 16.0,
+          "Ⅱロ": 16.7,
+          "Ⅲ": 12.4,
+          "Ⅳ": 10.6
+        },
+        "就労選択支援": {
+          "Ⅰイ": 11.5,
+          "Ⅰロ": 11.9,
+          "Ⅱイ": 11.3,
+          "Ⅱロ": 11.7,
+          "Ⅲ": 9.8,
+          "Ⅳ": 8.1
+        },
+        "就労移行支援": {
+          "Ⅰイ": 11.5,
+          "Ⅰロ": 11.9,
+          "Ⅱイ": 11.3,
+          "Ⅱロ": 11.7,
+          "Ⅲ": 9.8,
+          "Ⅳ": 8.1
+        },
+        "就労継続支援A型": {
+          "Ⅰイ": 10.8,
+          "Ⅰロ": 11.2,
+          "Ⅱイ": 10.6,
+          "Ⅱロ": 11.0,
+          "Ⅲ": 9.1,
+          "Ⅳ": 7.5
+        },
+        "就労継続支援B型": {
+          "Ⅰイ": 10.5,
+          "Ⅰロ": 10.9,
+          "Ⅱイ": 10.3,
+          "Ⅱロ": 10.7,
+          "Ⅲ": 8.8,
+          "Ⅳ": 7.4
+        },
+        "就労定着支援": {
+          "Ⅰイ": 11.5,
+          "Ⅰロ": 11.9,
+          "Ⅲ": 9.8,
+          "Ⅳ": 8.1
+        },
+        "自立生活援助": {
+          "Ⅰイ": 11.5,
+          "Ⅰロ": 11.9,
+          "Ⅱイ": 11.3,
+          "Ⅱロ": 11.7,
+          "Ⅲ": 9.8,
+          "Ⅳ": 8.1
+        },
+        "共同生活援助（介護サービス包括型）": {
+          "Ⅰイ": 16.3,
+          "Ⅰロ": 16.9,
+          "Ⅱイ": 16.0,
+          "Ⅱロ": 16.6,
+          "Ⅲ": 14.4,
+          "Ⅳ": 12.1
+        },
+        "共同生活援助（日中サービス支援型）": {
+          "Ⅰイ": 16.3,
+          "Ⅰロ": 16.9,
+          "Ⅱイ": 16.0,
+          "Ⅱロ": 16.6,
+          "Ⅲ": 14.4,
+          "Ⅳ": 12.1
+        },
+        "共同生活援助（外部サービス利用型）": {
+          "Ⅰイ": 22.7,
+          "Ⅰロ": 23.3,
+          "Ⅱイ": 22.4,
+          "Ⅱロ": 23.0,
+          "Ⅲ": 20.8,
+          "Ⅳ": 16.8
+        },
+        "児童発達支援": {
+          "Ⅰイ": 15.2,
+          "Ⅰロ": 15.8,
+          "Ⅱイ": 14.9,
+          "Ⅱロ": 15.5,
+          "Ⅲ": 13.9,
+          "Ⅳ": 11.7
+        },
+        "医療型児童発達支援": {
+          "Ⅰイ": 19.7,
+          "Ⅰロ": 20.3,
+          "Ⅱイ": 19.4,
+          "Ⅱロ": 20.0,
+          "Ⅲ": 18.4,
+          "Ⅳ": 15.0
+        },
+        "放課後等デイサービス": {
+          "Ⅰイ": 15.5,
+          "Ⅰロ": 16.1,
+          "Ⅱイ": 15.2,
+          "Ⅱロ": 15.8,
+          "Ⅲ": 14.2,
+          "Ⅳ": 11.9
+        },
+        "居宅訪問型児童発達支援": {
+          "Ⅰイ": 15.0,
+          "Ⅰロ": 15.6,
+          "Ⅲ": 13.9,
+          "Ⅳ": 11.7
+        },
+        "保育所等訪問支援": {
+          "Ⅰイ": 15.0,
+          "Ⅰロ": 15.6,
+          "Ⅲ": 13.9,
+          "Ⅳ": 11.7
+        },
+        "福祉型障害児入所施設": {
+          "Ⅰイ": 30.5,
+          "Ⅰロ": 32.0,
+          "Ⅱイ": 30.1,
+          "Ⅱロ": 31.6,
+          "Ⅲ": 26.2,
+          "Ⅳ": 23.5
+        },
+        "医療型障害児入所施設": {
+          "Ⅰイ": 28.5,
+          "Ⅰロ": 30.0,
+          "Ⅱイ": 28.1,
+          "Ⅱロ": 29.6,
+          "Ⅲ": 24.2,
+          "Ⅳ": 22.1
+        }
+      },
+      "新設サービス": {
+        "計画相談支援": 5.1,
+        "地域相談支援（地域移行支援）": 5.1,
+        "地域相談支援（地域定着支援）": 5.1,
+        "障害児相談支援": 5.1
+      },
+      "出典URL": "https://www.mhlw.go.jp/content/12200000/001658029.pdf"
+    }
+  },
+  "改正履歴": {
+    "介護": [
+      {
+        "適用開始年月": "2009年度（平成21年度）",
+        "適用開始_西暦": "2009",
+        "制度名": "介護職員処遇改善交付金",
+        "内容の要点": "介護職員の賃金改善を目的とした国の交付金（補助金）。事業者が賃金改善に充てることを条件に交付。後の処遇改善加算の前身。",
+        "加算率_金額": "補助金方式（介護報酬の加算ではない）。具体額は各年度の交付要綱による（本マスタでは金額未収録）。",
+        "根拠": "介護職員処遇改善交付金交付要綱",
+        "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/index.html"
+      },
+      {
+        "適用開始年月": "2012年度（平成24年度）",
+        "適用開始_西暦": "2012-04",
+        "制度名": "介護職員処遇改善加算（創設）",
+        "内容の要点": "交付金を介護報酬の加算に組み替えて創設。キャリアパス要件・職場環境等要件に応じて加算区分（Ⅰ〜）を設定。以後、平成27年度・平成29年度改定で加算Ⅰの拡充（上位区分の追加）。",
+        "加算率_金額": "サービス別・区分別に設定（実数は各年度の算定基準告示による）。",
+        "根拠": "平成24年度介護報酬改定（厚生労働大臣が定める告示）",
+        "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/index.html"
+      },
+      {
+        "適用開始年月": "2019年10月（令和元年10月）",
+        "適用開始_西暦": "2019-10",
+        "制度名": "介護職員等特定処遇改善加算（創設）",
+        "内容の要点": "消費税財源を活用し、経験・技能のある介護職員に重点配分する加算を新設（加算Ⅰ・Ⅱ）。リーダー級の介護職員に月8万円の改善又は年収440万円以上を目指す。",
+        "加算率_金額": "経験・技能のある介護職員に重点配分（リーフレット記載：改善後賃金年額440万円、月額8万円）。サービス別加算率は各年度告示による。",
+        "根拠": "令和元年度介護報酬改定（告示）",
+        "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/index.html"
+      },
+      {
+        "適用開始年月": "2022年10月（令和4年10月）",
+        "適用開始_西暦": "2022-10",
+        "制度名": "介護職員等ベースアップ等支援加算（創設）",
+        "内容の要点": "介護職員の収入を月額平均9,000円引き上げるための加算。2022年2月〜9月は介護職員処遇改善支援補助金として先行実施し、10月から加算化。",
+        "加算率_金額": "ベースアップ等（基本給又は毎月の手当の引上げ）に2/3以上を充当。サービス別加算率は各年度告示による。",
+        "根拠": "令和4年度介護報酬改定（告示）",
+        "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/index.html"
+      },
+      {
+        "適用開始年月": "2024年6月（令和6年6月）",
+        "適用開始_西暦": "2024-06",
+        "制度名": "介護職員等処遇改善加算（3加算の一本化）",
+        "内容の要点": "処遇改善加算（Ⅰ〜Ⅲ）・特定処遇改善加算（Ⅰ・Ⅱ）・ベースアップ等支援加算の3加算を一本化し新加算Ⅰ〜Ⅳに再編。加算率を一律引上げ。令和6年度末までの激変緩和として経過措置区分Ⅴ(1)〜(14)を設置。令和6年度＋2.5％・令和7年度＋2.0％のベースアップを目標。",
+        "加算率_金額": {
+          "区分": "新加算Ⅰ〜Ⅳ（＋経過措置Ⅴ(1)〜(14)）",
+          "サービス別加算率": {
+            "（夜間対応型）訪問介護・定期巡回・随時対応型訪問介護看護": {
+              "Ⅰ": 24.5,
+              "Ⅱ": 22.4,
+              "Ⅲ": 18.2,
+              "Ⅳ": 14.5
+            },
+            "訪問入浴介護": {
+              "Ⅰ": 10.0,
+              "Ⅱ": 9.4,
+              "Ⅲ": 7.9,
+              "Ⅳ": 6.3
+            },
+            "（地密）通所介護": {
+              "Ⅰ": 9.2,
+              "Ⅱ": 9.0,
+              "Ⅲ": 8.0,
+              "Ⅳ": 6.4
+            },
+            "通所リハビリテーション": {
+              "Ⅰ": 8.6,
+              "Ⅱ": 8.3,
+              "Ⅲ": 6.6,
+              "Ⅳ": 5.3
+            },
+            "特定施設入居者生活介護（地密含む）": {
+              "Ⅰ": 12.8,
+              "Ⅱ": 12.2,
+              "Ⅲ": 11.0,
+              "Ⅳ": 8.8
+            },
+            "認知症対応型通所介護": {
+              "Ⅰ": 18.1,
+              "Ⅱ": 17.4,
+              "Ⅲ": 15.0,
+              "Ⅳ": 12.2
+            },
+            "小規模多機能型居宅介護・看護小規模多機能型居宅介護": {
+              "Ⅰ": 14.9,
+              "Ⅱ": 14.6,
+              "Ⅲ": 13.4,
+              "Ⅳ": 10.6
+            },
+            "認知症対応型共同生活介護": {
+              "Ⅰ": 18.6,
+              "Ⅱ": 17.8,
+              "Ⅲ": 15.5,
+              "Ⅳ": 12.5
+            },
+            "介護福祉施設（特養・地密）・短期入所生活介護": {
+              "Ⅰ": 14.0,
+              "Ⅱ": 13.6,
+              "Ⅲ": 11.3,
+              "Ⅳ": 9.0
+            },
+            "介護保健施設（老健）・短期入所療養介護（老健）": {
+              "Ⅰ": 7.5,
+              "Ⅱ": 7.1,
+              "Ⅲ": 5.4,
+              "Ⅳ": 4.4
+            },
+            "介護医療院・短期入所療養介護（老健以外）": {
+              "Ⅰ": 5.1,
+              "Ⅱ": 4.7,
+              "Ⅲ": 3.6,
+              "Ⅳ": 2.9
+            }
+          },
+          "訪問介護の一本化前後の例": "（現行3加算の例）処遇改善加算Ⅰ13.7%・Ⅲ5.5%、特定処遇改善加算Ⅱ4.2%、ベア加算2.4% → 新加算Ⅱ22.4%（いずれもリーフレットの訪問介護の例）"
+        },
+        "根拠": "令和6年度介護報酬改定（告示）／一本化リーフレット",
+        "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/download/A1_leaflet.pdf"
+      },
+      {
+        "適用開始年月": "2026年度（令和8年度）",
+        "適用開始_西暦": "2026",
+        "制度名": "介護職員等処遇改善加算の拡充",
+        "内容の要点": "①加算の対象を介護職員のみから介護従事者に拡大し加算率を引上げ、②生産性向上・協働化に取り組む事業者への上乗せ区分（加算Ⅰ・Ⅱに『ロ』区分）を新設、③従来対象外だった訪問看護・訪問リハビリテーション・居宅介護支援等に処遇改善加算を新設。介護職員について最大月1.9万円（6.3％、定期昇給0.2万円込み）の賃上げを措置。",
+        "加算率_金額": {
+          "区分": "加算Ⅰ（イ／ロ）・Ⅱ（イ／ロ）・Ⅲ・Ⅳ",
+          "サービス別加算率": {
+            "訪問介護": {
+              "Ⅰイ": 27.0,
+              "Ⅰロ": 28.7,
+              "Ⅱイ": 24.9,
+              "Ⅱロ": 26.6,
+              "Ⅲ": 20.7,
+              "Ⅳ": 17.0
+            },
+            "夜間対応型訪問介護・定期巡回・随時対応型訪問介護看護": {
+              "Ⅰイ": 26.7,
+              "Ⅰロ": 27.8,
+              "Ⅱイ": 24.6,
+              "Ⅱロ": 25.7,
+              "Ⅲ": 20.4,
+              "Ⅳ": 16.7
+            },
+            "訪問入浴介護": {
+              "Ⅰイ": 12.2,
+              "Ⅰロ": 13.3,
+              "Ⅱイ": 11.6,
+              "Ⅱロ": 12.7,
+              "Ⅲ": 10.1,
+              "Ⅳ": 8.5
+            },
+            "通所介護": {
+              "Ⅰイ": 11.1,
+              "Ⅰロ": 12.0,
+              "Ⅱイ": 10.9,
+              "Ⅱロ": 11.8,
+              "Ⅲ": 9.9,
+              "Ⅳ": 8.3
+            },
+            "地域密着型通所介護": {
+              "Ⅰイ": 11.7,
+              "Ⅰロ": 12.7,
+              "Ⅱイ": 11.5,
+              "Ⅱロ": 12.5,
+              "Ⅲ": 10.5,
+              "Ⅳ": 8.9
+            },
+            "通所リハビリテーション": {
+              "Ⅰイ": 10.3,
+              "Ⅰロ": 11.1,
+              "Ⅱイ": 10.0,
+              "Ⅱロ": 10.8,
+              "Ⅲ": 8.3,
+              "Ⅳ": 7.0
+            },
+            "特定施設入居者生活介護・地域密着型特定施設入居者生活介護": {
+              "Ⅰイ": 14.8,
+              "Ⅰロ": 15.9,
+              "Ⅱイ": 14.2,
+              "Ⅱロ": 15.3,
+              "Ⅲ": 13.0,
+              "Ⅳ": 10.8
+            },
+            "認知症対応型通所介護": {
+              "Ⅰイ": 21.6,
+              "Ⅰロ": 23.6,
+              "Ⅱイ": 20.9,
+              "Ⅱロ": 22.9,
+              "Ⅲ": 18.5,
+              "Ⅳ": 15.7
+            },
+            "小規模多機能型居宅介護": {
+              "Ⅰイ": 17.1,
+              "Ⅰロ": 18.6,
+              "Ⅱイ": 16.8,
+              "Ⅱロ": 18.3,
+              "Ⅲ": 15.6,
+              "Ⅳ": 12.8
+            },
+            "看護小規模多機能型居宅介護": {
+              "Ⅰイ": 16.8,
+              "Ⅰロ": 17.7,
+              "Ⅱイ": 16.5,
+              "Ⅱロ": 17.4,
+              "Ⅲ": 15.3,
+              "Ⅳ": 12.5
+            },
+            "認知症対応型共同生活介護": {
+              "Ⅰイ": 21.0,
+              "Ⅰロ": 22.8,
+              "Ⅱイ": 20.2,
+              "Ⅱロ": 22.0,
+              "Ⅲ": 17.9,
+              "Ⅳ": 14.9
+            },
+            "介護老人福祉施設・地域密着型介護老人福祉施設・短期入所生活介護": {
+              "Ⅰイ": 16.3,
+              "Ⅰロ": 17.6,
+              "Ⅱイ": 15.9,
+              "Ⅱロ": 17.2,
+              "Ⅲ": 13.6,
+              "Ⅳ": 11.3
+            },
+            "介護老人保健施設・短期入所療養介護（老健）": {
+              "Ⅰイ": 9.0,
+              "Ⅰロ": 9.7,
+              "Ⅱイ": 8.6,
+              "Ⅱロ": 9.3,
+              "Ⅲ": 6.9,
+              "Ⅳ": 5.9
+            },
+            "介護医療院・短期入所療養介護（介護医療院）・短期入所療養介護（病院等）": {
+              "Ⅰイ": 6.2,
+              "Ⅰロ": 6.6,
+              "Ⅱイ": 5.8,
+              "Ⅱロ": 6.2,
+              "Ⅲ": 4.7,
+              "Ⅳ": 4.0
+            }
+          },
+          "新設サービスの加算率": {
+            "訪問看護": 1.8,
+            "訪問リハビリテーション": 1.5,
+            "居宅介護支援・介護予防支援": 2.1
+          },
+          "備考": "加算率は介護職員等処遇改善加算を除く加減算後の総報酬単位数に乗じる。ロは生産性向上・協働化の上乗せ区分。"
+        },
+        "根拠": "令和8年度介護報酬改定（処遇改善の拡充）／概要資料",
+        "出典URL": "https://www.mhlw.go.jp/shogu-kaizen/download/5_R8_houshuu_kaitei.pdf"
+      }
+    ],
+    "障害福祉": [
+      {
+        "適用開始年月": "2012年度（平成24年度）",
+        "制度名": "福祉・介護職員処遇改善加算（創設）",
+        "内容の要点": "障害福祉サービス等における福祉・介護職員の賃金改善のための加算。介護分野と並行して整備。",
+        "根拠": "障害福祉サービス等報酬改定（告示）",
+        "出典URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/minaoshi/index_00007.html"
+      },
+      {
+        "適用開始年月": "2019年10月（令和元年10月）",
+        "制度名": "福祉・介護職員等特定処遇改善加算（創設）",
+        "内容の要点": "経験・技能のある障害福祉人材への重点配分の加算を新設。",
+        "根拠": "令和元年度障害福祉サービス等報酬改定（告示）",
+        "出典URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/minaoshi/index_00007.html"
+      },
+      {
+        "適用開始年月": "2022年10月（令和4年10月）",
+        "制度名": "福祉・介護職員等ベースアップ等支援加算（創設）",
+        "内容の要点": "障害福祉職員の月額9,000円相当のベースアップ支援（2022年2〜9月は補助金で先行）。",
+        "根拠": "令和4年度障害福祉サービス等報酬改定（告示）",
+        "出典URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/minaoshi/index_00007.html"
+      },
+      {
+        "適用開始年月": "2024年6月（令和6年6月）",
+        "制度名": "福祉・介護職員等処遇改善加算（3加算の一本化）",
+        "内容の要点": "障害福祉版も同時期に3加算を一本化し加算Ⅰ〜Ⅳ＋経過措置Ⅴに再編、加算率を引上げ。",
+        "根拠": "令和6年度障害福祉サービス等報酬改定（告示）",
+        "出典URL": "https://www.mhlw.go.jp/stf/seisakunitsuite/bunya/hukushi_kaigo/shougaishahukushi/minaoshi/index_00007.html",
+        "備考": "障害福祉のサービス別加算率は福祉・介護職員等処遇改善加算の告示による（本マスタでは介護分の加算率を収録。障害分の加算率は続けて整備可能）。"
+      },
+      {
+        "適用開始年月": "2026年度（令和8年度・令和8年6月施行）",
+        "制度名": "福祉・介護職員等処遇改善加算の拡充（現行）",
+        "内容の要点": "①加算の対象を福祉・介護職員のみから障害福祉従事者に拡大し加算率を引上げ、②生産性向上・協働化に取り組む事業者への上乗せ区分（加算Ⅰ・Ⅱに『ロ』区分）を新設、③従来対象外だった計画相談支援・障害児相談支援・地域相談支援に処遇改善加算を新設。福祉・介護職員について最大月1.9万円（6.3％）の賃上げを措置。",
+        "加算率_金額": {
+          "区分": "加算Ⅰ（イ／ロ）・Ⅱ（イ／ロ）・Ⅲ・Ⅳ（一部サービスはⅡ無し）",
+          "サービス別加算率": {
+            "居宅介護": {
+              "Ⅰイ": 44.6,
+              "Ⅰロ": 45.6,
+              "Ⅱイ": 43.1,
+              "Ⅱロ": 44.1,
+              "Ⅲ": 37.6,
+              "Ⅳ": 30.2
+            },
+            "重度訪問介護": {
+              "Ⅰイ": 37.2,
+              "Ⅰロ": 38.2,
+              "Ⅱイ": 35.7,
+              "Ⅱロ": 36.7,
+              "Ⅲ": 30.2,
+              "Ⅳ": 24.8
+            },
+            "同行援護": {
+              "Ⅰイ": 44.6,
+              "Ⅰロ": 45.6,
+              "Ⅱイ": 43.1,
+              "Ⅱロ": 44.1,
+              "Ⅲ": 37.6,
+              "Ⅳ": 30.2
+            },
+            "行動援護": {
+              "Ⅰイ": 41.1,
+              "Ⅰロ": 42.1,
+              "Ⅱイ": 39.6,
+              "Ⅱロ": 40.6,
+              "Ⅲ": 34.1,
+              "Ⅳ": 27.7
+            },
+            "重度障害者等包括支援": {
+              "Ⅰイ": 25.2,
+              "Ⅰロ": 26.2,
+              "Ⅲ": 19.1,
+              "Ⅳ": 16.7
+            },
+            "生活介護": {
+              "Ⅰイ": 9.3,
+              "Ⅰロ": 9.7,
+              "Ⅱイ": 9.2,
+              "Ⅱロ": 9.6,
+              "Ⅲ": 7.9,
+              "Ⅳ": 6.7
+            },
+            "施設入所支援": {
+              "Ⅰイ": 18.6,
+              "Ⅰロ": 19.3,
+              "Ⅲ": 16.5,
+              "Ⅳ": 14.2
+            },
+            "短期入所": {
+              "Ⅰイ": 18.6,
+              "Ⅰロ": 19.3,
+              "Ⅲ": 16.5,
+              "Ⅳ": 14.2
+            },
+            "療養介護": {
+              "Ⅰイ": 16.4,
+              "Ⅰロ": 17.1,
+              "Ⅱイ": 16.2,
+              "Ⅱロ": 16.9,
+              "Ⅲ": 14.3,
+              "Ⅳ": 12.6
+            },
+            "自立訓練（機能訓練）": {
+              "Ⅰイ": 16.4,
+              "Ⅰロ": 17.1,
+              "Ⅱイ": 16.0,
+              "Ⅱロ": 16.7,
+              "Ⅲ": 12.4,
+              "Ⅳ": 10.6
+            },
+            "自立訓練（生活訓練）": {
+              "Ⅰイ": 16.4,
+              "Ⅰロ": 17.1,
+              "Ⅱイ": 16.0,
+              "Ⅱロ": 16.7,
+              "Ⅲ": 12.4,
+              "Ⅳ": 10.6
+            },
+            "就労選択支援": {
+              "Ⅰイ": 11.5,
+              "Ⅰロ": 11.9,
+              "Ⅱイ": 11.3,
+              "Ⅱロ": 11.7,
+              "Ⅲ": 9.8,
+              "Ⅳ": 8.1
+            },
+            "就労移行支援": {
+              "Ⅰイ": 11.5,
+              "Ⅰロ": 11.9,
+              "Ⅱイ": 11.3,
+              "Ⅱロ": 11.7,
+              "Ⅲ": 9.8,
+              "Ⅳ": 8.1
+            },
+            "就労継続支援A型": {
+              "Ⅰイ": 10.8,
+              "Ⅰロ": 11.2,
+              "Ⅱイ": 10.6,
+              "Ⅱロ": 11.0,
+              "Ⅲ": 9.1,
+              "Ⅳ": 7.5
+            },
+            "就労継続支援B型": {
+              "Ⅰイ": 10.5,
+              "Ⅰロ": 10.9,
+              "Ⅱイ": 10.3,
+              "Ⅱロ": 10.7,
+              "Ⅲ": 8.8,
+              "Ⅳ": 7.4
+            },
+            "就労定着支援": {
+              "Ⅰイ": 11.5,
+              "Ⅰロ": 11.9,
+              "Ⅲ": 9.8,
+              "Ⅳ": 8.1
+            },
+            "自立生活援助": {
+              "Ⅰイ": 11.5,
+              "Ⅰロ": 11.9,
+              "Ⅱイ": 11.3,
+              "Ⅱロ": 11.7,
+              "Ⅲ": 9.8,
+              "Ⅳ": 8.1
+            },
+            "共同生活援助（介護サービス包括型）": {
+              "Ⅰイ": 16.3,
+              "Ⅰロ": 16.9,
+              "Ⅱイ": 16.0,
+              "Ⅱロ": 16.6,
+              "Ⅲ": 14.4,
+              "Ⅳ": 12.1
+            },
+            "共同生活援助（日中サービス支援型）": {
+              "Ⅰイ": 16.3,
+              "Ⅰロ": 16.9,
+              "Ⅱイ": 16.0,
+              "Ⅱロ": 16.6,
+              "Ⅲ": 14.4,
+              "Ⅳ": 12.1
+            },
+            "共同生活援助（外部サービス利用型）": {
+              "Ⅰイ": 22.7,
+              "Ⅰロ": 23.3,
+              "Ⅱイ": 22.4,
+              "Ⅱロ": 23.0,
+              "Ⅲ": 20.8,
+              "Ⅳ": 16.8
+            },
+            "児童発達支援": {
+              "Ⅰイ": 15.2,
+              "Ⅰロ": 15.8,
+              "Ⅱイ": 14.9,
+              "Ⅱロ": 15.5,
+              "Ⅲ": 13.9,
+              "Ⅳ": 11.7
+            },
+            "医療型児童発達支援": {
+              "Ⅰイ": 19.7,
+              "Ⅰロ": 20.3,
+              "Ⅱイ": 19.4,
+              "Ⅱロ": 20.0,
+              "Ⅲ": 18.4,
+              "Ⅳ": 15.0
+            },
+            "放課後等デイサービス": {
+              "Ⅰイ": 15.5,
+              "Ⅰロ": 16.1,
+              "Ⅱイ": 15.2,
+              "Ⅱロ": 15.8,
+              "Ⅲ": 14.2,
+              "Ⅳ": 11.9
+            },
+            "居宅訪問型児童発達支援": {
+              "Ⅰイ": 15.0,
+              "Ⅰロ": 15.6,
+              "Ⅲ": 13.9,
+              "Ⅳ": 11.7
+            },
+            "保育所等訪問支援": {
+              "Ⅰイ": 15.0,
+              "Ⅰロ": 15.6,
+              "Ⅲ": 13.9,
+              "Ⅳ": 11.7
+            },
+            "福祉型障害児入所施設": {
+              "Ⅰイ": 30.5,
+              "Ⅰロ": 32.0,
+              "Ⅱイ": 30.1,
+              "Ⅱロ": 31.6,
+              "Ⅲ": 26.2,
+              "Ⅳ": 23.5
+            },
+            "医療型障害児入所施設": {
+              "Ⅰイ": 28.5,
+              "Ⅰロ": 30.0,
+              "Ⅱイ": 28.1,
+              "Ⅱロ": 29.6,
+              "Ⅲ": 24.2,
+              "Ⅳ": 22.1
+            }
+          },
+          "新設サービスの加算率": {
+            "計画相談支援": 5.1,
+            "地域相談支援（地域移行支援）": 5.1,
+            "地域相談支援（地域定着支援）": 5.1,
+            "障害児相談支援": 5.1
+          },
+          "備考": "福祉・介護職員等処遇改善加算を除く加減算後の総報酬単位数に上記率を乗じる。ロは生産性向上・協働化の上乗せ区分。加算率はサービス毎の常勤換算職員数に基づき設定。"
+        },
+        "根拠": "令和8年度障害福祉サービス等報酬改定（処遇改善の拡充・告示改正・令和8年6月施行）",
+        "出典URL": "https://www.mhlw.go.jp/content/12200000/001658029.pdf"
+      }
+    ]
+  }
+};
+/* __SIM_SHOGUU_INJECT_END__ ここまで */
+</script>
 
 <script>
 /* ===== 介護報酬 概算シミュレーター（第1弾＝特養）。入力はブラウザ内処理のみ・外部送信なし ===== */
@@ -10055,13 +10925,13 @@ const SIM_SHOGAI_CHIIKI = {
   facEl.innerHTML = facilities.map(function (f) { return '<option value="' + esc(f) + '">' + esc(f) + "</option>"; }).join("");
   facEl.addEventListener("change", recalc);
 
-  // ---- 3. 入所者数（かんたん＝定員×稼働率／詳細＝要介護度別）と日数 ----
+  // ---- 3. 入所者数（かんたん＝定員×稼働率×平均要介護度／詳細＝要介護度別） ----
+  var MONTH_DAYS = 365 / 12; // 月額は365日÷12か月（約30.4日）で計算
   var SIM_MODE = "easy";
-  document.getElementById("sim-care-rep").innerHTML = CARE.map(function (c) { return '<option value="' + esc(c) + '">' + esc(c) + "</option>"; }).join("");
   document.getElementById("sim-care").innerHTML = CARE.map(function (c) {
     return '<label class="sim-lb sim-care-lb">' + esc(c) + '<input type="text" inputmode="numeric" class="sim-cn" data-care="' + esc(c) + '" placeholder="0"></label>';
   }).join("");
-  ["sim-capacity", "sim-occ", "sim-care-rep", "sim-days"].forEach(function (id) {
+  ["sim-capacity", "sim-occ", "sim-care-rep"].forEach(function (id) {
     var el = document.getElementById(id); el.addEventListener("input", recalc); el.addEventListener("change", recalc);
   });
   document.getElementById("sim-care").addEventListener("input", recalc);
@@ -10079,50 +10949,87 @@ const SIM_SHOGAI_CHIIKI = {
       recalc();
     });
   }
-
-  function careCounts() {
-    var o = {}, total = 0;
-    CARE.forEach(function (c) { o[c] = 0; });
+  // 入所者数（かんたんは丸めず小数のまま）と平均要介護度
+  function careInput() {
     if (SIM_MODE === "easy") {
       var cap = pnum(document.getElementById("sim-capacity").value) || 0;
       var occ = pnum(document.getElementById("sim-occ").value);
-      var rep = document.getElementById("sim-care-rep").value;
-      var n = (occ != null) ? Math.round(cap * occ / 100) : 0;
-      if (CARE.indexOf(rep) >= 0) o[rep] = n;
-      total = n; o.__cap = cap; o.__occ = occ; o.__rep = rep;
-    } else {
-      CARE.forEach(function (c) { var v = pnum((document.querySelector('.sim-cn[data-care="' + c + '"]') || {}).value) || 0; o[c] = v; total += v; });
+      var care = pnum(document.getElementById("sim-care-rep").value);
+      var n = (occ != null) ? (cap * occ / 100) : 0;
+      return { mode: "easy", n: n, cap: cap, occ: occ, care: care };
     }
-    o.__total = total; return o;
+    var o = {}, total = 0;
+    CARE.forEach(function (c) { var v = pnum((document.querySelector('.sim-cn[data-care="' + c + '"]') || {}).value) || 0; o[c] = v; total += v; });
+    return { mode: "detail", counts: o, n: total };
   }
-  function monthDays() { var d = pnum(document.getElementById("sim-days").value); return (d && d > 0) ? d : 30; }
 
-  // ---- 4. 処遇改善（率）＝率区分の選択のみ。個別加算は算定に含めない ----
+  // ---- 4. 体制加算（算定対象＝全入所者・種別＝加算のみ）＋処遇改善（率） ----
+  var taiseiKasan = allKasan.filter(function (k) { return k["種別"] === "加算" && k["算定対象"] === "全入所者"; });
+  var taiseiEl = document.getElementById("sim-taisei");
+  taiseiEl.innerHTML = '<p class="sim-note">体制加算（在籍者全員に算定される体制系）を選べます。区分がある加算は区分も選択してください。該当者のみの加算・回数もの・外泊等は含みません。</p>' +
+    taiseiKasan.map(function (k, i) {
+      var u = k["単位数"], ctrl = "";
+      if (u && typeof u === "object") {
+        ctrl = '<label class="sk-lb">区分<select class="tk-kubun" data-i="' + i + '">' + Object.keys(u).map(function (kk) { return '<option value="' + esc(kk) + '">' + esc(kk) + "（" + u[kk] + "単位）</option>"; }).join("") + "</select></label>";
+      }
+      return '<div class="sim-kasan-row" data-i="' + i + '"><label class="sim-kasan-check"><input type="checkbox" class="tk-on" data-i="' + i + '"><span class="sim-kasan-name">' + esc(k["名称"]) + "</span></label>" +
+        '<div class="sim-kasan-ctrl">' + ctrl + '<span class="sim-kasan-meta">算定単位：' + esc(k["算定単位"] || "") + "</span></div></div>";
+    }).join("");
+  taiseiEl.addEventListener("input", recalc);
+  taiseiEl.addEventListener("change", recalc);
+  // 体制加算の各行（チェック分）を{名称,単位数(1人1日),monthly}で返す
+  function taiseiRows() {
+    var out = [];
+    taiseiKasan.forEach(function (k, i) {
+      var row = taiseiEl.querySelector('.sim-kasan-row[data-i="' + i + '"]');
+      if (!row || !row.querySelector(".tk-on").checked) return;
+      var u = k["単位数"], ksel = row.querySelector(".tk-kubun");
+      var unit = (u && typeof u === "object") ? pnum(u[ksel ? ksel.value : ""]) : pnum(u);
+      if (unit == null) return;
+      out.push({ name: k["名称"], unit: unit, monthly: String(k["算定単位"] || "").indexOf("月") >= 0 });
+    });
+    return out;
+  }
+
   var shoriEl = document.getElementById("sim-shori");
   if (kasanRate) {
     var rates = kasanRate["加算率_令和8年度"] || {};
     var ropts = '<option value="0">適用しない</option>' + Object.keys(rates).map(function (r) { return '<option value="' + rates[r] + '">' + esc(kasanRate["名称"]) + "（" + esc(r) + "・" + rates[r] + "%）</option>"; }).join("");
     shoriEl.innerHTML = '<label class="sk-lb sk-lb-wide">' + esc(kasanRate["名称"]) + '（率）<select id="sim-shori-sel">' + ropts + "</select></label>" +
-      '<span class="sim-kasan-meta">総報酬単位数（加減算後）に率を乗じます。ほぼ全ての施設が算定する率の加算のため残しています。</span>';
+      '<span class="sim-kasan-meta">総報酬単位数（加減算後）に率を乗じます。</span>';
     shoriEl.querySelector("#sim-shori-sel").addEventListener("change", recalc);
   }
 
   // ---- 計算 ----
-  function baseUnits(fac, counts) {
-    var kubunMap = (tokuyo["区分"] || {})[fac] || {}, u = 0;
-    CARE.forEach(function (c) { var per = pnum(kubunMap[c]); if (per != null) u += per * (counts[c] || 0); });
-    return u;
+  // 基本報酬：1人1日あたりの単位数（かんたんは平均要介護度を線形按分）
+  function basePerDay(fac, ci) {
+    var kubunMap = (tokuyo["区分"] || {})[fac] || {};
+    if (ci.mode === "easy") {
+      if (ci.care == null) return null;
+      var care = Math.max(1, Math.min(5, ci.care));
+      var lo = Math.floor(care), hi = Math.ceil(care), frac = care - lo;
+      var uLo = pnum(kubunMap["要介護" + lo]); var uHi = pnum(kubunMap["要介護" + hi]);
+      if (uLo == null) return null;
+      return (uHi == null) ? uLo : (uLo * (1 - frac) + uHi * frac);
+    }
+    // 詳細：加重平均（総単位/総人数）は使わず、要介護度別に集計
+    var u = 0, tot = 0;
+    CARE.forEach(function (c) { var per = pnum(kubunMap[c]); var n = ci.counts[c] || 0; if (per != null) u += per * n; tot += n; });
+    return tot > 0 ? u / tot : null; // 1人1日平均
   }
 
   var bdBody = document.querySelector("#sim-breakdown tbody");
-  function row(name, units, tanka, cls) {
-    var money = units * tanka;
-    return '<tr' + (cls ? ' class="' + cls + '"' : "") + '><th scope="row">' + esc(name) + "</th><td>" + yen(units) + " 単位</td><td>" + yen(money) + " 円</td></tr>";
+  // 4列（項目／単位数／月額／1日あたり）。monthUnits＝月間単位数、daily＝日割り系か
+  function fmtNum(v) { return Number(Math.abs(v) >= 1 ? Math.round(v) : v).toLocaleString("ja-JP"); }
+  function rowU(name, monthUnits, tanka, daily, cls) {
+    var monthYen = monthUnits * tanka;
+    var dayCell = daily ? yen(monthYen / MONTH_DAYS) + " 円" : "—";
+    return '<tr' + (cls ? ' class="' + cls + '"' : "") + '><th scope="row">' + esc(name) + "</th><td>" + fmtNum(monthUnits) + " 単位</td><td>" + yen(monthYen) + " 円</td><td>" + dayCell + "</td></tr>";
   }
-  function moneyRow(name, moneyVal, cls) {
-    return '<tr' + (cls ? ' class="' + cls + '"' : "") + '><th scope="row">' + esc(name) + '</th><td>—</td><td>' + yen(moneyVal) + " 円</td></tr>";
+  function rowM(name, monthYen, daily, cls) {
+    var dayCell = daily ? yen(monthYen / MONTH_DAYS) + " 円" : "—";
+    return '<tr' + (cls ? ' class="' + cls + '"' : "") + '><th scope="row">' + esc(name) + '</th><td>—</td><td>' + yen(monthYen) + " 円</td><td>" + dayCell + "</td></tr>";
   }
-  // 居室類型（施設類型名から判定）に対応する居住費（円/日）と表示名。より限定的な語を先に判定
   function roomTypeLabel(fac) {
     var f = String(fac);
     if (f.indexOf("ユニット型個室的多床室") >= 0) return "ユニット型個室的多床室";
@@ -10138,49 +11045,52 @@ const SIM_SHOGAI_CHIIKI = {
   }
   function recalc() {
     var fac = facEl.value;
-    var counts = careCounts();
-    var days = monthDays();
-    var total = counts.__total;
+    var ci = careInput();
+    var total = ci.n; // 入所者数（かんたんは小数のまま）
     var tanka = tankaFor(CURRENT.kubun); if (tanka == null) tanka = tankaFor("その他");
-    var ctx = { total: total, days: days };
+    var perDay = basePerDay(fac, ci);
 
-    // ① 介護報酬（基本報酬＋各加算＋処遇改善）
-    // 基本報酬は1日あたりの単位数なので、入所日数（この月の日数）を掛ける
-    var base = baseUnits(fac, counts) * days;
-    var rows = "", subtotal = base;
-    rows += row("基本報酬（" + shortFac(fac) + "）", base, tanka, "sim-row-base");
-
-    // 処遇改善（率）＝加減算後の総単位数に率を乗じる
+    var rows = "";
+    // ① 基本報酬（1人1日単位 × 人数 × 365/12）
+    var baseMonth = (perDay != null) ? perDay * total * MONTH_DAYS : 0;
+    rows += rowU("基本報酬（" + shortFac(fac) + "）", baseMonth, tanka, true, "sim-row-base");
+    var subtotal = baseMonth;
+    // 体制加算（1日→×人数×365/12、1月→×人数）
+    taiseiRows().forEach(function (t) {
+      var mu = t.monthly ? (t.unit * total) : (t.unit * total * MONTH_DAYS);
+      subtotal += mu;
+      rows += rowU(t.name + (t.monthly ? "（月単位）" : ""), mu, tanka, !t.monthly);
+    });
+    // 処遇改善（率）＝加減算後の総単位数に率
     var shoriUnits = 0, rate = 0;
     var ss = document.getElementById("sim-shori-sel");
-    if (ss) { rate = pnum(ss.value) || 0; if (rate > 0) shoriUnits = Math.round(subtotal * rate / 100); }
-    if (rate > 0) rows += row((kasanRate ? kasanRate["名称"] : "処遇改善") + "（" + rate + "%）", shoriUnits, tanka);
+    if (ss) { rate = pnum(ss.value) || 0; if (rate > 0) shoriUnits = subtotal * rate / 100; }
+    if (rate > 0) rows += rowU((kasanRate ? kasanRate["名称"] : "処遇改善") + "（" + rate + "%）", shoriUnits, tanka, true);
 
     var kaigoUnits = subtotal + shoriUnits;
-    var kaigoYen = Math.round(kaigoUnits * tanka);
-    rows += '<tr class="sim-row-sub"><th scope="row">介護報酬 小計</th><td>' + yen(kaigoUnits) + " 単位</td><td>" + yen(kaigoYen) + " 円</td></tr>";
+    var kaigoYen = kaigoUnits * tanka;
+    rows += rowU("介護報酬 小計", kaigoUnits, tanka, true, "sim-row-sub");
 
-    // ② 食費収入・③ 居住費収入（基準費用額 × 総入所者数 × 日数）
-    var mealYen = (mealCost != null) ? Math.round(mealCost * total * days) : 0;
+    // ② 食費収入・③ 居住費収入（基準費用額 × 人数 × 365/12）
+    var mealMonth = (mealCost != null) ? mealCost * total * MONTH_DAYS : 0;
     var roomCost = roomCostFor(fac);
-    var roomYen = (roomCost != null) ? Math.round(roomCost * total * days) : 0;
-    rows += moneyRow("食費収入（基準費用額 " + yen(mealCost) + "円/日 × " + yen(total) + "人 × " + yen(days) + "日）", mealYen);
-    rows += moneyRow("居住費収入（" + (roomTypeLabel(fac) || "居室") + " " + (roomCost != null ? yen(roomCost) + "円/日" : "—") + " × " + yen(total) + "人 × " + yen(days) + "日）", roomYen);
+    var roomMonth = (roomCost != null) ? roomCost * total * MONTH_DAYS : 0;
+    rows += rowM("食費収入（基準費用額 " + yen(mealCost) + "円/日 × " + fmtNum(total) + "人）", mealMonth, true);
+    rows += rowM("居住費収入（" + (roomTypeLabel(fac) || "居室") + " " + (roomCost != null ? yen(roomCost) + "円/日" : "—") + " × " + fmtNum(total) + "人）", roomMonth, true);
 
     // ④ 総合計
-    var grand = kaigoYen + mealYen + roomYen;
-    rows += '<tr class="sim-row-total"><th scope="row">総合計（月間概算）</th><td>—</td><td>' + yen(grand) + " 円</td></tr>";
+    var grand = kaigoYen + mealMonth + roomMonth;
+    rows += '<tr class="sim-row-total"><th scope="row">総合計（月間概算）</th><td>—</td><td>' + yen(grand) + " 円</td><td>" + yen(grand / MONTH_DAYS) + " 円</td></tr>";
     bdBody.innerHTML = rows;
 
-    document.getElementById("sim-total").textContent = "入所者合計 " + yen(total) + " 人";
-    // かんたんモードは入所者数の内訳（定員×稼働率）を明示
+    document.getElementById("sim-total").textContent = "入所者数 " + fmtNum(total) + " 人";
     var easyNoteEl = document.getElementById("sim-easy-note");
     if (easyNoteEl) {
-      if (SIM_MODE === "easy" && counts.__cap && counts.__occ != null) {
-        easyNoteEl.textContent = "入所者数 " + yen(total) + "人として計算（定員 " + yen(counts.__cap) + "人 × 稼働率 " + counts.__occ + "%、全員を" + counts.__rep + "として計算）。";
-      } else if (easyNoteEl) { easyNoteEl.textContent = "定員と稼働率、代表の要介護度を入力すると、入所者数（定員×稼働率）で概算します。"; }
+      if (SIM_MODE === "easy" && ci.cap && ci.occ != null) {
+        easyNoteEl.textContent = "入所者数 " + fmtNum(total) + "人として計算（定員 " + yen(ci.cap) + "人 × 稼働率 " + ci.occ + "%。四捨五入せず小数のまま計算）" + (ci.care != null ? "／平均要介護度 " + ci.care + " として按分" : "／平均要介護度を入力してください") + "。";
+      } else { easyNoteEl.textContent = "定員・稼働率・平均要介護度を入力すると、入所者数（定員×稼働率）で概算します。"; }
     }
-    document.getElementById("sim-calcnote").textContent = "介護報酬は1単位 " + Number(tanka).toFixed(2) + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "・人件費割合45%）で換算。加算・減算等により実際の額は異なります。食費・居住費は国が定める基準費用額（平均的な費用の額）による概算で、実際は施設と利用者の契約額・利用者の負担限度額（補足給付）により異なります。各行を四捨五入した概算です。";
+    document.getElementById("sim-calcnote").textContent = "介護報酬は1単位 " + Number(tanka).toFixed(2) + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "・人件費割合45%）で換算。月額は365日÷12か月（約30.4日）で計算し、1日あたりは月額÷(365/12)です。平均要介護度は公式単位数を線形按分した計算で、公式には存在しません（公式値は要介護度ごと・実際は入所者ごとの要介護度で算定）。加算・減算等により実際の額は異なります。食費・居住費は国が定める基準費用額による概算で、実際は契約額・負担限度額（補足給付）により異なります。各行の1日あたり・端数は表示時のみ丸めています。";
   }
   function shortFac(f) { return String(f).replace(/（.*$/, "").replace(/サービス費|入所者生活介護費/g, "") || f; }
 
@@ -10251,7 +11161,7 @@ const SIM_SHOGAI_CHIIKI = {
   var svcEl = document.getElementById("sim2-svc");
   svcEl.innerHTML = '<option value="">選択してください</option>' + svcList.map(function (s) { return '<option value="' + esc(s["サービス名"]) + '">' + esc(s["サービス名"]) + "</option>"; }).join("");
   var cascadeEl = document.getElementById("sim2-cascade");
-  svcEl.addEventListener("change", function () { buildCascade(); recalc(); });
+  svcEl.addEventListener("change", function () { buildCascade(); buildShori(); recalc(); });
   cascadeEl.addEventListener("input", function (e) { if (e.target.classList && e.target.classList.contains("cc-step")) { buildCascade(); } recalc(); });
   cascadeEl.addEventListener("change", function (e) { if (e.target.classList && e.target.classList.contains("cc-step")) { buildCascade(); } recalc(); });
 
@@ -10310,9 +11220,17 @@ const SIM_SHOGAI_CHIIKI = {
     cascadeEl.setAttribute("data-units", units != null ? units : "");
   }
 
-  // ---- 3. 利用者数（かんたん／詳細）と営業日数 ----
+  // ---- 3. 利用者数（かんたん＝定員×稼働率／詳細＝人数直接） ----
+  var MONTH_DAYS = 365 / 12;
   var SIM2_MODE = "easy";
-  ["sim2-capacity", "sim2-occ", "sim2-users", "sim2-days"].forEach(function (id) {
+  function fmtNum(v) { return Number(Math.abs(v) >= 1 ? Math.round(v) : v).toLocaleString("ja-JP"); }
+  function fmtTanka(t) { return Number(t).toFixed(3).replace(/0+$/, "").replace(/\.$/, ""); }
+  function rowU(name, monthUnits, tanka, daily, cls) {
+    var monthYen = monthUnits * tanka;
+    var dayCell = daily ? yen(monthYen / MONTH_DAYS) + " 円" : "—";
+    return '<tr' + (cls ? ' class="' + cls + '"' : "") + '><th scope="row">' + esc(name) + "</th><td>" + fmtNum(monthUnits) + " 単位</td><td>" + yen(monthYen) + " 円</td><td>" + dayCell + "</td></tr>";
+  }
+  ["sim2-capacity", "sim2-occ", "sim2-users"].forEach(function (id) {
     var el = document.getElementById(id); el.addEventListener("input", recalc); el.addEventListener("change", recalc);
   });
   var modeT = document.querySelector(".sim-mode2");
@@ -10331,15 +11249,35 @@ const SIM_SHOGAI_CHIIKI = {
     if (SIM2_MODE === "easy") {
       var cap = pnum(document.getElementById("sim2-capacity").value) || 0;
       var occ = pnum(document.getElementById("sim2-occ").value);
-      var n = (occ != null) ? Math.round(cap * occ / 100) : 0;
+      var n = (occ != null) ? (cap * occ / 100) : 0; // 丸めない
       return { n: n, cap: cap, occ: occ };
     }
     return { n: pnum(document.getElementById("sim2-users").value) || 0 };
   }
-  function bizDays() { var d = pnum(document.getElementById("sim2-days").value); return (d && d > 0) ? d : 22; }
 
-  // ---- 4. 処遇改善（障害版は準備中） ----
-  document.getElementById("sim2-shori").innerHTML = '<p class="sim-note">障害福祉サービスの処遇改善加算（福祉・介護職員等処遇改善加算）は、サービス別の加算率を整備中です。データ確定後に有効化します。現時点の概算は基本報酬のみです。</p>';
+  // ---- 4. 処遇改善（障害福祉の現行加算率・令和8年6月） ----
+  var SHOGUU = (typeof SIM_SHOGUU !== "undefined" && SIM_SHOGUU) || {};
+  var shoInfo = ((SHOGUU["メタ"] || {})["障害福祉の現行加算率_令和8年度"]) || {};
+  var shoRates = shoInfo["サービス別"] || {};
+  function shogaiRate(svcName) {
+    if (shoRates[svcName]) return shoRates[svcName];
+    var pref = { "共同生活援助": "共同生活援助（介護サービス包括型）", "短期入所（福祉型）": "短期入所", "放課後等デイサービス（通常）": "放課後等デイサービス", "放課後等デイサービス（主として重症心身障害児）": "放課後等デイサービス", "放課後等デイサービス（共生型・基準該当）": "放課後等デイサービス", "児童発達支援（センター）": "児童発達支援", "児童発達支援（センター以外）": "児童発達支援", "児童発達支援（共生型・基準該当）": "児童発達支援" };
+    if (pref[svcName] && shoRates[pref[svcName]]) return shoRates[pref[svcName]];
+    var base = svcName.replace(/（.*/, "");
+    if (shoRates[base]) return shoRates[base];
+    return null;
+  }
+  var shoriEl2 = document.getElementById("sim2-shori");
+  function buildShori() {
+    var svc = svcEl.value ? svcMap[svcEl.value] : null;
+    if (!svc) { shoriEl2.innerHTML = '<p class="sim-note">サービスを選ぶと処遇改善加算の区分を選べます。</p>'; return; }
+    var rates = shogaiRate(svc["サービス名"]);
+    if (!rates) { shoriEl2.innerHTML = '<p class="sim-note">このサービスの処遇改善加算率は本マスタに収録がありません。</p>'; return; }
+    var opts = '<option value="0">適用しない</option>' + Object.keys(rates).map(function (r) { return '<option value="' + rates[r] + '">福祉・介護職員等処遇改善加算（' + esc(r) + "・" + rates[r] + "%）</option>"; }).join("");
+    shoriEl2.innerHTML = '<label class="sk-lb sk-lb-wide">処遇改善加算（率）<select id="sim2-shori-sel">' + opts + "</select></label>" +
+      '<span class="sim-kasan-meta">令和8年6月施行の現行加算率。総報酬単位数に率を乗じます。</span>';
+    shoriEl2.querySelector("#sim2-shori-sel").addEventListener("change", recalc);
+  }
 
   // ---- 計算 ----
   var bdBody = document.querySelector("#sim2-breakdown tbody");
@@ -10351,40 +11289,40 @@ const SIM_SHOGAI_CHIIKI = {
     var tanka = svc ? tankaFor(svc, CURRENT.kubun) : null;
     var uc = userCount();
     var monthly = svc ? isMonthly(svc) : false;
-    var days = bizDays();
-    var dEl = document.getElementById("sim2-daysrow");
-    if (dEl) dEl.style.display = monthly ? "none" : "";
 
-    var rows = "";
     if (!svc || units == null || tanka == null || !uc.n) {
-      bdBody.innerHTML = '<tr><td colspan="3" class="heat-na">市町村・サービス・区分・利用者数を入力すると概算額を表示します。</td></tr>';
-      document.getElementById("sim2-total").textContent = uc.n ? "利用者数 " + yen(uc.n) + " 人" : "";
+      bdBody.innerHTML = '<tr><td colspan="4" class="heat-na">市町村・サービス・区分・利用者数を入力すると概算額を表示します。</td></tr>';
+      document.getElementById("sim2-total").textContent = uc.n ? "利用者数 " + fmtNum(uc.n) + " 人" : "";
       setEasyNote(uc);
       return;
     }
-    var mult = monthly ? 1 : days;
-    var totalUnits = units * uc.n * mult;
-    var totalYen = Math.round(totalUnits * tanka);
-    var perDayLabel = monthly ? "（月額）" : (" × " + yen(days) + "営業日");
-    rows += '<tr class="sim-row-base"><th scope="row">基本報酬（' + esc(svcName) + "）</th><td>" + yen(totalUnits) + " 単位</td><td>" + yen(totalYen) + " 円</td></tr>";
-    rows += '<tr><th scope="row">処遇改善加算</th><td>—</td><td>準備中</td></tr>';
-    rows += '<tr class="sim-row-total"><th scope="row">合計（月間概算・基本報酬）</th><td>' + yen(totalUnits) + " 単位</td><td>" + yen(totalYen) + " 円</td></tr>";
+    var baseM = units * uc.n * (monthly ? 1 : MONTH_DAYS);
+    var rows = "";
+    rows += rowU("基本報酬（" + esc(svcName) + "）", baseM, tanka, !monthly, "sim-row-base");
+    var shoriUnits = 0, rate = 0;
+    var ss = document.getElementById("sim2-shori-sel");
+    if (ss) { rate = pnum(ss.value) || 0; if (rate > 0) shoriUnits = baseM * rate / 100; }
+    if (rate > 0) rows += rowU("処遇改善加算（" + rate + "%）", shoriUnits, tanka, !monthly);
+    var totalUnits = baseM + shoriUnits;
+    var totalYen = totalUnits * tanka;
+    rows += '<tr class="sim-row-total"><th scope="row">合計（月間概算）</th><td>' + fmtNum(totalUnits) + " 単位</td><td>" + yen(totalYen) + " 円</td><td>" + (monthly ? "—" : yen(totalYen / MONTH_DAYS) + " 円") + "</td></tr>";
     bdBody.innerHTML = rows;
 
-    document.getElementById("sim2-total").textContent = "利用者数 " + yen(uc.n) + " 人";
+    document.getElementById("sim2-total").textContent = "利用者数 " + fmtNum(uc.n) + " 人";
     setEasyNote(uc);
-    document.getElementById("sim2-calcnote").textContent = "1単位 " + Number(tanka).toFixed(3).replace(/0+$/, "").replace(/\.$/, "") + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "）で換算。単位数 × 利用者数 × " + (monthly ? "1（月額サービス）" : yen(days) + "営業日") + "の概算です。加算・減算等により実際の額は異なります。処遇改善加算はデータ整備後に反映します。食費・光熱水費等の実費は障害では体系が異なるため本欄は報酬のみです。";
+    document.getElementById("sim2-calcnote").textContent = "1単位 " + fmtTanka(tanka) + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "）で換算。" + (monthly ? "月額サービス（単位数×利用者数）。" : "月額は365日÷12か月（約30.4日）で計算し、1日あたりは月額÷(365/12)です。") + "稼働率は四捨五入せず小数のまま計算。処遇改善は令和8年6月の現行加算率。加算・減算等により実際の額は異なります。食費・光熱水費等の実費は障害では体系が異なるため本欄は報酬のみです。";
   }
   function setEasyNote(uc) {
     var el = document.getElementById("sim2-easy-note");
     if (!el) return;
     if (SIM2_MODE === "easy" && uc.cap && uc.occ != null) {
-      el.textContent = "利用者数 " + yen(uc.n) + "人として計算（定員 " + yen(uc.cap) + "人 × 稼働率 " + uc.occ + "%）。";
+      el.textContent = "利用者数 " + fmtNum(uc.n) + "人として計算（定員 " + yen(uc.cap) + "人 × 稼働率 " + uc.occ + "%。四捨五入せず小数のまま計算）。";
     } else { el.textContent = "定員と稼働率を入力すると、利用者数（定員×稼働率）で概算します。"; }
   }
 
   // 他ページから ?q= で渡された市町村を初期値に反映（両分野共通）
   try { var _q = new URLSearchParams(location.search).get("q"); if (_q) qEl.value = _q; } catch (e) { /* 無視 */ }
+  buildShori();
   renderArea();
 })();
 </script>

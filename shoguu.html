@@ -158,6 +158,14 @@
       <div id="sg-2024-fold"></div>
     </section>
 
+    <!-- (3a) 障害福祉の現行加算率 -->
+    <section class="sg-sec">
+      <h2 class="section-title">現行の加算率（障害福祉・令和8年度）</h2>
+      <p id="sg-cur-shogai-note" class="sg-note"></p>
+      <div id="sg-cur-shogai-table"></div>
+      <div id="sg-cur-shogai-new"></div>
+    </section>
+
     <!-- (3) 障害福祉系列の改正の歴史 -->
     <section class="sg-sec">
       <h2 class="section-title">改正の歴史（障害福祉）</h2>
@@ -1141,6 +1149,36 @@ const SHOGUU = {
   }
   var curSrcEl = document.getElementById("sg-cur-src");
   if (curSrcEl) curSrcEl.innerHTML = "出典：" + (srcLink(cur["出典URL"], "令和8年度介護報酬改定の概要（処遇改善）") || "厚生労働省");
+
+  // (3a) 障害福祉の現行加算率テーブル（介護の現行率表と同型・適用＝令和8年6月）
+  var shoCur = meta["障害福祉の現行加算率_令和8年度"] || {};
+  var shoByService = shoCur["サービス別"] || {};
+  var shoNew = shoCur["新設サービス"] || {};
+  function rateTable(byService) {
+    var names = Object.keys(byService);
+    if (!names.length) return "";
+    var cols = Object.keys(byService[names[0]] || {});
+    var h = '<div class="table-scroll"><table class="sg-table"><thead><tr><th scope="col">サービス</th>';
+    cols.forEach(function (c) { h += '<th scope="col">加算' + esc(c) + "</th>"; });
+    h += "</tr></thead><tbody>";
+    names.forEach(function (nm) {
+      h += '<tr><th scope="row" class="sg-svc">' + esc(nm) + "</th>";
+      cols.forEach(function (c) { h += "<td>" + pct(byService[nm][c]) + "</td>"; });
+      h += "</tr>";
+    });
+    return h + "</tbody></table></div>";
+  }
+  var shoNoteEl = document.getElementById("sg-cur-shogai-note");
+  if (shoNoteEl) shoNoteEl.textContent = "障害福祉サービス等の福祉・介護職員等処遇改善加算の現行加算率（適用：令和8年6月施行）。区分：" + (shoCur["区分"] || "加算Ⅰ〜Ⅳ") + "。数値は% です。介護とは別系列です。";
+  var shoTableEl = document.getElementById("sg-cur-shogai-table");
+  if (shoTableEl) shoTableEl.innerHTML = rateTable(shoByService) + (safeUrl(shoCur["出典URL"]) ? '<p class="chiiki-src">出典：' + srcLink(shoCur["出典URL"], "令和8年度障害福祉サービス等報酬改定（処遇改善）") + "</p>" : "");
+  var shoNewEl = document.getElementById("sg-cur-shogai-new");
+  var shoNewNames = Object.keys(shoNew);
+  if (shoNewEl && shoNewNames.length) {
+    var snh = '<p class="sg-note">新たに対象となったサービスの加算率：</p><div class="table-scroll"><table class="sg-table"><thead><tr><th scope="col">サービス</th><th scope="col">加算率</th></tr></thead><tbody>';
+    shoNewNames.forEach(function (nm) { snh += '<tr><th scope="row" class="sg-svc">' + esc(nm) + "</th><td>" + pct(shoNew[nm]) + "</td></tr>"; });
+    shoNewEl.innerHTML = snh + "</tbody></table></div>";
+  }
 
   // (2)(3) 年表描画
   function renderTimeline(el, list) {
