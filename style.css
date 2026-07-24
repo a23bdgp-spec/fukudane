@@ -1316,6 +1316,15 @@ section p:last-child { margin-bottom: 0; }
 .chiiki-calc-row { display: flex; flex-wrap: wrap; gap: 8px 12px; }
 .cc-lb { display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; color: var(--ink-soft); font-weight: 700; }
 .cc-lb select, .cc-lb input { font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 8px; background: #fff; color: var(--ink); min-width: 90px; }
-.cc-units, .cc-days { max-width: 130px; }
+.cc-units, .cc-days, .cc-mult { max-width: 130px; }
 .chiiki-calc-out { margin: 10px 0 0; font-size: 14.5px; font-weight: 700; color: var(--primary-dark); }
 .chiiki-calc-note { margin: 6px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+/* サービス選択式の計算欄（介護） */
+.cc-lb-wide select { min-width: 210px; max-width: 100%; }
+.cc-body { margin-top: 8px; }
+.cc-body .chiiki-calc-row { margin-top: 8px; }
+.cc-meta { margin: 8px 0 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.6; }
+.cc-unitval { display: inline-block; font-size: 15px; font-weight: 700; color: var(--primary-dark); padding: 6px 0; }
+.cc-unitval-empty { font-size: 12.5px; font-weight: 400; color: var(--ink-soft); }
+.chiiki-vary { font-weight: 700; color: var(--ink-soft); }
+.chiiki-result-tabs { margin: 4px 0 16px; }
