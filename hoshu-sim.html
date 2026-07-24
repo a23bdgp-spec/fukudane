@@ -12232,7 +12232,8 @@ const SIM_KASAN_KANTAKI = {
       var e = t[jidoTankaKey(svc["サービス名"])];
       return e ? pnum(e["単価円(基準額10円)"]) : null;
     }
-    var group = parseRef(svc["単価割合の参照"] || "");
+    // 単価割合の参照が無いサービス（居宅介護等）はサービス名でサービス群を照合（基準額10円ベース）
+    var group = parseRef(svc["単価割合の参照"] || "") || svc["サービス名"];
     var rows = ratioTable[kubun] || [];
     for (var i = 0; i < rows.length; i++) {
       if (group && String(rows[i]["サービス群"]).indexOf(group) >= 0) return pnum(rows[i]["単価10円ベース円"]);
@@ -12240,11 +12241,13 @@ const SIM_KASAN_KANTAKI = {
     return null;
   }
   function isMonthly(svc) { return String(svc["算定単位"] || "").indexOf("月") >= 0; }
-  // 施設系（24時間入所＝365/12で計算）。それ以外の日算定は通所型＝利用日数、月算定は×1
+  // 施設系（24時間入所＝365/12）／訪問系（回数）／通所型（利用日数）／月額（×1）
   var SHISETSU_SVC = { "施設入所支援": 1, "共同生活援助": 1 };
+  var HOMON_SVC = { "居宅介護": 1 }; // 訪問系＝1回単位×月間回数
   function svcDayMode(svc) {
     if (!svc) return "biz";
     if (isMonthly(svc)) return "getsu";           // 就労定着支援・自立生活援助（月単位）
+    if (HOMON_SVC[svc["サービス名"]]) return "kaisu"; // 居宅介護（訪問系＝回数）
     if (SHISETSU_SVC[svc["サービス名"]]) return "shisetsu"; // 施設入所支援・GH（365/12）
     return "biz";                                  // 生活介護・就労・自立訓練・短期入所・放デイ・児発（利用日数）
   }
@@ -12350,13 +12353,14 @@ const SIM_KASAN_KANTAKI = {
     var mult, showDaily, dayDiv;
     if (dayMode === "getsu") { mult = 1; showDaily = false; dayDiv = 1; }
     else if (dayMode === "shisetsu") { mult = MONTH_DAYS; showDaily = true; dayDiv = MONTH_DAYS; }
+    else if (dayMode === "kaisu") { mult = (days && days > 0) ? days : 0; showDaily = false; dayDiv = 1; } // 訪問系＝月間回数
     else { mult = (days && days > 0) ? days : 0; showDaily = true; dayDiv = mult; } // 通所型＝利用日数
-    // 利用日数入力は通所型のみ表示（施設系＝365/12、月額系＝不要）
+    // 日数/回数入力：通所型＝利用日数、訪問系＝月間回数、施設系・月額＝非表示
     var dLb = document.getElementById("sim2-days-lb");
-    if (dLb) dLb.style.display = (dayMode === "biz") ? "" : "none";
+    if (dLb) { dLb.style.display = (dayMode === "biz" || dayMode === "kaisu") ? "" : "none"; dLb.childNodes[0].nodeValue = (dayMode === "kaisu") ? "月間回数（1人あたり）" : "利用日数（月・1人あたり）"; }
 
-    if (!svc || units == null || tanka == null || !uc.n || (dayMode === "biz" && !mult)) {
-      bdBody.innerHTML = '<tr><td colspan="4" class="heat-na">市町村・サービス・区分・利用者数' + (dayMode === "biz" ? "・利用日数" : "") + "を入力すると概算額を表示します。</td></tr>";
+    if (!svc || units == null || tanka == null || !uc.n || ((dayMode === "biz" || dayMode === "kaisu") && !mult)) {
+      bdBody.innerHTML = '<tr><td colspan="4" class="heat-na">市町村・サービス・区分・利用者数' + (dayMode === "biz" ? "・利用日数" : dayMode === "kaisu" ? "・月間回数" : "") + "を入力すると概算額を表示します。</td></tr>";
       document.getElementById("sim2-total").textContent = uc.n ? "利用者数 " + fmtNum(uc.n) + " 人" : "";
       setEasyNote(uc);
       return;
@@ -12375,7 +12379,7 @@ const SIM_KASAN_KANTAKI = {
 
     document.getElementById("sim2-total").textContent = "利用者数 " + fmtNum(uc.n) + " 人";
     setEasyNote(uc);
-    var modeNote = (dayMode === "getsu") ? "月額サービス（単位数×利用者数）。" : (dayMode === "shisetsu") ? "施設系は月額を365日÷12か月（約30.4日）で計算し、1日あたりは月額÷(365/12)。" : "通所型は利用日数×利用者数で計算し、1日あたりは月額÷利用日数。";
+    var modeNote = (dayMode === "getsu") ? "月額サービス（単位数×利用者数）。" : (dayMode === "shisetsu") ? "施設系は月額を365日÷12か月（約30.4日）で計算し、1日あたりは月額÷(365/12)。" : (dayMode === "kaisu") ? "訪問系は1回単位×月間回数×利用者数で計算（1日あたりは算定単位が回数のため非表示）。" : "通所型は利用日数×利用者数で計算し、1日あたりは月額÷利用日数。";
     document.getElementById("sim2-calcnote").textContent = "1単位 " + fmtTanka(tanka) + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "）で換算。" + modeNote + "稼働率は四捨五入せず小数のまま計算。処遇改善は令和8年6月の現行加算率。加算・減算等により実際の額は異なります。食費・光熱水費等の実費は障害では体系が異なるため本欄は報酬のみです。";
   }
   function setEasyNote(uc) {
