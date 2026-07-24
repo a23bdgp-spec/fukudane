@@ -1371,6 +1371,9 @@ section p:last-child { margin-bottom: 0; }
 .sg-tl-point { font-size: 13.5px; line-height: 1.7; margin: 0 0 4px; color: var(--ink); }
 .sg-tl-rate { font-size: 12.5px; color: var(--ink-soft); margin: 0 0 2px; }
 .sg-tl-src { font-size: 12px; color: var(--ink-soft); margin: 2px 0 0; }
+.sg-badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 999px; vertical-align: middle; }
+.sg-badge-kasan { background: var(--primary-tint); color: var(--primary-dark); }
+.sg-badge-hojo { background: #fdeede; color: #8a4b12; }
 .sg-fold > summary { cursor: pointer; font-size: 14px; font-weight: 700; color: var(--primary-dark); padding: 8px 0; }
 /* 汎用「表をコピー」ボタン */
 .fd-copybar { display: flex; align-items: center; gap: 10px; margin: 0 0 8px; }

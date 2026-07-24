@@ -311,7 +311,10 @@
           <div id="sim2-mode-detail" hidden>
             <label class="sim-lb">利用者数（人）<input type="text" inputmode="numeric" id="sim2-users" placeholder="例：18"></label>
           </div>
-          <p class="sim-total" id="sim2-total"></p>
+          <div class="sim-daysrow" id="sim2-daysrow">
+            <label class="sim-lb" id="sim2-days-lb">利用日数（月・1人あたり）<input type="text" inputmode="numeric" id="sim2-days" value="" placeholder="例：22"></label>
+            <span class="sim-total" id="sim2-total"></span>
+          </div>
         </section>
 
         <section class="sim-block">
@@ -5561,11 +5564,75 @@ const SIM_SHOGAI_KIHON = {
     "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=83aa8477&dataType=0&pageNo=1",
     "確認日": "2026-07-24",
     "円額計算": "円額＝基本報酬単位数×障害の1単位の単価。単価は地域区分（1〜7級地・その他）とサービス種類の割合（千分率）で決まる（基準額10円×割合/1000。生活介護は例：1級地=千分の1122=11.22円）。chiiki_kubun_shogai.jsonの『単価の仕組み』割合表を参照。",
-    "収録サービス数": 17,
+    "収録サービス数": 18,
     "第2弾予定": "就労継続支援B型・就労継続支援A型・就労移行支援・共同生活援助・施設入所支援・自立訓練・短期入所・放課後等デイサービス・児童発達支援 等を続けて整備。",
     "障害児サービスの注記": "放課後等デイサービス・児童発達支援は児童福祉法の指定通所支援（別告示・平成24年厚生労働省告示第122号）。円額換算の1単位単価は障害者総合支援法の単価告示（第539号）とは別体系（児童通所支援の単価告示）を用いる。"
   },
   "サービス": [
+    {
+      "サービス名": "居宅介護",
+      "単価表の参照": "chiiki_kubun_shogai.json 単価割合表の『居宅介護 重度訪問介護 同行援護 行動援護 …』群（基準額10円。基準該当居宅介護は8.5円）",
+      "算定単位": "1回（訪問1回ごと・所要時間区分別）",
+      "基本報酬適用": "2024年4月（令和6年度障害福祉サービス等報酬改定）",
+      "出典": "障害福祉サービス費等の算定に関する厚生労働大臣が定める基準（平成18年厚生労働省告示第523号・令和6年度改正）別表第1「1 居宅介護サービス費」",
+      "出典URL": "https://www.mhlw.go.jp/web/t_doc?dataId=83aa8477&dataType=0&pageNo=1",
+      "備考": "サービス類型（身体介護中心／通院等介助〈身体伴う〉／家事援助中心／通院等介助〈身体伴わない〉／通院等乗降介助）×所要時間区分で単位数が一意に決まる。通院等介助（身体介護を伴う場合）は身体介護中心と同一単位数。所要時間の上限区分は基準単位数に一定単位を加算していく方式。",
+      "区分": {
+        "居宅における身体介護が中心である場合": {
+          "所要時間30分未満": 256,
+          "所要時間30分以上1時間未満": 404,
+          "所要時間1時間以上1時間30分未満": 587,
+          "所要時間1時間30分以上2時間未満": 669,
+          "所要時間2時間以上2時間30分未満": 754,
+          "所要時間2時間30分以上3時間未満": 837,
+          "所要時間3時間以上": {
+            "基準単位数": 921,
+            "増分単位数": 83,
+            "増分の単位": "所要時間30分を増すごと",
+            "起点所要時間": "3時間"
+          }
+        },
+        "通院等介助（身体介護を伴う場合）が中心である場合": {
+          "所要時間30分未満": 256,
+          "所要時間30分以上1時間未満": 404,
+          "所要時間1時間以上1時間30分未満": 587,
+          "所要時間1時間30分以上2時間未満": 669,
+          "所要時間2時間以上2時間30分未満": 754,
+          "所要時間2時間30分以上3時間未満": 837,
+          "所要時間3時間以上": {
+            "基準単位数": 921,
+            "増分単位数": 83,
+            "増分の単位": "所要時間30分を増すごと",
+            "起点所要時間": "3時間"
+          }
+        },
+        "家事援助が中心である場合": {
+          "所要時間30分未満": 106,
+          "所要時間30分以上45分未満": 153,
+          "所要時間45分以上1時間未満": 197,
+          "所要時間1時間以上1時間15分未満": 239,
+          "所要時間1時間15分以上1時間30分未満": 275,
+          "所要時間1時間30分以上": {
+            "基準単位数": 311,
+            "増分単位数": 35,
+            "増分の単位": "所要時間15分を増すごと",
+            "起点所要時間": "1時間30分"
+          }
+        },
+        "通院等介助（身体介護を伴わない場合）が中心である場合": {
+          "所要時間30分未満": 106,
+          "所要時間30分以上1時間未満": 197,
+          "所要時間1時間以上1時間30分未満": 275,
+          "所要時間1時間30分以上": {
+            "基準単位数": 345,
+            "増分単位数": 69,
+            "増分の単位": "所要時間30分を増すごと",
+            "起点所要時間": "1時間30分"
+          }
+        },
+        "通院等のための乗車又は降車の介助が中心である場合": 102
+      }
+    },
     {
       "サービス名": "生活介護",
       "単価割合の参照": "chiiki_kubun_shogai.json 単価割合表の『生活介護』",
@@ -12173,6 +12240,14 @@ const SIM_KASAN_KANTAKI = {
     return null;
   }
   function isMonthly(svc) { return String(svc["算定単位"] || "").indexOf("月") >= 0; }
+  // 施設系（24時間入所＝365/12で計算）。それ以外の日算定は通所型＝利用日数、月算定は×1
+  var SHISETSU_SVC = { "施設入所支援": 1, "共同生活援助": 1 };
+  function svcDayMode(svc) {
+    if (!svc) return "biz";
+    if (isMonthly(svc)) return "getsu";           // 就労定着支援・自立生活援助（月単位）
+    if (SHISETSU_SVC[svc["サービス名"]]) return "shisetsu"; // 施設入所支援・GH（365/12）
+    return "biz";                                  // 生活介護・就労・自立訓練・短期入所・放デイ・児発（利用日数）
+  }
 
   // 区分ツリーを段階セレクトで辿る。leafが数値＝単位数
   function buildCascade() {
@@ -12207,13 +12282,13 @@ const SIM_KASAN_KANTAKI = {
   var SIM2_MODE = "easy";
   function fmtNum(v) { return Number(Math.abs(v) >= 1 ? Math.round(v) : v).toLocaleString("ja-JP"); }
   function fmtTanka(t) { return Number(t).toFixed(3).replace(/0+$/, "").replace(/\.$/, ""); }
-  function rowU(name, monthUnits, tanka, daily, cls) {
+  function rowU(name, monthUnits, tanka, daily, dayDiv, cls) {
     var monthYen = monthUnits * tanka;
-    var dayCell = daily ? yen(monthYen / MONTH_DAYS) + " 円" : "—";
+    var dayCell = daily ? yen(monthYen / (dayDiv || MONTH_DAYS)) + " 円" : "—";
     return '<tr' + (cls ? ' class="' + cls + '"' : "") + '><th scope="row">' + esc(name) + "</th><td>" + fmtNum(monthUnits) + " 単位</td><td>" + yen(monthYen) + " 円</td><td>" + dayCell + "</td></tr>";
   }
-  ["sim2-capacity", "sim2-occ", "sim2-users"].forEach(function (id) {
-    var el = document.getElementById(id); el.addEventListener("input", recalc); el.addEventListener("change", recalc);
+  ["sim2-capacity", "sim2-occ", "sim2-users", "sim2-days"].forEach(function (id) {
+    var el = document.getElementById(id); if (el) { el.addEventListener("input", recalc); el.addEventListener("change", recalc); }
   });
   var modeT = document.querySelector(".sim-mode2");
   if (modeT) {
@@ -12270,29 +12345,38 @@ const SIM_KASAN_KANTAKI = {
     var units = (uv !== null && uv !== "") ? pnum(uv) : null;
     var tanka = svc ? tankaFor(svc, CURRENT.kubun) : null;
     var uc = userCount();
-    var monthly = svc ? isMonthly(svc) : false;
+    var dayMode = svcDayMode(svc);
+    var days = pnum(document.getElementById("sim2-days").value);
+    var mult, showDaily, dayDiv;
+    if (dayMode === "getsu") { mult = 1; showDaily = false; dayDiv = 1; }
+    else if (dayMode === "shisetsu") { mult = MONTH_DAYS; showDaily = true; dayDiv = MONTH_DAYS; }
+    else { mult = (days && days > 0) ? days : 0; showDaily = true; dayDiv = mult; } // 通所型＝利用日数
+    // 利用日数入力は通所型のみ表示（施設系＝365/12、月額系＝不要）
+    var dLb = document.getElementById("sim2-days-lb");
+    if (dLb) dLb.style.display = (dayMode === "biz") ? "" : "none";
 
-    if (!svc || units == null || tanka == null || !uc.n) {
-      bdBody.innerHTML = '<tr><td colspan="4" class="heat-na">市町村・サービス・区分・利用者数を入力すると概算額を表示します。</td></tr>';
+    if (!svc || units == null || tanka == null || !uc.n || (dayMode === "biz" && !mult)) {
+      bdBody.innerHTML = '<tr><td colspan="4" class="heat-na">市町村・サービス・区分・利用者数' + (dayMode === "biz" ? "・利用日数" : "") + "を入力すると概算額を表示します。</td></tr>";
       document.getElementById("sim2-total").textContent = uc.n ? "利用者数 " + fmtNum(uc.n) + " 人" : "";
       setEasyNote(uc);
       return;
     }
-    var baseM = units * uc.n * (monthly ? 1 : MONTH_DAYS);
+    var baseM = units * uc.n * mult;
     var rows = "";
-    rows += rowU("基本報酬（" + esc(svcName) + "）", baseM, tanka, !monthly, "sim-row-base");
+    rows += rowU("基本報酬（" + esc(svcName) + "）", baseM, tanka, showDaily, dayDiv, "sim-row-base");
     var shoriUnits = 0, rate = 0;
     var ss = document.getElementById("sim2-shori-sel");
     if (ss) { rate = pnum(ss.value) || 0; if (rate > 0) shoriUnits = baseM * rate / 100; }
-    if (rate > 0) rows += rowU("処遇改善加算（" + rate + "%）", shoriUnits, tanka, !monthly);
+    if (rate > 0) rows += rowU("処遇改善加算（" + rate + "%）", shoriUnits, tanka, showDaily, dayDiv);
     var totalUnits = baseM + shoriUnits;
     var totalYen = totalUnits * tanka;
-    rows += '<tr class="sim-row-total"><th scope="row">合計（月間概算）</th><td>' + fmtNum(totalUnits) + " 単位</td><td>" + yen(totalYen) + " 円</td><td>" + (monthly ? "—" : yen(totalYen / MONTH_DAYS) + " 円") + "</td></tr>";
+    rows += '<tr class="sim-row-total"><th scope="row">合計（月間概算）</th><td>' + fmtNum(totalUnits) + " 単位</td><td>" + yen(totalYen) + " 円</td><td>" + (showDaily ? yen(totalYen / dayDiv) + " 円" : "—") + "</td></tr>";
     bdBody.innerHTML = rows;
 
     document.getElementById("sim2-total").textContent = "利用者数 " + fmtNum(uc.n) + " 人";
     setEasyNote(uc);
-    document.getElementById("sim2-calcnote").textContent = "1単位 " + fmtTanka(tanka) + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "）で換算。" + (monthly ? "月額サービス（単位数×利用者数）。" : "月額は365日÷12か月（約30.4日）で計算し、1日あたりは月額÷(365/12)です。") + "稼働率は四捨五入せず小数のまま計算。処遇改善は令和8年6月の現行加算率。加算・減算等により実際の額は異なります。食費・光熱水費等の実費は障害では体系が異なるため本欄は報酬のみです。";
+    var modeNote = (dayMode === "getsu") ? "月額サービス（単位数×利用者数）。" : (dayMode === "shisetsu") ? "施設系は月額を365日÷12か月（約30.4日）で計算し、1日あたりは月額÷(365/12)。" : "通所型は利用日数×利用者数で計算し、1日あたりは月額÷利用日数。";
+    document.getElementById("sim2-calcnote").textContent = "1単位 " + fmtTanka(tanka) + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "）で換算。" + modeNote + "稼働率は四捨五入せず小数のまま計算。処遇改善は令和8年6月の現行加算率。加算・減算等により実際の額は異なります。食費・光熱水費等の実費は障害では体系が異なるため本欄は報酬のみです。";
   }
   function setEasyNote(uc) {
     var el = document.getElementById("sim2-easy-note");
