@@ -158,6 +158,7 @@
 
 <section class="list-page">
   <div class="wrap">
+    <p class="gl-role">ガイドライン＝何をすべきか・どう運営すべきかを確認する資料です。法人内の文書を作るためのひな形は <a href="kitei.html">モデル規程・様式例</a> をご利用ください。</p>
     <p class="gl-crosslink">法人運営に関するガイドライン等（法人ガバナンス・指導監査・会計・個人情報・ICT・労務など）は <a href="work-guidelines.html">法人運営に関するガイドライン等</a> にまとめています。</p>
     <!-- 分野へのページ内ジャンプ（目次）。JSで生成 -->
     <nav class="gl-toc" id="guidelines-toc" aria-label="分野の目次"></nav>
@@ -992,18 +993,34 @@ const GUIDELINES = {
     return;
   }
 
-  // 分野の目次（ページ内ジャンプ）
+  // 表示3群（データは不変・カテゴリはそのまま、見出しでまとめて並べ替えるだけ）
+  var GROUPS = [
+    { name: "日常運営", cats: ["運営基準（人員・設備・運営）", "施設運営（運営指導）", "給食・栄養・衛生管理", "医療的ケア・看取り", "保育・社会的養護", "障害児支援", "就労支援", "地域共生・包括的支援"] },
+    { name: "安全・権利擁護", cats: ["苦情解決・第三者評価", "権利擁護・意思決定支援", "虐待防止", "身体拘束の適正化", "事故防止・安全・リスクマネジメント", "感染症対策・業務継続（BCP）", "災害・防火対策", "送迎・運転・交通安全", "熱中症対策"] },
+    { name: "その他の分野", cats: [] }
+  ];
+  function groupOf(name) { for (var g = 0; g < GROUPS.length - 1; g++) { if (GROUPS[g].cats.indexOf(name) >= 0) return g; } return GROUPS.length - 1; }
+  // 群順→群内はJSON順で並べる（未該当分野は「その他の分野」へ）
+  var ordered = [];
+  GROUPS.forEach(function (g, gi) { cats.forEach(function (c, ci) { if (groupOf(c.category) === gi) ordered.push({ c: c, ci: ci, gi: gi }); }); });
+
+  // 分野の目次（群見出し＋分野リンク）
   var toc = "";
-  cats.forEach(function (c, i) {
-    toc += '<a class="gl-toc-link" href="#gl-cat-' + i + '">' + esc(c.category) + "</a>";
+  var lastG = -1;
+  ordered.forEach(function (o) {
+    if (o.gi !== lastG) { toc += '<span class="gl-toc-group">' + esc(GROUPS[o.gi].name) + "</span>"; lastG = o.gi; }
+    toc += '<a class="gl-toc-link" href="#gl-cat-' + o.ci + '">' + esc(o.c.category) + "</a>";
   });
   if (tocEl) tocEl.innerHTML = toc;
 
-  // 分野別一覧
+  // 分野別一覧（3群見出しの下に分野を配置）
   var html = "";
-  cats.forEach(function (c, i) {
+  lastG = -1;
+  ordered.forEach(function (o) {
+    var c = o.c, i = o.ci;
+    if (o.gi !== lastG) { html += '<h2 class="gl-group-title" id="gl-group-' + o.gi + '">' + esc(GROUPS[o.gi].name) + "</h2>"; lastG = o.gi; }
     html += '<section class="gl-cat" id="gl-cat-' + i + '">';
-    html += '<h2 class="section-title">' + esc(c.category) + "</h2>";
+    html += '<h3 class="gl-cat-title">' + esc(c.category) + "</h3>";
     html += '<div class="gl-grid">';
     (c.items || []).forEach(function (it) {
       html += '<article class="gl-card">';

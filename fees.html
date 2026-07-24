@@ -425,27 +425,49 @@ const FEES = {
   });
   if (tocEl) tocEl.innerHTML = toc;
 
-  // 分野別一覧
+  // 資料の役割グループ（この順で表示・同種内は新しい順）
+  var FEE_ROLES = ["改定全体・概要", "告示・単価", "留意事項・Q&A", "審議会・検討資料", "過去改定"];
+  // 分類は名称のみで判定（概要は資料種別を列挙するため汚染源になる）
+  function feeRole(it) {
+    var n = it["名称"] || "";
+    if (/Q&A|Ｑ＆Ａ|FAQ|ＦＡＱ|留意事項|解釈通知/.test(n)) return 2;   // 留意事項・Q&A
+    if (/審議会|分科会|検討チーム|検討会|検討会議/.test(n)) return 3;      // 審議会・検討資料
+    if (/告示|単価|算定|算定構造|支弁基準|交付基準|基準額/.test(n)) return 1; // 告示・単価
+    if (/平成|前回|過去改定/.test(n)) return 4;                          // 過去改定
+    return 0;                                                            // 改定全体・概要
+  }
+  function feeYear(it) { var m = String(it["年"] || "").match(/(?:19|20)\d\d/g); return m ? Math.max.apply(null, m.map(Number)) : 0; }
+  function feeCard(it) {
+    var s = '<article class="gl-card">';
+    s += '<h4 class="gl-name">' + esc(it["名称"]) + "</h4>";
+    s += '<dl class="gl-dl">';
+    if (it["発行"]) s += "<dt>発行</dt><dd>" + esc(it["発行"]) + "</dd>";
+    if (it["年"]) s += "<dt>年</dt><dd>" + esc(it["年"]) + "</dd>";
+    if (it["概要"]) s += "<dt>概要</dt><dd>" + esc(it["概要"]) + "</dd>";
+    s += "</dl>";
+    var url = safeUrl(it["URL"]);
+    if (url) s += '<p class="gl-links"><a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">原文を見る↗</a></p>';
+    return s + "</article>";
+  }
+
+  // 分野別一覧（各分野の中を役割グループ見出しで整理）
   var html = "";
   cats.forEach(function (c, i) {
     html += '<section class="gl-cat" id="fees-cat-' + i + '">';
     html += '<h2 class="section-title">' + esc(c.category) + "</h2>";
     // 分類見出しの直下に改定周期を表示（management.html の分類説明と同じ流儀）
     if (c["改定周期"]) html += '<p class="mg-cat-desc">' + esc(c["改定周期"]) + "</p>";
-    html += '<div class="gl-grid">';
-    (c.items || []).forEach(function (it) {
-      html += '<article class="gl-card">';
-      html += '<h3 class="gl-name">' + esc(it["名称"]) + "</h3>";
-      html += '<dl class="gl-dl">';
-      if (it["発行"]) html += "<dt>発行</dt><dd>" + esc(it["発行"]) + "</dd>";
-      if (it["年"]) html += "<dt>年</dt><dd>" + esc(it["年"]) + "</dd>";
-      if (it["概要"]) html += "<dt>概要</dt><dd>" + esc(it["概要"]) + "</dd>";
-      html += "</dl>";
-      var url = safeUrl(it["URL"]);
-      if (url) html += '<p class="gl-links"><a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">原文を見る↗</a></p>';
-      html += "</article>";
+    var groups = [[], [], [], [], []];
+    (c.items || []).forEach(function (it) { groups[feeRole(it)].push(it); });
+    groups.forEach(function (g) { g.sort(function (a, b) { return feeYear(b) - feeYear(a); }); });
+    FEE_ROLES.forEach(function (rn, ri) {
+      if (!groups[ri].length) return;
+      html += '<h3 class="fees-role">' + esc(rn) + "</h3>";
+      html += '<div class="gl-grid">';
+      groups[ri].forEach(function (it) { html += feeCard(it); });
+      html += "</div>";
     });
-    html += "</div></section>";
+    html += "</section>";
   });
   rootEl.innerHTML = html;
 

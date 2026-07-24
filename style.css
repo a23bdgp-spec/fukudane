@@ -716,6 +716,16 @@ section p:last-child { margin-bottom: 0; }
 .gl-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); }
 .gl-card { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--primary); border-radius: 8px; padding: 16px 18px; }
 .gl-name { font-size: 15px; font-weight: 700; color: var(--primary-dark); margin: 0 0 10px; line-height: 1.55; }
+/* 役割の1文（ガイドライン⇔規程の相互リンク） */
+.gl-role { font-size: 14px; color: var(--ink); background: var(--primary-tint); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin: 0 0 14px; line-height: 1.7; }
+.gl-role a { color: var(--primary); font-weight: 700; }
+/* ガイドラインの表示3群見出し／分野見出し／目次の群ラベル */
+.gl-group-title { font-size: 20px; font-weight: 800; color: var(--primary-dark); margin: 40px 0 16px; padding-bottom: 8px; border-bottom: 3px solid var(--primary); }
+.gl-group-title:first-of-type { margin-top: 8px; }
+.gl-cat-title { font-size: 17px; font-weight: 700; color: var(--primary); margin: 24px 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--line); scroll-margin-top: 70px; }
+.gl-toc-group { display: block; width: 100%; font-weight: 700; color: var(--ink-soft); font-size: 12.5px; margin: 10px 0 2px; }
+/* 報酬・公定価格：資料の役割グループ見出し */
+.fees-role { font-size: 15px; font-weight: 700; color: var(--primary-dark); margin: 20px 0 10px; padding-left: 10px; border-left: 4px solid var(--primary); }
 .gl-dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 13.5px; line-height: 1.7; }
 .gl-dl dt { color: var(--ink-soft); font-weight: 700; white-space: nowrap; }
 .gl-dl dd { margin: 0; color: var(--ink); }

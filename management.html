@@ -514,6 +514,22 @@ const MANAGEMENT = {
   var rootEl = document.getElementById("management-root");
   var cats = (MANAGEMENT && MANAGEMENT.categories) || [];
 
+  // 経営課題順の表示並べ替え（データ移動なし・カテゴリの表示順のみ）
+  // 課題順：経営実態・収支状況→財務分析・経営指標→生産性向上・業務改善→経営戦略・事業計画→人材確保・労務→施設整備・資金調達→その他
+  var MG_ORDER = [
+    "WAM（福祉医療機構）の経営分析レポート",
+    "公的な経営実態調査",
+    "社会福祉法人の経営指標（日本公認会計士協会）",
+    "大規模化・協働化・連携に関する資料",
+    "人材確保・労務",
+    "補助事業による調査研究報告書"
+  ];
+  cats = cats.slice().sort(function (a, b) {
+    var ia = MG_ORDER.indexOf(a.category); if (ia < 0) ia = MG_ORDER.length;
+    var ib = MG_ORDER.indexOf(b.category); if (ib < 0) ib = MG_ORDER.length;
+    return ia - ib;
+  });
+
   if (descEl && MANAGEMENT && MANAGEMENT.description) descEl.textContent = MANAGEMENT.description;
 
   if (cats.length === 0) {
