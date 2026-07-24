@@ -129,6 +129,10 @@ summary:focus-visible {
 .nav-menu { display: none; }
 .nav-group.is-open > .nav-menu { display: block; }
 .nav-group.has-current > .nav-group-btn { color: var(--primary); font-weight: 700; }
+/* サイト内検索アイコン（ナビ右端）＝PCは虫眼鏡のみ・モバイルは「検索」ラベル併記 */
+.nav-search { display: inline-flex; align-items: center; gap: 6px; }
+.nav-search svg { display: block; width: 20px; height: 20px; }
+.nav-search .nav-search-label { display: none; }
 @media (min-width: 769px) {
   .nav-menu { position: absolute; top: 100%; left: 0; min-width: 210px; background: #fff; border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.14); padding: 6px; z-index: 60; }
   .nav-menu a { display: block; padding: 9px 12px; font-size: 13.5px; border: none; border-radius: 6px; white-space: nowrap; }
@@ -144,6 +148,7 @@ summary:focus-visible {
     font-size: 15px;
   }
   .nav-caret { display: none; }
+  .nav-search .nav-search-label { display: inline; }
   .nav-menu { display: block; padding: 0; }
   /* 項目＝ブロック・折返しなしで下線が文字に被らない・インデントで見出しとの階層を示す・タップ領域44px */
   .nav-menu a {
