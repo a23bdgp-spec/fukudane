@@ -1361,6 +1361,9 @@ section p:last-child { margin-bottom: 0; }
 .sim-area { margin: 10px 0 0; font-size: 14px; line-height: 1.7; }
 .sim-area-hint, .sim-area-more { color: var(--ink-soft); font-size: 12.5px; }
 .sim-note { margin: 8px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
+.sim-mode { margin: 0 0 12px; }
+.sim-easyrow { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+.sim-easyrow .sim-lb input, .sim-easyrow .sim-lb select { max-width: 150px; }
 .sim-care { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
 .sim-care-lb { min-width: 0; }
 .sim-care-lb input, .sim-cn { width: 100%; min-width: 0; box-sizing: border-box; }
