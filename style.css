@@ -1265,3 +1265,42 @@ section p:last-child { margin-bottom: 0; }
 .metric-btn:hover { border-color: var(--primary); }
 .metric-btn[aria-pressed="true"] { background: var(--primary); color: #fff; border-color: var(--primary-dark); }
 .metric-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* chiiki.html：介護報酬の地域区分検索 */
+.chiiki-back { margin: 0 0 14px; }
+.chiiki-back a { color: var(--primary); font-weight: 700; }
+.chiiki-intro { background: var(--primary-tint); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin: 0 0 18px; }
+.chiiki-intro p { margin: 0 0 6px; font-size: 14px; line-height: 1.7; }
+.chiiki-intro p:last-child { margin-bottom: 0; }
+.chiiki-src { color: var(--ink-soft); font-size: 13px; }
+.chiiki-src a { color: var(--primary); }
+.chiiki-warn { color: var(--primary-dark); font-weight: 700; }
+.chiiki-hint, .chiiki-count { font-size: 14px; color: var(--ink-soft); margin: 12px 0; }
+.chiiki-count { font-weight: 700; color: var(--ink); }
+.chiiki-more { font-size: 13px; color: var(--ink-soft); margin: 8px 0 0; }
+.chiiki-card { border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; margin: 0 0 14px; background: var(--card); }
+.chiiki-cname { margin: 0 0 8px; font-size: 18px; font-weight: 700; color: var(--primary-dark); display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.chiiki-pref { font-size: 13px; color: var(--ink-soft); font-weight: 400; }
+.chiiki-kubun { margin: 0 0 8px; font-size: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.chiiki-badge { display: inline-block; background: var(--primary); color: #fff; font-size: 13px; font-weight: 700; padding: 3px 12px; border-radius: 999px; }
+.chiiki-change { margin: 0 0 8px; font-size: 13px; color: var(--dc-kourei, #d97706); font-weight: 700; }
+.chiiki-tokurei { margin: 0 0 8px; font-size: 13px; color: var(--ink-soft); }
+.chiiki-othernote { margin: 0 0 8px; font-size: 13px; color: var(--ink-soft); }
+.chiiki-tanka { border-collapse: collapse; width: 100%; min-width: 420px; font-size: 13.5px; background: #fff; margin: 6px 0 0; }
+.chiiki-tanka th, .chiiki-tanka td { border: 1px solid var(--line); padding: 7px 10px; text-align: left; vertical-align: top; }
+.chiiki-tanka thead th { background: var(--primary); color: #fff; font-weight: 600; }
+.chiiki-tanka tbody th { background: var(--primary-tint); color: var(--ink); font-weight: 700; white-space: nowrap; }
+.chiiki-svc { color: var(--ink-soft); font-size: 12.5px; line-height: 1.6; }
+.chiiki-list-sec { margin: 32px 0 0; }
+.chiiki-list-note { font-size: 13px; color: var(--ink-soft); margin: 0 0 12px; }
+.chiiki-fold { border: 1px solid var(--line); border-radius: 8px; margin: 0 0 8px; background: #fff; }
+.chiiki-fold > summary { cursor: pointer; padding: 12px 14px; font-weight: 700; color: var(--primary-dark); list-style: none; }
+.chiiki-fold > summary::-webkit-details-marker { display: none; }
+.chiiki-fold > summary::after { content: "▾"; float: right; font-size: 12px; color: var(--primary); }
+.chiiki-fold[open] > summary::after { content: "▴"; }
+.chiiki-fold-body { padding: 0 14px 12px; }
+.chiiki-townlist { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 4px 12px; }
+.chiiki-townlist li { font-size: 13.5px; padding: 3px 0; border-bottom: 1px solid var(--line); }
+.chiiki-townpref { color: var(--ink-soft); font-size: 12px; margin-left: 6px; }
+.chiiki-townchg { color: var(--dc-kourei, #d97706); font-size: 11.5px; margin-left: 6px; }
+.chiiki-foot { margin: 20px 0 0; font-size: 12.5px; color: var(--ink-soft); line-height: 1.7; }
