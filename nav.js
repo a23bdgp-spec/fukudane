@@ -35,7 +35,12 @@
       var menu = g.querySelector(".nav-menu");
       if (!btn || !menu) return;
       function open(o) { btn.setAttribute("aria-expanded", o ? "true" : "false"); g.classList.toggle("is-open", o); }
-      btn.addEventListener("click", function (e) { e.stopPropagation(); open(btn.getAttribute("aria-expanded") !== "true"); });
+      // PC＝ホバーで開閉するためクリックは「開く」専用（ホバーで開いた直後のクリックで閉じない）。モバイル＝アコーディオン開閉（既定は閉）。
+      btn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (isPC()) open(true);
+        else open(btn.getAttribute("aria-expanded") !== "true");
+      });
       // PCはホバーでも開く
       g.addEventListener("mouseenter", function () { if (isPC()) open(true); });
       g.addEventListener("mouseleave", function () { if (isPC()) open(false); });
