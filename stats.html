@@ -2218,9 +2218,9 @@ const STATS = {
   // 凡例（薄い=低い／濃い=高い、実レンジ併記）
   function heatLegend(min, max) {
     return '<div class="heat-legend"><span class="heat-legend-cap">薄い＝低い</span>' +
-      '<span class="heat-legend-lo">' + pct(min) + "%</span>" +
+      '<span class="heat-legend-lo">' + fmtM(min) + "%</span>" +
       '<span class="heat-legend-bar" aria-hidden="true"></span>' +
-      '<span class="heat-legend-hi">' + pct(max) + "%</span>" +
+      '<span class="heat-legend-hi">' + fmtM(max) + "%</span>" +
       '<span class="heat-legend-cap">濃い＝高い</span></div>';
   }
   function minMax(arr) {
@@ -2256,20 +2256,20 @@ const STATS = {
     p.labels.forEach(function (lb, i) {
       if (values[i] != null) rows.push({ name: lb, v: values[i], n: ns[i] });
     });
-    var high = rows.slice().sort(function (a, b) { return b.v - a.v; }).slice(0, 10);
-    var low = rows.slice().sort(function (a, b) { return a.v - b.v; }).slice(0, 10);
+    var high = rows.slice().sort(function (a, b) { return b.v - a.v; }).slice(0, 5);
+    var low = rows.slice().sort(function (a, b) { return a.v - b.v; }).slice(0, 5);
     function col(title, list) {
       var h = '<div class="pref-rank-col"><h3 class="pref-rank-title">' + esc(title) + "</h3><ol class=\"pref-rank-list\">";
       list.forEach(function (r) {
         h += '<li><span class="pr-name">' + esc(r.name) + "</span>" +
-          '<span class="pr-val">' + pct(r.v) + esc(suffix) + "</span>" +
+          '<span class="pr-val">' + fmtM(r.v) + esc(suffix) + "</span>" +
           '<span class="pr-n">n=' + num(r.n) + "</span></li>";
       });
       return h + "</ol></div>";
     }
     return '<div class="pref-rank-wrap">' +
-      col(metricLabel + "が高い10県", high) +
-      col(metricLabel + "が低い10県", low) +
+      col(metricLabel + "が高い5県", high) +
+      col(metricLabel + "が低い5県", low) +
       "</div>";
   }
 
@@ -2290,7 +2290,7 @@ const STATS = {
         } else {
           var c = heatColor(v, mm.min, mm.max);
           h += '<td class="heat-cell' + (nn < 30 ? " heat-small" : "") + '" style="background:' + c.bg + ";color:" + c.fg + '">' +
-            '<span class="heat-val">' + pct(v) + mi.suffix + '</span><span class="heat-n">n=' + num(nn) + "</span></td>";
+            '<span class="heat-val">' + fmtM(v) + mi.suffix + '</span><span class="heat-n">n=' + num(nn) + "</span></td>";
         }
       });
       h += "</tr>";
@@ -2356,15 +2356,21 @@ const STATS = {
 </g>
 </svg>`;
   // ---- 表示指標の切替（黒字割合⇄経常増減差額率の中央値。地図・全マトリクス・一覧・凡例が連動）----
-  // METRIC="surplus"（黒字割合）/"rate"（経常増減差額率の中央値）。負値も同じ深緑の連続階調（評価的な赤等は使わない）。
+  // METRIC="surplus"（黒字割合）/"rate"（経常増減差額率）。負値も同じ深緑の連続階調（評価的な赤等は使わない）。
   var METRIC = "surplus";
+  // 経常増減差額率のとき、中央値(median)／平均値(mean)を切り替える。母数は共通で rate_median_n。
+  var RATE_STAT = "median";
   function mInfo() {
-    return METRIC === "rate"
-      ? { short: "経常増減差額率", label: "経常増減差額率（中央値）", suffix: "%" }
-      : { short: "黒字割合", label: "黒字割合", suffix: "%" };
+    if (METRIC === "rate") {
+      var stat = (RATE_STAT === "mean") ? "平均値" : "中央値";
+      return { short: "経常増減差額率", label: "経常増減差額率（" + stat + "）", suffix: "%", digits: 2 };
+    }
+    return { short: "黒字割合", label: "黒字割合", suffix: "%", digits: 1 };
   }
-  function mVals(o) { return METRIC === "rate" ? o.rate_median : o.surplus_rate; }        // 値配列/行列
-  function mN(o) { return METRIC === "rate" ? o.rate_median_n : (o.n !== undefined ? o.n : o.base_n); }  // 母数
+  function mVals(o) { return METRIC === "rate" ? (RATE_STAT === "mean" ? o.rate_mean : o.rate_median) : o.surplus_rate; }
+  function mN(o) { return METRIC === "rate" ? o.rate_median_n : (o.n !== undefined ? o.n : o.base_n); }  // 母数（率は中央値・平均値とも rate_median_n）
+  // 現在の指標の桁数で整形（黒字割合＝小数1位、経常増減差額率＝小数2位）。表示整形のみ・データ値は改変しない。
+  function fmtM(n) { return (n == null) ? "" : Number(n).toFixed(mInfo().digits); }
 
   function japanMap(p) {
     var mi = mInfo(), mm = minMax(mVals(p));
@@ -2385,7 +2391,7 @@ const STATS = {
       if (d && d.v != null) {
         var c = heatColor(d.v, mm.min, mm.max);
         el.style.fill = c.bg;
-        var info = name + "：" + mi.short + " " + pct(d.v) + mi.suffix + "（n=" + num(d.n) + "）";
+        var info = name + "：" + mi.short + " " + fmtM(d.v) + mi.suffix + "（n=" + num(d.n) + "）";
         el.setAttribute("tabindex", "0");
         el.setAttribute("role", "listitem");
         el.setAttribute("aria-label", info);
@@ -2412,11 +2418,19 @@ const STATS = {
     ["stats-matrix-era-hq", "設立年代×本部の有無", "era_hq_surplus_matrix", "設立年代＼本部"]
   ];
   function metricToggleHtml() {
-    return '<div class="metric-toggle" role="group" aria-label="表示指標の切替">' +
+    var h = '<div class="metric-toggle" role="group" aria-label="表示指標の切替">' +
       '<span class="metric-toggle-label">表示指標：</span>' +
       '<button type="button" class="metric-btn" data-metric="surplus" aria-pressed="' + (METRIC === "surplus") + '">黒字割合</button>' +
-      '<button type="button" class="metric-btn" data-metric="rate" aria-pressed="' + (METRIC === "rate") + '">経常増減差額率（中央値）</button>' +
+      '<button type="button" class="metric-btn" data-metric="rate" aria-pressed="' + (METRIC === "rate") + '">経常増減差額率</button>' +
       "</div>";
+    if (METRIC === "rate") {
+      h += '<div class="metric-toggle metric-subtoggle" role="group" aria-label="集約方法の切替">' +
+        '<span class="metric-toggle-label">集約：</span>' +
+        '<button type="button" class="metric-btn" data-stat="median" aria-pressed="' + (RATE_STAT === "median") + '">中央値</button>' +
+        '<button type="button" class="metric-btn" data-stat="mean" aria-pressed="' + (RATE_STAT === "mean") + '">平均値</button>' +
+        "</div>";
+    }
+    return h;
   }
   function buildHeatSections() {
     var mi = mInfo(), h = "";
@@ -2435,12 +2449,21 @@ const STATS = {
     root.innerHTML = metricToggleHtml() + buildHeatSections();
     // 日本地図の着色・ツールチップ付与（現在の指標で）
     if (S.prefecture_surplus) { try { colorizeJapanMap(S.prefecture_surplus); } catch (e) {} }
-    // 指標トグルのバインド
-    root.querySelectorAll(".metric-btn").forEach(function (b) {
+    // 指標トグル（黒字割合／経常増減差額率）のバインド
+    root.querySelectorAll("[data-metric]").forEach(function (b) {
       b.addEventListener("click", function () {
         var m = b.getAttribute("data-metric");
         if (m === METRIC) return;
         METRIC = m;
+        renderHeat();
+      });
+    });
+    // 集約方法トグル（中央値／平均値）のバインド
+    root.querySelectorAll("[data-stat]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var s = b.getAttribute("data-stat");
+        if (s === RATE_STAT) return;
+        RATE_STAT = s;
         renderHeat();
       });
     });
