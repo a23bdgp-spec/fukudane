@@ -3925,7 +3925,7 @@ const CHIIKI = {
   // 1単位単価の表（人件費割合70/55/45%×該当級地）
   function tankaRows(kubun) {
     var ratios = [["70%", "人件費割合70%"], ["55%", "人件費割合55%"], ["45%", "人件費割合45%"]];
-    var h = '<div class="tblwrap"><table class="chiiki-tanka"><thead><tr>' +
+    var h = '<div class="table-scroll"><table class="chiiki-tanka"><thead><tr>' +
       '<th scope="col">人件費割合</th><th scope="col">1単位単価</th><th scope="col">主な対象サービス</th></tr></thead><tbody>';
     ratios.forEach(function (r) {
       var t = (tankaTable[r[1]] || {})[kubun];
