@@ -1311,21 +1311,19 @@ section p:last-child { margin-bottom: 0; }
 .chiiki-svcnote { margin: 6px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
 
 /* chiiki.html：基本報酬の概算 計算欄 */
-.chiiki-calc { margin: 12px 0 0; padding: 12px 14px; border: 1px dashed var(--line-strong); border-radius: 10px; background: var(--page); }
-.chiiki-calc-title { margin: 0 0 8px; font-size: 13.5px; font-weight: 700; color: var(--primary-dark); }
-.chiiki-calc-row { display: flex; flex-wrap: wrap; gap: 8px 12px; }
-.cc-lb { display: flex; flex-direction: column; gap: 3px; font-size: 12.5px; color: var(--ink-soft); font-weight: 700; }
-.cc-lb select, .cc-lb input { font: inherit; font-size: 14px; padding: 8px 10px; border: 1px solid var(--line-strong); border-radius: 8px; background: #fff; color: var(--ink); min-width: 90px; }
-.cc-units, .cc-days { max-width: 130px; }
-.chiiki-calc-out { margin: 10px 0 0; font-size: 14.5px; font-weight: 700; color: var(--primary-dark); }
-.chiiki-calc-note { margin: 6px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
 .chiiki-vary { font-weight: 700; color: var(--ink-soft); }
-.chiiki-result-tabs { margin: 4px 0 16px; }
-/* 簡易計算欄は折りたたみに格下げ（ページの主役は級地・単価の事実表示） */
-.chiiki-calc-fold { margin: 12px 0 0; }
-.chiiki-calc-fold > summary { cursor: pointer; font-size: 13px; font-weight: 700; color: var(--primary-dark); padding: 6px 0; list-style: revert; }
-.chiiki-calc-fold[open] > summary { margin-bottom: 2px; }
-.chiiki-calc-fold .chiiki-calc { margin-top: 6px; }
+/* 分野タブ（見出し兼切替）。介護保険サービス｜障害福祉サービス等｜児童養護施設（措置費） */
+.chiiki-domain-tabs { display: flex; flex-wrap: wrap; gap: 4px; margin: 18px 0 14px; border-bottom: 2px solid var(--line-strong); }
+.chiiki-domtab { font-family: inherit; font-size: 16px; font-weight: 700; color: var(--ink-soft); background: transparent; border: none; border-bottom: 3px solid transparent; margin-bottom: -2px; padding: 10px 16px; min-height: 44px; cursor: pointer; }
+.chiiki-domtab:hover { color: var(--primary-dark); }
+.chiiki-domtab[aria-selected="true"] { color: var(--primary-dark); border-bottom-color: var(--primary); }
+.chiiki-domtab:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+/* 変更前級地を級地バッジの右余白に配置 */
+.chiiki-kubun { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; }
+.chiiki-change-inline { margin-left: auto; font-size: 12px; font-weight: 400; color: var(--ink-soft); }
+/* 報酬試算への導線リンク */
+.chiiki-simlink { margin: 4px 0 8px; font-size: 13.5px; font-weight: 700; }
+.chiiki-simlink a { color: var(--primary-dark); }
 /* 単価を主役として強調（最左列） */
 .chiiki-tanka-main { font-weight: 700; color: var(--primary-dark); white-space: nowrap; }
 
@@ -1361,6 +1359,7 @@ section p:last-child { margin-bottom: 0; }
 .sim-table td { text-align: right; white-space: nowrap; }
 .sim-table thead th { font-size: 12.5px; color: var(--ink-soft); background: var(--page); }
 .sim-row-base th, .sim-row-base td { font-weight: 700; }
+.sim-row-sub th, .sim-row-sub td { font-weight: 700; border-top: 1px solid var(--line-strong); background: var(--page); }
 .sim-row-total th, .sim-row-total td { font-weight: 700; font-size: 15px; color: var(--primary-dark); border-top: 2px solid var(--line-strong); border-bottom: none; background: var(--page); }
 .sim-calcnote { margin: 10px 0 0; font-size: 12px; color: var(--ink-soft); line-height: 1.6; }
 @media (max-width: 768px) {
