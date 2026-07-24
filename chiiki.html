@@ -6680,6 +6680,7 @@ const CHIIKI_SHOGAI = {
     if (a["特例"]) h += '<p class="chiiki-tokurei">隣接・広域連合等の特例により適用</p>';
     if (isOther) h += '<p class="chiiki-othernote">名簿に個別列挙されない市町村は「その他（上乗せ0%）」が適用されます。</p>';
     h += kaigoTankaRows(kubun);
+    h += kaigoCalc(kubun);
     return h + "</article>";
   }
 
@@ -6706,11 +6707,69 @@ const CHIIKI_SHOGAI = {
     if (isOther) h += '<p class="chiiki-othernote">名簿に個別列挙されない市町村は「その他（上乗せ0%）」が適用されます。</p>';
     h += shogaiTankaRows(kubun);
     h += '<p class="chiiki-svcnote">障害児通所支援（児童発達支援・放課後等デイサービス等）は別のこども家庭庁告示によるため、本表の対象外です。</p>';
+    h += shogaiCalc(kubun);
     return h + "</article>";
   }
 
   function kaigoOther() { return { "市町村名": "その他（名簿にない市町村）", "都道府県": "", "級地区分": "その他", "上乗せ割合": 0, "変更前級地": null, "特例": false }; }
   function shogaiOther() { return { "市町村名": "その他（名簿にない市町村）", "都道府県": "", "級地区分": "その他" }; }
+
+  // ---- 基本報酬の概算（第1段階：単位数×1単位単価）。入力はブラウザ内処理のみ・端数処理は推測しない ----
+  function pnum(v) { var n = parseFloat(String(v == null ? "" : v).replace(/[^0-9.]/g, "")); return isNaN(n) ? null : n; }
+  function yen(n) { return Number(n).toLocaleString("ja-JP", { maximumFractionDigits: 2 }); }
+  function shortSvc(s) { var parts = String(s).split(/\s+/); return parts.length > 1 ? parts[0] + " 等" : parts[0]; }
+  var CALC_NOTE = '<p class="chiiki-calc-note">単位数×1単位単価の単純計算です。実際の請求額は端数処理・各種加算・減算等により異なります（本欄は概算の目安です）。</p>';
+
+  function kaigoCalc(kubun) {
+    var opts = [["70%", "人件費割合70%"], ["55%", "人件費割合55%"], ["45%", "人件費割合45%"]].map(function (r) {
+      var t = (kTankaTable[r[1]] || {})[kubun];
+      return '<option value="' + (t != null ? t : "") + '">' + r[0] + "（1単位 " + (t != null ? Number(t).toFixed(2) + "円" : "—") + "）</option>";
+    }).join("");
+    return '<div class="chiiki-calc" data-domain="kaigo">' +
+      '<p class="chiiki-calc-title">基本報酬の概算（単位数 × 1単位単価）</p>' +
+      '<div class="chiiki-calc-row">' +
+      '<label class="cc-lb">人件費割合<select class="cc-svc">' + opts + "</select></label>" +
+      '<label class="cc-lb">単位数<input type="text" inputmode="numeric" class="cc-units" placeholder="例：1000"></label>' +
+      '<label class="cc-lb">日数（任意）<input type="text" inputmode="numeric" class="cc-days" placeholder="例：22"></label>' +
+      "</div><p class=\"chiiki-calc-out\" aria-live=\"polite\">単位数を入力すると概算額を表示します。</p>" + CALC_NOTE + "</div>";
+  }
+  function shogaiCalc(kubun) {
+    var rows = sRatioTable[kubun] || [];
+    var opts = rows.map(function (r, i) {
+      return '<option value="' + i + '" data-t10="' + r["単価10円ベース円"] + '" data-t85="' + r["単価8_5円ベース円"] +
+        '">' + esc(shortSvc(r["サービス群"])) + "（10円基準 " + String(r["単価10円ベース円"]) + "円）</option>";
+    }).join("");
+    return '<div class="chiiki-calc" data-domain="shogai">' +
+      '<p class="chiiki-calc-title">基本報酬の概算（単位数 × 1単位単価）</p>' +
+      '<div class="chiiki-calc-row">' +
+      '<label class="cc-lb">サービス群<select class="cc-svc">' + opts + "</select></label>" +
+      '<label class="cc-lb">基準額<select class="cc-base"><option value="10">10円</option><option value="8.5">8.5円</option></select></label>' +
+      '<label class="cc-lb">単位数<input type="text" inputmode="numeric" class="cc-units" placeholder="例：1000"></label>' +
+      '<label class="cc-lb">日数（任意）<input type="text" inputmode="numeric" class="cc-days" placeholder="例：22"></label>' +
+      "</div><p class=\"chiiki-calc-out\" aria-live=\"polite\">単位数を入力すると概算額を表示します。</p>" + CALC_NOTE + "</div>";
+  }
+  // 計算欄の再計算（イベント委譲）。単価は各セレクトの選択肢から取得（データ由来・推測なし）
+  function recalcCalc(box) {
+    var domain = box.getAttribute("data-domain");
+    var svcSel = box.querySelector(".cc-svc");
+    var units = pnum(box.querySelector(".cc-units").value);
+    var daysEl = box.querySelector(".cc-days");
+    var days = daysEl ? pnum(daysEl.value) : null;
+    var out = box.querySelector(".chiiki-calc-out");
+    var tanka;
+    if (domain === "kaigo") {
+      tanka = pnum(svcSel.value);
+    } else {
+      var opt = svcSel.options[svcSel.selectedIndex];
+      var base = box.querySelector(".cc-base").value;
+      tanka = pnum(base === "8.5" ? opt.getAttribute("data-t85") : opt.getAttribute("data-t10"));
+    }
+    if (tanka == null || units == null) { out.textContent = "単位数を入力すると概算額を表示します。"; return; }
+    var daily = units * tanka;
+    var txt = "1単位 " + Number(tanka).toFixed(2) + "円 × " + yen(units) + "単位 ＝ 約 " + yen(daily) + "円";
+    if (days != null && days > 0) txt += "　／　× " + yen(days) + "日 ＝ 約 " + yen(daily * days) + "円";
+    out.textContent = txt;
+  }
 
   var LIMIT = 20;
   function domainSection(title, idx, cardFn, otherFn) {
@@ -6740,6 +6799,14 @@ const CHIIKI_SHOGAI = {
     var _q = new URLSearchParams(location.search).get("q");
     if (_q) { qEl.value = _q; renderResult(); }
   } catch (e) { /* 無視 */ }
+
+  // 計算欄の入力・選択に反応（イベント委譲。結果カード再描画後も有効）。ブラウザ内処理のみ・外部送信なし。
+  function onCalc(e) {
+    var box = e.target.closest ? e.target.closest(".chiiki-calc") : null;
+    if (box) recalcCalc(box);
+  }
+  resultEl.addEventListener("input", onCalc);
+  resultEl.addEventListener("change", onCalc);
 
   // ---- 級地別一覧（介護／障害を切替） ----
   var LIST_DOMAIN = "kaigo";
