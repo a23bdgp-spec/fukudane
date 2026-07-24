@@ -161,6 +161,9 @@
             <option value="roken">介護老人保健施設（老健）</option>
             <option value="gh">認知症対応型共同生活介護（認知症GH）</option>
             <option value="short">短期入所生活介護（ショートステイ）</option>
+            <option value="homon">訪問介護</option>
+            <option value="kyotaku">居宅介護支援（ケアプラン）</option>
+            <option value="kantaki">看護小規模多機能型居宅介護</option>
           </select>
         </label>
       </div>
@@ -11867,11 +11870,15 @@ const SIM_KASAN_GH = {
   var shoInfo = ((SHOGUU["メタ"] || {})["現行加算率_令和8年度"]) || {};
   var shoRates = shoInfo["サービス別"] || {}; var shoNew = shoInfo["新設サービス"] || {};
 
+  // mode: shisetsu(施設・365/12) / biz(通所・営業日) / kaisu(訪問・回数) / getsu(月額・件数登録者×1)
   var SVC_CFG = {
-    tsusho: { name: "通所介護", kasan: (typeof SIM_KASAN_TSUSHO !== "undefined" && SIM_KASAN_TSUSHO) || {}, attend: true, food: false, ratio: "45%", shoKey: "通所介護" },
-    roken: { name: "介護老人保健施設（老健）", kasan: (typeof SIM_KASAN_ROKEN !== "undefined" && SIM_KASAN_ROKEN) || {}, attend: false, food: "room", ratio: "45%", shoKey: "介護老人保健施設・短期入所療養介護（老健）" },
-    gh: { name: "認知症対応型共同生活介護（認知症GH）", kasan: (typeof SIM_KASAN_GH !== "undefined" && SIM_KASAN_GH) || {}, attend: false, food: false, ratio: "45%", shoKey: "認知症対応型共同生活介護" },
-    short: { name: "短期入所生活介護", kasan: null, attend: false, food: "stay", ratio: "55%", shoKey: "介護老人福祉施設・地域密着型介護老人福祉施設・短期入所生活介護" }
+    tsusho: { name: "通所介護", kasan: (typeof SIM_KASAN_TSUSHO !== "undefined" && SIM_KASAN_TSUSHO) || {}, mode: "biz", food: false, ratio: "45%", shoKey: "通所介護" },
+    roken: { name: "介護老人保健施設（老健）", kasan: (typeof SIM_KASAN_ROKEN !== "undefined" && SIM_KASAN_ROKEN) || {}, mode: "shisetsu", food: "room", ratio: "45%", shoKey: "介護老人保健施設・短期入所療養介護（老健）" },
+    gh: { name: "認知症対応型共同生活介護（認知症GH）", kasan: (typeof SIM_KASAN_GH !== "undefined" && SIM_KASAN_GH) || {}, mode: "shisetsu", food: false, ratio: "45%", shoKey: "認知症対応型共同生活介護" },
+    short: { name: "短期入所生活介護", kasan: null, mode: "shisetsu", food: "stay", ratio: "55%", shoKey: "介護老人福祉施設・地域密着型介護老人福祉施設・短期入所生活介護" },
+    homon: { name: "訪問介護", kasan: null, mode: "kaisu", food: false, ratio: "70%", shoKey: "訪問介護", cntLabel: "利用者数" },
+    kyotaku: { name: "居宅介護支援", kasan: null, mode: "getsu", food: false, ratio: "70%", shoNewKey: "居宅介護支援・介護予防支援", cntLabel: "取扱件数" },
+    kantaki: { name: "看護小規模多機能型居宅介護", kasan: null, mode: "getsu", food: false, ratio: "55%", shoKey: "看護小規模多機能型居宅介護", cntLabel: "登録者数" }
   };
   var MONTH_DAYS = 365 / 12;
   var CUR_SVC = "tsusho"; // 選択中サービス（tokuyo以外のとき有効）
@@ -12025,27 +12032,31 @@ const SIM_KASAN_GH = {
     var units = (uv !== null && uv !== "") ? pnum(uv) : null;
     var tanka = tankaFor(CURRENT.kubun); if (tanka == null) tanka = tankaFor("その他");
     var uc = userCount();
-    var attend = cfg.attend;
-    var mult = attend ? bizDays() : MONTH_DAYS; // 通所＝営業日数、施設系＝365/12
-    DAYDIV = mult;
-    var dEl = document.getElementById("sim3-daysrow");
-    if (dEl) dEl.style.display = attend ? "" : "none";
+    var mode = cfg.mode;
+    var dInput = pnum(document.getElementById("sim3-days").value);
+    var mult, showDaily;
+    if (mode === "biz") { mult = (dInput && dInput > 0) ? dInput : 22; showDaily = true; }
+    else if (mode === "kaisu") { mult = (dInput && dInput > 0) ? dInput : 0; showDaily = false; } // 月間訪問回数
+    else if (mode === "getsu") { mult = 1; showDaily = false; } // 月額×件数/登録者
+    else { mult = MONTH_DAYS; showDaily = true; } // 施設系
+    DAYDIV = (mode === "biz") ? mult : MONTH_DAYS;
+    var cntLabel = cfg.cntLabel || "利用者数";
 
-    if (units == null || tanka == null || !uc.n) {
-      bdBody.innerHTML = '<tr><td colspan="4" class="heat-na">市町村・区分・利用者数を入力すると概算額を表示します。</td></tr>';
-      document.getElementById("sim3-total").textContent = uc.n ? "利用者数 " + fmtNum(uc.n) + " 人" : "";
+    if (units == null || tanka == null || !uc.n || (mode === "kaisu" && !mult)) {
+      bdBody.innerHTML = '<tr><td colspan="4" class="heat-na">市町村・区分・' + esc(cntLabel) + (mode === "kaisu" ? "・月間訪問回数" : "") + "を入力すると概算額を表示します。</td></tr>";
+      document.getElementById("sim3-total").textContent = uc.n ? cntLabel + " " + fmtNum(uc.n) + " 件" : "";
       setEasyNote(uc); return;
     }
     var baseM = units * uc.n * mult;
-    var rows = rowU("基本報酬（" + esc(cfg.name.replace(/（.*/, "")) + "）", baseM, tanka, true, "sim-row-base");
+    var rows = rowU("基本報酬（" + esc(cfg.name.replace(/（.*/, "")) + "）", baseM, tanka, showDaily, "sim-row-base");
     var subtotal = baseM;
-    taiseiRows(mult).forEach(function (t) { var mu = t.unit * uc.n * t.mult; subtotal += mu; rows += rowU(t.name + (t.monthly ? "（月単位）" : ""), mu, tanka, !t.monthly); });
+    taiseiRows(mult).forEach(function (t) { var mu = t.unit * uc.n * t.mult; subtotal += mu; rows += rowU(t.name + (t.monthly ? "（月単位）" : ""), mu, tanka, showDaily && !t.monthly); });
     var shoriUnits = 0, rate = 0;
     var ss = document.getElementById("sim3-shori-sel");
     if (ss) { rate = pnum(ss.value) || 0; if (rate > 0) shoriUnits = subtotal * rate / 100; }
-    if (rate > 0) rows += rowU("処遇改善加算（" + rate + "%）", shoriUnits, tanka, true);
+    if (rate > 0) rows += rowU("処遇改善加算（" + rate + "%）", shoriUnits, tanka, showDaily);
     var kaigoUnits = subtotal + shoriUnits, kaigoYen = kaigoUnits * tanka;
-    rows += rowU("介護報酬 小計", kaigoUnits, tanka, true, "sim-row-sub");
+    rows += rowU("介護報酬 小計", kaigoUnits, tanka, showDaily, "sim-row-sub");
 
     var grand = kaigoYen;
     // 食費・居住費／滞在費（老健＝老健等・居住費、短期＝特養等・滞在費。いずれも基準費用額）
@@ -12060,13 +12071,15 @@ const SIM_KASAN_GH = {
       rows += rowM(stayLabel + "収入（" + (roomTypeFromPath() || "居室類型は区分で選択") + " " + (rc != null ? yen(rc) + "円/日" : "—") + " × " + fmtNum(uc.n) + "人）", roomM, true);
       grand += roomM;
     }
-    rows += '<tr class="sim-row-total"><th scope="row">総合計（月間概算）</th><td>—</td><td>' + yen(grand) + " 円</td><td>" + yen(grand / DAYDIV) + " 円</td></tr>";
+    rows += '<tr class="sim-row-total"><th scope="row">総合計（月間概算）</th><td>—</td><td>' + yen(grand) + " 円</td><td>" + (showDaily ? yen(grand / DAYDIV) + " 円" : "—") + "</td></tr>";
     bdBody.innerHTML = rows;
 
-    document.getElementById("sim3-total").textContent = "利用者数 " + fmtNum(uc.n) + " 人";
+    var cntUnit = (cfg.cntLabel === "取扱件数") ? "件" : "人";
+    document.getElementById("sim3-total").textContent = cntLabel + " " + fmtNum(uc.n) + " " + cntUnit + (mode === "kaisu" ? "（月間訪問回数 " + fmtNum(mult) + "回/人）" : "");
     setEasyNote(uc);
     var foodNote = (cfg.food === "room") ? "食費・居住費は基準費用額（老健等）による概算で、実際は契約額・負担限度額により異なります。" : (cfg.food === "stay") ? "食費・滞在費は基準費用額（特養等）による概算で、実際は契約額・負担限度額（補足給付）により異なります。ショートステイも補足給付の対象です。" : (CUR_SVC === "gh" ? "認知症GHの家賃・食材料費は事業者が定める実費のため試算対象外です（本欄は介護報酬のみ）。" : "通所介護は食費・送迎等の実費が別にありますが体系が異なるため本欄は介護報酬のみです。");
-    document.getElementById("sim3-calcnote").textContent = "1単位 " + Number(tanka).toFixed(2) + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "・人件費割合" + curRatio() + "）で換算。" + (attend ? "通所系は営業日数×1日あたりで計算。" : "施設系は月額を365日÷12か月（約30.4日）で計算。") + "1日あたりは月額÷" + (attend ? "営業日数" : "(365/12)") + "。稼働率は四捨五入せず小数のまま計算。加算・減算等により実際の額は異なります。" + foodNote;
+    var multNote = (mode === "biz") ? "通所系は営業日数×1日あたりで計算。1日あたりは月額÷営業日数。" : (mode === "kaisu") ? "訪問系は1回単位×月間訪問回数×利用者数で計算（1日あたりは算定単位が回数のため非表示）。" : (mode === "getsu") ? "月額サービスは単位数×" + cntLabel + "で計算（日数按分なし）。" : "施設系は月額を365日÷12か月（約30.4日）で計算。1日あたりは月額÷(365/12)。";
+    document.getElementById("sim3-calcnote").textContent = "1単位 " + Number(tanka).toFixed(2) + "円（" + (CURRENT.name ? CURRENT.name + "・" : "") + CURRENT.kubun + "・人件費割合" + curRatio() + "）で換算。" + multNote + "稼働率は四捨五入せず小数のまま計算。加算・減算等により実際の額は異なります。" + foodNote;
   }
   function setEasyNote(uc) {
     var el = document.getElementById("sim3-easy-note"); if (!el) return;
@@ -12074,15 +12087,29 @@ const SIM_KASAN_GH = {
     else el.textContent = "定員と稼働率を入力すると、利用者数（定員×稼働率）で概算します。";
   }
 
+  // モードに応じた入力欄のラベル・表示切替
+  function applyModeUI() {
+    var cfg = SVC_CFG[CUR_SVC] || {}, mode = cfg.mode;
+    var daysLb = document.getElementById("sim3-days-lb"), daysIn = document.getElementById("sim3-days");
+    if (mode === "biz") { daysLb.style.display = ""; daysLb.childNodes[0].nodeValue = "営業日数（月）"; if (!daysIn.value || daysIn.value === "") daysIn.value = "22"; daysIn.placeholder = "22"; }
+    else if (mode === "kaisu") { daysLb.style.display = ""; daysLb.childNodes[0].nodeValue = "月間訪問回数（1人あたり）"; if (daysIn.value === "22") daysIn.value = ""; daysIn.placeholder = "例：8"; }
+    else { daysLb.style.display = "none"; }
+    var cnt = cfg.cntLabel || "利用者数";
+    var detLb = document.querySelector("#sim3-mode-detail label");
+    if (detLb) detLb.childNodes[0].nodeValue = cnt + "（" + ((cnt === "取扱件数") ? "件" : "人") + "）";
+    var capLb = document.querySelector("#sim3-mode-easy .sim-easyrow label");
+    // getsu（居宅・看多機）は定員×稼働率が馴染むもの（看多機＝登録定員）と件数直接（居宅）が混在。かんたん/詳細とも使用可。
+  }
   // サービス選択（tokuyo以外＝本フロー）に反応
   window.__sim3SetService = function (key) {
     if (!SVC_CFG[key]) return;
     CUR_SVC = key;
     cascadeEl.innerHTML = ""; cascadeEl.removeAttribute("data-units"); cascadeEl.removeAttribute("data-path");
-    buildCascade(); buildKasanUI(); recalc();
+    applyModeUI(); buildCascade(); buildKasanUI(); recalc();
   };
   // 初期化
   try { var _q = new URLSearchParams(location.search).get("q"); if (_q) qEl.value = _q; } catch (e) { /* 無視 */ }
+  applyModeUI();
   buildKasanUI();
   renderArea();
 })();
